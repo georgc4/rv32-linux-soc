@@ -56,14 +56,25 @@
         #size-cells = <1>;
         ranges;
 
+        plic: interrupt-controller@c000000 {
+            compatible = "sifive,plic-1.0.0", "riscv,plic0";
+            reg = <0x0c000000 0x00400000>;
+            interrupt-controller;
+            #address-cells = <0>;
+            #interrupt-cells = <1>;
+            interrupts-extended = <&cpu_intc 9>;
+            riscv,ndev = <1>;
+        };
+
         uart0: serial@10000000 {
             compatible = "ns16550a";
             reg = <0x10000000 0x1000>;
             reg-shift = <2>;
-            reg-io-width = <4>;
+            reg-io-width = <1>;
             clock-frequency = <20000000>;
             current-speed = <115200>;
-            /* Linux 8250 polls until a device IRQ controller is implemented. */
+            interrupt-parent = <&plic>;
+            interrupts = <1>;
             status = "okay";
         };
     };

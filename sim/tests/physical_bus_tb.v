@@ -19,6 +19,9 @@ module physical_bus_tb;
     wire ctrl_req, ctrl_ready, ctrl_resp, ctrl_resp_ready, ctrl_err, ctrl_write;
     wire [31:0] ctrl_data, ctrl_count, ctrl_addr, ctrl_last_data;
     wire [3:0] ctrl_last_strb;
+    wire plic_req, plic_ready, plic_resp, plic_resp_ready, plic_err, plic_write;
+    wire [31:0] plic_data, plic_count, plic_addr, plic_last_data;
+    wire [3:0] plic_last_strb;
     reg [2:0] allow_req = 3'b111;
     integer cycles;
 
@@ -42,7 +45,10 @@ module physical_bus_tb;
         .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1),
         .ctrl_req_valid(ctrl_req), .ctrl_req_ready(ctrl_ready),
         .ctrl_resp_valid(ctrl_resp), .ctrl_resp_ready(ctrl_resp_ready),
-        .ctrl_resp_rdata(ctrl_data), .ctrl_resp_err(ctrl_err)
+        .ctrl_resp_rdata(ctrl_data), .ctrl_resp_err(ctrl_err),
+        .plic_req_valid(plic_req), .plic_req_ready(plic_ready),
+        .plic_resp_valid(plic_resp), .plic_resp_ready(plic_resp_ready),
+        .plic_resp_rdata(plic_data), .plic_resp_err(plic_err)
     );
     latency_device #(.TAG(32'hA100_0000), .WAIT_CYCLES(2)) ram (
         .clk(clk), .rst_n(rst_n), .allow_req(allow_req[0]), .req_valid(dreq[0]), .req_ready(dready[0]),
@@ -72,6 +78,17 @@ module physical_bus_tb;
         .accepted_count(ctrl_count), .last_addr(ctrl_addr),
         .last_wdata(ctrl_last_data), .last_wstrb(ctrl_last_strb),
         .last_write(ctrl_write)
+    );
+    latency_device #(.TAG(32'hE100_0000), .WAIT_CYCLES(1)) plic (
+        .clk(clk), .rst_n(rst_n), .allow_req(1'b1),
+        .req_valid(plic_req), .req_ready(plic_ready),
+        .req_addr(dev_addr), .req_write(dev_write),
+        .req_wdata(dev_wdata), .req_wstrb(dev_wstrb),
+        .resp_valid(plic_resp), .resp_ready(plic_resp_ready),
+        .resp_rdata(plic_data), .resp_err(plic_err),
+        .accepted_count(plic_count), .last_addr(plic_addr),
+        .last_wdata(plic_last_data), .last_wstrb(plic_last_strb),
+        .last_write(plic_write)
     );
 
     task request;
@@ -159,6 +176,11 @@ module physical_bus_tb;
         if (ctrl_count !== 1 || ctrl_addr !== 8 || !ctrl_write ||
             ctrl_last_data !== 2 || ctrl_last_strb !== 4'b0001)
             $fatal(1, "flash control decode/payload failure");
+
+        request(32'h0c20_0004, 0, 0, 0);
+        response(32'hE120_0004, 0);
+        if (plic_count !== 1 || plic_addr !== 32'h0020_0004)
+            $fatal(1, "PLIC decode failure");
 
         request(32'h8200_0000, 0, 0, 0); // first byte past RAM
         response(0, 1);

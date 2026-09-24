@@ -196,7 +196,8 @@ module rv32_priv_unit (
                 12'h180: satp <= modified_csr & 32'h803f_ffff;
                 12'h300: mstatus <= (mstatus & ~writable_mstatus) |
                                        (modified_csr & writable_mstatus);
-                12'h302: medeleg <= modified_csr & 32'h0000_b3ff;
+                // Cause 9 (S-mode ECALL) is not delegable: it enters M-mode SBI.
+                12'h302: medeleg <= modified_csr & 32'h0000_b1ff;
                 12'h303: mideleg <= modified_csr & 32'h0000_0222;
                 12'h304: mie <= modified_csr & writable_mie;
                 12'h306: mcounteren <= modified_csr & 32'h0000_0002;

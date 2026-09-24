@@ -13,7 +13,9 @@ module physical_bus #(
     parameter [31:0] TIMER_BASE = 32'h0200_0000,
     parameter [31:0] TIMER_SIZE = 32'h0001_0000,
     parameter [31:0] CTRL_BASE = 32'h1000_1000,
-    parameter [31:0] CTRL_SIZE = 32'h0000_1000
+    parameter [31:0] CTRL_SIZE = 32'h0000_1000,
+    parameter [31:0] PLIC_BASE = 32'h0c00_0000,
+    parameter [31:0] PLIC_SIZE = 32'h0040_0000
 ) (
     input  wire        clk,
     input  wire        rst_n,
@@ -66,13 +68,19 @@ module physical_bus #(
     input  wire        ctrl_resp_valid,
     output wire        ctrl_resp_ready,
     input  wire [31:0] ctrl_resp_rdata,
-    input  wire        ctrl_resp_err
+    input  wire        ctrl_resp_err,
+    output wire        plic_req_valid,
+    input  wire        plic_req_ready,
+    input  wire        plic_resp_valid,
+    output wire        plic_resp_ready,
+    input  wire [31:0] plic_resp_rdata,
+    input  wire        plic_resp_err
 );
-    localparam [2:0] IDLE = 3'd0, RAM = 3'd1, FLASH = 3'd2,
-                     UART = 3'd3, ROM = 3'd4, TIMER = 3'd5,
-                     MISS = 3'd6, CTRL = 3'd7;
-    reg [2:0] state;
-    reg [2:0] target;
+    localparam [3:0] IDLE = 4'd0, RAM = 4'd1, FLASH = 4'd2,
+                     UART = 4'd3, ROM = 4'd4, TIMER = 4'd5,
+                     MISS = 4'd6, CTRL = 4'd7, PLIC = 4'd8;
+    reg [3:0] state;
+    reg [3:0] target;
     reg [31:0] offset;
 
     // Window sizes must be powers of two and bases aligned to their sizes.
@@ -97,6 +105,9 @@ module physical_bus #(
         end else if ((req_addr & ~(CTRL_SIZE - 32'd1)) == CTRL_BASE) begin
             target = CTRL;
             offset = req_addr & (CTRL_SIZE - 32'd1);
+        end else if ((req_addr & ~(PLIC_SIZE - 32'd1)) == PLIC_BASE) begin
+            target = PLIC;
+            offset = req_addr & (PLIC_SIZE - 32'd1);
         end
     end
 
@@ -110,12 +121,14 @@ module physical_bus #(
     assign rom_req_valid = state == IDLE && req_valid && target == ROM;
     assign timer_req_valid = state == IDLE && req_valid && target == TIMER;
     assign ctrl_req_valid = state == IDLE && req_valid && target == CTRL;
+    assign plic_req_valid = state == IDLE && req_valid && target == PLIC;
     assign ram_resp_ready = state == RAM && resp_ready;
     assign flash_resp_ready = state == FLASH && resp_ready;
     assign uart_resp_ready = state == UART && resp_ready;
     assign rom_resp_ready = state == ROM && resp_ready;
     assign timer_resp_ready = state == TIMER && resp_ready;
     assign ctrl_resp_ready = state == CTRL && resp_ready;
+    assign plic_resp_ready = state == PLIC && resp_ready;
 
     always @* begin
         req_ready = 1'b0;
@@ -130,6 +143,7 @@ module physical_bus #(
                 ROM: req_ready = rom_req_ready;
                 TIMER: req_ready = timer_req_ready;
                 CTRL: req_ready = ctrl_req_ready;
+                PLIC: req_ready = plic_req_ready;
                 default: req_ready = 1'b1;
             endcase
             RAM: begin
@@ -162,6 +176,11 @@ module physical_bus #(
                 resp_rdata = ctrl_resp_rdata;
                 resp_err = ctrl_resp_err;
             end
+            PLIC: begin
+                resp_valid = plic_resp_valid;
+                resp_rdata = plic_resp_rdata;
+                resp_err = plic_resp_err;
+            end
             MISS: begin
                 resp_valid = 1'b1;
                 resp_err = 1'b1;
@@ -175,7 +194,7 @@ module physical_bus #(
         if (!rst_n) state <= IDLE;
         else case (state)
             IDLE: if (req_valid && req_ready) state <= target;
-            RAM, FLASH, UART, ROM, TIMER, CTRL, MISS: if (resp_valid && resp_ready) state <= IDLE;
+            RAM, FLASH, UART, ROM, TIMER, CTRL, PLIC, MISS: if (resp_valid && resp_ready) state <= IDLE;
             default: state <= IDLE;
         endcase
     end

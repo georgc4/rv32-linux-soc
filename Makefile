@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v
@@ -49,6 +49,11 @@ test-uart:
 	$(IVERILOG) -g2012 -Wall -s uart16550_lite_tb -o build/uart16550_lite_tb rtl/peripherals/uart16550_lite.v sim/tests/uart16550_lite_tb.v
 	$(VVP) build/uart16550_lite_tb
 
+test-plic:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -s plic_lite_tb -o build/plic_lite_tb rtl/peripherals/plic_lite.v sim/tests/plic_lite_tb.v
+	$(VVP) build/plic_lite_tb
+
 test-timer:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s clint_timer_tb -o build/clint_timer_tb rtl/peripherals/clint_timer.v sim/tests/clint_timer_tb.v
@@ -56,7 +61,7 @@ test-timer:
 
 test-soc:
 	mkdir -p build
-	$(IVERILOG) -g2012 -Wall -s soc_boot_tb -o build/soc_boot_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/soc_boot_tb.v
+	$(IVERILOG) -g2012 -Wall -s soc_boot_tb -o build/soc_boot_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/soc_boot_tb.v
 	$(VVP) build/soc_boot_tb
 
 test-soc-bad: test-soc
@@ -76,7 +81,8 @@ lint:
 	$(VERILATOR) --lint-only -Wall --top-module clint_timer rtl/peripherals/clint_timer.v
 	$(VERILATOR) --lint-only -Wall --top-module boot_rom rtl/peripherals/boot_rom.v
 	$(VERILATOR) --lint-only -Wall --top-module uart16550_lite rtl/peripherals/uart16550_lite.v
-	$(VERILATOR) --lint-only -Wall --top-module tt_um_rv32_linux_soc rtl/soc/tt_um_rv32_linux_soc.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/memory/serial_mem_bridge.v
+	$(VERILATOR) --lint-only -Wall --top-module plic_lite rtl/peripherals/plic_lite.v
+	$(VERILATOR) --lint-only -Wall --top-module tt_um_rv32_linux_soc rtl/soc/tt_um_rv32_linux_soc.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v
 
 regen-smoke:
 	mkdir -p build
@@ -111,6 +117,20 @@ image-smoke: regen-smoke
 
 image-linux:
 	./linux/build-image.sh
+
+image-linux-flash: image-linux
+	./scripts/build_linux_firmware.sh
+
+test-linux-handoff: image-linux-flash
+	$(RISCV_AS) -march=rv32ima_zicsr_zifencei -mabi=ilp32 -o build/linux_handoff_stub.o sim/programs/linux_handoff_stub.S
+	$(RISCV_LD) -m elf32lriscv --no-relax -Ttext=0x80400000 -o build/linux_handoff_stub.elf build/linux_handoff_stub.o
+	$(RISCV_OBJCOPY) -O binary build/linux_handoff_stub.elf build/linux_handoff_stub.bin
+	$(PYTHON) scripts/pack_linux_flash.py build/firmware/linux_loader.bin build/linux_handoff_stub.bin build/linux/rv32-linux-soc.dtb build/linux_handoff_stub.flash.bin --trim
+	$(PYTHON) -c 'from pathlib import Path; p=Path("build/linux_handoff_stub.flash.bin"); Path("build/linux_handoff_stub.flash.hex").write_text("".join(f"{b:02x}\n" for b in p.read_bytes().ljust(270336, b"\xff")))'
+	$(IVERILOG) -g2012 -Wall -s linux_handoff_tb -o build/linux_handoff_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/linux_handoff_tb.v
+	$(VVP) build/linux_handoff_tb
+	$(VVP) build/linux_handoff_tb +bad_dtb
+	$(VVP) build/linux_handoff_tb +bad_kernel
 
 synth-bus:
 	mkdir -p build

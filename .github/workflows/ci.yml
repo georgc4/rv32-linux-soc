@@ -21,6 +21,8 @@ jobs:
         run: make test-serial
       - name: Run UART receive and interrupt test
         run: make test-uart
+      - name: Run PLIC routing and claim test
+        run: make test-plic
       - name: Run timer and software interrupt test
         run: make test-timer
       - name: Boot integrated SoC and reject corrupt image

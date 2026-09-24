@@ -1,6 +1,5 @@
 `timescale 1ns/1ps
-// Diagnostic integrated SoC. Clock target: 20 MHz. The CPU is currently RV32I
-// machine-only; this top does not yet implement the ISA needed by Linux.
+// Integrated RV32IMA SoC with Sv32, boot ROM, serial memories and MMIO.
 module soc_top #(
     parameter integer PSRAM_POWERUP_CYCLES = 3000,
     parameter DIAGNOSTIC_MODE = 0
@@ -27,9 +26,9 @@ module soc_top #(
     wire [31:0] ba, bd, bq, va, vd;
     wire vw;
     wire [3:0] vs;
-    wire [5:0] sv, sr, sx, sy, se;
-    wire [31:0] rdata, fdata, udata, odata, tdata, cdata;
-    wire uart_irq, timer_irq, software_irq;
+    wire [6:0] sv, sr, sx, sy, se;
+    wire [31:0] rdata, fdata, udata, odata, tdata, cdata, pdata;
+    wire uart_irq, plic_irq, timer_irq, software_irq;
     wire [63:0] time_value;
     wire [1:0] current_privilege;
     wire [31:0] current_satp, current_mstatus;
@@ -40,7 +39,7 @@ module soc_top #(
                   .DIAGNOSTIC_MODE(DIAGNOSTIC_MODE)) cpu (
         .clk(clk), .rst_n(rst_n),
         .irq_timer(timer_irq), .irq_software(software_irq), .irq_external(uart_irq),
-        .irq_supervisor_external(uart_irq),
+        .irq_supervisor_external(plic_irq),
         .time_value(time_value),
         .current_privilege(current_privilege), .current_satp(current_satp),
         .current_mstatus(current_mstatus),
@@ -91,7 +90,10 @@ module soc_top #(
         .timer_resp_rdata(tdata), .timer_resp_err(se[4]),
         .ctrl_req_valid(sv[5]), .ctrl_req_ready(sr[5]),
         .ctrl_resp_valid(sx[5]), .ctrl_resp_ready(sy[5]),
-        .ctrl_resp_rdata(cdata), .ctrl_resp_err(se[5])
+        .ctrl_resp_rdata(cdata), .ctrl_resp_err(se[5]),
+        .plic_req_valid(sv[6]), .plic_req_ready(sr[6]),
+        .plic_resp_valid(sx[6]), .plic_resp_ready(sy[6]),
+        .plic_resp_rdata(pdata), .plic_resp_err(se[6])
     );
     serial_mem_bridge #(.POWERUP_CYCLES(PSRAM_POWERUP_CYCLES)) memory (
         .clk(clk), .rst_n(rst_n),
@@ -130,6 +132,13 @@ module soc_top #(
         .resp_rdata(tdata), .resp_err(se[4]),
         .irq_timer(timer_irq), .irq_software(software_irq),
         .time_value(time_value)
+    );
+    plic_lite plic (
+        .clk(clk), .rst_n(rst_n), .req_valid(sv[6]), .req_ready(sr[6]),
+        .req_addr(va), .req_write(vw), .req_wdata(vd), .req_wstrb(vs),
+        .resp_valid(sx[6]), .resp_ready(sy[6]),
+        .resp_rdata(pdata), .resp_err(se[6]),
+        .source_irq(uart_irq), .supervisor_irq(plic_irq)
     );
     wire unused_retire = &{1'b0, retire_valid, retire_pc};
 endmodule
