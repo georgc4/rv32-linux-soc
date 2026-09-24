@@ -21,6 +21,7 @@ module rv32_priv_unit (
     input wire irq_timer,
     input wire irq_software,
     input wire irq_external,
+    input wire irq_supervisor_external,
     input wire [63:0] time_value,
     output reg irq_pending,
     output reg [4:0] irq_cause,
@@ -36,6 +37,7 @@ module rv32_priv_unit (
     reg [31:0] stvec, sscratch, sepc, scause, stval, satp;
     wire [31:0] mip = software_mip |
                       (irq_external === 1'b1 ? 32'h0000_0800 : 32'b0) |
+                      (irq_supervisor_external === 1'b1 ? 32'h0000_0200 : 32'b0) |
                       (irq_timer === 1'b1 ? 32'h0000_0080 : 32'b0) |
                       (irq_software === 1'b1 ? 32'h0000_0008 : 32'b0);
     wire [31:0] sstatus_mask = 32'h000c_6122;

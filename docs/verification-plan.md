@@ -4,7 +4,7 @@
 |---|---|---|
 | Interconnect | `test` checks decode, boundaries, stalls, held responses and control window | Timeout/fault injection |
 | CPU ISA | `test-core` executes RV32IMA diagnostic; `test-mdu` checks 512 arithmetic vectors | RISC-V architectural suite and differential instruction trace |
-| Privilege/MMU | `test-priv` checks ECALL/MRET/timer IRQ; `test-sv32` checks pages, superpages, permissions and A/D; `test-supervisor` checks translated S-mode execution | U-mode, delegation, page-fault, CSR WARL and exception matrix |
+| Privilege/MMU | `test-priv` checks ECALL/MRET/timer IRQ; `test-sv32` checks pages, superpages, permissions and A/D; `test-supervisor` checks translated S-mode execution and delegated external IRQ | U-mode, page-fault, CSR WARL and exception matrix |
 | Memory controllers | `test-serial` checks PSRAM banks and NOR read/program/erase/status; `test-uart` checks serial RX/IRQ; `test-timer` checks compare/MSIP | Device timing and reset-abort tests against purchased parts |
 | ROM | `test-soc-bad` checks a valid image and corrupt-checksum rejection through modeled SPI and UART pins | Recovery/update firmware and larger first-stage images |
 | Linux | No kernel or userspace boot run | Reproducible 6.12 image, SBI runtime, DTB, initramfs, UART log to BusyBox ash |

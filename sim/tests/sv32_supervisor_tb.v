@@ -3,6 +3,7 @@ module sv32_supervisor_tb;
     reg clk = 0;
     always #5 clk = ~clk;
     reg rst_n = 0;
+    reg irq_supervisor_external = 0;
     wire iv, ir, ix, iy, ie, ipf;
     wire [31:0] ia, id;
     wire dv, dr, dx, dy, de, dpf, dw;
@@ -26,6 +27,7 @@ module sv32_supervisor_tb;
     rv32i_core #(.DIAGNOSTIC_MODE(0)) core (
         .clk(clk), .rst_n(rst_n), .irq_timer(1'b0),
         .irq_software(1'b0), .irq_external(1'b0),
+        .irq_supervisor_external(irq_supervisor_external),
         .time_value(64'b0),
         .current_privilege(privilege), .current_satp(satp),
         .current_mstatus(mstatus),
@@ -74,14 +76,20 @@ module sv32_supervisor_tb;
     initial begin
         walks = 0;
         for (n = 0; n < 4096; n = n + 1) memory[n] = 0;
-        $readmemh("sim/programs/sv32_supervisor.hex", memory, 0, 35);
+        $readmemh("sim/programs/sv32_supervisor.hex", memory, 0, 44);
         repeat (3) @(negedge clk);
         rst_n = 1;
         while (memory[64] != 42 && cycles < 400) @(negedge clk);
         if (memory[64] !== 42 || privilege !== 2'd1 || walks < 6 || fault || halted)
             $fatal(1, "supervisor Sv32 failed pc=%h marker=%h priv=%d walks=%d",
                    retire_pc, memory[64], privilege, walks);
-        $display("PASS sv32_supervisor: MRET to S-mode, translated fetch/store");
+        irq_supervisor_external = 1;
+        while (memory[65] != 32'h8000_0009 && cycles < 800) @(negedge clk);
+        if (memory[65] !== 32'h8000_0009 || privilege !== 2'd1 || fault || halted)
+            $fatal(1, "S-mode external IRQ failed cause=%h priv=%d pc=%h",
+                   memory[65], privilege, retire_pc);
+        irq_supervisor_external = 0;
+        $display("PASS sv32_supervisor: MRET, translated fetch/store, delegated S external IRQ");
         $finish;
     end
 endmodule

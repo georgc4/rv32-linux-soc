@@ -40,6 +40,7 @@ module soc_top #(
                   .DIAGNOSTIC_MODE(DIAGNOSTIC_MODE)) cpu (
         .clk(clk), .rst_n(rst_n),
         .irq_timer(timer_irq), .irq_software(software_irq), .irq_external(uart_irq),
+        .irq_supervisor_external(uart_irq),
         .time_value(time_value),
         .current_privilege(current_privilege), .current_satp(current_satp),
         .current_mstatus(current_mstatus),

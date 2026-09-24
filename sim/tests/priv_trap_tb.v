@@ -27,6 +27,7 @@ module priv_trap_tb;
     rv32i_core #(.DIAGNOSTIC_MODE(0)) core (
         .clk(clk), .rst_n(rst_n),
         .irq_timer(irq_timer), .irq_software(1'b0), .irq_external(1'b0),
+        .irq_supervisor_external(1'b0),
         .time_value(64'b0),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id), .i_resp_err(ie),

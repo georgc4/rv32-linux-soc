@@ -32,6 +32,7 @@ module rv32i_core_tb;
     rv32i_core core (
         .clk(clk), .rst_n(rst_n),
         .irq_timer(1'b0), .irq_software(1'b0), .irq_external(1'b0),
+        .irq_supervisor_external(1'b0),
         .time_value(64'b0),
         .i_req_valid(i_req_valid), .i_req_ready(i_req_ready), .i_req_addr(i_req_addr),
         .i_resp_valid(i_resp_valid), .i_resp_ready(i_resp_ready), .i_resp_data(i_resp_data), .i_resp_err(i_resp_err), .i_resp_page_fault(1'b0),

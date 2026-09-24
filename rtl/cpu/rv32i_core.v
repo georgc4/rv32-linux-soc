@@ -7,6 +7,7 @@ module rv32i_core #(
 ) (
     input wire clk, rst_n,
     input wire irq_timer, irq_software, irq_external,
+    input wire irq_supervisor_external,
     input wire [63:0] time_value,
     output wire [1:0] current_privilege,
     output wire [31:0] current_satp,
@@ -93,6 +94,7 @@ module rv32i_core #(
         .return_pc(return_pc),
         .irq_timer(irq_timer), .irq_software(irq_software),
         .irq_external(irq_external), .time_value(time_value),
+        .irq_supervisor_external(irq_supervisor_external),
         .irq_pending(irq_pending),
         .irq_cause(irq_cause), .privilege(current_privilege),
         .satp_value(current_satp), .mstatus_value(current_mstatus)
