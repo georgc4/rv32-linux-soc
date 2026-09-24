@@ -30,6 +30,35 @@ _start:
     addi  zero, zero, 7
     bne   zero, zero, fail
 
+    addi  t1, zero, -1
+    addi  t2, zero, 2
+    mul   t3, t1, t2
+    addi  t4, zero, -2
+    bne   t3, t4, fail
+    mulh  t3, t1, t2
+    bne   t3, t1, fail
+    mulhsu t3, t1, t2
+    bne   t3, t1, fail
+    mulhu t3, t1, t2
+    addi  t4, zero, 1
+    bne   t3, t4, fail
+    addi  t1, zero, -7
+    div   t3, t1, t2
+    addi  t4, zero, -3
+    bne   t3, t4, fail
+    rem   t3, t1, t2
+    addi  t4, zero, -1
+    bne   t3, t4, fail
+    divu  t3, t1, zero
+    bne   t3, t4, fail
+    remu  t3, t1, zero
+    bne   t3, t1, fail
+    lui   t1, 0x80000
+    div   t3, t1, t4
+    bne   t3, t1, fail
+    rem   t3, t1, t4
+    bne   t3, zero, fail
+
     auipc t2, 0
     sw    t2, 8(t0)
     jal   ra, uart_message

@@ -1,13 +1,13 @@
-# Physical memory map
+# Physical memory map in the integrated RTL
 
-The current `physical_bus` **test configuration** is an address decoder example. It does not reserve the final SoC addresses.
+| Device | Byte addresses | Size | Implemented behavior |
+|---|---:|---:|---|
+| Boot ROM | `0x0000_0000..0x0000_0fff` | 4 KiB window | 11 populated words; out-of-image access faults |
+| CLINT-like timer | `0x0200_0000..0x0200_ffff` | 64 KiB | `msip`, `mtimecmp`, `mtime` at standard offsets |
+| UART | `0x1000_0000..0x1000_0fff` | 4 KiB | 16550-like byte registers at 4-byte spacing |
+| NOR flash | `0x2000_0000..0x20ff_ffff` | 16 MiB | standard SPI `03h` reads; ordinary writes fault |
+| PSRAM | `0x8000_0000..0x81ff_ffff` | 32 MiB | four 8 MiB banks, standard SPI `03h`/`02h` |
 
-| Test window | Byte addresses | Capacity | Slave offset | Present hardware |
-|---|---:|---:|---:|---|
-| UART | `0x1000_0000..0x1000_0fff` | 4 KiB | base subtracted | simulation model only |
-| Flash | `0x2000_0000..0x20ff_ffff` | 16 MiB | base subtracted | simulation model only |
-| PSRAM | `0x8000_0000..0x81ff_ffff` | 32 MiB | base subtracted | simulation model only |
+The bus gives each selected slave a byte offset within its window. The PSRAM bridge uses offset bits 24:23 to select one of four chips and bits 22:0 for the chip address. Each request reads an aligned 32-bit word; byte strobes select individual PSRAM writes. The SPI bridge completes each write as a separate one-byte transaction. This is functional but slow; it has no cache or burst buffer.
 
-The four 8 MiB PSRAM chips will each need a separate chip select and a bank decode. Physical addresses enter the controller; the controller chooses chip 0–3 and the 23-bit per-chip address. A flash *read window* is useful, but executing directly from it is optional: boot firmware can copy code to PSRAM. Flash writes/erase require command operations and protection checks, not generic memory writes; the test model does not implement those semantics.
-
-Still unassigned: reset ROM location and size, timer/interrupt registers, flash control registers, UART register interface, firmware-reserved RAM, Linux load address, device tree, and any shadow/alias windows. ROM must be reachable at the CPU reset vector. `Sv32` virtual addresses are process/kernel mappings and are separate from this physical map. Final addresses will be recorded only after the boot and Linux device-tree plan is tested.
+The flash controller has no erase/program commands, image verification, or UART update path. The ROM currently copies exactly 69 diagnostic words from flash to PSRAM and jumps there. It is not a Linux bootloader.

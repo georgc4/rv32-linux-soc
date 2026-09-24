@@ -7,7 +7,11 @@ module physical_bus #(
     parameter [31:0] FLASH_BASE = 32'h2000_0000,
     parameter [31:0] FLASH_SIZE = 32'h0100_0000,
     parameter [31:0] UART_BASE  = 32'h1000_0000,
-    parameter [31:0] UART_SIZE  = 32'h0000_1000
+    parameter [31:0] UART_SIZE  = 32'h0000_1000,
+    parameter [31:0] ROM_BASE   = 32'h0000_0000,
+    parameter [31:0] ROM_SIZE   = 32'h0000_1000,
+    parameter [31:0] TIMER_BASE = 32'h0200_0000,
+    parameter [31:0] TIMER_SIZE = 32'h0001_0000
 ) (
     input  wire        clk,
     input  wire        rst_n,
@@ -42,10 +46,23 @@ module physical_bus #(
     input  wire        uart_resp_valid,
     output wire        uart_resp_ready,
     input  wire [31:0] uart_resp_rdata,
-    input  wire        uart_resp_err
+    input  wire        uart_resp_err,
+    output wire        rom_req_valid,
+    input  wire        rom_req_ready,
+    input  wire        rom_resp_valid,
+    output wire        rom_resp_ready,
+    input  wire [31:0] rom_resp_rdata,
+    input  wire        rom_resp_err,
+    output wire        timer_req_valid,
+    input  wire        timer_req_ready,
+    input  wire        timer_resp_valid,
+    output wire        timer_resp_ready,
+    input  wire [31:0] timer_resp_rdata,
+    input  wire        timer_resp_err
 );
     localparam [2:0] IDLE = 3'd0, RAM = 3'd1, FLASH = 3'd2,
-                     UART = 3'd3, MISS = 3'd4;
+                     UART = 3'd3, ROM = 3'd4, TIMER = 3'd5,
+                     MISS = 3'd6;
     reg [2:0] state;
     reg [2:0] target;
     reg [31:0] offset;
@@ -63,6 +80,12 @@ module physical_bus #(
         end else if ((req_addr & ~(UART_SIZE - 32'd1)) == UART_BASE) begin
             target = UART;
             offset = req_addr & (UART_SIZE - 32'd1);
+        end else if ((req_addr & ~(ROM_SIZE - 32'd1)) == ROM_BASE) begin
+            target = ROM;
+            offset = req_addr & (ROM_SIZE - 32'd1);
+        end else if ((req_addr & ~(TIMER_SIZE - 32'd1)) == TIMER_BASE) begin
+            target = TIMER;
+            offset = req_addr & (TIMER_SIZE - 32'd1);
         end
     end
 
@@ -73,9 +96,13 @@ module physical_bus #(
     assign ram_req_valid = state == IDLE && req_valid && target == RAM;
     assign flash_req_valid = state == IDLE && req_valid && target == FLASH;
     assign uart_req_valid = state == IDLE && req_valid && target == UART;
+    assign rom_req_valid = state == IDLE && req_valid && target == ROM;
+    assign timer_req_valid = state == IDLE && req_valid && target == TIMER;
     assign ram_resp_ready = state == RAM && resp_ready;
     assign flash_resp_ready = state == FLASH && resp_ready;
     assign uart_resp_ready = state == UART && resp_ready;
+    assign rom_resp_ready = state == ROM && resp_ready;
+    assign timer_resp_ready = state == TIMER && resp_ready;
 
     always @* begin
         req_ready = 1'b0;
@@ -87,6 +114,8 @@ module physical_bus #(
                 RAM: req_ready = ram_req_ready;
                 FLASH: req_ready = flash_req_ready;
                 UART: req_ready = uart_req_ready;
+                ROM: req_ready = rom_req_ready;
+                TIMER: req_ready = timer_req_ready;
                 default: req_ready = 1'b1;
             endcase
             RAM: begin
@@ -104,6 +133,16 @@ module physical_bus #(
                 resp_rdata = uart_resp_rdata;
                 resp_err = uart_resp_err;
             end
+            ROM: begin
+                resp_valid = rom_resp_valid;
+                resp_rdata = rom_resp_rdata;
+                resp_err = rom_resp_err;
+            end
+            TIMER: begin
+                resp_valid = timer_resp_valid;
+                resp_rdata = timer_resp_rdata;
+                resp_err = timer_resp_err;
+            end
             MISS: begin
                 resp_valid = 1'b1;
                 resp_err = 1'b1;
@@ -117,7 +156,7 @@ module physical_bus #(
         if (!rst_n) state <= IDLE;
         else case (state)
             IDLE: if (req_valid && req_ready) state <= target;
-            RAM, FLASH, UART, MISS: if (resp_valid && resp_ready) state <= IDLE;
+            RAM, FLASH, UART, ROM, TIMER, MISS: if (resp_valid && resp_ready) state <= IDLE;
             default: state <= IDLE;
         endcase
     end

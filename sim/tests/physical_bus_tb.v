@@ -32,7 +32,11 @@ module physical_bus_tb;
         .flash_resp_rdata(data_f), .flash_resp_err(derr[1]),
         .uart_req_valid(dreq[2]), .uart_req_ready(dready[2]),
         .uart_resp_valid(dresp[2]), .uart_resp_ready(drready[2]),
-        .uart_resp_rdata(data_u), .uart_resp_err(derr[2])
+        .uart_resp_rdata(data_u), .uart_resp_err(derr[2]),
+        .rom_req_valid(), .rom_req_ready(1'b0), .rom_resp_valid(1'b0),
+        .rom_resp_ready(), .rom_resp_rdata(32'b0), .rom_resp_err(1'b1),
+        .timer_req_valid(), .timer_req_ready(1'b0), .timer_resp_valid(1'b0),
+        .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1)
     );
     latency_device #(.TAG(32'hA100_0000), .WAIT_CYCLES(2)) ram (
         .clk(clk), .rst_n(rst_n), .allow_req(allow_req[0]), .req_valid(dreq[0]), .req_ready(dready[0]),

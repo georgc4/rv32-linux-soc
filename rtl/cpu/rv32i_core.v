@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Original, deliberately small RV32I diagnostic core. No privilege/MMU yet.
+// Original RV32IM diagnostic core. Privilege/MMU are still in progress.
 // Faults and EBREAK stop the core for simulation; architectural traps follow later.
 module rv32i_core #(
     parameter [31:0] RESET_PC = 32'h8000_0000
@@ -41,6 +41,15 @@ module rv32i_core #(
     wire [6:0] funct7 = instr[31:25];
     wire [31:0] a = rs1 == 0 ? 32'b0 : regs[rs1];
     wire [31:0] b = rs2 == 0 ? 32'b0 : regs[rs2];
+    wire signed [63:0] signed_a = {{32{a[31]}}, a};
+    wire signed [63:0] signed_b = {{32{b[31]}}, b};
+    wire signed [63:0] unsigned_b_signed = {32'b0, b};
+    wire signed [63:0] product_ss = signed_a * signed_b;
+    wire signed [63:0] product_su = signed_a * unsigned_b_signed;
+    wire [63:0] product_uu = {32'b0, a} * {32'b0, b};
+    wire unused_products = &{1'b0, product_ss[31:0], product_su[31:0]};
+    wire [31:0] signed_quotient = $signed(a) / $signed(b);
+    wire [31:0] signed_remainder = $signed(a) % $signed(b);
     wire [31:0] imm_i = {{20{instr[31]}}, instr[31:20]};
     wire [31:0] imm_s = {{20{instr[31]}}, instr[31:25], instr[11:7]};
     wire [31:0] imm_b = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
@@ -170,7 +179,22 @@ module rv32i_core #(
             end
             7'b0110011: begin // OP
                 write_rd = 1;
-                case (funct3)
+                if (funct7 == 7'b0000001) begin // RV32M
+                    case (funct3)
+                        3'b000: result = product_uu[31:0];
+                        3'b001: result = product_ss[63:32];
+                        3'b010: result = product_su[63:32];
+                        3'b011: result = product_uu[63:32];
+                        3'b100: result = b == 0 ? 32'hffff_ffff :
+                            (a == 32'h8000_0000 && b == 32'hffff_ffff) ? a :
+                            signed_quotient;
+                        3'b101: result = b == 0 ? 32'hffff_ffff : a / b;
+                        3'b110: result = b == 0 ? a :
+                            (a == 32'h8000_0000 && b == 32'hffff_ffff) ? 32'b0 :
+                            signed_remainder;
+                        3'b111: result = b == 0 ? a : a % b;
+                    endcase
+                end else case (funct3)
                     3'b000: begin
                         if (funct7 == 7'b0000000) result = a + b;
                         else if (funct7 == 7'b0100000) result = a - b;

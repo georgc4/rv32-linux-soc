@@ -11,6 +11,10 @@ jobs:
         run: make test
       - name: Run diagnostic CPU program
         run: make test-core
+      - name: Run serial memory transactions
+        run: make test-serial
+      - name: Boot integrated SoC
+        run: make test-soc
       - name: Run host digit baseline
         run: make test-digit
       - name: Lint bus RTL

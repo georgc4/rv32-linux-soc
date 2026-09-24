@@ -2,7 +2,7 @@
 // Simulation-only little-endian word array with periodic request stalls.
 module word_ram #(
     parameter integer WORDS = 4096,
-    parameter integer INIT_WORDS = 41,
+    parameter integer INIT_WORDS = 69,
     parameter INIT_FILE = "sim/programs/rv32i_smoke.hex"
 ) (
     input wire clk, rst_n,
