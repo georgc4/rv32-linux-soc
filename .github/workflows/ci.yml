@@ -1,0 +1,15 @@
+name: fast-checks
+on: [push, pull_request]
+jobs:
+  rtl:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install simulation and lint tools
+        run: sudo apt-get update && sudo apt-get install -y iverilog verilator
+      - name: Run contract simulation
+        run: make test
+      - name: Run host digit baseline
+        run: make test-digit
+      - name: Lint bus RTL
+        run: make lint
