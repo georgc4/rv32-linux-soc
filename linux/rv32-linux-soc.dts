@@ -1,0 +1,70 @@
+/dts-v1/;
+
+/ {
+    model = "RV32 Linux SoC prototype";
+    compatible = "local,rv32-linux-soc";
+    #address-cells = <1>;
+    #size-cells = <1>;
+
+    chosen {
+        stdout-path = &uart0;
+        bootargs = "console=ttyS0,115200 earlycon rdinit=/init loglevel=7";
+    };
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        timebase-frequency = <20000000>;
+
+        cpu@0 {
+            device_type = "cpu";
+            compatible = "riscv";
+            reg = <0>;
+            status = "okay";
+            riscv,isa = "rv32ima_zicsr_zifencei";
+            riscv,isa-base = "rv32i";
+            riscv,isa-extensions = "i", "m", "a", "zicsr", "zifencei";
+            mmu-type = "riscv,sv32";
+
+            cpu_intc: interrupt-controller {
+                compatible = "riscv,cpu-intc";
+                interrupt-controller;
+                #interrupt-cells = <1>;
+            };
+        };
+    };
+
+    memory@80000000 {
+        device_type = "memory";
+        reg = <0x80000000 0x02000000>;
+    };
+
+    reserved-memory {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        firmware@80000000 {
+            reg = <0x80000000 0x00400000>;
+            no-map;
+        };
+    };
+
+    soc {
+        compatible = "simple-bus";
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        uart0: serial@10000000 {
+            compatible = "ns16550a";
+            reg = <0x10000000 0x1000>;
+            reg-shift = <2>;
+            reg-io-width = <4>;
+            clock-frequency = <20000000>;
+            current-speed = <115200>;
+            /* Linux 8250 polls until a device IRQ controller is implemented. */
+            status = "okay";
+        };
+    };
+};

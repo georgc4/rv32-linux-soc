@@ -8,10 +8,10 @@
 | Atomic synchronization | RV32A LR/SC and word AMOs, serialized single-master bus | Diagnostic assembly checks LR/SC success/failure, AMO add/min | ISA litmus, all AMOs, physical reservation semantics and ordering review |
 | Instruction/data ordering | Single outstanding bus; no instruction cache; fences are serialized/no-op | Diagnostic CPU program, interconnect simulation | Self-modifying code and device ordering tests |
 | Timer ticks | `mtime`, `mtimecmp`, `msip`; time CSR; M/S interrupt CSR state | `test-timer` checks compare and software IRQ; `test-priv` checks machine timer trap | SBI TIME service, Linux clockevent |
-| UART console | 16550-like TX/RX, four-byte register spacing; direct M/S external interrupt input | Integrated boot sends `OK\n` through serial TX pin; `test-uart` checks RX/IRQ; `test-supervisor` checks S external trap | Linux driver binding, interactive shell |
+| UART console | 16550-like TX/RX, four-byte register spacing; direct M/S external interrupt input | Integrated boot sends `OK\n` through serial TX pin; `test-uart` checks RX/IRQ; Linux DTB binds `ns16550a` without IRQ | A device interrupt controller or driver for reliable Linux input; interactive shell |
 | External RAM | Four-bank PSRAM standard SPI bridge | `test-serial` covers banks and lanes; `test-soc` boots through flash and RAM | Physical timing, stress, capacity, throughput, board test |
 | Boot image | ROM header with bounded length and checksum; NOR read/program/erase | `test-soc-bad` checks valid boot and corrupt-image rejection; `test-serial` exercises program/erase/status | Linux loader, UART updater and recovery, stronger image integrity |
-| Linux handoff | Not implemented in firmware | Supervisor transition test only | SBI firmware, DTB, kernel/initramfs, boot log |
-| Device discovery | Physical memory map | Bus decode tests | DTB and Linux driver binding |
+| Linux handoff | Not implemented in firmware | Supervisor transition test; built Linux 6.12.111 Image with BusyBox initramfs | SBI firmware, loader, boot log |
+| Device discovery | Physical memory map | Bus decode tests; DTB compiled with PSRAM, UART and CPU | Live kernel driver probe and console log |
 
 No Linux boot has been observed. RTL tests establish individual mechanisms and a diagnostic end-to-end path only.

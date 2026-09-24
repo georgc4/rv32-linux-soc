@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux clean
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v
@@ -108,6 +108,9 @@ regen-rom:
 
 image-smoke: regen-smoke
 	$(PYTHON) scripts/make_flash_image.py build/rv32i_smoke.bin build/rv32i_smoke.flash.bin
+
+image-linux:
+	./linux/build-image.sh
 
 synth-bus:
 	mkdir -p build

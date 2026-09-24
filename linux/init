@@ -1,0 +1,10 @@
+#!/bin/sh
+export PATH=/bin
+export HOME=/
+export TERM=vt100
+/bin/busybox mount -t devtmpfs devtmpfs /dev
+/bin/busybox mount -t proc proc /proc
+/bin/busybox mount -t sysfs sysfs /sys
+echo "RV32 Linux userspace ready"
+echo "BusyBox ash on ttyS0; run digit_demo with 64 grayscale values"
+exec /bin/sh -i </dev/console >/dev/console 2>&1

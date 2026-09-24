@@ -7,7 +7,7 @@
 | Privilege/MMU | `test-priv` checks ECALL/MRET/timer IRQ; `test-sv32` checks pages, superpages, permissions and A/D; `test-supervisor` checks translated S-mode execution and delegated external IRQ | U-mode, page-fault, CSR WARL and exception matrix |
 | Memory controllers | `test-serial` checks PSRAM banks and NOR read/program/erase/status; `test-uart` checks serial RX/IRQ; `test-timer` checks compare/MSIP | Device timing and reset-abort tests against purchased parts |
 | ROM | `test-soc-bad` checks a valid image and corrupt-checksum rejection through modeled SPI and UART pins | Recovery/update firmware and larger first-stage images |
-| Linux | No kernel or userspace boot run | Reproducible 6.12 image, SBI runtime, DTB, initramfs, UART log to BusyBox ash |
+| Linux | 6.12.111 RV32 Image, DTB, and BusyBox initramfs build locally; headers and sizes checked; no boot run | SBI runtime/loader, SoC boot simulation, UART log to BusyBox ash |
 | FPGA | Board pending | Board revision and power audit; UART and each purchased memory live |
 | ASIC | Logical TT wrapper lints; `synth-soc` reports generic cells | SKY26d template, mapped area/timing, DRC/LVS, power and pad rules |
 | Fabricated chip | No silicon | RAM stress, Linux shell, digit program and recorded serial log |
