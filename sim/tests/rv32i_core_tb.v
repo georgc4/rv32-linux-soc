@@ -31,11 +31,13 @@ module rv32i_core_tb;
 
     rv32i_core core (
         .clk(clk), .rst_n(rst_n),
+        .irq_timer(1'b0), .irq_software(1'b0), .irq_external(1'b0),
+        .time_value(64'b0),
         .i_req_valid(i_req_valid), .i_req_ready(i_req_ready), .i_req_addr(i_req_addr),
-        .i_resp_valid(i_resp_valid), .i_resp_ready(i_resp_ready), .i_resp_data(i_resp_data), .i_resp_err(i_resp_err),
+        .i_resp_valid(i_resp_valid), .i_resp_ready(i_resp_ready), .i_resp_data(i_resp_data), .i_resp_err(i_resp_err), .i_resp_page_fault(1'b0),
         .d_req_valid(d_req_valid), .d_req_ready(d_req_ready), .d_req_addr(d_req_addr),
         .d_req_write(d_req_write), .d_req_wdata(d_req_wdata), .d_req_wstrb(d_req_wstrb),
-        .d_resp_valid(d_resp_valid), .d_resp_ready(d_resp_ready), .d_resp_data(d_resp_data), .d_resp_err(d_resp_err),
+        .d_resp_valid(d_resp_valid), .d_resp_ready(d_resp_ready), .d_resp_data(d_resp_data), .d_resp_err(d_resp_err), .d_resp_page_fault(1'b0),
         .halted(halted), .fault(fault), .fault_pc(fault_pc), .retire_valid(retire_valid), .retire_pc(retire_pc)
     );
     cpu_bus_adapter adapter (

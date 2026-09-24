@@ -10,4 +10,4 @@
 
 The bus gives each selected slave a byte offset within its window. The PSRAM bridge uses offset bits 24:23 to select one of four chips and bits 22:0 for the chip address. Each request reads an aligned 32-bit word; byte strobes select individual PSRAM writes. The SPI bridge completes each write as a separate one-byte transaction. This is functional but slow; it has no cache or burst buffer.
 
-The flash controller has no erase/program commands, image verification, or UART update path. The ROM currently copies exactly 69 diagnostic words from flash to PSRAM and jumps there. It is not a Linux bootloader.
+The flash controller has no erase/program commands, image verification, or UART update path. The ROM currently copies exactly 88 diagnostic words from flash to PSRAM and jumps there. It is not a Linux bootloader.

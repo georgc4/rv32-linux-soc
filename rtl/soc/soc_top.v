@@ -2,7 +2,8 @@
 // Diagnostic integrated SoC. Clock target: 20 MHz. The CPU is currently RV32I
 // machine-only; this top does not yet implement the ISA needed by Linux.
 module soc_top #(
-    parameter integer PSRAM_POWERUP_CYCLES = 3000
+    parameter integer PSRAM_POWERUP_CYCLES = 3000,
+    parameter DIAGNOSTIC_MODE = 0
 ) (
     input wire clk, rst_n,
     input wire uart_rx,
@@ -17,9 +18,9 @@ module soc_top #(
     output wire cpu_fault,
     output wire [31:0] cpu_fault_pc
 );
-    wire iv, ir, ix, iy, ie;
+    wire iv, ir, ix, iy, ie, ipf;
     wire [31:0] ia, id;
-    wire dv, dr, dx, dy, de, dw;
+    wire dv, dr, dx, dy, de, dpf, dw;
     wire [31:0] da, dd, dq;
     wire [3:0] ds, bs;
     wire bv, br, bx, by, be, bw;
@@ -29,26 +30,39 @@ module soc_top #(
     wire [4:0] sv, sr, sx, sy, se;
     wire [31:0] rdata, fdata, udata, odata, tdata;
     wire uart_irq, timer_irq, software_irq;
+    wire [63:0] time_value;
+    wire [1:0] current_privilege;
+    wire [31:0] current_satp, current_mstatus;
     wire retire_valid;
     wire [31:0] retire_pc;
 
-    rv32i_core #(.RESET_PC(32'h0000_0000)) cpu (
+    rv32i_core #(.RESET_PC(32'h0000_0000),
+                  .DIAGNOSTIC_MODE(DIAGNOSTIC_MODE)) cpu (
         .clk(clk), .rst_n(rst_n),
+        .irq_timer(timer_irq), .irq_software(software_irq), .irq_external(uart_irq),
+        .time_value(time_value),
+        .current_privilege(current_privilege), .current_satp(current_satp),
+        .current_mstatus(current_mstatus),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
-        .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id), .i_resp_err(ie),
+        .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
+        .i_resp_err(ie), .i_resp_page_fault(ipf),
         .d_req_valid(dv), .d_req_ready(dr), .d_req_addr(da),
         .d_req_write(dw), .d_req_wdata(dd), .d_req_wstrb(ds),
-        .d_resp_valid(dx), .d_resp_ready(dy), .d_resp_data(dq), .d_resp_err(de),
+        .d_resp_valid(dx), .d_resp_ready(dy), .d_resp_data(dq),
+        .d_resp_err(de), .d_resp_page_fault(dpf),
         .halted(cpu_halted), .fault(cpu_fault), .fault_pc(cpu_fault_pc),
         .retire_valid(retire_valid), .retire_pc(retire_pc)
     );
-    cpu_bus_adapter adapter (
+    sv32_bus_adapter adapter (
         .clk(clk), .rst_n(rst_n),
+        .privilege(current_privilege), .satp(current_satp), .mstatus(current_mstatus),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
-        .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id), .i_resp_err(ie),
+        .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
+        .i_resp_err(ie), .i_resp_page_fault(ipf),
         .d_req_valid(dv), .d_req_ready(dr), .d_req_addr(da),
         .d_req_write(dw), .d_req_wdata(dd), .d_req_wstrb(ds),
-        .d_resp_valid(dx), .d_resp_ready(dy), .d_resp_data(dq), .d_resp_err(de),
+        .d_resp_valid(dx), .d_resp_ready(dy), .d_resp_data(dq),
+        .d_resp_err(de), .d_resp_page_fault(dpf),
         .bus_req_valid(bv), .bus_req_ready(br), .bus_req_addr(ba),
         .bus_req_write(bw), .bus_req_wdata(bd), .bus_req_wstrb(bs),
         .bus_resp_valid(bx), .bus_resp_ready(by), .bus_resp_data(bq), .bus_resp_err(be)
@@ -105,9 +119,8 @@ module soc_top #(
         .req_addr(va), .req_write(vw), .req_wdata(vd), .req_wstrb(vs),
         .resp_valid(sx[4]), .resp_ready(sy[4]),
         .resp_rdata(tdata), .resp_err(se[4]),
-        .irq_timer(timer_irq), .irq_software(software_irq)
+        .irq_timer(timer_irq), .irq_software(software_irq),
+        .time_value(time_value)
     );
-    // Interrupts are generated but have no input on the diagnostic CPU yet.
-    wire unused_interrupts = &{1'b0, uart_irq, timer_irq, software_irq,
-                               retire_valid, retire_pc};
+    wire unused_retire = &{1'b0, retire_valid, retire_pc};
 endmodule

@@ -11,6 +11,12 @@ jobs:
         run: make test
       - name: Run diagnostic CPU program
         run: make test-core
+      - name: Check iterative M arithmetic
+        run: make test-mdu
+      - name: Run machine trap program
+        run: make test-priv
+      - name: Run Sv32 walk and supervisor transition
+        run: make test-sv32 test-supervisor
       - name: Run serial memory transactions
         run: make test-serial
       - name: Boot integrated SoC

@@ -13,7 +13,8 @@ module clint_timer (
     output reg [31:0] resp_rdata,
     output reg resp_err,
     output wire irq_timer,
-    output wire irq_software
+    output wire irq_software,
+    output wire [63:0] time_value
 );
     reg [63:0] mtime, mtimecmp;
     reg msip;
@@ -33,6 +34,7 @@ module clint_timer (
     assign resp_valid = pending;
     assign irq_timer = mtime >= mtimecmp;
     assign irq_software = msip;
+    assign time_value = mtime;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             mtime <= 0;

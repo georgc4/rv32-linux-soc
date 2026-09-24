@@ -1,17 +1,17 @@
-# Initial Linux requirements trace
+# Linux requirements trace
 
-| Linux-facing feature | Architectural mechanism | Proposed module | Acceptance test | Current status |
-|---|---|---|---|---|
-| Kernel in S-mode, tasks in U-mode | M/S/U privilege, status/return, delegation | CPU CSR/trap unit | M→S→U transitions, ecall/trap return | Unimplemented |
-| Virtual memory | `satp` Sv32, two-level page walk, `SFENCE.VMA` | MMU/walker | 4 KiB/4 MiB maps, ASID, TLB invalidation | Unimplemented |
-| Page faults | PTE V/R/W/X/U/G/A/D, access vs page faults, `stval` | MMU + trap unit | Permission and malformed PTE matrix | Unimplemented |
-| Atomic synchronization | RV32A LR/SC and AMOs, ordering | CPU atomic unit + memory lock | ISA litmus and interrupt/reservation tests | Unimplemented |
-| Instruction/data ordering | `FENCE`, `FENCE.I`, coherent view for flash/RAM writes | CPU + bus/control | Self-modifying code and MMIO ordering | Unimplemented |
-| Timer ticks | counter + compare, M/S interrupt and SBI TIME path | timer + firmware | Timer interrupt and Linux clockevent | Unimplemented |
-| UART console | byte TX/RX, polling first, IRQ later | UART + interrupt controller + driver/DT | Boot log and interactive input | Diagnostic CPU writes `OK\n` to simulation-only MMIO sink; electrical UART and RX unimplemented |
-| External working RAM | 4 × 8 MiB PSRAM, byte stores, bursts, atomicity | PSRAM controller | Per-chip stress, boundary, refresh/timing | Unimplemented |
-| Boot image | immutable ROM, NOR reads/copy, validated firmware | ROM + flash controller + firmware | Cold boot and corrupt-image recovery | Unimplemented |
-| Linux handoff | `a0` hart ID, `a1` DTB, `satp=0`, 4 MiB aligned RV32 image | M-mode firmware | Entry-state assertion and serial boot | Unimplemented |
-| Device discovery | correct DTB for memory/UART/timer/IRQ | firmware + build scripts | `dtc` and kernel driver binding | Unimplemented |
+| Linux-facing feature | RTL mechanism | Current evidence | Remaining gate |
+|---|---|---|---|
+| M/S/U privilege and traps | `rv32_priv_unit`, core trap/return path | `test-priv` checks M-mode ECALL/CSR/MRET; `test-supervisor` checks M-to-S transition | U-mode and delegated trap matrix; privileged ISA compliance |
+| Virtual memory | `sv32_bus_adapter` two-level walk, no TLB | `test-sv32` checks 4 KiB/4 MiB translation, A/D, permissions; `test-supervisor` checks translated fetch/store | Extensive malformed-PTE and page-fault tests; kernel execution |
+| Page faults | Sv32 response distinguishes page fault from access fault; CPU writes trap cause/value | Adapter permission-fault test | End-to-end delegated page-fault handler and `stval` test |
+| Atomic synchronization | RV32A LR/SC and word AMOs, serialized single-master bus | Diagnostic assembly checks LR/SC success/failure, AMO add/min | ISA litmus, all AMOs, physical reservation semantics and ordering review |
+| Instruction/data ordering | Single outstanding bus; no instruction cache; fences are serialized/no-op | Diagnostic CPU program, interconnect simulation | Self-modifying code and device ordering tests |
+| Timer ticks | `mtime`, `mtimecmp`, `msip`; time CSR; M/S interrupt CSR state | RTL lint and integrated boot; trap program covers synchronous traps | Interrupt delivery test, SBI TIME service, Linux clockevent |
+| UART console | 16550-like TX/RX, four-byte register spacing | Integrated boot sends `OK\n` through serial TX pin | RX/IRQ tests, Linux driver binding, interactive shell |
+| External RAM | Four-bank PSRAM standard SPI bridge | `test-serial` covers banks and lanes; `test-soc` boots through flash and RAM | Physical timing, stress, capacity, throughput, board test |
+| Boot image | ROM and NOR `03h` read | `test-soc` copies 88 diagnostic words, jumps and prints | Validated firmware image, Linux loader, recovery, flash erase/program |
+| Linux handoff | Not implemented in firmware | Supervisor transition test only | SBI firmware, DTB, kernel/initramfs, boot log |
+| Device discovery | Physical memory map | Bus decode tests | DTB and Linux driver binding |
 
-The bus routes **physical** requests and passes its contract tests. An original diagnostic CPU now uses separate instruction/data ports through an adapter; its assembled test program passes with stalled RAM, and illegal/unmapped/misaligned faults are detected. These are dependencies for several rows, not completion of a Linux feature.
+No Linux boot has been observed. RTL tests establish individual mechanisms and a diagnostic end-to-end path only.

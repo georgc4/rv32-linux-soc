@@ -59,6 +59,26 @@ _start:
     rem   t3, t1, t4
     bne   t3, zero, fail
 
+    addi  t3, t0, 16
+    addi  t1, zero, 5
+    sw    t1, 0(t3)
+    lr.w  t2, (t3)
+    bne   t2, t1, fail
+    addi  t4, zero, 9
+    sc.w  t5, t4, (t3)
+    bne   t5, zero, fail
+    sc.w  t5, t4, (t3)
+    addi  t2, zero, 1
+    bne   t5, t2, fail
+    amoadd.w t2, t4, (t3)
+    bne   t2, t4, fail
+    addi  t1, zero, -1
+    amomin.w t2, t1, (t3)
+    addi  t4, zero, 18
+    bne   t2, t4, fail
+    lw    t2, 0(t3)
+    bne   t2, t1, fail
+
     auipc t2, 0
     sw    t2, 8(t0)
     jal   ra, uart_message

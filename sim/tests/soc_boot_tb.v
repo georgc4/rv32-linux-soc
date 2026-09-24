@@ -9,12 +9,12 @@ module soc_boot_tb;
     wire [5:0] dq_in, dq_out, dq_oe;
     wire [4:0] model_so, model_oe;
     wire [31:0] counts [0:4];
-    reg [31:0] image [0:68];
+    reg [31:0] image [0:87];
     reg [7:0] received [0:2];
     reg [7:0] sampled;
     integer n, j, cycles = 0, tx_count = 0;
 
-    soc_top #(.PSRAM_POWERUP_CYCLES(4)) dut (
+    soc_top #(.PSRAM_POWERUP_CYCLES(4), .DIAGNOSTIC_MODE(1)) dut (
         .clk(clk), .rst_n(rst_n), .uart_rx(1'b1), .uart_tx(uart_tx),
         .spi_sck(spi_sck), .spi_cs_n(cs_n),
         .spi_dq_in(dq_in), .spi_dq_out(dq_out), .spi_dq_oe(dq_oe),
@@ -54,7 +54,7 @@ module soc_boot_tb;
     initial begin
         $readmemh("sim/programs/rv32i_smoke.hex", image);
         #1;
-        for (n = 0; n < 69; n = n + 1) begin
+        for (n = 0; n < 88; n = n + 1) begin
             chips[4].model.memory[4*n] = image[n][7:0];
             chips[4].model.memory[4*n+1] = image[n][15:8];
             chips[4].model.memory[4*n+2] = image[n][23:16];
@@ -73,7 +73,7 @@ module soc_boot_tb;
         if ({chips[0].model.memory[4111], chips[0].model.memory[4110],
              chips[0].model.memory[4109], chips[0].model.memory[4108]} !== 32'h5a5a_a5a5)
             $fatal(1, "RAM signature mismatch");
-        if (counts[4] < 69 || counts[0] < 69 || !initialized)
+        if (counts[4] < 88 || counts[0] < 88 || !initialized)
             $fatal(1, "memory activity flash=%0d ram=%0d", counts[4], counts[0]);
         $display("PASS soc_boot: ROM -> NOR -> PSRAM -> UART, %0d cycles", cycles);
         $finish;

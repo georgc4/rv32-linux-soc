@@ -2,9 +2,15 @@
 // Original RV32IM diagnostic core. Privilege/MMU are still in progress.
 // Faults and EBREAK stop the core for simulation; architectural traps follow later.
 module rv32i_core #(
-    parameter [31:0] RESET_PC = 32'h8000_0000
+    parameter [31:0] RESET_PC = 32'h8000_0000,
+    parameter DIAGNOSTIC_MODE = 1
 ) (
     input wire clk, rst_n,
+    input wire irq_timer, irq_software, irq_external,
+    input wire [63:0] time_value,
+    output wire [1:0] current_privilege,
+    output wire [31:0] current_satp,
+    output wire [31:0] current_mstatus,
     output wire i_req_valid,
     input wire i_req_ready,
     output wire [31:0] i_req_addr,
@@ -12,6 +18,7 @@ module rv32i_core #(
     output wire i_resp_ready,
     input wire [31:0] i_resp_data,
     input wire i_resp_err,
+    input wire i_resp_page_fault,
     output wire d_req_valid,
     input wire d_req_ready,
     output wire [31:0] d_req_addr,
@@ -22,18 +29,22 @@ module rv32i_core #(
     output wire d_resp_ready,
     input wire [31:0] d_resp_data,
     input wire d_resp_err,
+    input wire d_resp_page_fault,
     output wire halted,
     output reg fault,
     output reg [31:0] fault_pc,
     output reg retire_valid,
     output reg [31:0] retire_pc
 );
-    localparam [2:0] FETCH_REQ = 3'd0, FETCH_RESP = 3'd1,
-                     EXEC = 3'd2, DATA_REQ = 3'd3,
-                     DATA_RESP = 3'd4, STOP = 3'd5;
-    reg [2:0] state;
+    localparam [3:0] FETCH_REQ = 4'd0, FETCH_RESP = 4'd1,
+                     EXEC = 4'd2, DATA_REQ = 4'd3,
+                     DATA_RESP = 4'd4, STOP = 4'd5,
+                     AMO_WRITE_REQ = 4'd6, AMO_WRITE_RESP = 4'd7,
+                     MDU_WAIT = 4'd8;
+    reg [3:0] state;
     reg [31:0] pc, instr;
     reg [31:0] regs [0:31];
+    reg write_rd, access, store, illegal, stop_normal;
     wire [4:0] rd = instr[11:7];
     wire [4:0] rs1 = instr[19:15];
     wire [4:0] rs2 = instr[24:20];
@@ -41,15 +52,51 @@ module rv32i_core #(
     wire [6:0] funct7 = instr[31:25];
     wire [31:0] a = rs1 == 0 ? 32'b0 : regs[rs1];
     wire [31:0] b = rs2 == 0 ? 32'b0 : regs[rs2];
-    wire signed [63:0] signed_a = {{32{a[31]}}, a};
-    wire signed [63:0] signed_b = {{32{b[31]}}, b};
-    wire signed [63:0] unsigned_b_signed = {32'b0, b};
-    wire signed [63:0] product_ss = signed_a * signed_b;
-    wire signed [63:0] product_su = signed_a * unsigned_b_signed;
-    wire [63:0] product_uu = {32'b0, a} * {32'b0, b};
-    wire unused_products = &{1'b0, product_ss[31:0], product_su[31:0]};
-    wire [31:0] signed_quotient = $signed(a) / $signed(b);
-    wire [31:0] signed_remainder = $signed(a) % $signed(b);
+    wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
+    wire mdu_done;
+    wire [31:0] mdu_result;
+    rv32_mdu mdu (
+        .clk(clk), .rst_n(rst_n),
+        .start(state == EXEC && mdu_instruction && !illegal),
+        .operation(funct3), .operand_a(a), .operand_b(b),
+        .done(mdu_done), .result(mdu_result)
+    );
+    wire csr_instruction = instr[6:0] == 7'b1110011 && instr[14:12] != 0;
+    wire [1:0] csr_op = !csr_instruction ? 2'd0 :
+                        instr[13:12] == 2'b01 ? 2'd1 :
+                        instr[13:12] == 2'b10 ? (rs1 == 0 ? 2'd0 : 2'd2) :
+                        (rs1 == 0 ? 2'd0 : 2'd3);
+    wire [31:0] csr_wdata = instr[14] ? {27'b0, rs1} : a;
+    wire [31:0] csr_rdata, trap_vector, return_pc;
+    wire csr_illegal, irq_pending;
+    wire [4:0] irq_cause;
+    wire mret_instruction = instr == 32'h3020_0073;
+    wire sret_instruction = instr == 32'h1020_0073;
+    wire ecall_instruction = instr == 32'h0000_0073;
+    wire ebreak_instruction = instr == 32'h0010_0073;
+    wire sfence_instruction = instr[31:25] == 7'b0001001 &&
+                              instr[14:7] == 0 && instr[6:0] == 7'h73;
+    wire csr_commit = state == EXEC && csr_instruction && !illegal && !csr_illegal;
+    wire mret_commit = state == EXEC && mret_instruction && !illegal;
+    wire sret_commit = state == EXEC && sret_instruction && !illegal;
+    reg trap_commit, trap_interrupt;
+    reg [4:0] trap_cause;
+    reg [31:0] trap_value;
+    rv32_priv_unit priv_unit (
+        .clk(clk), .rst_n(rst_n), .csr_addr(instr[31:20]),
+        .csr_wdata(csr_wdata), .csr_op(csr_op), .csr_commit(csr_commit),
+        .csr_rdata(csr_rdata), .csr_illegal(csr_illegal),
+        .trap_commit(trap_commit), .trap_interrupt(trap_interrupt),
+        .trap_cause(trap_cause), .trap_pc(pc), .trap_value(trap_value),
+        .trap_vector(trap_vector),
+        .mret_commit(mret_commit), .sret_commit(sret_commit),
+        .return_pc(return_pc),
+        .irq_timer(irq_timer), .irq_software(irq_software),
+        .irq_external(irq_external), .time_value(time_value),
+        .irq_pending(irq_pending),
+        .irq_cause(irq_cause), .privilege(current_privilege),
+        .satp_value(current_satp), .mstatus_value(current_mstatus)
+    );
     wire [31:0] imm_i = {{20{instr[31]}}, instr[31:20]};
     wire [31:0] imm_s = {{20{instr[31]}}, instr[31:25], instr[11:7]};
     wire [31:0] imm_b = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
@@ -58,8 +105,13 @@ module rv32i_core #(
 
     reg [31:0] next_pc, result, access_addr, store_data;
     reg [3:0] store_strb;
-    reg write_rd, access, store, illegal, stop_normal;
     reg [2:0] load_kind;
+    reg [1:0] atomic_kind; // 0=ordinary, 1=LR, 2=SC, 3=AMO
+    reg [1:0] atomic_kind_hold;
+    reg [4:0] atomic_function_hold;
+    reg [31:0] atomic_operand_hold, atomic_old, atomic_write_data;
+    reg reservation_valid;
+    reg [31:0] reservation_addr;
     reg branch_taken;
     reg [1:0] data_lane_hold;
     wire [7:0] selected_byte = d_resp_data[8*data_lane_hold +: 8];
@@ -71,15 +123,16 @@ module rv32i_core #(
     reg [31:0] access_addr_hold, store_data_hold;
     reg [3:0] store_strb_hold;
 
-    assign i_req_valid = state == FETCH_REQ && rst_n;
+    assign i_req_valid = state == FETCH_REQ && rst_n &&
+                         (DIAGNOSTIC_MODE || !irq_pending);
     assign i_req_addr = pc;
     assign i_resp_ready = state == FETCH_RESP;
-    assign d_req_valid = state == DATA_REQ;
+    assign d_req_valid = state == DATA_REQ || state == AMO_WRITE_REQ;
     assign d_req_addr = access_addr_hold;
-    assign d_req_write = !data_is_load;
-    assign d_req_wdata = store_data_hold;
-    assign d_req_wstrb = store_strb_hold;
-    assign d_resp_ready = state == DATA_RESP;
+    assign d_req_write = state == AMO_WRITE_REQ || !data_is_load;
+    assign d_req_wdata = state == AMO_WRITE_REQ ? atomic_write_data : store_data_hold;
+    assign d_req_wstrb = state == AMO_WRITE_REQ ? 4'b1111 : store_strb_hold;
+    assign d_resp_ready = state == DATA_RESP || state == AMO_WRITE_RESP;
     assign halted = state == STOP;
 
     always @* begin
@@ -94,6 +147,7 @@ module rv32i_core #(
         store_data = 0;
         store_strb = 0;
         load_kind = funct3;
+        atomic_kind = 0;
         branch_taken = 0;
         case (instr[6:0])
             7'b0110111: begin // LUI
@@ -180,20 +234,7 @@ module rv32i_core #(
             7'b0110011: begin // OP
                 write_rd = 1;
                 if (funct7 == 7'b0000001) begin // RV32M
-                    case (funct3)
-                        3'b000: result = product_uu[31:0];
-                        3'b001: result = product_ss[63:32];
-                        3'b010: result = product_su[63:32];
-                        3'b011: result = product_uu[63:32];
-                        3'b100: result = b == 0 ? 32'hffff_ffff :
-                            (a == 32'h8000_0000 && b == 32'hffff_ffff) ? a :
-                            signed_quotient;
-                        3'b101: result = b == 0 ? 32'hffff_ffff : a / b;
-                        3'b110: result = b == 0 ? a :
-                            (a == 32'h8000_0000 && b == 32'hffff_ffff) ? 32'b0 :
-                            signed_remainder;
-                        3'b111: result = b == 0 ? a : a % b;
-                    endcase
+                    result = 0; // retired from the iterative MDU_WAIT state
                 end else case (funct3)
                     3'b000: begin
                         if (funct7 == 7'b0000000) result = a + b;
@@ -219,16 +260,152 @@ module rv32i_core #(
                     end
                 endcase
             end
-            7'b0001111: begin // FENCE; serialized bus makes this a no-op.
-                if (funct3 != 3'b000) illegal = 1;
+            7'b0101111: begin // RV32A word operations
+                access = 1;
+                access_addr = a;
+                store_strb = 4'b1111;
+                store_data = b;
+                if (funct3 != 3'b010 || a[1:0] != 0) illegal = 1;
+                case (instr[31:27])
+                    5'b00010: begin // LR.W
+                        atomic_kind = 1;
+                        if (rs2 != 0) illegal = 1;
+                    end
+                    5'b00011: begin // SC.W
+                        atomic_kind = 2;
+                        store = 1;
+                    end
+                    5'b00000, 5'b00001, 5'b00100, 5'b01000,
+                    5'b01100, 5'b10000, 5'b10100, 5'b11000,
+                    5'b11100: begin
+                        atomic_kind = 3;
+                        store = 1;
+                    end
+                    default: illegal = 1;
+                endcase
             end
-            7'b1110011: begin // Diagnostic EBREAK only.
-                if (instr == 32'h0010_0073) stop_normal = 1;
-                else illegal = 1;
+            7'b0001111: begin // FENCE/FENCE.I; no instruction cache yet.
+                if (funct3 != 3'b000 && funct3 != 3'b001) illegal = 1;
+            end
+            7'b1110011: begin
+                if (csr_instruction) begin
+                    if (funct3 == 3'b100 || csr_illegal) illegal = 1;
+                    else begin
+                        write_rd = 1;
+                        result = csr_rdata;
+                    end
+                end else if (ebreak_instruction) begin
+                    if (DIAGNOSTIC_MODE) stop_normal = 1;
+                end else if (ecall_instruction || mret_instruction ||
+                             sret_instruction || sfence_instruction ||
+                             instr == 32'h1050_0073) begin
+                    if (mret_instruction && current_privilege != 2'd3) illegal = 1;
+                    if (sret_instruction && current_privilege == 2'd0) illegal = 1;
+                    if (sret_instruction && current_privilege == 2'd1 && current_mstatus[22]) illegal = 1;
+                    if (sfence_instruction && (current_privilege == 2'd0 ||
+                        (current_privilege == 2'd1 && current_mstatus[20]))) illegal = 1;
+                    if (instr == 32'h1050_0073 && current_privilege != 2'd3 && current_mstatus[21]) illegal = 1;
+                end else illegal = 1;
             end
             default: illegal = 1;
         endcase
     end
+
+    always @* begin
+        trap_commit = state == STOP && !DIAGNOSTIC_MODE;
+        trap_interrupt = 0;
+        trap_cause = 0;
+        trap_value = 0;
+        if (!DIAGNOSTIC_MODE) begin
+            if (state == FETCH_REQ && irq_pending) begin
+                trap_commit = 1;
+                trap_interrupt = 1;
+                trap_cause = irq_cause;
+            end else if (state == FETCH_RESP && i_resp_valid && i_resp_ready && i_resp_err) begin
+                trap_commit = 1;
+                trap_cause = i_resp_page_fault === 1'b1 ? 5'd12 : 5'd1;
+                trap_value = pc;
+            end else if (state == EXEC) begin
+                if (illegal) begin
+                    trap_commit = 1;
+                    trap_cause = 5'd2;
+                    trap_value = instr;
+                    if (access && ((funct3 == 3'b010 && access_addr[1:0] != 0) ||
+                                   ((funct3 == 3'b001 || funct3 == 3'b101) && access_addr[0]))) begin
+                        trap_cause = store ? 5'd6 : 5'd4;
+                        trap_value = access_addr;
+                    end
+                end else if (next_pc[1:0] != 0) begin
+                    trap_commit = 1;
+                    trap_cause = 5'd0;
+                    trap_value = next_pc;
+                end else if (ebreak_instruction) begin
+                    trap_commit = 1;
+                    trap_cause = 5'd3;
+                end else if (ecall_instruction) begin
+                    trap_commit = 1;
+                    trap_cause = current_privilege == 2'd3 ? 5'd11 :
+                                 current_privilege == 2'd1 ? 5'd9 : 5'd8;
+                end
+            end else if ((state == DATA_RESP || state == AMO_WRITE_RESP) &&
+                         d_resp_valid && d_resp_ready && d_resp_err) begin
+                trap_commit = 1;
+                trap_cause = d_resp_page_fault === 1'b1 ?
+                             (data_is_load && atomic_kind_hold != 3 ? 5'd13 : 5'd15) :
+                             (data_is_load && atomic_kind_hold != 3 ? 5'd5 : 5'd7);
+                trap_value = access_addr_hold;
+            end
+        end
+    end
+
+    reg reg_write_enable;
+    reg [4:0] reg_write_index;
+    reg [31:0] reg_write_data;
+    always @* begin
+        reg_write_enable = 0;
+        reg_write_index = 0;
+        reg_write_data = 0;
+        if (state == EXEC && !illegal && next_pc[1:0] == 0 &&
+            !trap_commit && !stop_normal) begin
+            reg_write_index = rd;
+            if (access && atomic_kind == 2 &&
+                (!reservation_valid || reservation_addr != access_addr)) begin
+                reg_write_enable = 1;
+                reg_write_data = 1;
+            end else if (!access && !mdu_instruction && write_rd) begin
+                reg_write_enable = 1;
+                reg_write_data = result;
+            end
+        end else if (state == DATA_RESP && d_resp_valid && d_resp_ready &&
+                     !d_resp_err && atomic_kind_hold != 3) begin
+            reg_write_index = data_rd_hold;
+            if (atomic_kind_hold == 2) begin
+                reg_write_enable = 1;
+                reg_write_data = 0;
+            end else if (data_is_load) begin
+                reg_write_enable = 1;
+                case (data_load_kind)
+                    3'b000: reg_write_data = {{24{selected_byte[7]}}, selected_byte};
+                    3'b001: reg_write_data = {{16{selected_half[15]}}, selected_half};
+                    3'b010: reg_write_data = d_resp_data;
+                    3'b100: reg_write_data = {24'b0, selected_byte};
+                    3'b101: reg_write_data = {16'b0, selected_half};
+                    default: reg_write_data = 0;
+                endcase
+            end
+        end else if (state == AMO_WRITE_RESP && d_resp_valid &&
+                     d_resp_ready && !d_resp_err) begin
+            reg_write_enable = 1;
+            reg_write_index = data_rd_hold;
+            reg_write_data = atomic_old;
+        end else if (state == MDU_WAIT && mdu_done) begin
+            reg_write_enable = 1;
+            reg_write_index = data_rd_hold;
+            reg_write_data = mdu_result;
+        end
+    end
+    always @(posedge clk) if (reg_write_enable && reg_write_index != 0)
+        regs[reg_write_index] <= reg_write_data;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -247,17 +424,32 @@ module rv32i_core #(
             data_rd_hold <= 0;
             data_load_kind <= 0;
             data_is_load <= 0;
+            atomic_kind_hold <= 0;
+            atomic_function_hold <= 0;
+            atomic_operand_hold <= 0;
+            atomic_old <= 0;
+            atomic_write_data <= 0;
+            reservation_valid <= 0;
+            reservation_addr <= 0;
             // RISC-V does not define general-register contents after reset.
             // x0 is hardwired by the read bypass and never written.
         end else begin
             retire_valid <= 0;
             case (state)
-                FETCH_REQ: if (i_req_valid && i_req_ready) state <= FETCH_RESP;
+                FETCH_REQ: if (trap_commit) begin
+                    pc <= trap_vector;
+                    state <= FETCH_REQ;
+                end else if (i_req_valid && i_req_ready) state <= FETCH_RESP;
                 FETCH_RESP: if (i_resp_valid && i_resp_ready) begin
                     if (i_resp_err) begin
-                        fault <= 1;
-                        fault_pc <= pc;
-                        state <= STOP;
+                        if (DIAGNOSTIC_MODE) begin
+                            fault <= 1;
+                            fault_pc <= pc;
+                            state <= STOP;
+                        end else begin
+                            pc <= trap_vector;
+                            state <= FETCH_REQ;
+                        end
                     end else begin
                         instr <= i_resp_data;
                         state <= EXEC;
@@ -265,13 +457,32 @@ module rv32i_core #(
                 end
                 EXEC: begin
                     if (illegal || next_pc[1:0] != 0) begin
-                        fault <= 1;
-                        fault_pc <= pc;
-                        state <= STOP;
+                        if (DIAGNOSTIC_MODE) begin
+                            fault <= 1;
+                            fault_pc <= pc;
+                            state <= STOP;
+                        end else begin
+                            pc <= trap_vector;
+                            state <= FETCH_REQ;
+                        end
+                    end else if (trap_commit) begin
+                        pc <= trap_vector;
+                        state <= FETCH_REQ;
                     end else if (stop_normal) begin
                         retire_valid <= 1;
                         retire_pc <= pc;
                         state <= STOP;
+                    end else if (access && atomic_kind == 2 &&
+                                 (!reservation_valid || reservation_addr != access_addr)) begin
+                        reservation_valid <= 0;
+                        retire_valid <= 1;
+                        retire_pc <= pc;
+                        pc <= next_pc;
+                        state <= FETCH_REQ;
+                    end else if (mdu_instruction) begin
+                        data_rd_hold <= rd;
+                        data_next_pc <= next_pc;
+                        state <= MDU_WAIT;
                     end else if (access) begin
                         access_addr_hold <= access_addr;
                         store_data_hold <= store_data;
@@ -280,38 +491,81 @@ module rv32i_core #(
                         data_next_pc <= next_pc;
                         data_rd_hold <= rd;
                         data_load_kind <= load_kind;
-                        data_is_load <= !store;
+                        data_is_load <= !store || atomic_kind == 3;
+                        atomic_kind_hold <= atomic_kind;
+                        atomic_function_hold <= instr[31:27];
+                        atomic_operand_hold <= b;
+                        if (store) reservation_valid <= 0;
                         state <= DATA_REQ;
                     end else begin
-                        if (write_rd && rd != 0) regs[rd] <= result;
                         retire_valid <= 1;
                         retire_pc <= pc;
-                        pc <= next_pc;
+                        pc <= (mret_instruction || sret_instruction) ? return_pc : next_pc;
                         state <= FETCH_REQ;
                     end
                 end
                 DATA_REQ: if (d_req_valid && d_req_ready) state <= DATA_RESP;
                 DATA_RESP: if (d_resp_valid && d_resp_ready) begin
                     if (d_resp_err) begin
-                        fault <= 1;
-                        fault_pc <= pc;
-                        state <= STOP;
-                    end else begin
-                        if (data_is_load && data_rd_hold != 0) begin
-                            case (data_load_kind)
-                                3'b000: regs[data_rd_hold] <= {{24{selected_byte[7]}}, selected_byte};
-                                3'b001: regs[data_rd_hold] <= {{16{selected_half[15]}}, selected_half};
-                                3'b010: regs[data_rd_hold] <= d_resp_data;
-                                3'b100: regs[data_rd_hold] <= {24'b0, selected_byte};
-                                3'b101: regs[data_rd_hold] <= {16'b0, selected_half};
-                                default: regs[data_rd_hold] <= 0;
-                            endcase
+                        if (DIAGNOSTIC_MODE) begin
+                            fault <= 1;
+                            fault_pc <= pc;
+                            state <= STOP;
+                        end else begin
+                            pc <= trap_vector;
+                            state <= FETCH_REQ;
                         end
+                    end else begin
+                        if (atomic_kind_hold == 1) begin
+                            reservation_valid <= 1;
+                            reservation_addr <= access_addr_hold;
+                        end
+                        if (atomic_kind_hold == 3) begin
+                            atomic_old <= d_resp_data;
+                            case (atomic_function_hold)
+                                5'b00000: atomic_write_data <= d_resp_data + atomic_operand_hold;
+                                5'b00001: atomic_write_data <= atomic_operand_hold;
+                                5'b00100: atomic_write_data <= d_resp_data ^ atomic_operand_hold;
+                                5'b01000: atomic_write_data <= d_resp_data | atomic_operand_hold;
+                                5'b01100: atomic_write_data <= d_resp_data & atomic_operand_hold;
+                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
+                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
+                                5'b11000: atomic_write_data <= d_resp_data < atomic_operand_hold ? d_resp_data : atomic_operand_hold;
+                                5'b11100: atomic_write_data <= d_resp_data > atomic_operand_hold ? d_resp_data : atomic_operand_hold;
+                                default: atomic_write_data <= d_resp_data;
+                            endcase
+                            state <= AMO_WRITE_REQ;
+                        end else begin
+                        retire_valid <= 1;
+                        retire_pc <= pc;
+                        pc <= data_next_pc;
+                        state <= FETCH_REQ;
+                        end
+                    end
+                end
+                AMO_WRITE_REQ: if (d_req_valid && d_req_ready) state <= AMO_WRITE_RESP;
+                AMO_WRITE_RESP: if (d_resp_valid && d_resp_ready) begin
+                    if (d_resp_err) begin
+                        if (DIAGNOSTIC_MODE) begin
+                            fault <= 1;
+                            fault_pc <= pc;
+                            state <= STOP;
+                        end else begin
+                            pc <= trap_vector;
+                            state <= FETCH_REQ;
+                        end
+                    end else begin
                         retire_valid <= 1;
                         retire_pc <= pc;
                         pc <= data_next_pc;
                         state <= FETCH_REQ;
                     end
+                end
+                MDU_WAIT: if (mdu_done) begin
+                    retire_valid <= 1;
+                    retire_pc <= pc;
+                    pc <= data_next_pc;
+                    state <= FETCH_REQ;
                 end
                 default: begin end
             endcase

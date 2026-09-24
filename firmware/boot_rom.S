@@ -1,4 +1,4 @@
-/* Minimal diagnostic first stage: copy 69 words from NOR to PSRAM and jump.
+/* Minimal diagnostic first stage: copy 88 words from NOR to PSRAM and jump.
  * This is not yet Linux firmware or a recovery/update implementation.
  */
     .option norvc
@@ -7,7 +7,7 @@
 _start:
     lui   t0, 0x20000
     lui   t1, 0x80000
-    addi  t2, zero, 69
+    addi  t2, zero, 88
 copy:
     lw    t3, 0(t0)
     sw    t3, 0(t1)
