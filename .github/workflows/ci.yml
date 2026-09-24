@@ -19,8 +19,12 @@ jobs:
         run: make test-sv32 test-supervisor
       - name: Run serial memory transactions
         run: make test-serial
-      - name: Boot integrated SoC
-        run: make test-soc
+      - name: Run UART receive and interrupt test
+        run: make test-uart
+      - name: Run timer and software interrupt test
+        run: make test-timer
+      - name: Boot integrated SoC and reject corrupt image
+        run: make test-soc-bad
       - name: Run host digit baseline
         run: make test-digit
       - name: Lint bus RTL

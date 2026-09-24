@@ -69,7 +69,9 @@ module rv32i_core_tb;
         .rom_req_valid(), .rom_req_ready(1'b0), .rom_resp_valid(1'b0),
         .rom_resp_ready(), .rom_resp_rdata(32'b0), .rom_resp_err(1'b1),
         .timer_req_valid(), .timer_req_ready(1'b0), .timer_resp_valid(1'b0),
-        .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1)
+        .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1),
+        .ctrl_req_valid(), .ctrl_req_ready(1'b0), .ctrl_resp_valid(1'b0),
+        .ctrl_resp_ready(), .ctrl_resp_rdata(32'b0), .ctrl_resp_err(1'b1)
     );
     word_ram ram (
         .clk(clk), .rst_n(rst_n), .req_valid(ram_req_valid), .req_ready(ram_req_ready),

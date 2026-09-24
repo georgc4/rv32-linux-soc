@@ -14,6 +14,11 @@ module serial_mem_bridge_tb;
     wire flash_req_ready, flash_resp_valid, flash_resp_err;
     reg flash_resp_ready = 0;
     wire [31:0] flash_resp_rdata;
+    reg ctrl_req_valid = 0, ctrl_req_write = 0, ctrl_resp_ready = 0;
+    reg [31:0] ctrl_req_addr = 0, ctrl_req_wdata = 0;
+    reg [3:0] ctrl_req_wstrb = 0;
+    wire ctrl_req_ready, ctrl_resp_valid, ctrl_resp_err;
+    wire [31:0] ctrl_resp_rdata;
     wire spi_sck, initialized;
     wire [4:0] spi_cs_n;
     wire [5:0] spi_dq_out, spi_dq_oe, spi_dq_in;
@@ -36,6 +41,11 @@ module serial_mem_bridge_tb;
         .flash_req_addr(flash_req_addr), .flash_req_write(flash_req_write),
         .flash_resp_valid(flash_resp_valid), .flash_resp_ready(flash_resp_ready),
         .flash_resp_rdata(flash_resp_rdata), .flash_resp_err(flash_resp_err),
+        .ctrl_req_valid(ctrl_req_valid), .ctrl_req_ready(ctrl_req_ready),
+        .ctrl_req_addr(ctrl_req_addr), .ctrl_req_write(ctrl_req_write),
+        .ctrl_req_wdata(ctrl_req_wdata), .ctrl_req_wstrb(ctrl_req_wstrb),
+        .ctrl_resp_valid(ctrl_resp_valid), .ctrl_resp_ready(ctrl_resp_ready),
+        .ctrl_resp_rdata(ctrl_resp_rdata), .ctrl_resp_err(ctrl_resp_err),
         .spi_sck(spi_sck), .spi_cs_n(spi_cs_n),
         .spi_dq_in(spi_dq_in), .spi_dq_out(spi_dq_out), .spi_dq_oe(spi_dq_oe),
         .initialized(initialized)
@@ -71,6 +81,43 @@ module serial_mem_bridge_tb;
             end while (!ram_req_ready);
             @(negedge clk);
             ram_req_valid = 0;
+        end
+    endtask
+
+    task control_request;
+        input [31:0] addr, data, expected;
+        input write_enable;
+        input [3:0] strb;
+        input expected_error;
+        begin
+            @(negedge clk);
+            ctrl_req_addr = addr;
+            ctrl_req_wdata = data;
+            ctrl_req_write = write_enable;
+            ctrl_req_wstrb = strb;
+            ctrl_req_valid = 1;
+            cycles = 0;
+            do begin
+                @(posedge clk);
+                cycles = cycles + 1;
+                if (cycles > 300) $fatal(1, "control request timeout");
+            end while (!ctrl_req_ready);
+            @(negedge clk);
+            ctrl_req_valid = 0;
+            cycles = 0;
+            while (!ctrl_resp_valid) begin
+                @(negedge clk);
+                cycles = cycles + 1;
+                if (cycles > 3000) $fatal(1, "control response timeout");
+            end
+            if (ctrl_resp_err !== expected_error ||
+                (!expected_error && ctrl_resp_rdata !== expected))
+                $fatal(1, "control response addr=%h data=%h err=%b expected=%h err=%b",
+                       addr, ctrl_resp_rdata, ctrl_resp_err, expected, expected_error);
+            ctrl_resp_ready = 1;
+            @(posedge clk);
+            @(negedge clk);
+            ctrl_resp_ready = 0;
         end
     endtask
     task ram_response;
@@ -161,9 +208,20 @@ module serial_mem_bridge_tb;
         flash_response(32'h1234_5678, 0);
         flash_request(0, 1);
         flash_response(0, 1);
-        if (commands[4] != 1 || (|so_oe && (so_oe & (so_oe - 5'd1)) != 0))
+        control_request(0, 0, 0, 1, 4'hf, 0); // sector address
+        control_request(8, 2, 0, 1, 4'h1, 0); // WREN + 4 KiB erase + poll
+        if (flash.memory[0] !== 8'hff || flash.memory[4095] !== 8'hff)
+            $fatal(1, "flash erase failed");
+        control_request(0, 16, 0, 1, 4'hf, 0);
+        control_request(4, 32'ha5, 0, 1, 4'h1, 0);
+        control_request(8, 1, 0, 1, 4'h1, 0); // WREN + one-byte program + poll
+        flash_request(16, 0);
+        flash_response(32'hffff_ffa5, 0);
+        control_request(8, 3, 0, 1, 4'h1, 0); // status read
+        control_request(8, 2, 0, 1, 4'h1, 1); // unaligned erase rejected
+        if (commands[4] < 8 || (|so_oe && (so_oe & (so_oe - 5'd1)) != 0))
             $fatal(1, "flash command count or MISO contention");
-        $display("PASS serial_mem_bridge: reset, four-bank RAM, byte lanes, flash read, write rejection");
+        $display("PASS serial_mem_bridge: reset, four-bank RAM, flash read/program/erase/status");
         $finish;
     end
 endmodule

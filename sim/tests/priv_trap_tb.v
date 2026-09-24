@@ -3,6 +3,7 @@ module priv_trap_tb;
     reg clk = 0;
     always #5 clk = ~clk;
     reg rst_n = 0;
+    reg irq_timer = 0;
     wire iv, ir, ix, iy, ie;
     wire [31:0] ia, id;
     wire dv, dr, dx, dy, de, dw;
@@ -25,7 +26,7 @@ module priv_trap_tb;
 
     rv32i_core #(.DIAGNOSTIC_MODE(0)) core (
         .clk(clk), .rst_n(rst_n),
-        .irq_timer(1'b0), .irq_software(1'b0), .irq_external(1'b0),
+        .irq_timer(irq_timer), .irq_software(1'b0), .irq_external(1'b0),
         .time_value(64'b0),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id), .i_resp_err(ie),
@@ -59,13 +60,18 @@ module priv_trap_tb;
     always @(posedge clk) if (rst_n) cycles <= cycles + 1;
     initial begin
         for (n = 0; n < 64; n = n + 1) words[n] = 0;
-        $readmemh("sim/programs/priv_trap.hex", words, 0, 21);
+        $readmemh("sim/programs/priv_trap.hex", words, 0, 25);
         repeat (3) @(negedge clk);
         rst_n = 1;
         while (words[32] != 1 && cycles < 300) @(negedge clk);
         if (words[32] !== 1 || words[33] !== 11 || fault || halted)
             $fatal(1, "trap failed pc=%h marker=%h cause=%h", retire_pc, words[32], words[33]);
-        $display("PASS priv_trap: ECALL, mcause, mepc, MRET");
+        irq_timer = 1;
+        while (words[34] != 32'h8000_0007 && cycles < 500) @(negedge clk);
+        if (words[34] !== 32'h8000_0007 || fault || halted)
+            $fatal(1, "timer trap failed cause=%h pc=%h", words[34], retire_pc);
+        irq_timer = 0;
+        $display("PASS priv_trap: ECALL, mcause, mepc, MRET, timer IRQ");
         $finish;
     end
 endmodule

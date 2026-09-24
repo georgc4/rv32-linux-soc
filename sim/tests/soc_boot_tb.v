@@ -10,9 +10,11 @@ module soc_boot_tb;
     wire [4:0] model_so, model_oe;
     wire [31:0] counts [0:4];
     reg [31:0] image [0:87];
+    reg [31:0] image_sum;
     reg [7:0] received [0:2];
     reg [7:0] sampled;
     integer n, j, cycles = 0, tx_count = 0;
+    reg bad_image;
 
     soc_top #(.PSRAM_POWERUP_CYCLES(4), .DIAGNOSTIC_MODE(1)) dut (
         .clk(clk), .rst_n(rst_n), .uart_rx(1'b1), .uart_tx(uart_tx),
@@ -52,16 +54,36 @@ module soc_boot_tb;
     end
 
     initial begin
+        bad_image = $test$plusargs("bad_image");
         $readmemh("sim/programs/rv32i_smoke.hex", image);
         #1;
+        image_sum = 0;
         for (n = 0; n < 88; n = n + 1) begin
-            chips[4].model.memory[4*n] = image[n][7:0];
-            chips[4].model.memory[4*n+1] = image[n][15:8];
-            chips[4].model.memory[4*n+2] = image[n][23:16];
-            chips[4].model.memory[4*n+3] = image[n][31:24];
+            image_sum = image_sum + image[n];
+            chips[4].model.memory[16+4*n] = image[n][7:0];
+            chips[4].model.memory[17+4*n] = image[n][15:8];
+            chips[4].model.memory[18+4*n] = image[n][23:16];
+            chips[4].model.memory[19+4*n] = image[n][31:24];
         end
+        chips[4].model.memory[0] = 8'h42;
+        chips[4].model.memory[1] = 8'h53;
+        chips[4].model.memory[2] = 8'h56;
+        chips[4].model.memory[3] = 8'h52;
+        chips[4].model.memory[4] = 8'd88;
+        chips[4].model.memory[8] = image_sum[7:0];
+        chips[4].model.memory[9] = image_sum[15:8];
+        chips[4].model.memory[10] = image_sum[23:16];
+        chips[4].model.memory[11] = image_sum[31:24];
+        if (bad_image) chips[4].model.memory[8] = image_sum[7:0] ^ 8'h01;
         repeat (3) @(negedge clk);
         rst_n = 1;
+        if (bad_image) begin
+            while (tx_count < 1 && cycles < 100000) @(negedge clk);
+            if (tx_count != 1 || received[0] !== "E" || fault)
+                $fatal(1, "bad image did not signal failure: count=%0d byte=%h", tx_count, received[0]);
+            $display("PASS soc_boot bad image: checksum rejected over UART");
+            $finish;
+        end
         while (!halted && cycles < 100000) @(negedge clk);
         if (!halted) $fatal(1, "boot timeout cycles=%0d", cycles);
         if (fault) $fatal(1, "CPU fault at %h", fault_pc);
@@ -73,7 +95,7 @@ module soc_boot_tb;
         if ({chips[0].model.memory[4111], chips[0].model.memory[4110],
              chips[0].model.memory[4109], chips[0].model.memory[4108]} !== 32'h5a5a_a5a5)
             $fatal(1, "RAM signature mismatch");
-        if (counts[4] < 88 || counts[0] < 88 || !initialized)
+        if (counts[4] < 91 || counts[0] < 88 || !initialized)
             $fatal(1, "memory activity flash=%0d ram=%0d", counts[4], counts[0]);
         $display("PASS soc_boot: ROM -> NOR -> PSRAM -> UART, %0d cycles", cycles);
         $finish;

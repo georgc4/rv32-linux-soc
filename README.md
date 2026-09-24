@@ -1,20 +1,21 @@
 # RV32 Linux SoC experiment
 
-Goal: an original RV32 SoC on a Tiny Tapeout die that boots Linux from external flash into 32 MiB of external PSRAM, exposes a UART shell, and runs an 8×8 grayscale digit classifier. This repository is at the **interconnect contract** stage; it does not contain a CPU, memory electrical controller, boot firmware, or a Linux image.
+Goal: an original RV32 SoC on a Tiny Tapeout die that boots Linux from external NOR into 32 MiB of external PSRAM, exposes a UART shell, and runs an 8×8 grayscale digit classifier.
 
-## Reproduce the first milestone
+The repository now contains an integrated RTL path: RV32IMA CPU, selected machine/supervisor CSRs and traps, Sv32 walker, 4-bank SPI PSRAM and NOR read/program/erase, boot ROM, UART, CLINT-like timer, physical interconnect and Tiny Tapeout logical pin wrapper. Simulations boot a checked diagnostic flash image and reject a corrupt one. **No Linux boot or ASIC fit is established.** SBI firmware, kernel image, DTB, initramfs, compliance testing, mapped area/timing and board validation remain.
 
-On macOS with Homebrew tools or Ubuntu with distribution packages, install Icarus Verilog, Verilator, Yosys, and Make. No tool installer is run by this repository.
+## Local checks
+
+Install Icarus Verilog, Verilator, Yosys, Make, Python 3 and a C compiler. RISC-V GNU binutils are needed only to regenerate checked-in program/ROM hex files or build a diagnostic flash image. The repository does not install tools or modify the host.
 
 ```sh
-make test       # request/response routing and stalls
-make test-core  # assembled RV32I diagnostic program, RAM/UART and fault tests
-make test-digit # host software-only classifier and fixed grayscale fixtures
-make lint       # Verilator lint of the synthesizable bus
-make synth-bus  # generic Yosys gate count; not a tile estimate
-make synth-core # generic Yosys count of the diagnostic core
+make test test-core test-mdu test-priv test-sv32 test-supervisor
+make test-serial test-uart test-timer test-soc-bad test-digit
+make lint
+make synth-core synth-soc
+make image-smoke  # creates build/rv32i_smoke.flash.bin
 ```
 
-The same fast simulation/lint checks run in GitHub Actions. `rtl/` is original product RTL. The current CPU is a diagnostic RV32I implementation with no privileged architecture or MMU. `sim/models/` contains behavioral devices only. `fpga/` and `tt/` are awaiting board and shuttle-specific constraints and configuration.
+`synth-core` and `synth-soc` report generic Yosys cells, not SKY130 mapped area or timing. Fast checks run in GitHub Actions. RTL is in `rtl/`; behavioral device models and directed tests are in `sim/`. The FPGA board constraints and shuttle-specific physical configuration remain open.
 
-Start with [the goal](docs/goal.md), [architecture](docs/architecture.md), [requirements trace](docs/requirements-trace.md), and [risks](docs/risks.md). Source provenance and verification dates are in [references](docs/references.md); host and Ubuntu workflow is in [workflow](docs/workflow.md).
+See [architecture](docs/architecture.md), [physical map](docs/memory-map.md), [boot flow](docs/boot-flow.md), [requirements trace](docs/requirements-trace.md) and [verification plan](docs/verification-plan.md). Source provenance is in [references](docs/references.md).

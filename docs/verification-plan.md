@@ -1,15 +1,15 @@
 # Verification ladder
 
-| Stage | Minimum evidence | Status |
+| Stage | Current evidence | Next acceptance gate |
 |---|---|---|
-| Interconnect module | RAM/flash/UART decode, boundary, stalled request, held response, write strobes, miss error | **Pass** `make test` |
-| CPU base ISA | Directed RV32I/M/A, riscv-arch-test or equivalent, differential trace vs reference | Partial: assembled RV32I diagnostic program and three fault scenarios pass; no architectural compliance suite |
-| Privilege/MMU | CSR WARL, traps/delegation, `MRET`/`SRET`, Sv32 pages/superpages, permissions, A/D, `SFENCE.VMA`, faults | Not started |
-| Controllers | Datasheet command/timing testbenches, bus contention assertions, arbitrary stalls, reset abort | Not started |
-| Boot ROM + firmware | Flash manifest, copy, recovery update, image hash, S-mode handoff assertions | Not started |
-| Full SoC | Reproducible Linux image and serial boot log through `init` and shell | Not started |
-| FPGA | Board revision confirmed, voltage/power audit, UART loopback, each purchased memory tested | Board pending |
-| Fabricated chip | UART log, memory stress, shell commands, digit tests on silicon | Future |
-| Physical | Target-shuttle wrapper, synthesis, timing, DRC/LVS, power and pad rules | Not started |
+| Interconnect | `test` checks decode, boundaries, stalls, held responses and control window | Timeout/fault injection |
+| CPU ISA | `test-core` executes RV32IMA diagnostic; `test-mdu` checks 512 arithmetic vectors | RISC-V architectural suite and differential instruction trace |
+| Privilege/MMU | `test-priv` checks ECALL/MRET/timer IRQ; `test-sv32` checks pages, superpages, permissions and A/D; `test-supervisor` checks translated S-mode execution | U-mode, delegation, page-fault, CSR WARL and exception matrix |
+| Memory controllers | `test-serial` checks PSRAM banks and NOR read/program/erase/status; `test-uart` checks serial RX/IRQ; `test-timer` checks compare/MSIP | Device timing and reset-abort tests against purchased parts |
+| ROM | `test-soc-bad` checks a valid image and corrupt-checksum rejection through modeled SPI and UART pins | Recovery/update firmware and larger first-stage images |
+| Linux | No kernel or userspace boot run | Reproducible 6.12 image, SBI runtime, DTB, initramfs, UART log to BusyBox ash |
+| FPGA | Board pending | Board revision and power audit; UART and each purchased memory live |
+| ASIC | Logical TT wrapper lints; `synth-soc` reports generic cells | SKY26d template, mapped area/timing, DRC/LVS, power and pad rules |
+| Fabricated chip | No silicon | RAM stress, Linux shell, digit program and recorded serial log |
 
-Fast CI runs `make test test-core test-digit lint`. The bus contract model supplies a deterministic address tag. The CPU test has a small word RAM and an MMIO byte sink. Neither model represents PSRAM, NOR or UART electrical protocols, nor establishes safe bus sharing. Expand only as concrete controllers are implemented. Keep waveforms, seeds, tool versions, image hashes, and logs for failures and release milestones.
+Fast CI runs all directed simulations and Verilator lint. Behavioral device models check commands and observable data, not setup/hold timing, pad voltage, regulator capacity, signal integrity or process corners. The 32-bit ROM checksum is accidental-corruption detection, not authentication. Save waveforms, seeds, tool versions, image hashes and raw logs for release milestones.

@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-soc test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke clean
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v
@@ -44,10 +44,23 @@ test-serial:
 	$(IVERILOG) -g2012 -Wall -s serial_mem_bridge_tb -o build/serial_mem_bridge_tb rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/serial_mem_bridge_tb.v
 	$(VVP) build/serial_mem_bridge_tb
 
+test-uart:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -s uart16550_lite_tb -o build/uart16550_lite_tb rtl/peripherals/uart16550_lite.v sim/tests/uart16550_lite_tb.v
+	$(VVP) build/uart16550_lite_tb
+
+test-timer:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -s clint_timer_tb -o build/clint_timer_tb rtl/peripherals/clint_timer.v sim/tests/clint_timer_tb.v
+	$(VVP) build/clint_timer_tb
+
 test-soc:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s soc_boot_tb -o build/soc_boot_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/soc_boot_tb.v
 	$(VVP) build/soc_boot_tb
+
+test-soc-bad: test-soc
+	$(VVP) build/soc_boot_tb +bad_image
 
 test-digit:
 	mkdir -p build
@@ -92,6 +105,9 @@ regen-rom:
 	$(RISCV_LD) -m elf32lriscv --no-relax -Ttext=0x00000000 -o build/boot_rom.elf build/boot_rom.o
 	$(RISCV_OBJCOPY) -O binary build/boot_rom.elf build/boot_rom.bin
 	$(PYTHON) scripts/bin_to_memh.py build/boot_rom.bin firmware/boot_rom.hex
+
+image-smoke: regen-smoke
+	$(PYTHON) scripts/make_flash_image.py build/rv32i_smoke.bin build/rv32i_smoke.flash.bin
 
 synth-bus:
 	mkdir -p build

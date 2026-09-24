@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 // Immutable boot words inferred as logic/ROM by synthesis.
 module boot_rom #(
-    parameter integer WORDS = 11,
+    parameter integer WORDS = 27,
     parameter INIT_FILE = "firmware/boot_rom.hex"
 ) (
     input wire clk, rst_n,

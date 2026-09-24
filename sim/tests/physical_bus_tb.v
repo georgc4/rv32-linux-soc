@@ -16,6 +16,9 @@ module physical_bus_tb;
     wire [31:0] addr_r, addr_f, addr_u, wd_r, wd_f, wd_u;
     wire [3:0] st_r, st_f, st_u;
     wire wr_r, wr_f, wr_u;
+    wire ctrl_req, ctrl_ready, ctrl_resp, ctrl_resp_ready, ctrl_err, ctrl_write;
+    wire [31:0] ctrl_data, ctrl_count, ctrl_addr, ctrl_last_data;
+    wire [3:0] ctrl_last_strb;
     reg [2:0] allow_req = 3'b111;
     integer cycles;
 
@@ -36,7 +39,10 @@ module physical_bus_tb;
         .rom_req_valid(), .rom_req_ready(1'b0), .rom_resp_valid(1'b0),
         .rom_resp_ready(), .rom_resp_rdata(32'b0), .rom_resp_err(1'b1),
         .timer_req_valid(), .timer_req_ready(1'b0), .timer_resp_valid(1'b0),
-        .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1)
+        .timer_resp_ready(), .timer_resp_rdata(32'b0), .timer_resp_err(1'b1),
+        .ctrl_req_valid(ctrl_req), .ctrl_req_ready(ctrl_ready),
+        .ctrl_resp_valid(ctrl_resp), .ctrl_resp_ready(ctrl_resp_ready),
+        .ctrl_resp_rdata(ctrl_data), .ctrl_resp_err(ctrl_err)
     );
     latency_device #(.TAG(32'hA100_0000), .WAIT_CYCLES(2)) ram (
         .clk(clk), .rst_n(rst_n), .allow_req(allow_req[0]), .req_valid(dreq[0]), .req_ready(dready[0]),
@@ -55,6 +61,17 @@ module physical_bus_tb;
         .req_addr(dev_addr), .req_write(dev_write), .req_wdata(dev_wdata), .req_wstrb(dev_wstrb),
         .resp_valid(dresp[2]), .resp_ready(drready[2]), .resp_rdata(data_u), .resp_err(derr[2]),
         .accepted_count(count_u), .last_addr(addr_u), .last_wdata(wd_u), .last_wstrb(st_u), .last_write(wr_u)
+    );
+    latency_device #(.TAG(32'hD100_0000), .WAIT_CYCLES(1)) control (
+        .clk(clk), .rst_n(rst_n), .allow_req(1'b1),
+        .req_valid(ctrl_req), .req_ready(ctrl_ready),
+        .req_addr(dev_addr), .req_write(dev_write),
+        .req_wdata(dev_wdata), .req_wstrb(dev_wstrb),
+        .resp_valid(ctrl_resp), .resp_ready(ctrl_resp_ready),
+        .resp_rdata(ctrl_data), .resp_err(ctrl_err),
+        .accepted_count(ctrl_count), .last_addr(ctrl_addr),
+        .last_wdata(ctrl_last_data), .last_wstrb(ctrl_last_strb),
+        .last_write(ctrl_write)
     );
 
     task request;
@@ -136,6 +153,12 @@ module physical_bus_tb;
         response(0, 0);
         if (count_u !== 1 || addr_u !== 4 || !wr_u || wd_u !== 32'h1234_abcd || st_u !== 4'b0101)
             $fatal(1, "UART write payload failure");
+
+        request(32'h1000_1008, 32'h0000_0002, 1, 4'b0001);
+        response(0, 0);
+        if (ctrl_count !== 1 || ctrl_addr !== 8 || !ctrl_write ||
+            ctrl_last_data !== 2 || ctrl_last_strb !== 4'b0001)
+            $fatal(1, "flash control decode/payload failure");
 
         request(32'h8200_0000, 0, 0, 0); // first byte past RAM
         response(0, 1);

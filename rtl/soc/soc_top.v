@@ -27,8 +27,8 @@ module soc_top #(
     wire [31:0] ba, bd, bq, va, vd;
     wire vw;
     wire [3:0] vs;
-    wire [4:0] sv, sr, sx, sy, se;
-    wire [31:0] rdata, fdata, udata, odata, tdata;
+    wire [5:0] sv, sr, sx, sy, se;
+    wire [31:0] rdata, fdata, udata, odata, tdata, cdata;
     wire uart_irq, timer_irq, software_irq;
     wire [63:0] time_value;
     wire [1:0] current_privilege;
@@ -87,7 +87,10 @@ module soc_top #(
         .rom_resp_rdata(odata), .rom_resp_err(se[3]),
         .timer_req_valid(sv[4]), .timer_req_ready(sr[4]),
         .timer_resp_valid(sx[4]), .timer_resp_ready(sy[4]),
-        .timer_resp_rdata(tdata), .timer_resp_err(se[4])
+        .timer_resp_rdata(tdata), .timer_resp_err(se[4]),
+        .ctrl_req_valid(sv[5]), .ctrl_req_ready(sr[5]),
+        .ctrl_resp_valid(sx[5]), .ctrl_resp_ready(sy[5]),
+        .ctrl_resp_rdata(cdata), .ctrl_resp_err(se[5])
     );
     serial_mem_bridge #(.POWERUP_CYCLES(PSRAM_POWERUP_CYCLES)) memory (
         .clk(clk), .rst_n(rst_n),
@@ -98,6 +101,11 @@ module soc_top #(
         .flash_req_valid(sv[1]), .flash_req_ready(sr[1]), .flash_req_addr(va),
         .flash_req_write(vw), .flash_resp_valid(sx[1]), .flash_resp_ready(sy[1]),
         .flash_resp_rdata(fdata), .flash_resp_err(se[1]),
+        .ctrl_req_valid(sv[5]), .ctrl_req_ready(sr[5]),
+        .ctrl_req_addr(va), .ctrl_req_write(vw),
+        .ctrl_req_wdata(vd), .ctrl_req_wstrb(vs),
+        .ctrl_resp_valid(sx[5]), .ctrl_resp_ready(sy[5]),
+        .ctrl_resp_rdata(cdata), .ctrl_resp_err(se[5]),
         .spi_sck(spi_sck), .spi_cs_n(spi_cs_n),
         .spi_dq_in(spi_dq_in), .spi_dq_out(spi_dq_out), .spi_dq_oe(spi_dq_oe),
         .initialized(memory_initialized)
