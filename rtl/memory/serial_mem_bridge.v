@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Conservative standard-SPI bridge for four ESP-PSRAM64H and one W25Q128JV.
+// SPI-command/quad-data bridge for four ESP-PSRAM64H and one W25Q128JVSIQ.
 // One transaction at a time. SCK is clk/2; clk must be fast enough that each
 // PSRAM CS-low interval stays below the datasheet's 8 us maximum.
 // DQ mapping: [0]=shared SI/IO0, [1]=shared SO/IO1,
@@ -69,6 +69,8 @@ module serial_mem_bridge #(
     reg response_error;
     reg [23:0] base_address;
     reg [31:0] write_word;
+    reg [31:0] serial_write_shift;
+    reg [3:0] quad_mosi;
     reg [3:0] pending_strb;
     reg [1:0] lane;
     reg [7:0] write_byte;
@@ -80,8 +82,14 @@ module serial_mem_bridge #(
     reg [19:0] ctrl_polls;
     reg [31:0] ctrl_response_data;
     reg ctrl_response_error;
-    wire unused_spi_inputs = &{1'b0, spi_dq_in[5:2], spi_dq_in[0]};
+    wire unused_spi_inputs = &{1'b0, spi_dq_in[0]};
     wire [3:0] remaining_strb = pending_strb & ~(4'b0001 << lane);
+    wire ram_quad_addr = (kind == K_RAM_READ || kind == K_RAM_WRITE) &&
+                         bit_index >= 7'd8 && bit_index < 7'd14;
+    wire ram_quad_write_data = kind == K_RAM_WRITE && bit_index >= 7'd14;
+    wire ram_quad_read_input = kind == K_RAM_READ && bit_index >= 7'd14;
+    wire flash_quad_read_input = kind == K_FLASH_READ && bit_index >= 7'd32;
+    wire spi_active = state == SETUP || state == HIGH || state == LOW;
 
     function [1:0] first_lane;
         input [3:0] mask;
@@ -95,8 +103,12 @@ module serial_mem_bridge #(
     endfunction
 
     assign initialized = init_complete;
-    assign spi_dq_out = {2'b11, 2'b00, 1'b0, mosi};
-    assign spi_dq_oe = rst_n ? 6'b111101 : 6'b000000;
+    assign spi_dq_out = {2'b11, (ram_quad_addr || ram_quad_write_data) ?
+                        quad_mosi : {3'b0, mosi}};
+    assign spi_dq_oe = !rst_n || !spi_active ? 6'b0 :
+                       ram_quad_addr || ram_quad_write_data ? 6'b001111 :
+                       ram_quad_read_input || flash_quad_read_input ? 6'b0 :
+                       selected_flash ? 6'b110001 : 6'b000001;
     assign ram_req_ready = state == IDLE;
     assign flash_req_ready = state == IDLE && !ram_req_valid;
     assign ram_resp_valid = state == DONE && !selected_flash;
@@ -132,6 +144,8 @@ module serial_mem_bridge #(
             response_error <= 0;
             base_address <= 0;
             write_word <= 0;
+            serial_write_shift <= 0;
+            quad_mosi <= 0;
             pending_strb <= 0;
             lane <= 0;
             write_byte <= 0;
@@ -170,6 +184,10 @@ module serial_mem_bridge #(
                     selected_chip <= {1'b0, ram_req_addr[24:23]};
                     base_address <= {1'b0, ram_req_addr[22:0]} & 24'hfffffc;
                     write_word <= ram_req_wdata;
+                    serial_write_shift <= {ram_req_wdata[7:0], ram_req_wdata[15:8],
+                                           ram_req_wdata[23:16], ram_req_wdata[31:24]};
+                    if (ram_req_wstrb != 4'hf)
+                        serial_write_shift <= {ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8], 24'b0};
                     pending_strb <= ram_req_wstrb;
                     response_data <= 0;
                     response_error <= ram_req_addr[31:25] != 0;
@@ -178,13 +196,14 @@ module serial_mem_bridge #(
                         kind <= ram_req_write ? K_RAM_WRITE : K_RAM_READ;
                         lane <= first_lane(ram_req_wstrb);
                         write_byte <= ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8];
-                        header <= {ram_req_write ? 8'h02 : 8'h03,
+                        header <= {ram_req_write ? 8'h38 : 8'heb,
                                    ({1'b0, ram_req_addr[22:0]} & 24'hfffffc) +
                                    (ram_req_write ? {22'b0, first_lane(ram_req_wstrb)} : 24'b0)};
-                        total_bits <= ram_req_write ? 7'd40 : 7'd64;
+                        total_bits <= ram_req_write ?
+                                      (ram_req_wstrb == 4'hf ? 7'd22 : 7'd16) : 7'd28;
                         bit_index <= 0;
                         read_shift <= 0;
-                        mosi <= 0;
+                        mosi <= ram_req_write ? 1'b0 : 1'b1;
                         spi_cs_n <= ~(5'b00001 << ram_req_addr[24:23]);
                         state <= SETUP;
                     end
@@ -196,8 +215,8 @@ module serial_mem_bridge #(
                     if (flash_req_write || flash_req_addr[31:24] != 0) state <= DONE;
                     else begin
                         kind <= K_FLASH_READ;
-                        header <= {8'h03, flash_req_addr[23:0] & 24'hfffffc};
-                        total_bits <= 7'd64;
+                        header <= {8'h6b, flash_req_addr[23:0] & 24'hfffffc};
+                        total_bits <= 7'd48;
                         bit_index <= 0;
                         read_shift <= 0;
                         mosi <= 0;
@@ -205,6 +224,7 @@ module serial_mem_bridge #(
                         state <= SETUP;
                     end
                 end else if (ctrl_req_valid) begin
+                    selected_flash <= 1;
                     ctrl_response_data <= 0;
                     ctrl_response_error <= 0;
                     state <= CTRL_DONE;
@@ -262,8 +282,11 @@ module serial_mem_bridge #(
             SETUP: state <= HIGH;
             HIGH: begin
                 spi_sck <= 1;
-                if (((kind == K_RAM_READ || kind == K_FLASH_READ) && bit_index >= 7'd32) ||
-                    (kind == K_FLASH_STATUS && bit_index >= 7'd8))
+                if (kind == K_RAM_READ && bit_index >= 7'd20)
+                    read_shift <= {read_shift[27:0], spi_dq_in[3:0]};
+                else if (kind == K_FLASH_READ && bit_index >= 7'd40)
+                    read_shift <= {read_shift[27:0], spi_dq_in[5:4], spi_dq_in[1:0]};
+                else if (kind == K_FLASH_STATUS && bit_index >= 7'd8)
                     read_shift <= {read_shift[30:0], spi_dq_in[1]};
                 state <= LOW;
             end
@@ -286,8 +309,8 @@ module serial_mem_bridge #(
                             after_gap <= AFTER_IDLE;
                         end
                     end else if (kind == K_RAM_WRITE) begin
-                        pending_strb <= remaining_strb;
-                        if (remaining_strb != 0) begin
+                        pending_strb <= pending_strb == 4'hf ? 4'b0 : remaining_strb;
+                        if (pending_strb != 4'hf && remaining_strb != 0) begin
                             lane <= first_lane(remaining_strb);
                             after_gap <= AFTER_WRITE;
                         end else after_gap <= AFTER_DONE;
@@ -315,8 +338,14 @@ module serial_mem_bridge #(
                     state <= GAP;
                 end else begin
                     bit_index <= bit_index + 1;
-                    if (bit_index < 7'd31) mosi <= header[30 - bit_index];
-                    else if (kind == K_RAM_WRITE || kind == K_FLASH_PROGRAM)
+                    if (bit_index < 7'd7) mosi <= header[30 - bit_index];
+                    else if ((kind == K_RAM_READ || kind == K_RAM_WRITE) &&
+                             bit_index >= 7'd7 && bit_index < 7'd13)
+                        quad_mosi <= header[23 - 4*(bit_index - 7'd7) -: 4];
+                    else if (kind == K_RAM_WRITE && bit_index >= 7'd13)
+                        quad_mosi <= serial_write_shift[31 - 4*(bit_index - 7'd13) -: 4];
+                    else if (bit_index < 7'd31) mosi <= header[30 - bit_index];
+                    else if (kind == K_FLASH_PROGRAM)
                         mosi <= write_byte[7 - (bit_index - 7'd31)];
                     else mosi <= 0;
                     state <= HIGH;
@@ -330,8 +359,9 @@ module serial_mem_bridge #(
                     AFTER_INIT: state <= INIT_LAUNCH;
                     AFTER_WRITE: begin
                         write_byte <= write_word[8*lane +: 8];
-                        header <= {8'h02, base_address + {22'b0, lane}};
-                        total_bits <= 7'd40;
+                        serial_write_shift <= {write_word[8*lane +: 8], 24'b0};
+                        header <= {8'h38, base_address + {22'b0, lane}};
+                        total_bits <= 7'd16;
                         bit_index <= 0;
                         mosi <= 0;
                         spi_cs_n <= ~(5'b00001 << selected_chip);

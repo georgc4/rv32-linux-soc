@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v
@@ -131,6 +131,12 @@ test-linux-handoff: image-linux-flash
 	$(VVP) build/linux_handoff_tb
 	$(VVP) build/linux_handoff_tb +bad_dtb
 	$(VVP) build/linux_handoff_tb +bad_kernel
+
+# Slow full-image run through the production quad-capable SPI bridge and five chips.
+test-linux-serial-boot: image-linux-flash
+	$(PYTHON) scripts/flash_to_bytehex.py build/linux/flash.bin build/linux/flash.serial.hex
+	$(VERILATOR) --binary --timing -O3 -j 4 -Wno-fatal -CFLAGS '-O3' --top-module linux_serial_boot_tb --Mdir build/obj_linux_serial sim/tests/linux_serial_boot_tb.v sim/models/serial_spi_model.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v
+	build/obj_linux_serial/Vlinux_serial_boot_tb
 
 synth-bus:
 	mkdir -p build

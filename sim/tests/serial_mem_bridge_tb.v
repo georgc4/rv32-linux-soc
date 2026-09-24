@@ -22,12 +22,27 @@ module serial_mem_bridge_tb;
     wire spi_sck, initialized;
     wire [4:0] spi_cs_n;
     wire [5:0] spi_dq_out, spi_dq_oe, spi_dq_in;
-    wire [4:0] so, so_oe;
+    wire [3:0] model_out [0:4], model_oe [0:4];
+    wire [5:0] model_bus;
+    wire [3:0] ram_model_bus =
+        (model_out[0] & model_oe[0]) | (model_out[1] & model_oe[1]) |
+        (model_out[2] & model_oe[2]) | (model_out[3] & model_oe[3]);
+    wire [3:0] flash_model_bus = model_out[4] & model_oe[4];
+    wire [3:0] ram_model_drive = model_oe[0] | model_oe[1] |
+                                  model_oe[2] | model_oe[3];
+    wire [5:0] model_drive = {model_oe[4][3:2], ram_model_drive[3:2],
+                              ram_model_drive[1:0] | model_oe[4][1:0]};
     wire [31:0] commands [0:4];
-    wire miso = (so[0] & so_oe[0]) | (so[1] & so_oe[1]) |
-                (so[2] & so_oe[2]) | (so[3] & so_oe[3]) |
-                (so[4] & so_oe[4]);
-    assign spi_dq_in = {4'b0, miso, spi_dq_out[0]};
+    assign model_bus = {flash_model_bus[3:2], ram_model_bus[3:2],
+                        ram_model_bus[1:0] | flash_model_bus[1:0]};
+    assign spi_dq_in = (spi_dq_out & spi_dq_oe) | model_bus;
+    wire [4:0] active_chips = ~spi_cs_n;
+    always @(posedge spi_sck) if (rst_n) begin
+        if ((active_chips & (active_chips - 5'd1)) != 0)
+            $fatal(1, "multiple memory chips selected: cs_n=%b", spi_cs_n);
+        if ((spi_dq_oe & model_drive) != 0)
+            $fatal(1, "controller and memory both driving a data lane");
+    end
     integer cycles;
 
     serial_mem_bridge #(.POWERUP_CYCLES(4)) dut (
@@ -53,13 +68,17 @@ module serial_mem_bridge_tb;
     genvar g;
     generate for (g = 0; g < 4; g = g + 1) begin: rams
         serial_spi_model ram (
-            .cs_n(spi_cs_n[g]), .sck(spi_sck), .si(spi_dq_out[0]),
-            .so(so[g]), .so_oe(so_oe[g]), .command_count(commands[g])
+            .cs_n(spi_cs_n[g]), .sck(spi_sck),
+            .io_in(spi_dq_out[3:0]),
+            .io_out(model_out[g]), .io_oe(model_oe[g]),
+            .command_count(commands[g])
         );
     end endgenerate
     serial_spi_model #(.IS_FLASH(1)) flash (
-        .cs_n(spi_cs_n[4]), .sck(spi_sck), .si(spi_dq_out[0]),
-        .so(so[4]), .so_oe(so_oe[4]), .command_count(commands[4])
+        .cs_n(spi_cs_n[4]), .sck(spi_sck),
+        .io_in({spi_dq_out[5:4], spi_dq_out[1:0]}),
+        .io_out(model_out[4]), .io_oe(model_oe[4]),
+        .command_count(commands[4])
     );
 
     task ram_request;
@@ -194,10 +213,12 @@ module serial_mem_bridge_tb;
         if (!initialized) $fatal(1, "PSRAM initialization timeout");
         if (commands[0] != 2 || commands[1] != 2 || commands[2] != 2 || commands[3] != 2)
             $fatal(1, "PSRAM reset sequence missing");
-        if (spi_dq_oe !== 6'b111101 || spi_dq_out[5:2] !== 4'b1100)
-            $fatal(1, "DQ2/3 startup levels incorrect");
+        if (spi_dq_oe !== 6'b0 || spi_cs_n !== 5'b11111)
+            $fatal(1, "SPI pins must idle undriven with all chips deselected");
         ram_request(32'h0000_0000, 32'haabb_ccdd, 1, 4'b1111);
         ram_response(0, 0);
+        if (commands[0] != 3)
+            $fatal(1, "full-word PSRAM store must use one SPI command");
         ram_request(32'h0000_0000, 0, 0, 0);
         ram_response(32'haabb_ccdd, 0);
         ram_request(32'h0180_0000, 32'h0000_5a00, 1, 4'b0010); // fourth chip, lane 1
@@ -219,8 +240,8 @@ module serial_mem_bridge_tb;
         flash_response(32'hffff_ffa5, 0);
         control_request(8, 3, 0, 1, 4'h1, 0); // status read
         control_request(8, 2, 0, 1, 4'h1, 1); // unaligned erase rejected
-        if (commands[4] < 8 || (|so_oe && (so_oe & (so_oe - 5'd1)) != 0))
-            $fatal(1, "flash command count or MISO contention");
+        if (commands[4] < 8)
+            $fatal(1, "flash command count too low");
         $display("PASS serial_mem_bridge: reset, four-bank RAM, flash read/program/erase/status");
         $finish;
     end

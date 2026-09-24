@@ -7,8 +7,8 @@
 | PLIC | `0x0c00_0000..0x0c3f_ffff` | 4 MiB | one UART source, S-mode context 0; priority, pending, enable, threshold, claim/complete |
 | UART | `0x1000_0000..0x1000_0fff` | 4 KiB | 16550-like byte registers at 4-byte spacing |
 | NOR control | `0x1000_1000..0x1000_1fff` | 4 KiB | address/data/command/status registers; serialized with memory SPI |
-| NOR flash | `0x2000_0000..0x20ff_ffff` | 16 MiB | standard SPI `03h` reads; ordinary writes fault |
-| PSRAM | `0x8000_0000..0x81ff_ffff` | 32 MiB | four 8 MiB banks, standard SPI `03h`/`02h` |
+| NOR flash | `0x2000_0000..0x20ff_ffff` | 16 MiB | SPI `6Bh` quad-output reads; ordinary writes fault |
+| PSRAM | `0x8000_0000..0x81ff_ffff` | 32 MiB | four 8 MiB banks, SPI `EBh` quad reads and `38h` quad writes |
 
 The bus gives each selected slave a byte offset within its window. The PSRAM bridge uses offset bits 24:23 to select one of four chips and bits 22:0 for the chip address. Each request reads an aligned 32-bit word; byte strobes select individual PSRAM writes. The SPI bridge completes each write as a separate one-byte transaction. This is functional but slow; it has no cache or burst buffer.
 

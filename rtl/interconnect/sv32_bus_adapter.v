@@ -1,12 +1,13 @@
 `timescale 1ns/1ps
-// One-request Sv32 translator and physical-bus arbiter. No TLB is used, so
-// SFENCE.VMA needs no invalidation. PTE A/D bits are set by a bus write.
+// One-request Sv32 translator and physical-bus arbiter with a 16-entry TLB.
+// SFENCE.VMA invalidates all entries. PTE A/D bits are set by a bus write.
 // The one-hart SoC has no other bus master; external memory must not mutate
 // page tables concurrently with this read/modify/write sequence.
 module sv32_bus_adapter (
     input wire clk, rst_n,
     input wire [1:0] privilege,
     input wire [31:0] satp, mstatus,
+    input wire tlb_flush,
     input wire i_req_valid,
     output wire i_req_ready,
     input wire [31:0] i_req_addr,
@@ -48,6 +49,13 @@ module sv32_bus_adapter (
     reg sum_enable, mxr_enable, level1;
     reg [33:0] walk_addr, access_addr;
     reg [31:0] pte_updated;
+    reg [30:0] root_context;
+    reg [15:0] tlb_valid;
+    reg [19:0] tlb_vpn [0:15];
+    reg [30:0] tlb_context [0:15];
+    reg [31:0] tlb_pte [0:15];
+    reg tlb_level1 [0:15];
+    integer tlb_i;
     reg response_error, response_page_fault;
     wire [1:0] request_priv = d_req_valid && privilege == 2'd3 && mstatus[17] ?
                               mstatus[12:11] : privilege;
@@ -64,6 +72,22 @@ module sv32_bus_adapter (
     wire [33:0] next_walk_addr = {pte[31:10], 12'b0} +
                                  {22'b0, virtual_addr[21:12], 2'b0};
     wire choose_data = d_req_valid;
+    wire [31:0] request_vaddr = choose_data ? d_req_addr : i_req_addr;
+    wire [3:0] request_index = request_vaddr[15:12];
+    wire [31:0] cached_pte = tlb_pte[request_index];
+    wire unused_cached_pte_bits = &{1'b0, cached_pte[9:5], cached_pte[0]};
+    wire tlb_hit = tlb_valid[request_index] &&
+                   tlb_vpn[request_index] == request_vaddr[31:12] &&
+                   tlb_context[request_index] == satp[30:0] &&
+                   (!choose_data || !d_req_write || tlb_pte[request_index][7]);
+    wire cached_permission_ok = choose_data ?
+        (d_req_write ? cached_pte[2] :
+         (cached_pte[1] || (mstatus[19] && cached_pte[3]))) : cached_pte[3];
+    wire cached_privilege_ok = request_priv == 2'd0 ? cached_pte[4] :
+        (choose_data ? (!cached_pte[4] || mstatus[18]) : !cached_pte[4]);
+    wire [33:0] cached_addr = tlb_level1[request_index] ?
+        {cached_pte[31:20], request_vaddr[21:0]} :
+        {cached_pte[31:10], request_vaddr[11:0]};
     wire unused_fields = &{1'b0, pte[5], virtual_addr[31:22],
                            satp[30:22], mstatus[31:20],
                            mstatus[16:13], mstatus[10:0]};
@@ -103,10 +127,19 @@ module sv32_bus_adapter (
             walk_addr <= 0;
             access_addr <= 0;
             pte_updated <= 0;
+            root_context <= 0;
+            tlb_valid <= 0;
+            for (tlb_i = 0; tlb_i < 16; tlb_i = tlb_i + 1) begin
+                tlb_vpn[tlb_i] <= 0;
+                tlb_context[tlb_i] <= 0;
+                tlb_pte[tlb_i] <= 0;
+                tlb_level1[tlb_i] <= 0;
+            end
             response_data <= 0;
             response_error <= 0;
             response_page_fault <= 0;
-        end else case (state)
+        end else begin
+            case (state)
             IDLE: if (i_req_valid || d_req_valid) begin
                 is_data <= choose_data;
                 is_write <= choose_data && d_req_write;
@@ -114,16 +147,28 @@ module sv32_bus_adapter (
                 write_data <= choose_data ? d_req_wdata : 32'b0;
                 write_strb <= choose_data ? d_req_wstrb : 4'b0;
                 effective_priv <= request_priv;
+                root_context <= satp[30:0];
                 sum_enable <= mstatus[18];
                 mxr_enable <= mstatus[19];
                 response_data <= 0;
                 response_error <= 0;
                 response_page_fault <= 0;
                 if (do_translate) begin
-                    level1 <= 1;
-                    walk_addr <= {satp[21:0], 12'b0} +
-                                 {22'b0, (choose_data ? d_req_addr[31:22] : i_req_addr[31:22]), 2'b0};
-                    state <= WALK_REQ;
+                    if (tlb_hit) begin
+                        if (!cached_permission_ok || !cached_privilege_ok) begin
+                            response_error <= 1;
+                            response_page_fault <= 1;
+                            state <= DONE;
+                        end else begin
+                            access_addr <= cached_addr;
+                            state <= ACCESS_REQ;
+                        end
+                    end else begin
+                        level1 <= 1;
+                        walk_addr <= {satp[21:0], 12'b0} +
+                                     {22'b0, request_vaddr[31:22], 2'b0};
+                        state <= WALK_REQ;
+                    end
                 end else begin
                     access_addr <= {2'b0, choose_data ? d_req_addr : i_req_addr};
                     state <= ACCESS_REQ;
@@ -156,7 +201,14 @@ module sv32_bus_adapter (
                     if (!pte[6] || (is_write && !pte[7])) begin
                         pte_updated <= pte | 32'h0000_0040 | (is_write ? 32'h0000_0080 : 32'b0);
                         state <= UPDATE_REQ;
-                    end else state <= ACCESS_REQ;
+                    end else begin
+                        tlb_valid[virtual_addr[15:12]] <= 1;
+                        tlb_vpn[virtual_addr[15:12]] <= virtual_addr[31:12];
+                        tlb_context[virtual_addr[15:12]] <= root_context;
+                        tlb_pte[virtual_addr[15:12]] <= pte;
+                        tlb_level1[virtual_addr[15:12]] <= level1;
+                        state <= ACCESS_REQ;
+                    end
                 end
             end
             UPDATE_REQ: if (bus_req_ready) state <= UPDATE_RESP;
@@ -164,7 +216,14 @@ module sv32_bus_adapter (
                 if (bus_resp_err) begin
                     response_error <= 1;
                     state <= DONE;
-                end else state <= ACCESS_REQ;
+                end else begin
+                    tlb_valid[virtual_addr[15:12]] <= 1;
+                    tlb_vpn[virtual_addr[15:12]] <= virtual_addr[31:12];
+                    tlb_context[virtual_addr[15:12]] <= root_context;
+                    tlb_pte[virtual_addr[15:12]] <= pte_updated;
+                    tlb_level1[virtual_addr[15:12]] <= level1;
+                    state <= ACCESS_REQ;
+                end
             end
             ACCESS_REQ: if (access_addr[33:32] != 0) begin
                 response_error <= 1;
@@ -178,6 +237,8 @@ module sv32_bus_adapter (
             DONE: if ((!is_data && i_resp_ready) || (is_data && d_resp_ready))
                 state <= IDLE;
             default: state <= IDLE;
-        endcase
+            endcase
+            if (tlb_flush) tlb_valid <= 0;
+        end
     end
 endmodule

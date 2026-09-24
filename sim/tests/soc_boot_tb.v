@@ -7,7 +7,12 @@ module soc_boot_tb;
     wire [31:0] fault_pc;
     wire [4:0] cs_n;
     wire [5:0] dq_in, dq_out, dq_oe;
-    wire [4:0] model_so, model_oe;
+    wire [3:0] model_out [0:4], model_oe [0:4];
+    wire [5:0] model_bus;
+    wire [3:0] ram_model_bus =
+        (model_out[0] & model_oe[0]) | (model_out[1] & model_oe[1]) |
+        (model_out[2] & model_oe[2]) | (model_out[3] & model_oe[3]);
+    wire [3:0] flash_model_bus = model_out[4] & model_oe[4];
     wire [31:0] counts [0:4];
     reg [31:0] image [0:87];
     reg [31:0] image_sum;
@@ -23,18 +28,16 @@ module soc_boot_tb;
         .memory_initialized(initialized), .cpu_halted(halted),
         .cpu_fault(fault), .cpu_fault_pc(fault_pc)
     );
-    assign dq_in[0] = dq_oe[0] ? dq_out[0] : 1'b0;
-    assign dq_in[1] = |model_oe ?
-        (model_so[0] & model_oe[0]) | (model_so[1] & model_oe[1]) |
-        (model_so[2] & model_oe[2]) | (model_so[3] & model_oe[3]) |
-        (model_so[4] & model_oe[4]) : 1'b0;
-    assign dq_in[5:2] = dq_out[5:2];
+    assign model_bus = {flash_model_bus[3:2], ram_model_bus[3:2],
+                        ram_model_bus[1:0] | flash_model_bus[1:0]};
+    assign dq_in = (dq_out & dq_oe) | model_bus;
     genvar g;
     generate for (g = 0; g < 5; g = g + 1) begin: chips
         serial_spi_model #(.MEM_BYTES(g == 4 ? 4096 : 8192),
                            .IS_FLASH(g == 4)) model (
-            .cs_n(cs_n[g]), .sck(spi_sck), .si(dq_out[0]),
-            .so(model_so[g]), .so_oe(model_oe[g]),
+            .cs_n(cs_n[g]), .sck(spi_sck),
+            .io_in(g == 4 ? {dq_out[5:4], dq_out[1:0]} : dq_out[3:0]),
+            .io_out(model_out[g]), .io_oe(model_oe[g]),
             .command_count(counts[g])
         );
     end endgenerate

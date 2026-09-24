@@ -16,6 +16,7 @@ module sv32_supervisor_tb;
     wire [31:0] fault_pc, retire_pc;
     wire [1:0] privilege;
     wire [31:0] satp, mstatus;
+    wire sfence_commit;
     reg [31:0] memory [0:4095];
     reg busy = 0;
     reg [31:0] response = 0;
@@ -30,7 +31,7 @@ module sv32_supervisor_tb;
         .irq_supervisor_external(irq_supervisor_external),
         .time_value(64'b0),
         .current_privilege(privilege), .current_satp(satp),
-        .current_mstatus(mstatus),
+        .current_mstatus(mstatus), .sfence_commit(sfence_commit),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
         .i_resp_err(ie), .i_resp_page_fault(ipf),
@@ -43,7 +44,7 @@ module sv32_supervisor_tb;
     );
     sv32_bus_adapter adapter (
         .clk(clk), .rst_n(rst_n), .privilege(privilege),
-        .satp(satp), .mstatus(mstatus),
+        .satp(satp), .mstatus(mstatus), .tlb_flush(sfence_commit),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
         .i_resp_err(ie), .i_resp_page_fault(ipf),
@@ -80,7 +81,7 @@ module sv32_supervisor_tb;
         repeat (3) @(negedge clk);
         rst_n = 1;
         while (memory[64] != 42 && cycles < 400) @(negedge clk);
-        if (memory[64] !== 42 || privilege !== 2'd1 || walks < 6 || fault || halted)
+        if (memory[64] !== 42 || privilege !== 2'd1 || walks < 4 || fault || halted)
             $fatal(1, "supervisor Sv32 failed pc=%h marker=%h priv=%d walks=%d",
                    retire_pc, memory[64], privilege, walks);
         irq_supervisor_external = 1;

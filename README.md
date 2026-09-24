@@ -16,6 +16,7 @@ make synth-core synth-soc
 make image-smoke  # creates build/rv32i_smoke.flash.bin
 make image-linux-flash  # builds local RV32 Linux artifacts and 16 MiB NOR image
 make test-linux-handoff # simulates loader, SBI, timer, and PLIC handoff
+make test-linux-serial-boot # long run: full Image through five quad-capable SPI chip models
 ```
 
 `synth-core` and `synth-soc` report generic Yosys cells, not SKY130 mapped area or timing. Fast checks run in GitHub Actions. RTL is in `rtl/`; behavioral device models and directed tests are in `sim/`. The FPGA board constraints and shuttle-specific physical configuration remain open.

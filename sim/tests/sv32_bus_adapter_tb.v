@@ -5,6 +5,7 @@ module sv32_bus_adapter_tb;
     reg rst_n = 0;
     reg [1:0] privilege = 2'd1;
     reg [31:0] satp = 32'h8000_0000, mstatus = 0;
+    reg tlb_flush = 0;
     reg iv = 0, iy = 0, dv = 0, dy = 0, dw = 0;
     reg [31:0] ia = 0, da = 0, dd = 0;
     reg [3:0] ds = 0;
@@ -21,6 +22,7 @@ module sv32_bus_adapter_tb;
     assign bx = busy;
     sv32_bus_adapter dut (
         .clk(clk), .rst_n(rst_n), .privilege(privilege), .satp(satp), .mstatus(mstatus),
+        .tlb_flush(tlb_flush),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
         .i_resp_err(ie), .i_resp_page_fault(ipf),
@@ -93,13 +95,21 @@ module sv32_bus_adapter_tb;
         data_request(32'h4000_1008, 32'haabb_ccdd, 1, 0, 0, 0);
         if (memory[1025] !== 32'h0000_08c7 || memory[2050] !== 32'haabb_ccdd)
             $fatal(1, "D bit or write failure");
+        data_request(32'h4000_1008, 0, 0, 32'haabb_ccdd, 0, 0);
+        if (walks != 4) $fatal(1, "TLB hit unexpectedly walked page tables");
+        memory[1025] = 32'h0000_0cc7; // remap to 0x3000 with A/D set
+        memory[3074] = 32'hfeed_beef;
+        @(negedge clk); tlb_flush = 1;
+        @(negedge clk); tlb_flush = 0;
+        data_request(32'h4000_1008, 0, 0, 32'hfeed_beef, 0, 0);
+        if (walks != 6) $fatal(1, "SFENCE did not force a new page walk");
         instruction_request(32'h4000_1008, 0, 1, 1); // no X permission
         instruction_request(32'h4040_2008, 32'haabb_ccdd, 0, 0);
         data_request(32'h4080_0000, 0, 0, 0, 1, 1); // invalid PTE
         privilege = 2'd3; // M-mode bypasses satp
         data_request(32'h0000_2008, 0, 0, 32'haabb_ccdd, 0, 0);
         if (walks != 6 || updates != 2) $fatal(1, "walk/update count %0d/%0d", walks, updates);
-        $display("PASS sv32: two-level walk, superpage, permissions, A/D, bypass");
+        $display("PASS sv32: two-level walk, TLB hit/flush, superpage, permissions, A/D, bypass");
         $finish;
     end
     initial begin

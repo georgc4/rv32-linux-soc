@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Original RV32IM diagnostic core. Privilege/MMU are still in progress.
-// Faults and EBREAK stop the core for simulation; architectural traps follow later.
+// RV32IM core with privileged trap handling and S-mode support.
+// Diagnostic mode retains a simulation stop for faults and EBREAK.
 module rv32i_core #(
     parameter [31:0] RESET_PC = 32'h8000_0000,
     parameter DIAGNOSTIC_MODE = 1
@@ -12,6 +12,7 @@ module rv32i_core #(
     output wire [1:0] current_privilege,
     output wire [31:0] current_satp,
     output wire [31:0] current_mstatus,
+    output wire sfence_commit,
     output wire i_req_valid,
     input wire i_req_ready,
     output wire [31:0] i_req_addr,
@@ -80,6 +81,7 @@ module rv32i_core #(
     wire csr_commit = state == EXEC && csr_instruction && !illegal && !csr_illegal;
     wire mret_commit = state == EXEC && mret_instruction && !illegal;
     wire sret_commit = state == EXEC && sret_instruction && !illegal;
+    assign sfence_commit = state == EXEC && sfence_instruction && !illegal;
     reg trap_commit, trap_interrupt;
     reg [4:0] trap_cause;
     reg [31:0] trap_value;

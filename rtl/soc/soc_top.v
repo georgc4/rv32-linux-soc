@@ -33,6 +33,7 @@ module soc_top #(
     wire [1:0] current_privilege;
     wire [31:0] current_satp, current_mstatus;
     wire retire_valid;
+    wire sfence_commit;
     wire [31:0] retire_pc;
 
     rv32i_core #(.RESET_PC(32'h0000_0000),
@@ -42,7 +43,7 @@ module soc_top #(
         .irq_supervisor_external(plic_irq),
         .time_value(time_value),
         .current_privilege(current_privilege), .current_satp(current_satp),
-        .current_mstatus(current_mstatus),
+        .current_mstatus(current_mstatus), .sfence_commit(sfence_commit),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
         .i_resp_err(ie), .i_resp_page_fault(ipf),
@@ -56,6 +57,7 @@ module soc_top #(
     sv32_bus_adapter adapter (
         .clk(clk), .rst_n(rst_n),
         .privilege(current_privilege), .satp(current_satp), .mstatus(current_mstatus),
+        .tlb_flush(sfence_commit),
         .i_req_valid(iv), .i_req_ready(ir), .i_req_addr(ia),
         .i_resp_valid(ix), .i_resp_ready(iy), .i_resp_data(id),
         .i_resp_err(ie), .i_resp_page_fault(ipf),

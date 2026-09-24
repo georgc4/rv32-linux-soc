@@ -27,6 +27,7 @@ download zig-aarch64-macos-0.15.2.tar.xz https://ziglang.org/download/0.15.2/zig
 shasum -a 256 -c linux/sources.sha256
 
 [[ -f "$KERNEL/Makefile" ]] || tar -xJf build/downloads/linux-6.12.111.tar.xz -C build/src
+python3 linux/patch-hz16.py "$KERNEL/kernel/Kconfig.hz"
 [[ -f "$BUSYBOX/Makefile" ]] || tar -xjf build/downloads/busybox-1.37.0.tar.bz2 -C build/src
 [[ -x "$ZIG" ]] || tar -xJf build/downloads/zig-aarch64-macos-0.15.2.tar.xz -C build/tools
 
