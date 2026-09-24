@@ -8,10 +8,10 @@
 | Atomic synchronization | RV32A LR/SC and AMOs, ordering | CPU atomic unit + memory lock | ISA litmus and interrupt/reservation tests | Unimplemented |
 | Instruction/data ordering | `FENCE`, `FENCE.I`, coherent view for flash/RAM writes | CPU + bus/control | Self-modifying code and MMIO ordering | Unimplemented |
 | Timer ticks | counter + compare, M/S interrupt and SBI TIME path | timer + firmware | Timer interrupt and Linux clockevent | Unimplemented |
-| UART console | byte TX/RX, polling first, IRQ later | UART + interrupt controller + driver/DT | Boot log and interactive input | Unimplemented |
+| UART console | byte TX/RX, polling first, IRQ later | UART + interrupt controller + driver/DT | Boot log and interactive input | Diagnostic CPU writes `OK\n` to simulation-only MMIO sink; electrical UART and RX unimplemented |
 | External working RAM | 4 × 8 MiB PSRAM, byte stores, bursts, atomicity | PSRAM controller | Per-chip stress, boundary, refresh/timing | Unimplemented |
 | Boot image | immutable ROM, NOR reads/copy, validated firmware | ROM + flash controller + firmware | Cold boot and corrupt-image recovery | Unimplemented |
 | Linux handoff | `a0` hart ID, `a1` DTB, `satp=0`, 4 MiB aligned RV32 image | M-mode firmware | Entry-state assertion and serial boot | Unimplemented |
 | Device discovery | correct DTB for memory/UART/timer/IRQ | firmware + build scripts | `dtc` and kernel driver binding | Unimplemented |
 
-The initial bus routes **physical** requests and passes its contract tests. That is a dependency for several rows, not completion of a Linux feature.
+The bus routes **physical** requests and passes its contract tests. An original diagnostic CPU now uses separate instruction/data ports through an adapter; its assembled test program passes with stalled RAM, and illegal/unmapped/misaligned faults are detected. These are dependencies for several rows, not completion of a Linux feature.

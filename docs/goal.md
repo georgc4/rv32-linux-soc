@@ -5,7 +5,7 @@
 Milestone evidence:
 
 1. Bus simulation: self-checking tests pass; completed in this repository.
-2. CPU: original product RTL passes RV32I/M/A, CSR, trap, and privilege tests; no claim yet.
+2. CPU: original product RTL passes RV32I/M/A, CSR, trap, and privilege tests; **diagnostic RV32I program now passes**, full ISA/privileged claim remains open.
 3. MMU: Sv32 PTE permissions, page faults, access/dirty handling, and `SFENCE.VMA` pass directed and differential tests; no claim yet.
 4. Firmware: a reproducible ROM/flash image initializes RAM and hands off to Linux with recorded register state and device tree; no claim yet.
 5. Linux: serial log from full-SoC simulation, FPGA, and fabricated chip identifies kernel build, memory map, init process, shell, and a repeatable interaction; no claim yet.

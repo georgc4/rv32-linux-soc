@@ -9,6 +9,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y iverilog verilator
       - name: Run contract simulation
         run: make test
+      - name: Run diagnostic CPU program
+        run: make test-core
       - name: Run host digit baseline
         run: make test-digit
       - name: Lint bus RTL
