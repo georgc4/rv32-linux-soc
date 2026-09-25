@@ -42,18 +42,21 @@ module rv32i_core #(
                      EXEC = 4'd2, DATA_REQ = 4'd3,
                      DATA_RESP = 4'd4, STOP = 4'd5,
                      AMO_WRITE_REQ = 4'd6, AMO_WRITE_RESP = 4'd7,
-                     MDU_WAIT = 4'd8;
+                     MDU_WAIT = 4'd8, READ_RS2 = 4'd9;
     reg [3:0] state;
     reg [31:0] pc, instr;
     reg [31:0] regs [0:31];
+    reg [31:0] operand_a, operand_b;
     reg write_rd, access, store, illegal, stop_normal;
     wire [4:0] rd = instr[11:7];
     wire [4:0] rs1 = instr[19:15];
     wire [4:0] rs2 = instr[24:20];
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
-    wire [31:0] a = rs1 == 0 ? 32'b0 : regs[rs1];
-    wire [31:0] b = rs2 == 0 ? 32'b0 : regs[rs2];
+    wire [4:0] reg_read_index = state == FETCH_RESP ? i_resp_data[19:15] : rs2;
+    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : regs[reg_read_index];
+    wire [31:0] a = operand_a;
+    wire [31:0] b = operand_b;
     wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
     wire mdu_done;
     wire [31:0] mdu_result;
@@ -416,6 +419,8 @@ module rv32i_core #(
             state <= FETCH_REQ;
             pc <= RESET_PC;
             instr <= 0;
+            operand_a <= 0;
+            operand_b <= 0;
             fault <= 0;
             fault_pc <= 0;
             retire_valid <= 0;
@@ -456,8 +461,13 @@ module rv32i_core #(
                         end
                     end else begin
                         instr <= i_resp_data;
-                        state <= EXEC;
+                        operand_a <= reg_read_data;
+                        state <= READ_RS2;
                     end
+                end
+                READ_RS2: begin
+                    operand_b <= reg_read_data;
+                    state <= EXEC;
                 end
                 EXEC: begin
                     if (illegal || next_pc[1:0] != 0) begin

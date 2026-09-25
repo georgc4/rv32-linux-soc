@@ -26,6 +26,7 @@ module rv32_mdu (
                                 (sign_a ? original_b : 32'b0);
     wire [32:0] div_trial = {remainder, quotient[31]};
     wire [33:0] div_difference = {1'b0, div_trial} - {2'b0, divisor};
+    wire unused_div_difference_bit = &{1'b0, div_difference[32]};
     wire div_ge = !div_difference[33];
     wire [31:0] div_remainder_next = div_ge ? div_difference[31:0] : div_trial[31:0];
     wire [31:0] div_quotient_next = {quotient[30:0], div_ge};
