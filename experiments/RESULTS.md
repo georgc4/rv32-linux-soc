@@ -84,6 +84,10 @@ reproduced the baseline physical failure in Tiny Tapeout's GitHub GDS action:
 `OpenROAD.RepairDesignPostGPL` ended with `[DPL-0036] Detailed placement
 failed`. Docs and fast checks passed, but no GDS artifact was produced. The
 action run is `https://github.com/georgc4/rv32-linux-soc/actions/runs/36179089201`.
+The area-optimized draft branch's official GDS action also failed detailed
+placement, but later in the flow: post-CTS hold repair found 2,652 violating
+endpoints and inserted 2,810 hold buffers before legalization failed. Its
+run is `https://github.com/georgc4/rv32-linux-soc/actions/runs/36178436940`.
 
 The kernel-only images retain baseline RTL. Disabling `CONFIG_DEBUG_PLIST`
 reduces packed kernel bytes from 4,864,556 to 4,856,268; also disabling
