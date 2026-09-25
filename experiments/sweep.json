@@ -5,7 +5,7 @@
     {"label": "baseline", "ref": "8b2424d1772dea68066f662f3578a466f4087943"}
   ],
   "matrix": {
-    "abc_delay_ps": [null],
+    "abc_delay_ps": [null, 50000, 35000],
     "synth_strategy": ["AREA 0"],
     "synth_abc_area_use_nf": [false],
     "clock_period_ns": [50.0],
