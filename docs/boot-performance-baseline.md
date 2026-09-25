@@ -54,6 +54,15 @@ shows about 80 timer traps per 100 million cycles, matching 16 Hz at the
 trial, but changing the hardware timebase alone would invalidate the device
 tree and SBI time assumptions. It is not the first performance lever.
 
+At the userspace-ready marker, the trace recorded about 201 million PSRAM
+requests for 136 million retired instructions, or roughly 1.48 PSRAM
+transactions per retired instruction. The CPU fetches instructions over this
+same serial path and has no instruction cache (`FENCE.I` is currently a no-op
+for that reason). A small, correctly invalidated instruction read buffer or
+short serial burst is therefore a higher-value RTL trial than a lower timer
+rate. The CS-low maximum and mapped area constrain its line size; it needs a
+full serial acceptance run and physical measurement before adoption.
+
 Sparse PC samples include `inflate_fast` and `memcpy` in earlier
 initialization. Later watchdog traces resolve into `plist_test_check` and
 `plist_check_list` around 10–11 billion cycles, radix-tree deletion and
