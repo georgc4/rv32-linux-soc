@@ -53,6 +53,11 @@ inspect tradeoffs. A point joins the Pareto frontier only if the physical flow
 produced GDS **and** the ash-program acceptance passed. Failed physical runs,
 including the first 2026-09-24 baseline, remain visible but are excluded from
 the candidate frontier. Routing and this gate do not replace final signoff.
+That baseline reached about 85% core utilization at global placement;
+OpenROAD raised its effective placement density to 97% and detailed placement
+failed. A lower requested density cannot create more tile area. RTL area
+reduction or a larger allocation is needed before density tuning is likely to
+produce a routed point.
 The baseline's old Linux result reached `/init` only;
 it is labeled "boot marker only" and does not qualify.
 
