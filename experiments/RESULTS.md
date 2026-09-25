@@ -83,3 +83,6 @@ The kernel-only images retain baseline RTL. Disabling `CONFIG_DEBUG_PLIST`
 reduces packed kernel bytes from 4,864,556 to 4,856,268; also disabling
 `CONFIG_DEBUG_VM_PGTABLE` reduces them to 4,855,980. Their serial boot
 trials are active with separate flash hashes and effective kernel configs.
+Rebuilding the unmodified baseline config on 2026-09-25 reproduced flash
+SHA-256 `d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c`
+exactly, matching the image used for the earlier ash-program pass.
