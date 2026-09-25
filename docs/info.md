@@ -17,9 +17,11 @@ must not be selected as a fabrication revision until GDS, precheck, timing,
 and gate-level checks pass. The external board and pinout also need validation.
 
 The 20 MHz `clk` input and `rst_n` are the standard Tiny Tapeout interface.
-UART RX is `ui_in[0]`; UART TX is `uo_out[6]`. The memory serial clock is
-`uo_out[0]`, the four PSRAM chip selects are `uo_out[1:4]`, and the NOR chip
-select is `uo_out[5]`. The six bidirectional memory data pins are `uio[0:5]`.
+UART RX is `ui_in[3]`; UART TX is `uo_out[4]`, the demoboard's documented
+hardware-UART pair. The memory serial clock is `uo_out[0]`; PSRAM 0–2 chip
+selects are `uo_out[1:3]`, PSRAM 3 is `uo_out[6]`, and NOR is `uo_out[5]`.
+External memory wiring must use the new PSRAM 3 pin. The six bidirectional
+memory data pins are `uio[0:5]`.
 `uo_out[7]` signals completion of PSRAM initialization.
 
 The physical baseline and reproducible build instructions are in
