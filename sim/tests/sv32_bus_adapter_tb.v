@@ -109,7 +109,15 @@ module sv32_bus_adapter_tb;
         privilege = 2'd3; // M-mode bypasses satp
         data_request(32'h0000_2008, 0, 0, 32'haabb_ccdd, 0, 0);
         if (walks != 6 || updates != 2) $fatal(1, "walk/update count %0d/%0d", walks, updates);
-        $display("PASS sv32: two-level walk, TLB hit/flush, superpage, permissions, A/D, bypass");
+        memory[4352] = 32'h0000_1401; // second SATP root -> table at 0x5000
+        memory[5121] = 32'h0000_18c7; // VA 0x40001008 -> PA 0x6008
+        memory[6146] = 32'hdeca_fbad;
+        privilege = 2'd1;
+        satp = 32'h8000_0004;
+        data_request(32'h4000_1008, 0, 0, 32'hdeca_fbad, 0, 0);
+        satp = 32'h8000_0000;
+        data_request(32'h4000_1008, 0, 0, 32'hfeed_beef, 0, 0);
+        $display("PASS sv32: two-level walk, TLB hit/flush, SATP switch, superpage, permissions, A/D, bypass");
         $finish;
     end
     initial begin
