@@ -1,0 +1,7 @@
+{
+  "rtl_commit": "120d9650033a49210de0e34c40bba67fb8815cdd",
+  "template_commit": "83d305501d505b157cd6e9ba87bc8ffd949526fd",
+  "support_tools_commit": "01d5d2814fa9dd61e9d211e0b235a4a592a9316a",
+  "tile_shape": "8x2",
+  "clock_period_ns": 50
+}

@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc synth-sky130 stage-sky26d regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v
@@ -152,6 +152,12 @@ synth-soc:
 	mkdir -p build
 	$(YOSYS) -Q -T -p 'read_verilog rtl/cpu/*.v rtl/interconnect/*.v rtl/peripherals/*.v rtl/memory/*.v rtl/soc/*.v; hierarchy -top tt_um_rv32_linux_soc; proc; opt; synth -top tt_um_rv32_linux_soc; stat' > build/synth-soc.log
 	tail -30 build/synth-soc.log
+
+synth-sky130:
+	bash tt/run_sky130_synth.sh
+
+stage-sky26d:
+	$(PYTHON) tt/stage_sky26d.py
 
 clean:
 	rm -rf build
