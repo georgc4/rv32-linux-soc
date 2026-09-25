@@ -1,0 +1,33 @@
+digraph core {
+  graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.48, ranksep=0.68,
+         splines=polyline, fontname="Helvetica", label="RV32 core · synthesized RTL block view",
+         labelloc=t, fontsize=22, fontcolor="#17243a"];
+  node [shape=box, style="rounded,filled", fillcolor="#f2f6fb", color="#6380a5",
+        penwidth=1.4, fontname="Helvetica", fontsize=13, margin="0.16,0.12"];
+  edge [color="#637895", arrowsize=0.73, penwidth=1.4];
+
+  if_bus [label="Instruction port\ni_req_* / i_resp_*", fillcolor="#e3eefb"];
+  fetch [label="Fetch + PC control\nPC, next PC, core FSM"];
+  decode [label="Instruction register + decode\nopcode, immediates, rs1/rs2/rd"];
+  rf [label="Register file\n32 × 32 bits; x0 reads zero", fillcolor="#e9f6ef", color="#5c9b7d"];
+
+  alu [label="Integer ALU + branch\nresult / next PC", fillcolor="#e9f6ef", color="#5c9b7d"];
+  lsu [label="Load/store + atomics\naddress, lanes, AMO", fillcolor="#e9f6ef", color="#5c9b7d"];
+  mdu [label="Iterative MDU\nRV32M multiply/divide", fillcolor="#f3ecfa", color="#9870b2"];
+  priv [label="Privilege + CSR unit\ntraps, interrupts, satp", fillcolor="#f3ecfa", color="#9870b2"];
+  { rank=same; alu; lsu; mdu; priv; }
+  alu -> lsu -> mdu -> priv [style=invis, weight=10];
+
+  wb [label="Writeback to rd\nALU / load / MDU / CSR", fillcolor="#e9f6ef", color="#5c9b7d"];
+  d_bus [label="Data port\nd_req_* / d_resp_*", fillcolor="#e3eefb"];
+  mmu [label="Sv32 context + flush\nprivilege / satp / mstatus", fillcolor="#e3eefb"];
+  irq [label="Interrupts + time", fillcolor="#fff3de", color="#c48c31"];
+
+  if_bus -> fetch -> decode -> rf;
+  rf -> alu; rf -> lsu; rf -> mdu; rf -> priv;
+  decode -> alu; decode -> lsu; decode -> mdu; decode -> priv;
+  alu -> wb; lsu -> wb; mdu -> wb; priv -> wb;
+  lsu -> d_bus;
+  priv -> mmu;
+  irq -> priv;
+}

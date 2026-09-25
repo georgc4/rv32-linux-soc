@@ -1,0 +1,26 @@
+digraph core_area {
+  graph [rankdir=TB, bgcolor="white", pad=0.28, nodesep=0.7, ranksep=0.55,
+         fontname="Helvetica", fontsize=22, fontcolor="#17243a",
+         label="RV32 core · Sky130 mapped cells and area", labelloc=t];
+  node [shape=box, style="rounded,filled", penwidth=1.5, fontname="Helvetica",
+        fontsize=14, margin="0.22,0.16"];
+  edge [color="#637895", arrowsize=0.75, penwidth=1.5];
+
+  subgraph cluster_local {
+    label="rv32i_core local logic\n7,991 cells · 82,852.0 µm²";
+    fontname="Helvetica"; fontsize=17; fontcolor="#345478";
+    color="#b4c6db"; style="rounded"; margin=18;
+    reg [label="Register-file storage FFs\n1,024 cells · 30,749.5 µm²\nRead mux and write logic counted at right", fillcolor="#e9f6ef", color="#5c9b7d"];
+    other [label="Other core-local logic\n6,967 cells · 52,102.5 µm²\nFetch / decode / RF mux / ALU / LSU / writeback", fillcolor="#f2f6fb", color="#6380a5"];
+    { rank=same; reg; other; }
+    reg -> other [dir=both];
+  }
+  mdu [label="rv32_mdu submodule\n2,700 cells · 22,180.0 µm²\nIterative multiply / divide", fillcolor="#f3ecfa", color="#9870b2"];
+  priv [label="rv32_priv_unit submodule\n1,965 cells · 18,355.1 µm²\nCSR / interrupts / trap state", fillcolor="#f3ecfa", color="#9870b2"];
+  { rank=same; mdu; priv; }
+  other -> mdu;
+  other -> priv;
+  total [shape=plaintext, label="Core including both submodules\n12,656 cells · 123,387.1 µm²", fontcolor="#17243a", fontsize=16];
+  mdu -> total [style=invis];
+  priv -> total [style=invis];
+}

@@ -1,0 +1,41 @@
+{
+  "library": "sky130_fd_sc_hd__tt_025C_1v80.lib",
+  "library_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+  "yosys_version": "Yosys 0.63 (git sha1 70a11c6bf0e8dd669f56c7da3587f78b405138e2, clang++ 17.0.0 -fPIC -O3)",
+  "core": {
+    "register_file_storage": {
+      "cells": 1024,
+      "area_um2": 30749.4912
+    },
+    "other_local_logic": {
+      "cells": 6967,
+      "area_um2": 52102.4704
+    },
+    "mdu": {
+      "cells": 2700,
+      "area_um2": 22180.0224
+    },
+    "privilege": {
+      "cells": 1965,
+      "area_um2": 18355.104
+    }
+  },
+  "sv32_adapter": {
+    "tlb_storage": {
+      "cells": 1280,
+      "area_um2": 32030.72
+    },
+    "other_logic": {
+      "cells": 4105,
+      "area_um2": 31330.048
+    }
+  },
+  "core_total": {
+    "cells": 12656,
+    "area_um2": 123387.088
+  },
+  "sv32_adapter_total": {
+    "cells": 5385,
+    "area_um2": 63360.768
+  }
+}

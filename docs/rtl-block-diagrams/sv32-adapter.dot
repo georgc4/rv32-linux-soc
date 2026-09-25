@@ -1,0 +1,31 @@
+digraph sv32_adapter {
+  graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.68, ranksep=0.53,
+         splines=polyline, fontname="Helvetica", label="Sv32 adapter · synthesized RTL block view",
+         labelloc=t, fontsize=22, fontcolor="#17243a"];
+  node [shape=box, style="rounded,filled", fillcolor="#f2f6fb", color="#6380a5",
+        penwidth=1.4, fontname="Helvetica", fontsize=13, margin="0.16,0.12"];
+  edge [color="#637895", arrowsize=0.73, penwidth=1.4];
+
+  cpu [label="CPU instruction + data ports\ni_req_* / d_req_*", fillcolor="#e3eefb"];
+  arb [label="One-request arbiter\ndata priority"];
+  mode [label="Effective privilege + mode\nMPRV / Sv32 enable"];
+  tlb [label="16-entry direct-mapped TLB\nvalid / VPN / context / PTE / level"];
+  hit [label="Hit permissions + address\nR/W/X, U/S, SUM/MXR"];
+  access [label="Physical access address\n4 KiB / 4 MiB / bypass"];
+  mux [label="Physical bus request mux\nPTE read / A-D write / access", fillcolor="#f3ecfa", color="#9870b2"];
+  bus [label="Physical bus\nbus_req_* / bus_resp_*", fillcolor="#e3eefb"];
+  resp [label="CPU response + faults\ni_resp_* / d_resp_*", fillcolor="#e3eefb"];
+  context [label="satp / mstatus / privilege\nSFENCE.VMA", fillcolor="#fff3de", color="#c48c31"];
+
+  walk [label="TLB miss: L1/L0 walk\nPTE reads via physical bus", fillcolor="#e9f6ef", color="#5c9b7d"];
+  pte [label="PTE check\nleaf / permissions / superpage", fillcolor="#e9f6ef", color="#5c9b7d"];
+  ad [label="A/D update + TLB fill\nPTE write when needed", fillcolor="#e9f6ef", color="#5c9b7d"];
+  { rank=same; hit; walk; }
+  hit -> walk [style=invis, weight=10];
+
+  cpu -> arb -> mode -> tlb;
+  context -> mode;
+  context -> tlb;
+  tlb -> hit -> access -> mux -> bus -> resp;
+  tlb -> walk -> pte -> ad -> mux;
+}

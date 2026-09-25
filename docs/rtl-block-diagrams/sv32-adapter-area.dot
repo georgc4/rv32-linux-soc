@@ -1,0 +1,13 @@
+digraph sv32_area {
+  graph [rankdir=TB, bgcolor="white", pad=0.28, nodesep=0.7, ranksep=0.6,
+         fontname="Helvetica", fontsize=22, fontcolor="#17243a",
+         label="Sv32 adapter · Sky130 mapped cells and area", labelloc=t];
+  node [shape=box, style="rounded,filled", penwidth=1.5, fontname="Helvetica",
+        fontsize=14, margin="0.22,0.16"];
+  edge [color="#637895", arrowsize=0.75, penwidth=1.5, dir=both];
+  tlb [label="TLB storage FFs\n1,280 cells · 32,030.7 µm²\nValid / VPN / context / live PTE / level bits", fillcolor="#e9f6ef", color="#5c9b7d"];
+  other [label="Other adapter logic\n4,105 cells · 31,330.0 µm²\nTLB lookup mux / compare / walk / A-D / bus / response", fillcolor="#f2f6fb", color="#6380a5"];
+  tlb -> other;
+  total [shape=plaintext, label="sv32_bus_adapter total\n5,385 cells · 63,360.8 µm²", fontcolor="#17243a", fontsize=16];
+  other -> total [style=invis];
+}
