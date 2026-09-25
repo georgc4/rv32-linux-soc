@@ -4,7 +4,7 @@
 // The one-hart SoC has no other bus master; external memory must not mutate
 // page tables concurrently with this read/modify/write sequence.
 module sv32_bus_adapter #(
-    parameter integer TLB_ENTRIES = 4
+    parameter integer TLB_ENTRIES = 2
 ) (
     input wire clk, rst_n,
     input wire [1:0] privilege,
