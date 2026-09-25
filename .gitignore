@@ -2,3 +2,5 @@ build/
 *.vcd
 __pycache__/
 .DS_Store
+src/config_merged.json
+src/user_config.json
