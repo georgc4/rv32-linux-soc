@@ -8,7 +8,14 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc synth-sky130 stage-sky26d regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc synth-sky130 stage-sky26d rtl-diagrams experiment-chart regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
+
+rtl-diagrams:
+	$(PYTHON) tt/generate_rtl_block_diagrams.py
+
+experiment-chart:
+	$(PYTHON) experiments/visualize.py
+
 test:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s physical_bus_tb -o build/physical_bus_tb rtl/interconnect/physical_bus.v sim/models/latency_device.v sim/tests/physical_bus_tb.v

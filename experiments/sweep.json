@@ -1,0 +1,16 @@
+{
+  "name": "sky26d-baseline",
+  "flash_image": "build/linux/flash.bin",
+  "revisions": [
+    {"label": "baseline", "ref": "HEAD"}
+  ],
+  "matrix": {
+    "abc_delay_ps": [null],
+    "synth_strategy": ["AREA 0"],
+    "synth_abc_area_use_nf": [false],
+    "clock_period_ns": [50.0],
+    "placement_density_pct": [60.0],
+    "hold_margin_ns": [0.1],
+    "grt_hold_margin_ns": [0.05]
+  }
+}

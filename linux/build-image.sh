@@ -53,6 +53,9 @@ make -C "$BUSYBOX" O="$ROOT/build/busybox" -j"$JOBS" \
 "$ZIG" cc -target riscv32-linux-musl \
     -mcpu=generic_rv32+m+a+zicsr+zifencei -static -Oz -s \
     -o build/digit_demo.rv32 software/digit/digit_demo.c
+"$ZIG" cc -target riscv32-linux-musl \
+    -mcpu=generic_rv32+m+a+zicsr+zifencei -static -Oz -s \
+    -o build/acceptance_smoke.rv32 software/acceptance_smoke.c
 
 cat >build/rootfs.list <<'LIST'
 dir /dev 755 0 0
@@ -63,6 +66,7 @@ file /bin/busybox /work/build/busybox/busybox 755 0 0
 slink /bin/sh busybox 777 0 0
 slink /bin/ash busybox 777 0 0
 file /bin/digit_demo /work/build/digit_demo.rv32 755 0 0
+file /bin/acceptance_smoke /work/build/acceptance_smoke.rv32 755 0 0
 dir /proc 755 0 0
 dir /sys 755 0 0
 dir /tmp 1777 0 0
@@ -81,4 +85,5 @@ cp build/kernel/arch/riscv/boot/Image build/linux/Image
 cp build/kernel/usr/initramfs_data.cpio build/linux/initramfs.cpio
 cp build/busybox/busybox build/linux/busybox
 cp build/digit_demo.rv32 build/linux/digit_demo
+cp build/acceptance_smoke.rv32 build/linux/acceptance_smoke
 python3 linux/check-image.py build/linux
