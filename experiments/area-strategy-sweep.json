@@ -1,0 +1,11 @@
+{
+  "name": "sky26d-area-strategy",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 4 shared context", "ref": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 1", "AREA 2", "AREA 3"],
+    "synth_abc_area_use_nf": [false]
+  }
+}

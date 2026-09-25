@@ -293,6 +293,10 @@ def run_acceptance(run_dir: Path, source: Path, flash_image: Path,
     linux_build.mkdir(parents=True, exist_ok=True)
     local_image = linux_build / "flash.bin"
     shutil.copyfile(image, local_image)
+    image_meta = image.with_suffix(image.suffix + ".json")
+    if not image_meta.is_file():
+        raise FileNotFoundError(f"flash image manifest missing: {image_meta}")
+    shutil.copyfile(image_meta, local_image.with_suffix(local_image.suffix + ".json"))
     if sha256(local_image) != image_hash:
         raise RuntimeError("flash image changed during experiment setup")
     hex_file = linux_build / "flash.serial.hex"

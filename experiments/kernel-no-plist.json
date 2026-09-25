@@ -1,0 +1,7 @@
+{
+  "name": "kernel-disable-debug-plist",
+  "flash_image": "build/experiments/images/no-plist/flash.bin",
+  "revisions": [
+    {"label": "no DEBUG_PLIST", "ref": "8b2424d1772dea68066f662f3578a466f4087943"}
+  ]
+}

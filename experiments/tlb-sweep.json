@@ -1,0 +1,18 @@
+{
+  "name": "sv32-tlb-area-sweep",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 8", "ref": "e55522ce01ea8b672031eba061b6dc77b720164b"},
+    {"label": "TLB 4", "ref": "1edce9ce221c519520550f6ba6669a33db317552"},
+    {"label": "TLB 4 shared context", "ref": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8"}
+  ],
+  "matrix": {
+    "abc_delay_ps": [null],
+    "synth_strategy": ["AREA 0"],
+    "synth_abc_area_use_nf": [false],
+    "clock_period_ns": [50.0],
+    "placement_density_pct": [60.0],
+    "hold_margin_ns": [0.1],
+    "grt_hold_margin_ns": [0.05]
+  }
+}

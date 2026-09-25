@@ -9,6 +9,8 @@ CONTAINER="${LINUX_BUILD_IMAGE:-localhost/rv32-linux-build:ubuntu24}"
 ZIG="$ROOT/build/tools/zig-aarch64-macos-0.15.2/zig"
 BUSYBOX="$ROOT/build/src/busybox-1.37.0"
 KERNEL=build/src/linux-6.12.111
+KERNEL_CONFIG="${KERNEL_CONFIG:-linux/kernel-6.12.111.config}"
+[[ -f "$KERNEL_CONFIG" ]] || { echo "missing kernel config: $KERNEL_CONFIG" >&2; exit 1; }
 
 for tool in curl make podman python3 riscv64-unknown-elf-strip shasum; do
     command -v "$tool" >/dev/null || { echo "missing host tool: $tool" >&2; exit 1; }
@@ -76,8 +78,8 @@ LIST
 if ! podman image exists "$CONTAINER"; then
     podman build -f linux/Containerfile -t "$CONTAINER" linux
 fi
-if [[ ! -f build/kernel/.config ]] || ! cmp -s linux/kernel-6.12.111.config build/kernel/.config; then
-    cp linux/kernel-6.12.111.config build/kernel/.config
+if [[ ! -f build/kernel/.config ]] || ! cmp -s "$KERNEL_CONFIG" build/kernel/.config; then
+    cp "$KERNEL_CONFIG" build/kernel/.config
 fi
 podman run --rm -v "$ROOT":/work:rw -w /work "$CONTAINER" bash -lc \
     'set -e; export KBUILD_BUILD_TIMESTAMP="2026-09-21 13:10:00 UTC" KBUILD_BUILD_USER=rv32 KBUILD_BUILD_HOST=local KBUILD_BUILD_VERSION=1 SOURCE_DATE_EPOCH=1789996200; make -C build/src/linux-6.12.111 O=/work/build/kernel ARCH=riscv LLVM=1 olddefconfig >/work/build/kernel/config.log; make -C build/src/linux-6.12.111 O=/work/build/kernel ARCH=riscv LLVM=1 -j'"$JOBS"' Image >/work/build/kernel/build.log 2>&1; /work/build/kernel/scripts/dtc/dtc -I dts -O dtb -o /work/build/linux/rv32-linux-soc.dtb /work/linux/rv32-linux-soc.dts'
