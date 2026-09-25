@@ -25,6 +25,28 @@ command per 32-bit PSRAM access, with 28 serial steps for a quad read and two
 core cycles per step, plus setup and turnaround. NOR reads stop increasing
 after the kernel image is loaded; the later work is served from PSRAM.
 
+The serial protocol itself gives a useful lower bound. Even the shortest
+one-byte PSRAM write takes 16 serial steps, or 32 core cycles; a full-word
+write takes 44 cycles and a read takes 56, before setup, response, bus, CPU,
+or software overhead. Thus 204.1 million PSRAM transactions require **at
+least 6.53 billion cycles** in the serial shift states alone, at least half
+of the observed 13.043 billion cycles. The 1.217 million NOR reads add at
+least 117 million shift cycles (48 steps each). These bounds do not identify
+the remaining cycles, but they rule out timer handlers as the primary cost.
+
+| Boot phase in the first run | Cycle span | What the trace establishes |
+|---|---:|---|
+| Firmware loads the kernel from NOR into PSRAM | 0–0.70 billion | NOR reads rise to 1.217 million, then stop. |
+| Kernel starts through serial-console registration | 0.70–9.74 billion | PSRAM traffic continues; sparse PC samples include `inflate_fast` and `memcpy`, among many init functions. |
+| Serial-console registration through `/init` | 9.74–12.36 billion | Samples and warnings include the debug plist self-test; page-table debug validation appears at 12.22 billion. |
+| `/init` through userspace ready marker | 12.36–12.82 billion | Initramfs files are already available; shell startup follows. |
+
+The trace does not delimit the initramfs unpack operation precisely, so it
+cannot support a percentage of boot time attributed to that copy/decompress
+phase. The 2.62 billion cycles between serial-console registration and
+`/init` include other known work, notably the plist and page-table debug
+paths; initramfs unpack may also occur in that interval.
+
 The kernel already uses `CONFIG_HZ=16`, disables high-resolution timers, and
 enables idle tick suppression. During steady kernel initialization, the trace
 shows about 80 timer traps per 100 million cycles, matching 16 Hz at the
