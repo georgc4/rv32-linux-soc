@@ -12,6 +12,8 @@ userspace marker. The subsequent analysis found that CSR writes to `mip` and
 `sip` could copy a live external interrupt bit into the software-pending
 latch. Commit `8b2424d1772dea68066f662f3578a466f4087943` fixes this and
 adds a directed regression; its full serial acceptance run is in progress.
+The regression fails against the preceding RTL with `software_mip=0x220`
+after an MIP timer-bit set while live SEIP is high, and passes with the fix.
 
 | Event in first run | Simulated core cycle |
 |---|---:|
