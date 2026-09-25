@@ -35,6 +35,8 @@ test-priv:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s priv_trap_tb -o build/priv_trap_tb rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v sim/tests/priv_trap_tb.v
 	$(VVP) build/priv_trap_tb
+	$(IVERILOG) -g2012 -Wall -s priv_mip_tb -o build/priv_mip_tb rtl/cpu/rv32_priv_unit.v sim/tests/priv_mip_tb.v
+	$(VVP) build/priv_mip_tb
 
 test-sv32:
 	mkdir -p build
