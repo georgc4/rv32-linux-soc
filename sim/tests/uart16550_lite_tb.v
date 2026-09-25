@@ -67,7 +67,30 @@ module uart16550_lite_tb;
         transaction(0, 0, 0, read_back); // RBR clears RX ready
         if (read_back[7:0] !== 8'h41 || irq)
             $fatal(1, "UART RX mismatch byte=%h irq=%b", read_back[7:0], irq);
-        $display("PASS uart16550_lite: serial RX, data-ready, interrupt clear");
+
+        transaction(4, 2, 1, read_back); // Enable THRE interrupt while idle
+        if (!irq) $fatal(1, "UART initial THRE interrupt missing");
+        transaction(8, 0, 0, read_back); // IIR reports and acknowledges THRE
+        if (read_back[7:0] !== 8'h02 || irq)
+            $fatal(1, "UART THRE IIR acknowledgement failed iir=%h irq=%b",
+                   read_back[7:0], irq);
+        transaction(8, 0, 0, read_back);
+        if (read_back[7:0] !== 8'h01 || irq)
+            $fatal(1, "UART THRE interrupt reasserted without a new event");
+        transaction(0, 8'h5a, 1, read_back); // THR write starts a transmission
+        if (irq) $fatal(1, "UART THRE interrupt asserted while transmitting");
+        repeat (200) @(negedge clk);
+        if (!irq) $fatal(1, "UART THRE interrupt missing after transmission");
+        transaction(8, 0, 0, read_back);
+        if (read_back[7:0] !== 8'h02 || irq)
+            $fatal(1, "UART completed THRE interrupt did not clear");
+
+        transaction(4, 0, 1, read_back); // Disabling IER clears pending THRE
+        transaction(4, 2, 1, read_back);
+        if (!irq) $fatal(1, "UART THRE interrupt missing after re-enable");
+        transaction(0, 8'h33, 1, read_back); // THR write also acknowledges THRE
+        if (irq) $fatal(1, "UART THR write did not clear THRE interrupt");
+        $display("PASS uart16550_lite: serial RX and acknowledged THRE IRQ");
         $finish;
     end
 endmodule

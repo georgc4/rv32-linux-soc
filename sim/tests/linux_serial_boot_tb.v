@@ -19,6 +19,11 @@ module linux_serial_boot_tb;
     longint unsigned cycles = 0;
     longint unsigned machine_timer_traps = 0;
     longint unsigned supervisor_timer_traps = 0;
+    longint unsigned supervisor_external_traps = 0;
+    longint unsigned uart_irq_edges = 0;
+    longint unsigned plic_claims = 0;
+    longint unsigned plic_completes = 0;
+    reg last_uart_irq = 0;
     longint unsigned sbi_ecalls = 0;
     longint unsigned retired_instructions = 0;
     longint unsigned last_retired_report = 0;
@@ -116,6 +121,13 @@ module linux_serial_boot_tb;
 
     always @(posedge clk) if (rst_n) begin
         cycles <= cycles + 1;
+        if (dut.uart_irq && !last_uart_irq)
+            uart_irq_edges <= uart_irq_edges + 1;
+        last_uart_irq <= dut.uart_irq;
+        if (dut.sv[6] && dut.sr[6] && dut.va == 32'h00200004) begin
+            if (dut.vw) plic_completes <= plic_completes + 1;
+            else plic_claims <= plic_claims + 1;
+        end
         if (dut.sv[2] && dut.sr[2] && !dut.vw && dut.va[4:2] == 0 &&
             !dut.uart.dlab && dut.uart.rx_valid)
             uart_rx_consumed <= uart_rx_consumed + 1;
@@ -129,6 +141,8 @@ module linux_serial_boot_tb;
                 machine_timer_traps <= machine_timer_traps + 1;
             if (dut.cpu.trap_interrupt && dut.cpu.trap_cause == 5)
                 supervisor_timer_traps <= supervisor_timer_traps + 1;
+            if (dut.cpu.trap_interrupt && dut.cpu.trap_cause == 9)
+                supervisor_external_traps <= supervisor_external_traps + 1;
             if (!dut.cpu.trap_interrupt && dut.cpu.trap_cause == 9)
                 sbi_ecalls <= sbi_ecalls + 1;
             if (!dut.cpu.trap_interrupt &&
@@ -193,9 +207,11 @@ module linux_serial_boot_tb;
             end
         end
         if (cycles == next_report) begin
-            $display("PROGRESS cycles=%0d pc=%h priv=%d satp=%h mtimer=%0d stimer=%0d sbi=%0d retired=%0d retired_delta=%0d ram_req=%0d flash_req=%0d page_fault=%0d sync_trap=%0d spi_cmd=%0d,%0d,%0d,%0d,%0d uart_tail=%s", cycles,
+            $display("PROGRESS cycles=%0d pc=%h priv=%d satp=%h mtimer=%0d stimer=%0d sext=%0d uart_irq_edges=%0d plic_claims=%0d plic_completes=%0d sbi=%0d retired=%0d retired_delta=%0d ram_req=%0d flash_req=%0d page_fault=%0d sync_trap=%0d spi_cmd=%0d,%0d,%0d,%0d,%0d uart_tail=%s", cycles,
                      dut.cpu.pc, dut.current_privilege, dut.current_satp,
-                     machine_timer_traps, supervisor_timer_traps, sbi_ecalls,
+                     machine_timer_traps, supervisor_timer_traps,
+                     supervisor_external_traps, uart_irq_edges,
+                     plic_claims, plic_completes, sbi_ecalls,
                      retired_instructions, retired_instructions - last_retired_report,
                      ram_requests, flash_requests, page_faults, other_sync_traps,
                      spi_commands[0], spi_commands[1], spi_commands[2],

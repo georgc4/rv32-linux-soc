@@ -29,6 +29,23 @@ python3 experiments/runner.py run experiments/sweep.json --id <ID> --phase accep
 python3 experiments/visualize.py
 ```
 
+An already completed local `make test-linux-serial-boot` or timed serial run can
+be attached to the matching commit-pinned experiment without booting again:
+
+```sh
+python3 experiments/import_acceptance.py experiments/sweep.json --id <ID> \
+  --log build/linux-ash-smoke-run.log \
+  --binary build/obj_linux_ash_smoke/Vlinux_serial_boot_tb \
+  --flash-image build/linux/flash.bin
+```
+
+The importer requires ordered userspace, ash, program, and clean-exit markers;
+checks that every RTL and harness source matches the Git commit and predates
+the simulator binary; verifies the full serial hex against the flash image;
+then copies the log and binary into the run directory with hashes. Imported
+results are labeled as such in JSON. It refuses a partial run or an existing
+acceptance stage.
+
 Open `build/experiments/pareto.html` in a browser. The dashboard is self
 contained and offline. It shows source commits, sweep settings, stage status,
 measured area, early setup slack, and Linux cycles. Change either axis to
