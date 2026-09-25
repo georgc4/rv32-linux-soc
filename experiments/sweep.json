@@ -2,7 +2,7 @@
   "name": "sky26d-baseline",
   "flash_image": "build/linux/flash.bin",
   "revisions": [
-    {"label": "baseline", "ref": "HEAD"}
+    {"label": "baseline", "ref": "410115b594b197e2c49539377d8368e5a45d3a9c"}
   ],
   "matrix": {
     "abc_delay_ps": [null],
