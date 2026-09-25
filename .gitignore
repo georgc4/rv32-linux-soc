@@ -4,3 +4,5 @@ __pycache__/
 .DS_Store
 src/config_merged.json
 src/user_config.json
+docs/independent-design-review.md
+docs/design-review-follow-up.md
