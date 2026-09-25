@@ -7,7 +7,11 @@ The first run used RTL commit `19cb40a50abec1db30baf7332790ac22d1c009c8`.
 It reached `/init` and the userspace ready marker, then entered a UART/PLIC
 interrupt loop before the ash prompt. Commit
 `410115b594b197e2c49539377d8368e5a45d3a9c` adds an acknowledged UART
-transmit-empty interrupt; its full acceptance result is tracked separately.
+transmit-empty interrupt, but its full run reproduced the loop after the
+userspace marker. The subsequent analysis found that CSR writes to `mip` and
+`sip` could copy a live external interrupt bit into the software-pending
+latch. Commit `8b2424d1772dea68066f662f3578a466f4087943` fixes this and
+adds a directed regression; its full serial acceptance run is in progress.
 
 | Event in first run | Simulated core cycle |
 |---|---:|
