@@ -1,8 +1,6 @@
 `timescale 1ns/1ps
 // Full-image experiment: real ROM, bridge, and quad-lane SPI transfers to all chips.
-module linux_serial_boot_tb;
-    reg clk = 0;
-    always #5 clk = ~clk;
+module linux_serial_boot_tb(input wire clk);
     reg rst_n = 0;
     reg uart_rx = 1;
     wire uart_tx, spi_sck, initialized, halted, fault;

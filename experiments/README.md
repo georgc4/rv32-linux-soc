@@ -10,6 +10,13 @@ ash_program=pass` with cycle and request counts; a panic, UART overrun, CPU
 fault, timeout, or missing program output fails the gate. This is a deliberately
 small first userspace program, not a comprehensive shell or classifier test.
 
+The Verilator harness drives the same 10 ns testbench clock from C++ so each
+edge reaches the unchanged bit/nibble-level serial chip models without the
+simulator scheduling an `always #5` event. On this Mac, a 100 million cycle
+serial boot window fell from 34.8 to 22.1 host seconds; its progress records,
+including SPI command counts and CPU state, matched at 25 million cycle
+intervals. Runtime threading was slower for this design.
+
 Each design version is a **Git commit**. The experiment runner checks out the
 exact commit as a detached worktree under ignored `build/experiments/runs/`,
 records the resolved 40-character SHA and complete config, and refuses to
@@ -87,7 +94,8 @@ Early WNS is not routed signoff.
 
 The runner requires the local Sky130A PDK for synthesis and the prepared
 `build/sky130/venv` LibreLane runtime for PNR. The acceptance phase takes an
-explicit flash-image path and records its SHA-256 plus the testbench SHA-256.
+explicit flash-image path and records its SHA-256 plus the combined testbench
+and C++ clock-driver SHA-256.
 The result JSON, logs, mapped netlist, and PNR workspace live in each run
 directory. When several PNR settings use the same RTL commit, flash image,
 serial model, and harness, a passing acceptance result is reused with an

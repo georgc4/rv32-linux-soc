@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -18,6 +19,7 @@ CHECKED_SOURCES = [
     *RTL_SOURCES,
     "firmware/boot_rom.hex",
     "sim/tests/linux_serial_boot_tb.v",
+    "sim/tests/linux_serial_boot_main.cpp",
     "sim/models/serial_spi_model.v",
 ]
 COMMAND = "/bin/acceptance_smoke\n"
@@ -108,7 +110,10 @@ def main() -> None:
         "cycles": int(marker.group(1)),
         "uart_rx_bytes": int(marker.group(2)),
         "image_sha256": run["image_sha256"],
-        "harness_sha256": source_hashes["sim/tests/linux_serial_boot_tb.v"],
+        "harness_sha256": hashlib.sha256(
+            (ROOT / "sim/tests/linux_serial_boot_tb.v").read_bytes() +
+            (ROOT / "sim/tests/linux_serial_boot_main.cpp").read_bytes()
+        ).hexdigest(),
         "serial_model_sha256": source_hashes["sim/models/serial_spi_model.v"],
         "source_files_sha256": source_hashes,
         "binary_sha256": sha256(binary_copy),

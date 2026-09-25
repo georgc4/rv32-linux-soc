@@ -69,6 +69,7 @@ def planned_runs(manifest: Path) -> list[dict]:
         path.read_bytes() for path in (
             ROOT / "experiments/runner.py", ROOT / "tt/stage_sky26d.py",
             ROOT / "tt/run_sky130_synth.sh", ROOT / "sim/tests/linux_serial_boot_tb.v",
+            ROOT / "sim/tests/linux_serial_boot_main.cpp",
             ROOT / "sim/models/serial_spi_model.v",
         ))).hexdigest()
     pdk_root = Path(os.environ.get("PDK_ROOT", Path.home() / ".volare")) / "sky130A"
@@ -281,7 +282,10 @@ def run_acceptance(run_dir: Path, source: Path, flash_image: Path,
     if not image.is_file():
         raise FileNotFoundError(f"flash image missing: {image}")
     image_hash = sha256(image)
-    harness_hash = sha256(ROOT / "sim/tests/linux_serial_boot_tb.v")
+    harness_hash = hashlib.sha256(
+        (ROOT / "sim/tests/linux_serial_boot_tb.v").read_bytes() +
+        (ROOT / "sim/tests/linux_serial_boot_main.cpp").read_bytes()
+    ).hexdigest()
     model_hash = sha256(ROOT / "sim/models/serial_spi_model.v")
     commit = git("rev-parse", "HEAD", cwd=source)
     cached = cached_acceptance(commit, image_hash, harness_hash, model_hash)
@@ -304,12 +308,13 @@ def run_acceptance(run_dir: Path, source: Path, flash_image: Path,
                     str(local_image), str(hex_file)], cwd=source, check=True,
                    stdout=subprocess.DEVNULL)
     binary_dir = run_dir / "verilator"
-    command = ["verilator", "--binary", "--timing", "-O3", "-j", "4", "-Wno-fatal",
+    command = ["verilator", "--cc", "--exe", "--build", "--timing", "-O3", "-j", "4", "-Wno-fatal",
                "-CFLAGS", "-O3", "--top-module", "linux_serial_boot_tb",
                "--Mdir", str(binary_dir),
                str(ROOT / "sim/tests/linux_serial_boot_tb.v"),
                str(ROOT / "sim/models/serial_spi_model.v")]
     command += [str(source / path) for path in RTL_SOURCES]
+    command += [str(ROOT / "sim/tests/linux_serial_boot_main.cpp")]
     status, code = run_logged(command, source, run_dir / "acceptance-compile.log", 1800)
     result = {"status": status, "returncode": code, "image_sha256": image_hash,
               "harness_sha256": harness_hash,

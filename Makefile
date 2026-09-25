@@ -144,7 +144,7 @@ test-linux-handoff: image-linux-flash
 # Slow full-image run through the production quad-capable SPI bridge and five chips.
 test-linux-serial-boot: image-linux-flash
 	$(PYTHON) scripts/flash_to_bytehex.py build/linux/flash.bin build/linux/flash.serial.hex
-	$(VERILATOR) --binary --timing -O3 -j 4 -Wno-fatal -CFLAGS '-O3' --top-module linux_serial_boot_tb --Mdir build/obj_linux_serial sim/tests/linux_serial_boot_tb.v sim/models/serial_spi_model.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v
+	$(VERILATOR) --cc --exe --build --timing -O3 -j 4 -Wno-fatal -CFLAGS '-O3' --top-module linux_serial_boot_tb --Mdir build/obj_linux_serial sim/tests/linux_serial_boot_tb.v sim/models/serial_spi_model.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/tests/linux_serial_boot_main.cpp
 	build/obj_linux_serial/Vlinux_serial_boot_tb
 
 synth-bus:
