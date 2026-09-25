@@ -2,6 +2,17 @@
 
 Goal: an original RV32 SoC on a Tiny Tapeout die that boots Linux from external NOR into 32 MiB of external PSRAM, exposes a UART shell, and runs an 8×8 grayscale digit classifier.
 
+## TTSKY26d project draft
+
+This branch includes Tiny Tapeout's root-level [project metadata](info.yaml),
+`src/` RTL snapshot, [project documentation](docs/info.md), testbench, and
+GDS/Docs workflows. The source snapshot is refreshed from `rtl/` with
+`python3 tt/update_submission_sources.py`. It is a **draft**: the local 8×2
+physical trials have not completed a GDS, so no fabrication revision is ready.
+The existing GitHub repository is private. Creating a Tiny Tapeout portal
+project and reserving tiles are separate actions from passing the flow and
+submitting a built revision.
+
 The repository now contains an integrated RTL path: RV32IMA CPU, selected machine/supervisor CSRs and traps, Sv32 walker, 4-bank SPI PSRAM and NOR read/program/erase, boot ROM, UART, CLINT-like timer, one-source PLIC, physical interconnect and Tiny Tapeout logical pin wrapper. Simulations boot a checked diagnostic flash image and reject a corrupt one. A local build produces a Linux 6.12.111 RV32 `Image`, DTB, embedded BusyBox ash initramfs, digit demo, M-mode SBI loader, and a 16 MiB NOR image. A full-image RTL simulation reached `/init` through real serial transfers across the modeled NOR and four PSRAM chips; BusyBox ash executed the init script and printed `RV32 Linux userspace ready` at cycle 12,454,790,706. The test exits at that marker, before checking the interactive shell prompt. The first SKY26d 8×2 physical attempt [failed detailed placement](tt/physical-baseline.md) after high area density and buffer insertion. ASIC fit, compliance testing, routed timing, and board validation remain open.
 
 ## Local checks
