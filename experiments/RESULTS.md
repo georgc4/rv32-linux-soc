@@ -74,7 +74,10 @@ zero reduces hold endpoints from 2,550 to 3. That run completes global
 routing but fails during antenna repair when placement cannot fit the
 inserted jumpers. The smaller 2-entry/shared-read-core physical run also
 reaches antenna repair and fails detailed placement there; its global route
-reports congestion. No new area campaign point has routed GDS yet.
+reports congestion. The corresponding 4-entry/shared-read-core run fails at
+the same antenna-repair placement step. No new area campaign point has routed
+GDS yet. The provisional 8×2 floorplan remains too congested for these
+variants despite successful synthesis and pre-antenna global routing.
 
 The kernel-only images retain baseline RTL. Disabling `CONFIG_DEBUG_PLIST`
 reduces packed kernel bytes from 4,864,556 to 4,856,268; also disabling
