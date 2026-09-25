@@ -1,0 +1,13 @@
+{
+  "name": "sky26d-zero-hold-margin",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 4 shared context", "ref": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 0"],
+    "synth_abc_area_use_nf": [false],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

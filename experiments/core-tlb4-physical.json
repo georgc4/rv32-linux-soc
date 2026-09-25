@@ -1,0 +1,12 @@
+{
+  "name": "core-read-share-four-entry-physical",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 4 + single core read port", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

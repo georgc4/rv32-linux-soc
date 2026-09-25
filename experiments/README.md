@@ -94,3 +94,53 @@ serial model, and harness, a passing acceptance result is reused with an
 explicit link to its original log; the multi-billion-cycle boot runs once for
 that functional design. `--timeout-hours` and `--max-cycles` bound long trials. No sweep
 changes RTL, the memory topology, the ISA, or the shell image by itself.
+
+## Area and kernel trials
+
+[`tlb-sweep.json`](tlb-sweep.json) compares the committed 8-entry and 4-entry
+direct-mapped TLBs with a 4-entry variant that shares a single SATP context.
+The shared-context adapter invalidates cached entries when SATP changes; it
+also omits the index bits from each stored VPN tag. All runs use the same
+baseline flash image under `build/experiments/baseline-flash.bin` and its
+adjacent `.json` manifest. The runner copies both files into each detached
+worktree before serial simulation.
+
+[`area-strategy-sweep.json`](area-strategy-sweep.json) tries LibreLane
+`AREA 1` through `AREA 3` at the same 50 ns clock and 60% requested density;
+`AREA 0` is in the TLB sweep. [`area-nf-sweep.json`](area-nf-sweep.json)
+tests the ABC area `nf` switch. Standalone Yosys mapped area screens RTL
+changes, while the LibreLane PNR metrics compare the synthesis strategies.
+[`area-hold-zero.json`](area-hold-zero.json) isolates the physical hold-margin
+setting after the 0.1 ns trial inserted thousands of hold buffers and failed
+placement. A zero-margin result still needs routed STA and physical checks;
+it is an experiment, not a signoff waiver.
+
+[`mdu-share.json`](mdu-share.json) combines the division trial comparison and
+subtraction, and shares the signed-result negation path. [`tlb-two.json`](tlb-two.json)
+screens a 2-entry TLB. [`core-read-share.json`](core-read-share.json) adds a
+single shared general-register read mux, using one extra core cycle to latch
+the second operand. [`core-read-tlb4.json`](core-read-tlb4.json) repeats that
+core architecture with 4 TLB entries. The matching
+[`core-physical.json`](core-physical.json) and
+[`core-tlb4-physical.json`](core-tlb4-physical.json) use `AREA 2` and zero
+requested hold margin for physical comparisons.
+
+The two kernel-image trials remove `CONFIG_DEBUG_PLIST` and then also
+`CONFIG_DEBUG_VM_PGTABLE`. Generate the full config deterministically from
+the tracked baseline and build each image with:
+
+```sh
+python3 linux/config-variant.py no-plist build/experiments/configs/no-plist.config
+KERNEL_CONFIG=build/experiments/configs/no-plist.config make image-linux-flash
+mkdir -p build/experiments/images/no-plist
+cp build/linux/flash.bin build/linux/flash.bin.json build/linux/Image \
+  build/kernel/.config build/experiments/images/no-plist/
+```
+
+Repeat with `no-plist-no-vm-pgtable` for the second image. `make
+image-linux-flash` replaces `build/linux/flash.bin`, so copy each result
+before starting the next build. Run the matching
+[`kernel-no-plist.json`](kernel-no-plist.json) or
+[`kernel-no-plist-no-vm-pgtable.json`](kernel-no-plist-no-vm-pgtable.json)
+manifest against the pinned baseline RTL to isolate the image change. The
+flash SHA-256 and occupied flash span are recorded in each adjacent manifest.

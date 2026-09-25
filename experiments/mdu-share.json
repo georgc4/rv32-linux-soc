@@ -1,0 +1,7 @@
+{
+  "name": "mdu-logic-sharing",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 4 shared context + MDU sharing", "ref": "cefb9b04354d96d181254e1dff16957591ffe45e"}
+  ]
+}

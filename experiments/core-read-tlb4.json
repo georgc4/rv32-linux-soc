@@ -1,0 +1,7 @@
+{
+  "name": "single-read-port-four-entry-tlb",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 4 + single core read port", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"}
+  ]
+}

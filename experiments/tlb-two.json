@@ -1,0 +1,7 @@
+{
+  "name": "sv32-two-entry-area-limit",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 2 shared context + MDU sharing", "ref": "ad9aadc152a90be0e960bd172d1de0e9fa9c3567"}
+  ]
+}

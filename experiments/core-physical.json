@@ -1,0 +1,12 @@
+{
+  "name": "core-read-share-physical",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "TLB 2 + single core read port", "ref": "e360da0c62dc093284aa8832d21ad298ffa11d21"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}
