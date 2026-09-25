@@ -58,6 +58,8 @@ def collect() -> list[dict]:
                                   pnr_log.read_text(errors="replace"))
             if failures:
                 failure_reason = " ".join(failures[-1])
+        if acceptance.get("status") == "error":
+            failure_reason = acceptance.get("error", "acceptance setup error")
         qualified = (pnr.get("status") == "pass" and pnr.get("gds_present") is True
                      and acceptance.get("status") == "pass")
         rows.append({
