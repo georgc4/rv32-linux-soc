@@ -1,0 +1,8 @@
+{
+  "name": "kernel-fast-rtl",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "TLB 4 shared context + smaller kernel", "ref": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8"},
+    {"label": "TLB 4 + shared core read port + smaller kernel", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"}
+  ]
+}

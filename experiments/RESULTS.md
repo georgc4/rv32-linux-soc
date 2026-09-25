@@ -38,8 +38,8 @@ NOR chip, received 22 command bytes through the UART, printed
 ## Area campaign, 2026-09-25
 
 Each RTL row below is a separate Git commit measured by the same standalone
-Yosys/SKY130 screen. The new serial runs are still active; a mapped-area
-improvement by itself is not a qualified Pareto result.
+Yosys/SKY130 screen. A mapped-area improvement by itself is not a qualified
+Pareto result.
 
 | RTL revision | Change | Mapped cells | Mapped area (µm²) | Versus `8b2424d` |
 |---|---|---:|---:|---:|
@@ -56,9 +56,21 @@ The 16-to-4-entry shared-context TLB change accounts for 44,532.7 µm² of
 total saving; its adapter module falls from 63,360.8 to 19,426.1 µm².
 The shared core read port saves 5,068.6 µm² relative to the same 2-entry
 TLB architecture. It adds one operand-read cycle per instruction; the focused
-core test grew from 795 to 867 cycles for 85 retired instructions. Full boot
-cycle and shell results are being measured through unchanged true serial
-NOR/PSRAM and UART paths.
+core test grew from 795 to 867 cycles for 85 retired instructions. The full
+boot trials preserve the true serial NOR/PSRAM and UART paths.
+
+All first-wave baseline-image serial trials have finished. The 8-entry TLB
+passed ash and `/bin/acceptance_smoke` in 17,221,284,460 cycles, versus
+13,010,943,367 for the 16-entry baseline. The 4-entry TLB, its shared-context
+version, and the MDU-sharing version reached the ash prompt at exactly
+19,892,897,550 cycles and began the acceptance command, but hit the
+20-billion-cycle cap before its output. Those are timeouts after a working
+shell, not observed functional failures. The 4-entry TLB plus shared core
+read port reached `/init` at 19,909,867,269 cycles, then also hit the cap.
+Both 2-entry variants reached the kernel's PLIC initialization but not
+`/init` within 20 billion cycles. A focused follow-up uses the already
+validated smaller kernel image to qualify the 4-entry candidates with a
+higher cap.
 
 At the 4-entry shared-context commit, LibreLane's physical synthesis mapped
 `AREA 0`, `AREA 1`, `AREA 2`, `AREA 3`, and `AREA 0` plus ABC `nf` to
