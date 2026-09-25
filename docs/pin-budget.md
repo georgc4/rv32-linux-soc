@@ -17,7 +17,7 @@ The `tt_um_rv32_linux_soc` wrapper assigns six bidirectional signals, seven outp
 
 The split IO2/IO3 assignment lets PSRAM use its required low power-up bias while the NOR's corresponding pins have a defined high startup level. The purchased SIQ NOR has QE fixed on, so those pins carry quad read data after the serial command and address. The bridge waits 150 µs at a 20 MHz clock, resets each PSRAM with `66h` then `99h`, and uses SCK at half the SoC clock. PSRAM `EBh` reads use 8 serial command clocks, 6 quad address clocks, 6 wait clocks, and 8 quad data clocks for a word; `38h` full-word writes use 8+6+8 clocks. Both fit the PSRAM 8 µs CS-low maximum at 10 MHz SCK. The board must provide a stable 20 MHz clock, appropriate 3.3 V signaling and power, common ground, each device's decoupling, and the stated passive pulls. Pad drive/fanout and physical signal integrity remain unverified.
 
-The 5×4 SKY26d wrapper uses Tiny Tapeout's documented `ui_in[3]`/`uo_out[4]`
+The SKY26d wrapper uses Tiny Tapeout's documented `ui_in[3]`/`uo_out[4]`
 UART pair. The onboard RP2 controller has UART-capable connections to that pair;
 the demoboard USB port still requires a forwarding configuration or an
 external 3.3 V USB-to-UART adapter for an interactive console. The alternate
