@@ -79,10 +79,23 @@ the same antenna-repair placement step. No new area campaign point has routed
 GDS yet. The provisional 8×2 floorplan remains too congested for these
 variants despite successful synthesis and pre-antenna global routing.
 
+The public `main` submission-package run at commit `32e9ce3` independently
+reproduced the baseline physical failure in Tiny Tapeout's GitHub GDS action:
+`OpenROAD.RepairDesignPostGPL` ended with `[DPL-0036] Detailed placement
+failed`. Docs and fast checks passed, but no GDS artifact was produced. The
+action run is `https://github.com/georgc4/rv32-linux-soc/actions/runs/36179089201`.
+
 The kernel-only images retain baseline RTL. Disabling `CONFIG_DEBUG_PLIST`
 reduces packed kernel bytes from 4,864,556 to 4,856,268; also disabling
-`CONFIG_DEBUG_VM_PGTABLE` reduces them to 4,855,980. Their serial boot
-trials are active with separate flash hashes and effective kernel configs.
+`CONFIG_DEBUG_VM_PGTABLE` reduces them to 4,855,980. Both variants passed
+the full true-serial BusyBox ash plus `/bin/acceptance_smoke` gate. The first
+passed in 11,196,604,401 cycles (flash SHA-256
+`5ecc0c79c514643baaa4d3445453ece19de346acbd4c387a8a2fe24f11266f13`);
+the second passed in 11,155,721,103 cycles (flash SHA-256
+`590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615`).
+These are 13.9% and 14.3% below the earlier baseline gate, respectively.
+The measured image and simulation result is sound; attributing all cycle
+savings to those two config bits requires further image comparison.
 Rebuilding the unmodified baseline config on 2026-09-25 reproduced flash
 SHA-256 `d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c`
 exactly, matching the image used for the earlier ash-program pass.
