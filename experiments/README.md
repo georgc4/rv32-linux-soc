@@ -60,6 +60,12 @@ reduction or a larger allocation is needed before density tuning is likely to
 produce a routed point.
 The baseline's old Linux result reached `/init` only;
 it is labeled "boot marker only" and does not qualify.
+The `8b2424d` serial run has now passed the ash-program gate at
+13,010,943,367 cycles; the 50 ns and 35 ns standalone ABC screens reuse its
+verified evidence because they have the same RTL, harness, and flash image.
+Those points still do not qualify for the frontier because no routed GDS has
+been produced. A concise committed [results snapshot](RESULTS.md) records the
+measurements and their limits.
 
 The matrix in [`sweep.json`](sweep.json) can list multiple Git revisions,
 standalone Yosys ABC delay targets, LibreLane synthesis strategies, clock

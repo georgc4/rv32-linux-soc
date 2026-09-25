@@ -11,7 +11,9 @@ transmit-empty interrupt, but its full run reproduced the loop after the
 userspace marker. The subsequent analysis found that CSR writes to `mip` and
 `sip` could copy a live external interrupt bit into the software-pending
 latch. Commit `8b2424d1772dea68066f662f3578a466f4087943` fixes this and
-adds a directed regression; its full serial acceptance run is in progress.
+adds a directed regression. Its full serial acceptance run passed: BusyBox ash
+accepted `/bin/acceptance_smoke` over UART and the program printed
+`ASH_PROGRAM_OK` before the simulator exited with code 0.
 The regression fails against the preceding RTL with `software_mip=0x220`
 after an MIP timer-bit set while live SEIP is high, and passes with the fix.
 
@@ -22,9 +24,20 @@ after an MIP timer-bit set while live SEIP is high, and passes with the fix.
 | `RV32 Linux userspace ready` | 12,821,128,202 |
 | UART/PLIC loop observed, no further timer progress | 12.84–13.04 billion |
 
-At 13.043 billion cycles, the first run had accepted 204.1 million PSRAM
-transactions and 1.217 million NOR reads. Dividing elapsed cycles by those
-transactions gives about 64 core cycles per transaction overall. This is a
+| Event in accepted run (`8b2424d`) | Simulated core cycle |
+|---|---:|
+| `Run /init as init process` | 12,362,453,993 |
+| `RV32 Linux userspace ready` | 12,821,128,202 |
+| Interactive BusyBox ash prompt | 12,924,486,706 |
+| `/bin/acceptance_smoke` prints `ASH_PROGRAM_OK` | 13,010,943,367 |
+
+The accepted run consumed all 22 UART command bytes, recorded 203,572,887
+PSRAM requests and 1,216,853 NOR requests, and ended cleanly. Its evidence is
+attached to experiment `8b2424d1772d-4b86b7212906` with a verified source
+revision, simulator binary, and flash-image hash.
+
+Dividing the accepted run's 13.011 billion cycles by its memory requests
+gives about 64 core cycles per transaction overall. This is a
 throughput indicator, **not** an exact attribution of cycles: CPU work and
 interrupt service are included in the numerator. The bridge performs one
 command per 32-bit PSRAM access, with 28 serial steps for a quad read and two
@@ -34,9 +47,9 @@ after the kernel image is loaded; the later work is served from PSRAM.
 The serial protocol itself gives a useful lower bound. Even the shortest
 one-byte PSRAM write takes 16 serial steps, or 32 core cycles; a full-word
 write takes 44 cycles and a read takes 56, before setup, response, bus, CPU,
-or software overhead. Thus 204.1 million PSRAM transactions require **at
-least 6.53 billion cycles** in the serial shift states alone, at least half
-of the observed 13.043 billion cycles. The 1.217 million NOR reads add at
+or software overhead. Thus 203.57 million PSRAM transactions require **at
+least 6.51 billion cycles** in the serial shift states alone, just over half
+of the accepted 13.011 billion cycles. The 1.217 million NOR reads add at
 least 117 million shift cycles (48 steps each). These bounds do not identify
 the remaining cycles, but they rule out timer handlers as the primary cost.
 

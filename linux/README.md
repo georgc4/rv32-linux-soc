@@ -4,9 +4,19 @@ Run `make image-linux` on the M3 Mac. The script uses the existing local Podman 
 
 Outputs appear in `build/linux/`: uncompressed `Image` with the BusyBox initramfs and digit demo built in, `rv32-linux-soc.dtb`, an inspectable `initramfs.cpio`, copies of the userspace binaries, and a size/hash manifest. The Image header requests physical address `0x80400000`, 4 MiB after the start of PSRAM. The DTB reserves `0x80000000`–`0x803fffff` for resident firmware. `check-image.py` checks the artifact headers and provisional flash/RAM ceilings. The BusyBox executable uses RV32IMA with Zicsr/Zifencei and a soft-float ABI; the kernel config disables compressed instructions and FPU use. Strict kernel RWX protection is disabled to avoid 4 MiB alignment gaps that otherwise put `Image` over the NOR budget.
 
-The DTB connects the UART to a one-source PLIC at `0x0c000000`. Run `make image-linux-flash` to compile the M-mode loader and pack it, the DTB, and the `Image` into a 16 MiB NOR image at `build/linux/flash.bin`. Its companion JSON records offsets, sizes, and the SHA-256 hash. `make test-linux-handoff` verifies the ROM-to-S-mode path, SBI BASE/TIME calls, supervisor timer interrupt, and UART interrupt routing using a small kernel-shaped test payload. A full-image RTL run has also reached the BusyBox ash `/init` userspace marker.
+The DTB connects the UART to a one-source PLIC at `0x0c000000`. Run `make image-linux-flash` to compile the M-mode loader and pack it, the DTB, and the `Image` into a 16 MiB NOR image at `build/linux/flash.bin`. Its companion JSON records offsets, sizes, and the SHA-256 hash. `make test-linux-handoff` verifies the ROM-to-S-mode path, SBI BASE/TIME calls, supervisor timer interrupt, and UART interrupt routing using a small kernel-shaped test payload.
 
 `make test-linux-serial-boot` is the longer full-image RTL acceptance run. It loads that exact flash package into a 16 MiB behavioral NOR, models four full 8 MiB PSRAM chips, and runs the production `serial_mem_bridge` from reset with serial commands and actual quad-lane address/data transfers. It prints CPU progress and UART lines. Success now requires the interactive BusyBox ash prompt and then the output of a separate RV32 program invoked by a command sent as real UART RX frames. The testbench waits for Linux to consume each byte, since the UART has no RX FIFO. This run is separate from fast CI. See [experiment framework](../experiments/README.md).
+
+The first completed full gate on RTL commit `8b2424d` passed at cycle
+13,010,943,367: BusyBox ash displayed `ASH>`, accepted
+`/bin/acceptance_smoke` through 22 UART RX bytes, and the separate RV32
+program printed `ASH_PROGRAM_OK`. Verilator exited with code 0. This used
+flash image SHA-256
+`d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c`.
+The accepted log and simulator binary are hashed in experiment
+`8b2424d1772d-4b86b7212906`; see the [boot performance note](../docs/boot-performance-baseline.md)
+for cycle attribution and next trials.
 
 The earlier 2026-09-24 run with `build/linux/flash.bin` (SHA-256 `8373980e8210d986666bc80c9ec08e696e106da5f6bf8e4e6780a02267bc5c4e`) reached the `/init` userspace marker at cycle 12,454,790,706. That older gate stopped before the interactive shell and did not meet the current acceptance condition. The same run recorded three recoverable kernel soft-lockup warnings during late initialization.
 
