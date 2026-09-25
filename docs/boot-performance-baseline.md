@@ -52,6 +52,10 @@ cannot support a percentage of boot time attributed to that copy/decompress
 phase. The 2.62 billion cycles between serial-console registration and
 `/init` include other known work, notably the plist and page-table debug
 paths; initramfs unpack may also occur in that interval.
+The built `Image` is 4,864,556 bytes and the uncompressed `initramfs.cpio` is
+446,464 bytes. A single bulk copy of the archive is much too small to explain
+billions of cycles by itself; archive decompression, file creation, and the
+rest of kernel init are distinct costs that need timed entry/exit probes.
 
 The kernel already uses `CONFIG_HZ=16`, disables high-resolution timers, and
 enables idle tick suppression. During steady kernel initialization, the trace
