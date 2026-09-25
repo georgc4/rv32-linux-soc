@@ -25,12 +25,13 @@ module rv32_mdu (
     wire [31:0] mul_high_su = mul_next[63:32] -
                                 (sign_a ? original_b : 32'b0);
     wire [32:0] div_trial = {remainder, quotient[31]};
-    wire div_ge = div_trial >= {1'b0, divisor};
-    wire [32:0] div_remainder_full = div_ge ?
-                                    div_trial - {1'b0, divisor} : div_trial;
-    wire [31:0] div_remainder_next = div_remainder_full[31:0];
-    wire unused_div_high = &{1'b0, div_remainder_full[32]};
+    wire [33:0] div_difference = {1'b0, div_trial} - {2'b0, divisor};
+    wire div_ge = !div_difference[33];
+    wire [31:0] div_remainder_next = div_ge ? div_difference[31:0] : div_trial[31:0];
     wire [31:0] div_quotient_next = {quotient[30:0], div_ge};
+    wire [31:0] div_raw_result = op[1] ? div_remainder_next : div_quotient_next;
+    wire div_negate_result = op[1] ? (op == 3'd6 && sign_a) :
+                             (op == 3'd4 && (sign_a ^ sign_b));
     wire [31:0] abs_a = (operation == 3'd4 || operation == 3'd6) && operand_a[31] ?
                         -operand_a : operand_a;
     wire [31:0] abs_b = (operation == 3'd4 || operation == 3'd6) && operand_b[31] ?
@@ -81,9 +82,7 @@ module rv32_mdu (
                     quotient <= div_quotient_next;
                     remainder <= div_remainder_next;
                     if (count == 6'd31) begin
-                        result <= op[1] ?
-                                  (op == 3'd6 && sign_a ? -div_remainder_next : div_remainder_next) :
-                                  (op == 3'd4 && (sign_a ^ sign_b) ? -div_quotient_next : div_quotient_next);
+                        result <= div_negate_result ? -div_raw_result : div_raw_result;
                         active <= 0;
                         done <= 1;
                     end
