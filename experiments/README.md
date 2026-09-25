@@ -34,8 +34,8 @@ be attached to the matching commit-pinned experiment without booting again:
 
 ```sh
 python3 experiments/import_acceptance.py experiments/sweep.json --id <ID> \
-  --log build/linux-ash-smoke-run.log \
-  --binary build/obj_linux_ash_smoke/Vlinux_serial_boot_tb \
+  --log build/linux-ash-uartfix-run.log \
+  --binary build/obj_linux_ash_uartfix/Vlinux_serial_boot_tb \
   --flash-image build/linux/flash.bin
 ```
 
