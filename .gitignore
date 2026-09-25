@@ -2,3 +2,5 @@ build/
 *.vcd
 __pycache__/
 .DS_Store
+docs/independent-design-review.md
+docs/design-review-follow-up.md
