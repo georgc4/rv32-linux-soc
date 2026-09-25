@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build an ignored, reviewable Tiny Tapeout 8x2 physical-flow workspace."""
+"""Build an ignored, reviewable Tiny Tapeout physical-flow workspace."""
 
 import argparse
 import json
@@ -28,6 +28,7 @@ parser.add_argument("--stage", type=Path, default=BUILD / "sky130" / "ttsky26d-s
 parser.add_argument("--template-cache", type=Path, default=BUILD / "ttsky-template")
 parser.add_argument("--tools-cache", type=Path, default=BUILD / "tt-support-tools")
 parser.add_argument("--clock-period-ns", type=float, default=50.0)
+parser.add_argument("--tile-shape", choices=["8x2", "5x4"], default="8x2")
 parser.add_argument("--density-pct", type=float, default=60.0)
 parser.add_argument("--synth-strategy", choices=[f"{kind} {level}" for kind in ("AREA", "DELAY")
                                                   for level in range(4)] + ["DELAY 4"],
@@ -98,7 +99,7 @@ lines = [
     '  description: "RV32 Linux SoC with external quad PSRAM and NOR"',
     '  language: "Verilog"',
     "  clock_hz: 20000000",
-    '  tiles: "8x2"',
+    f'  tiles: "{args.tile_shape}"',
     '  top_module: "tt_um_rv32_linux_soc"',
     "  source_files:",
 ]
@@ -110,7 +111,7 @@ lines += ["yaml_version: 6"]
 (stage / "info.yaml").write_text("\n".join(lines) + "\n")
 (stage / "docs" / "info.md").write_text(
     "# RV32 Linux SoC physical baseline\n\n"
-    "This provisional 8x2 Tiny Tapeout workspace copies the current production RTL. "
+    f"This provisional {args.tile_shape} Tiny Tapeout workspace copies the current production RTL. "
     "Review pin and floorplan choices before submission.\n"
 )
 (stage / "baseline.json").write_text(
@@ -119,7 +120,7 @@ lines += ["yaml_version: 6"]
             "rtl_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=rtl_root, text=True).strip(),
             "template_commit": TEMPLATE_REV,
             "support_tools_commit": TOOLS_REV,
-            "tile_shape": "8x2",
+            "tile_shape": args.tile_shape,
             "clock_period_ns": args.clock_period_ns,
             "placement_density_pct": args.density_pct,
             "synth_strategy": args.synth_strategy,
@@ -142,7 +143,7 @@ subprocess.run(
 subprocess.run(["git", "add", "-A"], cwd=stage, check=True)
 subprocess.run(
     ["git", "-c", "user.name=Physical Baseline", "-c", "user.email=baseline@example.invalid",
-     "commit", "-qm", "Stage current RTL for SKY26d 8x2 baseline"],
+     "commit", "-qm", f"Stage current RTL for SKY26d {args.tile_shape} baseline"],
     cwd=stage,
     check=True,
 )

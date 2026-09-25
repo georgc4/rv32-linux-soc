@@ -55,8 +55,11 @@ def sha256(path: Path) -> str:
 
 def planned_runs(manifest: Path) -> list[dict]:
     data = json.loads(manifest.read_text())
-    if set(data) - {"name", "revisions", "matrix", "flash_image"}:
+    if set(data) - {"name", "revisions", "matrix", "flash_image", "tile_shape"}:
         raise ValueError("manifest contains unsupported top-level keys")
+    tile_shape = data.get("tile_shape", "8x2")
+    if tile_shape not in ("8x2", "5x4"):
+        raise ValueError("unsupported Tiny Tapeout tile shape")
     if not data.get("revisions"):
         raise ValueError("manifest needs at least one revision")
     supplied = data.get("matrix", {})
@@ -86,6 +89,8 @@ def planned_runs(manifest: Path) -> list[dict]:
         commit = git("rev-parse", "--verify", f"{revision['ref']}^{{commit}}")
         for values in itertools.product(*matrix.values()):
             config = dict(zip(matrix, values))
+            if "tile_shape" in data:
+                config["tile_shape"] = tile_shape
             if config["abc_delay_ps"] is not None and (
                 not isinstance(config["abc_delay_ps"], int) or config["abc_delay_ps"] < 0
             ):
@@ -225,6 +230,7 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
     command = [sys.executable, str(ROOT / "tt/stage_sky26d.py"),
                "--rtl-root", str(source), "--stage", str(stage),
                "--clock-period-ns", str(config["clock_period_ns"]),
+               "--tile-shape", config.get("tile_shape", "8x2"),
                "--density-pct", str(config["placement_density_pct"]),
                "--synth-strategy", config["synth_strategy"],
                "--hold-margin-ns", str(config["hold_margin_ns"]),
@@ -274,6 +280,31 @@ def cached_acceptance(commit: str, image_hash: str, harness_hash: str,
                     "PASS BusyBox ash executed /bin/acceptance_smoke" in content):
                 return prior["id"], stage
     return None
+
+
+def reuse_verified_acceptance(commit: str, image_hash: str) -> dict:
+    """Reference a prior ash-program pass for this exact RTL commit and image."""
+    for path in sorted(RUNS.glob("*/result.json")):
+        prior = json.loads(path.read_text())
+        stage = prior.get("stages", {}).get("acceptance", {})
+        if (prior.get("commit") != commit or prior.get("image_sha256") != image_hash
+                or stage.get("status") != "pass" or stage.get("reused_from_run")):
+            continue
+        log = path.parent / "acceptance.log"
+        if not log.is_file():
+            continue
+        content = log.read_text(errors="replace")
+        marker = re.search(r"ACCEPTANCE ash_program=pass cycles=(\d+).*?rx_bytes=(\d+)", content)
+        if not marker or "PASS BusyBox ash executed /bin/acceptance_smoke" not in content:
+            continue
+        if stage.get("cycles") != int(marker.group(1)):
+            continue
+        if stage.get("source_log_sha256") and sha256(log) != stage["source_log_sha256"]:
+            continue
+        return {**stage, "provenance": "reused_verified_commit_and_image",
+                "reused_from_run": prior["id"],
+                "log": f"../{prior['id']}/acceptance.log"}
+    raise RuntimeError(f"no prior ash-program pass for commit {commit} and image {image_hash}")
 
 
 def run_acceptance(run_dir: Path, source: Path, flash_image: Path,
@@ -358,7 +389,7 @@ def run_one(run: dict, phase: str, flash_image: Path | None,
     stages = ["synth", "pnr", "acceptance"] if phase == "all" else [phase]
     passed = True
     for stage_name in stages:
-        if stage_name in result["stages"]:
+        if ("acceptance" if stage_name == "reuse-acceptance" else stage_name) in result["stages"]:
             raise RuntimeError(f"{run['id']} already has {stage_name}; use a new config/revision")
         print(f"{run['id']} {stage_name}: started", flush=True)
         started = utc_now()
@@ -367,6 +398,11 @@ def run_one(run: dict, phase: str, flash_image: Path | None,
                 value = synthesize(run, run_dir, source, 1800)
             elif stage_name == "pnr":
                 value = place_and_route(run, run_dir, source, timeout_hours * 3600)
+            elif stage_name == "reuse-acceptance":
+                if run["image_sha256"] is None:
+                    raise ValueError("manifest flash_image is required to reuse acceptance")
+                value = reuse_verified_acceptance(run["commit"], run["image_sha256"])
+                stage_name = "acceptance"
             else:
                 if flash_image is None:
                     raise ValueError("--flash-image is required for acceptance")
@@ -398,7 +434,8 @@ def main() -> int:
     selection = execute.add_mutually_exclusive_group(required=True)
     selection.add_argument("--id", help="full ID or unique prefix from plan")
     selection.add_argument("--all", action="store_true", help="run the complete matrix")
-    execute.add_argument("--phase", choices=["synth", "pnr", "acceptance", "all"], required=True)
+    execute.add_argument("--phase", choices=["synth", "pnr", "acceptance",
+                                             "reuse-acceptance", "all"], required=True)
     execute.add_argument("--flash-image", type=Path)
     execute.add_argument("--timeout-hours", type=float, default=8.0)
     execute.add_argument("--max-cycles", type=int, default=20_000_000_000)

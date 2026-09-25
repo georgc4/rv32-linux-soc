@@ -1,0 +1,20 @@
+{
+  "name": "sky26d-5x4-rtl-area-sweep",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/baseline-flash.bin",
+  "revisions": [
+    {"label": "16-entry TLB baseline", "ref": "8b2424d1772dea68066f662f3578a466f4087943"},
+    {"label": "8-entry TLB", "ref": "e55522ce01ea8b672031eba061b6dc77b720164b"},
+    {"label": "4-entry TLB", "ref": "1edce9ce221c519520550f6ba6669a33db317552"},
+    {"label": "4-entry TLB, shared context", "ref": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8"},
+    {"label": "4-entry TLB, shared MDU", "ref": "cefb9b04354d96d181254e1dff16957591ffe45e"},
+    {"label": "2-entry TLB, shared MDU", "ref": "ad9aadc152a90be0e960bd172d1de0e9fa9c3567"},
+    {"label": "4-entry TLB, shared core read", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"},
+    {"label": "2-entry TLB, shared core read", "ref": "e360da0c62dc093284aa8832d21ad298ffa11d21"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

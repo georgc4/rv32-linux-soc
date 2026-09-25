@@ -76,7 +76,8 @@ measurements and their limits.
 
 The matrix in [`sweep.json`](sweep.json) can list multiple Git revisions,
 standalone Yosys ABC delay targets, LibreLane synthesis strategies, clock
-periods, placement densities, and post-placement hold margins. The runner
+periods, placement densities, post-placement hold margins, and the supported
+Tiny Tapeout tile shape (`8x2` or `5x4`). The runner
 takes their Cartesian product; `plan` shows the exact run IDs before anything
 expensive is launched. `--all` runs every planned point for one phase. Keep
 the baseline matrix small, then expand one axis at a time to expose causal
@@ -87,7 +88,7 @@ it does **not** feed that netlist into LibreLane. For comparable physical
 mapping trials, change `synth_strategy` or `synth_abc_area_use_nf`, which are
 applied inside the pinned LibreLane flow. `clock_period_ns` is a physical
 timing target; the functional simulator and Linux device tree still model a
-20 MHz clock. The physical run uses the pinned Tiny Tapeout 8×2 template and
+20 MHz clock. The physical run uses the pinned Tiny Tapeout template and
 LibreLane 3.0.14. The first failed placement used a different PDK revision
 from the standalone area screen, so plotted areas retain their stage labels.
 Early WNS is not routed signoff.
@@ -99,9 +100,32 @@ and C++ clock-driver SHA-256.
 The result JSON, logs, mapped netlist, and PNR workspace live in each run
 directory. When several PNR settings use the same RTL commit, flash image,
 serial model, and harness, a passing acceptance result is reused with an
-explicit link to its original log; the multi-billion-cycle boot runs once for
-that functional design. `--timeout-hours` and `--max-cycles` bound long trials. No sweep
+explicit link to its original log. The `reuse-acceptance` phase also attaches
+prior ash-program evidence for an identical RTL commit and flash image when
+the simulator harness has since changed. It verifies the prior result and
+log, and records the original harness hash and run ID. The multi-billion-cycle
+boot runs once for that functional design. `--timeout-hours` and `--max-cycles`
+bound long trials. No sweep
 changes RTL, the memory topology, the ISA, or the shell image by itself.
+
+The [`sky26d-5x4-rtl-sweep.json`](sky26d-5x4-rtl-sweep.json) matrix runs eight
+committed RTL designs on the supported 20-tile 5×4 floorplan, from the
+16-entry TLB baseline to the smallest mapped core/TLB combination. It holds
+the LibreLane AREA 2 strategy and zero requested hold margins constant.
+These zero-margin points are screening results; a successful candidate still
+needs a margin-aware signoff run. To launch the sequence and archive each
+large physical workspace after its result is recorded:
+
+```sh
+python3 experiments/run_physical_queue.py experiments/sky26d-5x4-rtl-sweep.json \
+  > build/experiments/sky26d-5x4-rtl-sweep.log 2>&1
+```
+
+The queue reuses verified ash-program passes for the 16-entry and 8-entry RTL
+commits without another Linux simulation. Other RTL commits retain their
+existing boot evidence until they pass the full ash-program gate. Each
+`pnr-stage.tar.zst` can be extracted inside its run directory to inspect
+GDS and the complete LibreLane work directory.
 
 ## Area and kernel trials
 
