@@ -69,6 +69,16 @@ short serial burst is therefore a higher-value RTL trial than a lower timer
 rate. The CS-low maximum and mapped area constrain its line size; it needs a
 full serial acceptance run and physical measurement before adoption.
 
+As a sizing estimate, a 16-byte quad read would use the current 20-step
+command/address/dummy preamble plus 32 data steps: 52 serial steps, or 104
+core cycles at the current divide-by-two SCK. Four separate 4-byte reads need
+4 × 56 = 224 shift cycles. At 20 MHz, the 16-byte transaction is about
+5.2 µs, below the [ESP-PSRAM64H 8 µs CE-low maximum](https://www.mouser.com/datasheet/2/737/4677_esp_psram64_esp_psram64h_datasheet_en-1900786.pdf).
+A 32-byte read would take at least 168 core cycles, or 8.4 µs, before
+additional setup/hold time, so it is not a safe first line size. These are
+protocol estimates, not measured cache speedups; misses, branches, coherence,
+and area determine the actual outcome.
+
 Sparse PC samples include `inflate_fast` and `memcpy` in earlier
 initialization. Later watchdog traces resolve into `plist_test_check` and
 `plist_check_list` around 10–11 billion cycles, radix-tree deletion and
