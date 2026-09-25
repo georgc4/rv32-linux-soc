@@ -8,7 +8,7 @@ RISCV_AS ?= riscv64-unknown-elf-as
 RISCV_LD ?= riscv64-unknown-elf-ld
 RISCV_OBJCOPY ?= riscv64-unknown-elf-objcopy
 
-.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc synth-sky130 stage-sky26d rtl-diagrams experiment-chart regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
+.PHONY: test test-core test-mdu test-priv test-sv32 test-supervisor test-serial test-uart test-physical-uart test-timer test-plic test-linux-handoff test-linux-serial-boot test-soc test-soc-bad test-digit lint synth-bus synth-core synth-soc synth-sky130 stage-sky26d rtl-diagrams experiment-chart regen-smoke regen-priv regen-supervisor regen-rom image-smoke image-linux image-linux-flash clean
 
 rtl-diagrams:
 	$(PYTHON) tt/generate_rtl_block_diagrams.py
@@ -57,6 +57,11 @@ test-uart:
 	mkdir -p build
 	$(IVERILOG) -g2012 -Wall -s uart16550_lite_tb -o build/uart16550_lite_tb rtl/peripherals/uart16550_lite.v sim/tests/uart16550_lite_tb.v
 	$(VVP) build/uart16550_lite_tb
+
+test-physical-uart:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -s physical_uart_paths_tb -o build/physical_uart_paths_tb sim/tests/physical_uart_paths_tb.v fpga/tang_nano_20k_3921_soc.v rtl/soc/tt_um_rv32_linux_soc.v rtl/peripherals/uart16550_lite.v
+	$(VVP) build/physical_uart_paths_tb
 
 test-plic:
 	mkdir -p build
@@ -166,7 +171,7 @@ synth-sky130:
 	bash tt/run_sky130_synth.sh
 
 stage-sky26d:
-	$(PYTHON) tt/stage_sky26d.py
+	$(PYTHON) tt/stage_sky26d_uart.py
 
 clean:
 	rm -rf build

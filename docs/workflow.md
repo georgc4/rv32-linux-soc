@@ -6,4 +6,10 @@ Fast local loop: `make test test-core test-digit lint synth-bus synth-core`. The
 
 macOS runs the fast RTL loop and `make image-linux`. The image script uses the existing local Podman machine for the Linux kernel build and Zig for static RV32 userspace; it does not use the remote iMac. It verifies source SHA256 values and writes configs, DTB, image artifacts, and a size/hash manifest under ignored `build/`. A firmware build and serial boot log are still needed before any boot claim. Do not put host credentials in build scripts.
 
-The Tang Nano 20K FPGA stage needs a board-specific constraint file after the physical revision is known. The Tiny Tapeout stage needs a wrapper/configuration imported from the selected shuttle's official template and an actual mapped/routed area result. Neither is part of the fast loop.
+The Tang Nano 20K PCB 3921 UART and external-memory wrapper, pin constraints,
+and 20 MHz timing constraint are in `fpga/`; the delivered board revision and
+all electrical behavior still need checking. The Tiny Tapeout wrapper uses
+the demoboard UART-capable pins, and the stage script records the matching
+pin labels. Both platform pin paths are checked by `make test-physical-uart`.
+The physical flow, routed timing, and real-board tests remain outside the
+fast loop.

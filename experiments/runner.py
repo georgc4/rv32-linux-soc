@@ -71,6 +71,7 @@ def planned_runs(manifest: Path) -> list[dict]:
     flow_hash = hashlib.sha256(b"".join(
         path.read_bytes() for path in (
             ROOT / "experiments/runner.py", ROOT / "tt/stage_sky26d.py",
+            ROOT / "tt/stage_sky26d_uart.py",
             ROOT / "tt/run_sky130_synth.sh", ROOT / "sim/tests/linux_serial_boot_tb.v",
             ROOT / "sim/tests/linux_serial_boot_main.cpp",
             ROOT / "sim/models/serial_spi_model.v",
@@ -227,7 +228,7 @@ def collect_pnr_metrics(stage: Path) -> dict:
 def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> dict:
     config = run["config"]
     stage = run_dir / "pnr-stage"
-    command = [sys.executable, str(ROOT / "tt/stage_sky26d.py"),
+    command = [sys.executable, str(ROOT / "tt/stage_sky26d_uart.py"),
                "--rtl-root", str(source), "--stage", str(stage),
                "--clock-period-ns", str(config["clock_period_ns"]),
                "--tile-shape", config.get("tile_shape", "8x2"),
