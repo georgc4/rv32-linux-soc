@@ -156,8 +156,11 @@ The local report and logs are in ignored
 options were not enabled for this user macro. This DRC result applies to that
 one GDS; other variants still need their own checks.
 
-These are encouraging 5×4 feasibility results, not 50 MHz signoff: 50 ns is
-20 MHz, and zero requested hold margin needs a margin-aware rerun. The
-reported register-to-register setup slack at the early timing stage is about
-24–26 ns for the passing variants. Full post-route timing and the 20 ns clock
-target still need verification.
+The **50 ns (20 MHz)** physical target matches the project's intended
+demoboard operating clock; the board clock is user-configurable. A 20 ns
+constraint would be needed only for a separate 50 MHz goal. The reported
+register-to-register setup slack at the early timing stage is about 24–26 ns
+for the passing variants. Timing signoff at 20 MHz still needs dedicated
+reset, UART, SPI, and external-memory I/O constraints and review of routed
+multi-corner setup and hold reports; these runs used zero extra hold-repair
+margin and the flow's fallback SDC.
