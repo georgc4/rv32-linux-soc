@@ -147,6 +147,23 @@ module rv32i_core #(
                            instr[6:0] == 7'b1100111 ||
                            instr[6:0] == 7'b0010011) ? imm_i : b;
     wire [31:0] shared_add = a + (subtract ? ~add_rhs : add_rhs) + {31'b0, subtract};
+    function [31:0] reverse_bits;
+        input [31:0] value;
+        integer bit_index;
+        begin
+            for (bit_index = 0; bit_index < 32; bit_index = bit_index + 1)
+                reverse_bits[bit_index] = value[31-bit_index];
+        end
+    endfunction
+    // A single right shifter handles register/immediate and left/right modes.
+    wire shift_left = funct3 == 3'b001;
+    wire shift_arithmetic = funct3 == 3'b101 && funct7 == 7'b0100000;
+    wire [4:0] shift_amount = instr[6:0] == 7'b0010011 ? instr[24:20] : b[4:0];
+    wire [31:0] shift_input = shift_left ? reverse_bits(a) : a;
+    wire [32:0] shift_extended = {shift_arithmetic && a[31], shift_input};
+    wire [32:0] shifted = $signed(shift_extended) >>> shift_amount;
+    wire unused_shifted_msb = &{1'b0, shifted[32]};
+    wire [31:0] shift_result = shift_left ? reverse_bits(shifted[31:0]) : shifted[31:0];
 
     reg [31:0] next_pc, result, access_addr, store_data;
     reg [3:0] store_strb;
@@ -267,11 +284,11 @@ module rv32i_core #(
                     3'b111: result = a & imm_i;
                     3'b001: begin
                         if (funct7 != 0) illegal = 1;
-                        result = a << instr[24:20];
+                        result = shift_result;
                     end
                     3'b101: begin
-                        if (funct7 == 7'b0000000) result = a >> instr[24:20];
-                        else if (funct7 == 7'b0100000) result = $signed(a) >>> instr[24:20];
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shift_result;
                         else illegal = 1;
                     end
                 endcase
@@ -287,14 +304,14 @@ module rv32i_core #(
                         else illegal = 1;
                     end
                     3'b101: begin
-                        if (funct7 == 7'b0000000) result = a >> b[4:0];
-                        else if (funct7 == 7'b0100000) result = $signed(a) >>> b[4:0];
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shift_result;
                         else illegal = 1;
                     end
                     default: begin
                         if (funct7 != 0) illegal = 1;
                         case (funct3)
-                            3'b001: result = a << b[4:0];
+                            3'b001: result = shift_result;
                             3'b010: result = $signed(a) < $signed(b) ? 32'd1 : 32'd0;
                             3'b011: result = a < b ? 32'd1 : 32'd0;
                             3'b100: result = a ^ b;
