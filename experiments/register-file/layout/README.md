@@ -4,6 +4,12 @@ The **editable source** is `magic/rf8t_routed.mag`, with three referenced
 transistor PCells in the same directory. Edit and save that cell in Magic.
 The generated GDS under `build/` is only an export and is not the source.
 
+On Ubuntu, install the free native layout editor with `sudo apt install
+magic`. `sudo apt install klayout` adds a useful GDS viewer. Magic is the
+editor for this repository's `.mag` source and for interactive SKY130 DRC.
+Install the same SKY130A PDK revision used by the project and set `PDK_ROOT`
+to the directory containing `sky130A`.
+
 From the repository root, with Magic and the SKY130A PDK installed:
 
 ```sh
