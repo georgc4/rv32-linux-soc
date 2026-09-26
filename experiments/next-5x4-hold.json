@@ -1,0 +1,13 @@
+{
+  "name": "next-5x4-hold-margin",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "4-entry shared-read hold margin", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.05, 0.1],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

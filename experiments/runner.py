@@ -225,6 +225,87 @@ def collect_pnr_metrics(stage: Path) -> dict:
     return result
 
 
+def check_physical_artifacts(run_dir: Path, stage: Path, pdk_revision: str | None,
+                             timeout: float) -> dict:
+    """Audit the final GDS and the signoff reports, failing closed on missing data."""
+    run_root = stage / "runs" / "wokwi"
+    gds = run_root / "final/gds/tt_um_rv32_linux_soc.gds"
+    reports = {
+        "lvs": run_root / "66-netgen-lvs/reports/lvs.netgen.rpt",
+        "lvs_json": run_root / "66-netgen-lvs/reports/lvs.netgen.json",
+        "magic_drc": run_root / "62-magic-drc/reports/drc.magic.rpt",
+        "antenna": run_root / "46-openroad-checkantennas-1/reports/antenna_summary.rpt",
+    }
+    checks = {}
+    for name, path in reports.items():
+        checks[name] = {"status": "pending", "report": str(path.relative_to(run_dir))}
+        if not path.is_file():
+            checks[name]["status"] = "failed"
+            checks[name]["error"] = "report missing"
+        else:
+            checks[name]["report_sha256"] = sha256(path)
+    if checks["lvs"]["status"] != "failed" and checks["lvs_json"]["status"] != "failed":
+        lvs_text = reports["lvs"].read_text(errors="replace")
+        lvs_data = json.loads(reports["lvs_json"].read_text())
+        matched = (isinstance(lvs_data, list) and len(lvs_data) > 0
+                   and all(not entry.get("badnets") and not entry.get("badelements")
+                           for entry in lvs_data)
+                   and "Final result: Circuits match uniquely." in lvs_text)
+        checks["lvs"]["status"] = "pass" if matched else "failed"
+        checks["lvs_json"]["status"] = "pass" if matched else "failed"
+    if checks["magic_drc"]["status"] != "failed":
+        counts = re.findall(r"\[INFO\] COUNT:\s*(\d+)",
+                            reports["magic_drc"].read_text(errors="replace"))
+        checks["magic_drc"]["violations"] = int(counts[-1]) if counts else None
+        checks["magic_drc"]["status"] = "pass" if counts and int(counts[-1]) == 0 else "failed"
+    if checks["antenna"]["status"] != "failed":
+        antenna_text = reports["antenna"].read_text(errors="replace")
+        count = antenna_text.count("│") // 2
+        checks["antenna"]["violations"] = count
+        checks["antenna"]["status"] = "pass" if "P / R" in antenna_text and count == 0 else "failed"
+
+    klayout = shutil.which("klayout")
+    if klayout is None:
+        mac_app = Path("/Applications/KLayout/klayout.app/Contents/MacOS/klayout")
+        klayout = str(mac_app) if mac_app.is_file() else None
+    pdk_base = Path(os.environ.get("PDK_ROOT", Path.home() / ".volare"))
+    deck = (pdk_base / "ciel/sky130/versions" / pdk_revision /
+            "sky130A/libs.tech/klayout/drc/sky130A_mr.drc") if pdk_revision else None
+    report = run_dir / "klayout-full-drc.lyrdb"
+    klayout_check = {"status": "failed", "report": str(report.relative_to(run_dir)),
+                     "feol": True, "beol": True, "offgrid": True,
+                     "seal": False, "sram_exclude": False}
+    checks["klayout_drc"] = klayout_check
+    if not gds.is_file():
+        klayout_check["error"] = "final GDS missing"
+    elif not klayout:
+        klayout_check["error"] = "KLayout executable missing"
+    elif deck is None or not deck.is_file():
+        klayout_check["error"] = "pinned PDK KLayout rule deck missing"
+    else:
+        klayout_check.update({"gds": str(gds.relative_to(run_dir)),
+                              "gds_sha256": sha256(gds), "deck": str(deck),
+                              "deck_sha256": sha256(deck)})
+        command = [klayout, "-b", "-r", str(deck), "-rd", f"input={gds}",
+                   "-rd", "top_cell=tt_um_rv32_linux_soc", "-rd", f"report={report}",
+                   "-rd", "feol=true", "-rd", "beol=true", "-rd", "offgrid=true",
+                   "-rd", "seal=false", "-rd", "sram_exclude=false"]
+        status, code = run_logged(command, ROOT, run_dir / "klayout-full-drc.log", timeout)
+        klayout_check.update({"returncode": code, "log": "klayout-full-drc.log"})
+        if status == "pass" and report.is_file():
+            content = report.read_text(errors="replace")
+            if "<report-database>" in content and "</report-database>" in content \
+                    and "<items>" in content and "</items>" in content:
+                count = len(re.findall(r"<item(?:\s|>)", content))
+                klayout_check.update({"violations": count, "report_sha256": sha256(report),
+                                      "status": "pass" if count == 0 else "failed"})
+            else:
+                klayout_check["error"] = "invalid KLayout report"
+        else:
+            klayout_check["error"] = f"KLayout run {status} or report missing"
+    return checks
+
+
 def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> dict:
     config = run["config"]
     stage = run_dir / "pnr-stage"
@@ -255,13 +336,18 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
         return {"status": status, "returncode": code, "log": "pnr-config.log"}
     status, code = run_logged([str(python), str(tool), "--harden"],
                               stage, run_dir / "pnr.log", timeout, env)
-    gds = list((stage / "runs" / "wokwi").rglob("*.gds"))
-    result = {"status": status if status != "pass" or gds else "failed",
-              "returncode": code, "log": "pnr.log", "gds_present": bool(gds)}
+    gds = stage / "runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds"
+    result = {"status": status if status != "pass" or gds.is_file() else "failed",
+              "returncode": code, "log": "pnr.log", "gds_present": gds.is_file()}
     result["librelane_version"] = subprocess.check_output(
         [str(python), "-c", "from importlib.metadata import version; print(version('librelane'))"],
         text=True).strip()
     result.update(collect_pnr_metrics(stage))
+    if status == "pass" and gds.is_file():
+        result["checks"] = check_physical_artifacts(
+            run_dir, stage, result.get("physical_pdk_revision"), min(timeout, 7200))
+        if any(check["status"] != "pass" for check in result["checks"].values()):
+            result["status"] = "failed"
     return result
 
 

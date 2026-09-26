@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from runner import RUNS, planned_runs, run_one, utc_now
+from runner import RUNS, planned_runs, reuse_verified_acceptance, run_one, utc_now
 
 
 def archive_stage(run_dir: Path) -> None:
@@ -57,10 +57,15 @@ def main() -> int:
         pnr = result["stages"]["pnr"]
         if pnr["status"] != "pass":
             failures += 1
-        if run["commit"][:7] in ("8b2424d", "e55522c") and \
-                "acceptance" not in result["stages"]:
-            run_one(run, "reuse-acceptance", None, args.timeout_hours,
-                    20_000_000_000)
+        if "acceptance" not in result["stages"] and run["image_sha256"]:
+            try:
+                reuse_verified_acceptance(run["commit"], run["image_sha256"])
+            except RuntimeError:
+                print(f"{utc_now()} no verified ash pass for exact commit/image; "
+                      "acceptance remains pending", flush=True)
+            else:
+                run_one(run, "reuse-acceptance", None, args.timeout_hours,
+                        20_000_000_000)
         archive_stage(run_dir)
         if pnr.get("log") in ("pnr-stage.log", "pnr-config.log") and \
                 pnr["status"] != "pass":

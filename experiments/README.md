@@ -57,9 +57,16 @@ Open `build/experiments/pareto.html` in a browser. The dashboard is self
 contained and offline. It shows source commits, sweep settings, stage status,
 measured area, early setup slack, and Linux cycles. Change either axis to
 inspect tradeoffs. A point joins the Pareto frontier only if the physical flow
-produced GDS **and** the ash-program acceptance passed. Failed physical runs,
+produced final GDS, all recorded physical checks passed, **and** the
+ash-program acceptance passed. Failed physical runs,
 including the first 2026-09-24 baseline, remain visible but are excluded from
-the candidate frontier. Routing and this gate do not replace final signoff.
+the candidate frontier. New physical runs also require full KLayout FEOL,
+BEOL, and off-grid DRC with zero items, Magic DRC with zero violations, Netgen
+LVS with uniquely matching circuits, and a zero-violation antenna report.
+The final GDS, pinned PDK revision, rule-deck SHA-256, GDS SHA-256, and check
+reports are saved with each run. Old runs without these recorded checks remain
+historical points and cannot enter the qualified frontier. Routing and this
+gate do not replace final timing, power, and pad signoff.
 That baseline reached about 85% core utilization at global placement;
 OpenROAD raised its effective placement density to 97% and detailed placement
 failed. A lower requested density cannot create more tile area. RTL area
@@ -121,11 +128,19 @@ python3 experiments/run_physical_queue.py experiments/sky26d-5x4-rtl-sweep.json 
   > build/experiments/sky26d-5x4-rtl-sweep.log 2>&1
 ```
 
-The queue reuses verified ash-program passes for the 16-entry and 8-entry RTL
-commits without another Linux simulation. Other RTL commits retain their
-existing boot evidence until they pass the full ash-program gate. Each
+The queue reuses a verified ash-program pass for *any* exact RTL commit and
+flash-image hash without another Linux simulation. If no such pass exists,
+acceptance remains pending. The acceptance evidence retains its harness and
+serial-model hashes and points to the original run/log. A changed RTL commit
+or flash image needs its own complete true-serial ash/program run. Each
 `pnr-stage.tar.zst` can be extracted inside its run directory to inspect
 GDS and the complete LibreLane work directory.
+
+See [NEXT-SESSION.md](NEXT-SESSION.md) for the ordered, commit-pinned 5×4 and
+8×2 experiments, their exact manifests, and the decision gates. New physical
+runs execute full KLayout DRC after LibreLane produces final GDS, even when a
+separate LVS or antenna check fails. On macOS the runner uses the KLayout app
+binary; on Linux it uses `klayout` from `PATH`.
 
 ## Area and kernel trials
 

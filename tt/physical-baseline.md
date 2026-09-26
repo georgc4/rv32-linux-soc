@@ -1,6 +1,10 @@
-# SKY26d physical baseline (in progress)
+# First SKY26d physical baseline (historical 8×2 attempt)
 
 This is a measurement of the existing RTL, not a tapeout fit claim. No ISA, memory topology, or other product behavior changed.
+Later 5×4 routed results and their physical checks are in the
+[experiment results](../experiments/RESULTS.md). The
+[next-session plan](../experiments/NEXT-SESSION.md) defines the new full-GDS
+qualification gate.
 
 ## Reproduce the first measurements
 

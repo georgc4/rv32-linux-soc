@@ -50,6 +50,7 @@ def collect() -> list[dict]:
         stages = result.get("stages", {})
         synth = stages.get("synth", {})
         pnr = stages.get("pnr", {})
+        checks = pnr.get("checks", {})
         acceptance = stages.get("acceptance", {})
         failure_reason = None
         pnr_log = result_path.parent / pnr.get("log", "") if pnr.get("log") else None
@@ -60,7 +61,13 @@ def collect() -> list[dict]:
                 failure_reason = " ".join(failures[-1])
         if acceptance.get("status") == "error":
             failure_reason = acceptance.get("error", "acceptance setup error")
+        failed_checks = [name for name, check in checks.items()
+                         if check.get("status") != "pass"]
+        if failed_checks:
+            failure_reason = "Physical checks failed: " + ", ".join(failed_checks)
         qualified = (pnr.get("status") == "pass" and pnr.get("gds_present") is True
+                     and all(checks.get(name, {}).get("status") == "pass" for name in
+                             ("lvs", "lvs_json", "magic_drc", "antenna", "klayout_drc"))
                      and acceptance.get("status") == "pass")
         rows.append({
             "id": result["id"], "name": result.get("name", ""),
@@ -76,6 +83,8 @@ def collect() -> list[dict]:
             },
             "synth": synth.get("status", "pending"),
             "pnr": pnr.get("status", "pending"),
+            "physical_checks": ("pass" if checks and not failed_checks else
+                                "failed" if failed_checks else "pending"),
             "acceptance": acceptance.get("status", "pending"),
             "failure_reason": failure_reason,
             "image_sha256": result.get("image_sha256"),
@@ -99,10 +108,10 @@ main{max-width:1380px;margin:auto;padding:28px 26px 50px}h1{font-size:31px;lette
 table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:#bed3e9;font-weight:650;border-bottom:1px solid #45617d;padding:10px 8px;white-space:nowrap}td{border-bottom:1px solid #203b56;padding:10px 8px;vertical-align:top}tr:hover td{background:#1b3450}a{color:#9ed0ff;text-decoration:none}a:hover{text-decoration:underline}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.status{padding:3px 7px;border-radius:999px;background:#233a56;white-space:nowrap}.status.pass{background:#174b3c;color:#a5f1cc}.status.failed{background:#5a2c36;color:#ffc2b5}.status.pending{background:#594a28;color:#ffe4a2}.table-scroll{overflow:auto}
 @media(max-width:800px){main{padding:18px}.cards{grid-template-columns:repeat(2,1fr)}.panel{padding:12px}}
 </style></head><body><main>
-<div class="top"><div><div class="eyebrow">SKY26d design space</div><h1>SoC experiment explorer</h1><p>Compare immutable RTL revisions and physical-flow settings. Points enter the Pareto frontier only after routed PNR and ash-program acceptance pass.</p></div><div class="stamp" id="stamp"></div></div>
+<div class="top"><div><div class="eyebrow">SKY26d design space</div><h1>SoC experiment explorer</h1><p>Compare immutable RTL revisions and physical-flow settings. Points enter the Pareto frontier only after routed GDS, KLayout DRC, LVS, and ash-program acceptance pass.</p></div><div class="stamp" id="stamp"></div></div>
 <div class="cards"><div class="card"><b id="runs">0</b><span>Recorded experiments</span></div><div class="card"><b id="qualified">0</b><span>Routed + functional pass</span></div><div class="card"><b id="frontier">0</b><span>Current Pareto points</span></div><div class="card"><b id="failed">0</b><span>Failed or reference runs</span></div></div>
 <section class="panel"><h2>Tradeoff view</h2><div class="controls"><label>Horizontal axis<select id="xaxis"></select></label><label>Vertical axis<select id="yaxis"></select></label><label class="check"><input type="checkbox" id="showfailed" checked>Show failed and reference runs</label><label class="check"><input type="checkbox" id="showpending" checked>Show incomplete runs</label></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 1100 565" role="img" aria-label="Experiment tradeoff scatter plot"></svg><div class="tooltip" id="tooltip"></div></div><div class="legend"><span><i class="swatch q"></i>Routed + ash pass</span><span><i class="swatch f"></i>Failed / historical reference</span><span><i class="swatch p"></i>Incomplete</span></div><p class="note" id="frontiernote"></p></section>
-<section class="panel"><h2>Run ledger</h2><div class="table-scroll"><table><thead><tr><th>Experiment</th><th>Git revision</th><th>Mapping</th><th>PNR</th><th>ash program</th><th>Mapped area</th><th>Placed area</th><th>Setup WNS</th><th>Cycles</th></tr></thead><tbody id="ledger"></tbody></table></div><p class="note">Cell area is before placement; placed area is the latest available physical-flow metric. Early WNS is not routed signoff. Green frontier points require both a completed physical run and the serial-shell gate.</p></section>
+<section class="panel"><h2>Run ledger</h2><div class="table-scroll"><table><thead><tr><th>Experiment</th><th>Git revision</th><th>Mapping</th><th>PNR</th><th>Physical checks</th><th>ash program</th><th>Mapped area</th><th>Placed area</th><th>Setup WNS</th><th>Cycles</th></tr></thead><tbody id="ledger"></tbody></table></div><p class="note">Cell area is before placement; placed area is the latest available physical-flow metric. Early WNS is not routed signoff. Green frontier points require routed GDS, zero KLayout and Magic DRC, clean Netgen LVS and antenna reports, and the serial-shell gate.</p></section>
 </main><script>
 const rows=__DATA__;
 const dims={mapped_area_um2:{name:'Mapped cell area (µm²)',goal:'min'},placed_area_um2:{name:'Physical instance area (µm²)',goal:'min'},mapped_cells:{name:'Mapped cell count',goal:'min'},setup_wns_ns:{name:'Setup WNS (ns)',goal:'max'},utilization_pct:{name:'Core utilization (%)',goal:'min'},acceptance_cycles:{name:'ash program cycles',goal:'min'}};
@@ -119,7 +128,7 @@ function fmt(value,digits=1){return Number.isFinite(value)?value.toLocaleString(
 function klass(value){return value==='pass'?'pass':value.startsWith('fail')||value==='error'||value==='timeout'?'failed':'pending'}
 function tag(value){const span=document.createElement('span');span.className='status '+klass(value);span.textContent=value;return span}
 function textCell(tr,value,cls){const td=document.createElement('td');td.textContent=value;if(cls)td.className=cls;tr.appendChild(td);return td}
-for(const r of rows){const tr=document.createElement('tr');const first=document.createElement('td');const link=document.createElement('a');link.href=r.link;link.textContent=r.name+' · '+r.id;first.appendChild(link);tr.appendChild(first);textCell(tr,r.commit.slice(0,12),'mono');for(const key of ['synth','pnr','acceptance']){const td=document.createElement('td');td.appendChild(tag(r[key]));tr.appendChild(td)}textCell(tr,fmt(r.metrics.mapped_area_um2,0));textCell(tr,fmt(r.metrics.placed_area_um2,0));textCell(tr,fmt(r.metrics.setup_wns_ns,2));textCell(tr,fmt(r.metrics.acceptance_cycles,0));if(r.failure_reason){tr.title=r.failure_reason}document.getElementById('ledger').appendChild(tr)}
+for(const r of rows){const tr=document.createElement('tr');const first=document.createElement('td');const link=document.createElement('a');link.href=r.link;link.textContent=r.name+' · '+r.id;first.appendChild(link);tr.appendChild(first);textCell(tr,r.commit.slice(0,12),'mono');for(const key of ['synth','pnr','physical_checks','acceptance']){const td=document.createElement('td');td.appendChild(tag(r[key]));tr.appendChild(td)}textCell(tr,fmt(r.metrics.mapped_area_um2,0));textCell(tr,fmt(r.metrics.placed_area_um2,0));textCell(tr,fmt(r.metrics.setup_wns_ns,2));textCell(tr,fmt(r.metrics.acceptance_cycles,0));if(r.failure_reason){tr.title=r.failure_reason}document.getElementById('ledger').appendChild(tr)}
 const ns='http://www.w3.org/2000/svg';function el(type,attrs){const node=document.createElementNS(ns,type);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);svg.appendChild(node);return node}
 function dominates(a,b,x,y){const dx=dims[x].goal==='min'?a.metrics[x]<=b.metrics[x]:a.metrics[x]>=b.metrics[x];const dy=dims[y].goal==='min'?a.metrics[y]<=b.metrics[y]:a.metrics[y]>=b.metrics[y];const strict=a.metrics[x]!==b.metrics[x]||a.metrics[y]!==b.metrics[y];return dx&&dy&&strict}
 function draw(){svg.replaceChildren();const x=xaxis.value,y=yaxis.value;const showfailed=document.getElementById('showfailed').checked,showpending=document.getElementById('showpending').checked;const points=rows.filter(r=>Number.isFinite(r.metrics[x])&&Number.isFinite(r.metrics[y])&&(r.qualified||(klass(r.pnr)==='failed'||klass(r.acceptance)==='failed'?showfailed:showpending)));const qualified=points.filter(r=>r.qualified);const front=qualified.filter(r=>!qualified.some(s=>s!==r&&dominates(s,r,x,y)));document.getElementById('frontier').textContent=front.length;document.getElementById('frontiernote').textContent=front.length?'Dashed line joins nondominated, fully qualified designs for the selected axes.':'No Pareto frontier yet: routed PNR and the ash-program acceptance gate must both pass.';

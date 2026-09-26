@@ -1,0 +1,13 @@
+{
+  "name": "next-8x2-mapping-strategy-screen",
+  "tile_shape": "8x2",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "4-entry shared-read 8x2 screen", "ref": "b3fdd5a8fa314e87c668ff91851b106f33181541"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 0", "AREA 1"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

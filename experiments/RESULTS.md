@@ -135,7 +135,7 @@ reported; DRC must be checked independently before signoff.
 | 4-entry TLB, shared context and MDU | Pass | 252,096 | 58.6% | Reached ash, acceptance command timed out at 20 billion cycles on baseline image |
 | 2-entry TLB, shared context and MDU | Flow exit 0, but one antenna pin/net violation | 246,819 | 57.3% | Did not reach `/init` by 20 billion cycles on baseline image |
 | 4-entry TLB, shared core register read port | Pass | **247,744** | 57.5% | Pass, smaller kernel, 17,129,216,271 cycles |
-| 2-entry TLB, shared core register read port | Running | — | — | Did not reach `/init` by 20 billion cycles on baseline image |
+| 2-entry TLB, shared core register read port | GDS produced; legacy flow exit 0 | **243,676** | 56.6% | Did not reach `/init` by 20 billion cycles on baseline image |
 
 The 4-entry shared-read-core design saves **4,249 µm²** of routed instance area
 versus the 4-entry shared-context design, while the smaller-kernel full gate
@@ -155,6 +155,24 @@ The local report and logs are in ignored
 `build/experiments/drc-4tlb-shared-read/`. Seal-ring and floating-metal
 options were not enabled for this user macro. This DRC result applies to that
 one GDS; other variants still need their own checks.
+
+The 2-entry shared-read design is **4,068 µm²** smaller than the 4-entry
+shared-read design in this floorplan, but no full Linux ash/program pass exists
+for the 2-entry RTL. Its GDS has not undergone the independent full KLayout
+audit. It is therefore an area lead, not a qualified replacement. The
+4-entry shared-read design is the current fully demonstrated candidate:
+true-serial Linux acceptance on its RTL, routed GDS, independent full KLayout
+DRC, Magic DRC, and Netgen LVS have all passed, although the physical sweep's
+flash image differs from the smaller kernel used for acceptance. The next
+experiment manifests use the proven smaller image for both stages so the
+result records have a matching image hash.
+
+Going forward, a physical run passes only if the final GDS exists and the
+runner records zero full KLayout FEOL/BEOL/off-grid DRC items, zero Magic DRC
+violations, clean Netgen LVS, and zero antenna violations. Older JSON results
+predate this explicit gate and remain historical screening data. KLayout
+deck/GDS/report hashes are recorded for each newly audited run. `AREA 2` and
+zero requested hold margin are still trial settings, not final timing signoff.
 
 The **50 ns (20 MHz)** physical target matches the project's intended
 demoboard operating clock; the board clock is user-configurable. A 20 ns
