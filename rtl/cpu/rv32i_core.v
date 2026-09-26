@@ -109,6 +109,14 @@ module rv32i_core #(
     wire [31:0] imm_b = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
     wire [31:0] imm_u = {instr[31:12], 12'b0};
     wire [31:0] imm_j = {{11{instr[31]}}, instr[31], instr[19:12], instr[20], instr[30:21], 1'b0};
+    // Reuse one datapath adder for base+offset, integer ADD/ADDI, and SUB.
+    wire subtract = instr[6:0] == 7'b0110011 && funct3 == 3'b000 &&
+                    funct7 == 7'b0100000;
+    wire [31:0] add_rhs = instr[6:0] == 7'b0100011 ? imm_s :
+                          (instr[6:0] == 7'b0000011 ||
+                           instr[6:0] == 7'b1100111 ||
+                           instr[6:0] == 7'b0010011) ? imm_i : b;
+    wire [31:0] shared_add = a + (subtract ? ~add_rhs : add_rhs) + {31'b0, subtract};
 
     reg [31:0] next_pc, result, access_addr, store_data;
     reg [3:0] store_strb;
@@ -175,7 +183,7 @@ module rv32i_core #(
                 else begin
                     write_rd = 1;
                     result = pc + 32'd4;
-                    next_pc = (a + imm_i) & 32'hffff_fffe;
+                    next_pc = shared_add & 32'hffff_fffe;
                 end
             end
             7'b1100011: begin // branches
@@ -192,7 +200,7 @@ module rv32i_core #(
             end
             7'b0000011: begin // loads
                 access = 1;
-                access_addr = a + imm_i;
+                access_addr = shared_add;
                 case (funct3)
                     3'b000, 3'b100: begin end // LB, LBU
                     3'b001, 3'b101: if (access_addr[0]) illegal = 1; // LH, LHU
@@ -203,7 +211,7 @@ module rv32i_core #(
             7'b0100011: begin // stores
                 access = 1;
                 store = 1;
-                access_addr = a + imm_s;
+                access_addr = shared_add;
                 case (funct3)
                     3'b000: store_strb = 4'b0001 << access_addr[1:0];
                     3'b001: begin
@@ -221,7 +229,7 @@ module rv32i_core #(
             7'b0010011: begin // OP-IMM
                 write_rd = 1;
                 case (funct3)
-                    3'b000: result = a + imm_i;
+                    3'b000: result = shared_add;
                     3'b010: result = $signed(a) < $signed(imm_i) ? 32'd1 : 32'd0;
                     3'b011: result = a < imm_i ? 32'd1 : 32'd0;
                     3'b100: result = a ^ imm_i;
@@ -244,8 +252,8 @@ module rv32i_core #(
                     result = 0; // retired from the iterative MDU_WAIT state
                 end else case (funct3)
                     3'b000: begin
-                        if (funct7 == 7'b0000000) result = a + b;
-                        else if (funct7 == 7'b0100000) result = a - b;
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shared_add;
                         else illegal = 1;
                     end
                     3'b101: begin
