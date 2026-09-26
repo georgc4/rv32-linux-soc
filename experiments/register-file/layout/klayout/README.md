@@ -50,3 +50,19 @@ To regenerate the **initial** file in a fresh checkout, run
 start editing, the GDS is the master; do not regenerate it.
 
 For transistor sizing, see [SIZING.md](SIZING.md).
+
+## OpenRAM comparison
+
+To inspect the published VLSIDA 256×32 1RW+1R SRAM in a **separate, read-only**
+KLayout window, run:
+
+```sh
+./experiments/register-file/layout/klayout/open_openram_reference.sh
+```
+
+The launcher downloads a pinned GDS into ignored `build/`, verifies its
+checksum, and loads the SKY130 technology. It does not import the macro into
+`rf8t_bitcell.gds`. The original macro is 256 words deep; removing 224 rows
+from its GDS would break its row decoder, bitlines, electrical model, LEF, and
+Liberty timing. A 32-word variant should be generated and verified as a new
+OpenRAM macro rather than edited from this completed block.
