@@ -4,8 +4,16 @@ The **editable source** is `magic/rf8t_routed.mag`, with three referenced
 transistor PCells in the same directory. Edit and save that cell in Magic.
 The generated GDS under `build/` is only an export and is not the source.
 
-On Ubuntu, install the free native layout editor and LVS checker with
-`sudo apt install magic netgen-lvs`. `sudo apt install klayout` adds a useful GDS viewer. Magic is the
+On Ubuntu, install Netgen and Magic build dependencies:
+
+```sh
+sudo apt install build-essential tcl-dev tk-dev libx11-dev libxext-dev libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libcairo2-dev libreadline-dev netgen-lvs
+./experiments/register-file/layout/build_magic_ubuntu.sh
+```
+
+The packaged Magic 8.3.105 is too old for this SKY130A techfile, which
+requires at least 8.3.411. The build script pins upstream Magic 8.3.684 and
+installs it under `~/.local` without sudo. `sudo apt install klayout` adds a useful GDS viewer. Magic is the
 editor for this repository's `.mag` source and for interactive SKY130 DRC.
 Install the same SKY130A PDK revision used by the project and set `PDK_ROOT`
 to the directory containing `sky130A`.

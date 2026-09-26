@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Check the hand-editable Magic layout, never the generated placement/routing Tcl.
 set -euo pipefail
+export PATH="$HOME/.local/bin:$PATH"
 
 root=$(cd "$(dirname "$0")/../../.." && pwd)
 src="$root/experiments/register-file/layout/magic"
