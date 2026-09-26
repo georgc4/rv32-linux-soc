@@ -1,5 +1,10 @@
 # RTL block diagrams and mapped area
 
+The flow diagrams here are hand-authored architectural interpretations checked
+against Yosys net names and module instances. For schematics whose cells and
+connections are rendered directly from elaborated RTL, run `make rtl-tool-views`
+and see [`tt/rtl-tool-views.md`](../../tt/rtl-tool-views.md).
+
 The [core flow](core.svg) and [Sv32 adapter flow](sv32-adapter.svg) show the
 present implementation at an architectural level. The [core area diagram](core-area.svg)
 and [adapter area diagram](sv32-adapter-area.svg) show **nonoverlapping, measured
