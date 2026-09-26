@@ -1,0 +1,12 @@
+* Schematic of the 8T 1R1W exploratory bit cell for extracted LVS.
+* Macro pin order follows Magic extraction.
+.subckt rf8t_reference VDD VSS BL BLB WWL RBL RWL
+XPQ Q QB VDD VDD sky130_fd_pr__pfet_01v8 w=0.42 l=0.15
+XNQ Q QB VSS VSS sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+XPQB QB Q VDD VDD sky130_fd_pr__pfet_01v8 w=0.42 l=0.15
+XNQB QB Q VSS VSS sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+XWAQ Q WWL BL VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XWAQB QB WWL BLB VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XRN RBL RWL RN_INT VSS sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+XRQ RN_INT Q VSS VSS sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+.ends rf8t_reference

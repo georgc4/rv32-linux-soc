@@ -1,0 +1,34 @@
+* Exploratory 8T 1R1W SKY130 bit cell, schematic only.
+* Port order: BL BLB WWL RBL RWL VDD VSS. RBL is precharged externally.
+.lib "@PDK_MODEL@" @CORNER@
+
+.subckt rf8t bl blb wwl rbl rwl vdd vss
+* Cross-coupled inverters; Q is the stored bit.
+XPQ q qb vdd vdd sky130_fd_pr__pfet_01v8 w=0.42 l=0.15
+XNQ q qb vss vss sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+XPQB qb q vdd vdd sky130_fd_pr__pfet_01v8 w=0.42 l=0.15
+XNQB qb q vss vss sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+* Differential 6T-style write access.
+XWAQ q wwl bl vss sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XWAQB qb wwl blb vss sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+* Decoupled single-ended read stack: Q=1 discharges RBL.
+XRN rbl rwl rn vss sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+XRQ rn q vss vss sky130_fd_pr__nfet_01v8 w=0.65 l=0.15
+.ends rf8t
+
+VDD vdd 0 1.8
+VBL bl 0 PWL(0n 1.8 20n 1.8 21n 0 40n 0)
+VBLB blb 0 PWL(0n 0 20n 0 21n 1.8 40n 1.8)
+VWWL wwl 0 PWL(0n 0 4n 0 4.1n 1.8 8n 1.8 8.1n 0 24n 0 24.1n 1.8 28n 1.8 28.1n 0 40n 0)
+VRWL rwl 0 PWL(0n 0 12n 0 12.1n 1.8 15n 1.8 15.1n 0 32n 0 32.1n 1.8 35n 1.8 35.1n 0 40n 0)
+VPRE pre 0 PWL(0n 0 11n 0 11.1n 1.8 17n 1.8 17.1n 0 31n 0 31.1n 1.8 40n 1.8)
+XPRE rbl pre vdd vdd sky130_fd_pr__pfet_01v8 w=1.0 l=0.15
+CRBL rbl 0 30f
+XCELL bl blb wwl rbl rwl vdd 0 rf8t
+.ic v(xcell.q)=0 v(xcell.qb)=1.8
+.tran 0.02n 40n uic
+.meas tran stored_one FIND v(xcell.q) AT=10n
+.meas tran read_one_rbl FIND v(rbl) AT=14n
+.meas tran stored_zero FIND v(xcell.q) AT=30n
+.meas tran read_zero_rbl FIND v(rbl) AT=34n
+.end
