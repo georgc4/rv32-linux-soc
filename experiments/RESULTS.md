@@ -88,8 +88,9 @@ inserted jumpers. The smaller 2-entry/shared-read-core physical run also
 reaches antenna repair and fails detailed placement there; its global route
 reports congestion. The corresponding 4-entry/shared-read-core run fails at
 the same antenna-repair placement step. No new area campaign point has routed
-GDS yet. The provisional 8×2 floorplan remains too congested for these
-variants despite successful synthesis and pre-antenna global routing.
+GDS yet in those earlier 8×2 trials. The provisional 8×2 floorplan remains
+too congested for these variants despite successful synthesis and pre-antenna
+global routing. The later 5×4 results below supersede the no-GDS status.
 
 The public `main` submission-package run at commit `32e9ce3` independently
 reproduced the baseline physical failure in Tiny Tapeout's GitHub GDS action:
@@ -115,3 +116,36 @@ savings to those two config bits requires further image comparison.
 Rebuilding the unmodified baseline config on 2026-09-25 reproduced flash
 SHA-256 `d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c`
 exactly, matching the image used for the earlier ash-program pass.
+
+## 5×4 physical sweep, 2026-09-25/26
+
+LibreLane 3.0.14, SKY130A PDK `8afc8346`, `AREA 2`, a **50 ns** clock target,
+and zero requested hold margin were used for these 5×4 runs. The physical
+core area is 430,538 µm². Instance area is from the routed RC extraction
+stage, not the floorplan area. All passing runs produced GDS and passed
+LibreLane's LVS check. The flow warned that a KLayout DRC error count was not
+reported; DRC must be checked independently before signoff.
+
+| RTL variant | Physical flow | Routed instance area (µm²) | Utilization | Separate true-serial ash/program gate |
+|---|---|---:|---:|---|
+| 16-entry TLB baseline | Failed post-global-placement detailed placement | 258,560 at global placement | 60.1% | Pass, baseline image, 13,010,943,367 cycles |
+| 8-entry TLB | GDS produced; flow failed hold check | 272,460 | 63.3% | Pass, baseline image, 17,221,284,460 cycles |
+| 4-entry TLB | Pass | 256,845 | 59.7% | Reached ash, acceptance command timed out at 20 billion cycles on baseline image |
+| 4-entry TLB, shared context | Pass | 251,993 | 58.5% | Pass, smaller kernel, 16,823,568,756 cycles |
+| 4-entry TLB, shared context and MDU | Pass | 252,096 | 58.6% | Reached ash, acceptance command timed out at 20 billion cycles on baseline image |
+| 2-entry TLB, shared context and MDU | Flow exit 0, but one antenna pin/net violation | 246,819 | 57.3% | Did not reach `/init` by 20 billion cycles on baseline image |
+| 4-entry TLB, shared core register read port | Pass | **247,744** | 57.5% | Pass, smaller kernel, 17,129,216,271 cycles |
+| 2-entry TLB, shared core register read port | Running | — | — | Did not reach `/init` by 20 billion cycles on baseline image |
+
+The 4-entry shared-read-core design saves **4,249 µm²** of routed instance area
+versus the 4-entry shared-context design, while the smaller-kernel full gate
+uses **305,647,515** more cycles. Both functional passes are on the same RTL
+commits as their physical runs, but their smaller kernel image differs from
+the physical sweep's baseline image; the current dashboard therefore does
+not mark those specific experiment IDs as combined, same-image Pareto points.
+
+These are encouraging 5×4 feasibility results, not 50 MHz signoff: 50 ns is
+20 MHz, and zero requested hold margin needs a margin-aware rerun. The
+reported register-to-register setup slack at the early timing stage is about
+24–26 ns for the passing variants. Full post-route timing, independent DRC,
+and the 20 ns clock target still need verification.
