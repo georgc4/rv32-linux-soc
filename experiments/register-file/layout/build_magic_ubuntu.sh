@@ -38,10 +38,11 @@ if [[ $(git -C "$src" rev-parse HEAD) != "$pin" ]]; then
 fi
 
 cd "$src"
-if ! ./configure --prefix="$HOME/.local" > build_configure.log 2>&1; then
+if ! CFLAGS='-g -std=gnu17' ./configure --prefix="$HOME/.local" > build_configure.log 2>&1; then
     tail -50 build_configure.log >&2
     exit 1
 fi
+make clean > build_clean.log 2>&1
 if ! make -j"$(nproc)" > build_make.log 2>&1; then
     tail -50 build_make.log >&2
     exit 1
