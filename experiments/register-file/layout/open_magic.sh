@@ -11,4 +11,5 @@ test -f "$pdk/sky130A/libs.tech/magic/sky130A.magicrc" || {
     exit 1
 }
 cd "$root/experiments/register-file/layout/magic"
+export PDK_ROOT="$pdk"
 exec magic -rcfile "$pdk/sky130A/libs.tech/magic/sky130A.magicrc" rf8t_routed
