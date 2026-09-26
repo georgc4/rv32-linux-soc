@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 out=build/rtl-tool-views
-netlistsvg=${NETLISTSVG:-build/rtl-eda-tools/node_modules/.bin/netlistsvg}
+netlistsvg=build/rtl-eda-tools/node_modules/.bin/netlistsvg
 yosys=${YOSYS:-yosys}
 
 if ! command -v "$yosys" >/dev/null 2>&1; then
