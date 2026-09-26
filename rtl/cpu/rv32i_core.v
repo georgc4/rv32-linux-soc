@@ -45,7 +45,30 @@ module rv32i_core #(
                      MDU_WAIT = 4'd8, READ_RS2 = 4'd9;
     reg [3:0] state;
     reg [31:0] pc, instr;
-    reg [31:0] regs [0:31];
+    // Four independently addressed eight-word banks leave x0 as a read bypass.
+    // This partitions the 32:1 read selection and limits write-enable fanout.
+    reg [31:0] regs_bank0 [0:7];
+    reg [31:0] regs_bank1 [0:7];
+    reg [31:0] regs_bank2 [0:7];
+    reg [31:0] regs_bank3 [0:7];
+    // Preserve the diagnostic testbench's logical-register hierarchy.
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire [31:0] regs [0:31];
+    /* verilator lint_on UNUSEDSIGNAL */
+    genvar rf_index;
+    generate for (rf_index = 0; rf_index < 32; rf_index = rf_index + 1) begin: rf_trace
+        if (rf_index == 0) begin : zero
+            assign regs[rf_index] = 32'b0;
+        end else if (rf_index < 8) begin : bank0
+            assign regs[rf_index] = regs_bank0[rf_index];
+        end else if (rf_index < 16) begin : bank1
+            assign regs[rf_index] = regs_bank1[rf_index-8];
+        end else if (rf_index < 24) begin : bank2
+            assign regs[rf_index] = regs_bank2[rf_index-16];
+        end else begin : bank3
+            assign regs[rf_index] = regs_bank3[rf_index-24];
+        end
+    end endgenerate
     reg [31:0] operand_a, operand_b;
     reg write_rd, access, store, illegal, stop_normal;
     wire [4:0] rd = instr[11:7];
@@ -54,7 +77,14 @@ module rv32i_core #(
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
     wire [4:0] reg_read_index = state == FETCH_RESP ? i_resp_data[19:15] : rs2;
-    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : regs[reg_read_index];
+    wire [31:0] bank_read0 = regs_bank0[reg_read_index[2:0]];
+    wire [31:0] bank_read1 = regs_bank1[reg_read_index[2:0]];
+    wire [31:0] bank_read2 = regs_bank2[reg_read_index[2:0]];
+    wire [31:0] bank_read3 = regs_bank3[reg_read_index[2:0]];
+    wire [31:0] bank_read_data = reg_read_index[4:3] == 2'd0 ? bank_read0 :
+                                 reg_read_index[4:3] == 2'd1 ? bank_read1 :
+                                 reg_read_index[4:3] == 2'd2 ? bank_read2 : bank_read3;
+    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : bank_read_data;
     wire [31:0] a = operand_a;
     wire [31:0] b = operand_b;
     wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
@@ -412,7 +442,12 @@ module rv32i_core #(
         end
     end
     always @(posedge clk) if (reg_write_enable && reg_write_index != 0)
-        regs[reg_write_index] <= reg_write_data;
+        case (reg_write_index[4:3])
+            2'd0: regs_bank0[reg_write_index[2:0]] <= reg_write_data;
+            2'd1: regs_bank1[reg_write_index[2:0]] <= reg_write_data;
+            2'd2: regs_bank2[reg_write_index[2:0]] <= reg_write_data;
+            2'd3: regs_bank3[reg_write_index[2:0]] <= reg_write_data;
+        endcase
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
