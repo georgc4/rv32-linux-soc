@@ -25,19 +25,33 @@ gds write rf8t_routed.gds
 quit -noprompt
 TCL
 
-podman run --rm -e PDK_ROOT=/pdk \
-    -v "$pdk":/pdk:ro -v "$root":/work \
-    -w /work/build/register-file/layout-check \
-    --entrypoint bash ghcr.io/librelane/librelane:3.0.14 \
-    -lc 'magic -dnull -noconsole -rcfile /pdk/sky130A/libs.tech/magic/sky130A.magicrc < check.tcl' \
-    > "$out/magic.log" 2>&1
+if command -v magic >/dev/null 2>&1 && command -v netgen >/dev/null 2>&1; then
+    (
+        cd "$out"
+        PDK_ROOT="$pdk" magic -dnull -noconsole \
+            -rcfile "$pdk/sky130A/libs.tech/magic/sky130A.magicrc" \
+            < check.tcl > magic.log 2>&1
+        PDK_ROOT="$pdk" netgen -batch lvs \
+            "$root/experiments/register-file/layout/rf8t_reference.spice rf8t_reference" \
+            'rf8t_routed.spice rf8t_routed' \
+            "$pdk/sky130A/libs.tech/netgen/sky130A_setup.tcl" rf8t_lvs.out \
+            > lvs.log 2>&1
+    )
+else
+    podman run --rm -e PDK_ROOT=/pdk \
+        -v "$pdk":/pdk:ro -v "$root":/work \
+        -w /work/build/register-file/layout-check \
+        --entrypoint bash ghcr.io/librelane/librelane:3.0.14 \
+        -lc 'magic -dnull -noconsole -rcfile /pdk/sky130A/libs.tech/magic/sky130A.magicrc < check.tcl' \
+        > "$out/magic.log" 2>&1
 
-podman run --rm -e PDK_ROOT=/pdk \
-    -v "$pdk":/pdk:ro -v "$root":/work \
-    -w /work/build/register-file/layout-check \
-    --entrypoint bash ghcr.io/librelane/librelane:3.0.14 \
-    -lc 'netgen -batch lvs "/work/experiments/register-file/layout/rf8t_reference.spice rf8t_reference" "rf8t_routed.spice rf8t_routed" /pdk/sky130A/libs.tech/netgen/sky130A_setup.tcl rf8t_lvs.out' \
-    > "$out/lvs.log" 2>&1
+    podman run --rm -e PDK_ROOT=/pdk \
+        -v "$pdk":/pdk:ro -v "$root":/work \
+        -w /work/build/register-file/layout-check \
+        --entrypoint bash ghcr.io/librelane/librelane:3.0.14 \
+        -lc 'netgen -batch lvs "/work/experiments/register-file/layout/rf8t_reference.spice rf8t_reference" "rf8t_routed.spice rf8t_routed" /pdk/sky130A/libs.tech/netgen/sky130A_setup.tcl rf8t_lvs.out' \
+        > "$out/lvs.log" 2>&1
+fi
 
 grep 'Total DRC errors found:' "$out/magic.log" | tail -1
 grep -E 'Circuits match uniquely|Circuits do not match' "$out/lvs.log" | tail -1

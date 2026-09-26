@@ -4,8 +4,8 @@ The **editable source** is `magic/rf8t_routed.mag`, with three referenced
 transistor PCells in the same directory. Edit and save that cell in Magic.
 The generated GDS under `build/` is only an export and is not the source.
 
-On Ubuntu, install the free native layout editor with `sudo apt install
-magic`. `sudo apt install klayout` adds a useful GDS viewer. Magic is the
+On Ubuntu, install the free native layout editor and LVS checker with
+`sudo apt install magic netgen-lvs`. `sudo apt install klayout` adds a useful GDS viewer. Magic is the
 editor for this repository's `.mag` source and for interactive SKY130 DRC.
 Install the same SKY130A PDK revision used by the project and set `PDK_ROOT`
 to the directory containing `sky130A`.
@@ -26,7 +26,8 @@ PDK_ROOT=/path/to/volare/sky130/version ./experiments/register-file/layout/check
 
 `check_layout.sh` copies the source into `build/`, then runs Magic DRC,
 transistor extraction, GDS export, and Netgen LVS. It never writes to the
-editable `.mag` files. Currently LVS matches, but the spread-out prototype
+editable `.mag` files. It uses native Magic and Netgen when installed, or the
+LibreLane Podman image otherwise. Currently LVS matches, but the spread-out prototype
 has DRC violations. This single-bit layout is an electrical/layout prototype,
 not yet a compact 31 × 32 register-file macro.
 
