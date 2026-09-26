@@ -3,6 +3,10 @@
 The **editable source** is `magic/rf8t_routed.mag`, with three referenced
 transistor PCells in the same directory. Edit and save that cell in Magic.
 The generated GDS under `build/` is only an export and is not the source.
+The electrical reference is `rf8t_reference.spice`; `rf8t_schematic.svg` is
+its graphical transistor schematic. Regenerate the SVG with
+`python3 experiments/register-file/layout/generate_schematic.py`. The generator
+checks every drawn device's pin connections against the SPICE reference.
 
 On Ubuntu, install Netgen and Magic build dependencies:
 
