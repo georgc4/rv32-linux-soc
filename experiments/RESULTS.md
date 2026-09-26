@@ -144,8 +144,20 @@ commits as their physical runs, but their smaller kernel image differs from
 the physical sweep's baseline image; the current dashboard therefore does
 not mark those specific experiment IDs as combined, same-image Pareto points.
 
+An independent DRC audit of the 4-entry shared-read-core final GDS
+(`b3fdd5a8fa31-a1822f8ccbbe`) found **zero violations** in Magic and **zero
+items** in KLayout's `sky130A_mr.drc` report with FEOL, BEOL, and off-grid
+checks enabled. KLayout completed in 554 seconds. The checked GDS SHA-256 is
+`4af60c02eed459131988c642ede762b0c8420ecc9e5fd492bdeda921815e4239`;
+the rule deck SHA-256 is
+`caf4a6b08cb12f78d6bb2d120737424c786b3bae8d6489234b9b269e91107bfc`.
+The local report and logs are in ignored
+`build/experiments/drc-4tlb-shared-read/`. Seal-ring and floating-metal
+options were not enabled for this user macro. This DRC result applies to that
+one GDS; other variants still need their own checks.
+
 These are encouraging 5×4 feasibility results, not 50 MHz signoff: 50 ns is
 20 MHz, and zero requested hold margin needs a margin-aware rerun. The
 reported register-to-register setup slack at the early timing stage is about
-24–26 ns for the passing variants. Full post-route timing, independent DRC,
-and the 20 ns clock target still need verification.
+24–26 ns for the passing variants. Full post-route timing and the 20 ns clock
+target still need verification.
