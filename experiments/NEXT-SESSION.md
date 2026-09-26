@@ -64,25 +64,37 @@ different kernel image from silently inheriting a pass.
    79% utilization. A successful screen must still reach final GDS and pass
    the full checks. If both fail, focus on RTL area rather than repeating
    density knobs at the same cell count.
-5. **Architecture area trials, one Git commit each.** First finish the
-   proposed 32×32 1RW+1R register-file macro path only after bitcell and
-   array DRC/LVS, extracted timing, and an integration interface exist.
-   Compare a standard-cell register bank with macro/multi-bank variants at
-   fixed 4-entry TLB and image. Separately profile the SV32 adapter's
-   stored tag/data bits and the core's remaining register read/decode muxes;
-   implement one targeted reduction per commit. Use standalone synthesis as
-   an inexpensive screen, then route promising changes through the full
-   KLayout GDS gate and rerun true-serial Linux acceptance for each changed
-   RTL commit. Revisit 2-entry TLB only if a complete ash/program run passes
-   with an adequate cycle cap and no functional regression.
-6. **Hardware and signoff follow-through.** Complete the Tang Nano 20K
+5. **Run the new architecture matrix.** Four independent/cumulative commits
+   are pinned in [`next-architecture-5x4.json`](next-architecture-5x4.json):
+   a four-bank 8-word-per-bank core register file, a shared core adder for
+   loads/stores/JALR/ADD/ADDI/SUB, one barrel shifter for all register and
+   immediate shift modes, and the combination of all three. The 4-entry TLB,
+   Linux image, `AREA 2`, floorplan, and 50 ns target stay fixed. Directed
+   core/supervisor tests, lint, and standalone SKY130 synthesis pass on each
+   commit. Mapped area falls from the reference 175,393 µm² to 174,186,
+   173,464, 172,394, and **170,029 µm²**, respectively. These are 0.7%,
+   1.1%, 1.7%, and **3.1%** standalone savings; the effects are not fully
+   additive. Run true-serial Linux acceptance for each changed RTL commit,
+   then full 5×4 GDS/KLayout/LVS/antenna for each candidate. The combined
+   variant also has a pinned [8×2 physical trial](next-architecture-8x2.json).
+   Synthesis-only results do not qualify as physical area savings.
+6. **Continue larger architecture work.** Finish the proposed 32×32 1RW+1R
+   custom register-file macro path only after bitcell and array DRC/LVS,
+   extracted timing, and an integration interface exist. Compare it against
+   the standard-cell four-bank version at fixed 4-entry TLB and image.
+   Separately profile the SV32 adapter's stored tag/data bits, MDU state,
+   and remaining core decode muxes; implement one targeted reduction per
+   commit. Revisit 2-entry TLB only if a complete ash/program run passes
+   with an adequate cycle cap and no functional regression. Each new commit
+   must use the same full physical and Linux qualification gates.
+7. **Hardware and signoff follow-through.** Complete the Tang Nano 20K
    FPGA bring-up on the actual board revision when it arrives, including
    bidirectional traffic through the SoC UART and real serial flash/RAM.
    For the selected ASIC candidate, add I/O timing constraints, review
    routed multi-corner setup/hold, power and pad rules, and rerun the Tiny
    Tapeout submission action. Retain the pinned GDS and reports.
 
-The first four experiments are ready to run. For each manifest, inspect IDs
+The first five experiments are ready to run. For each manifest, inspect IDs
 before execution, then use the queue, which archives the large PNR workspace:
 
 ```sh
@@ -98,6 +110,24 @@ rest. Full KLayout DRC adds roughly nine minutes per GDS on this Mac based
 on the independent reference audit. The macro and other architecture work
 must receive new commit-pinned manifests once the actual RTL exists; do not
 prelabel unbuilt designs as measured experiments.
+
+For the architecture matrix, the synthesis stage is already recorded. Run
+the full true-serial acceptance separately for each changed RTL commit before
+its PNR trial, using the pinned image and a sufficient cycle cap:
+
+```sh
+python3 experiments/runner.py plan experiments/next-architecture-5x4.json
+python3 experiments/runner.py run experiments/next-architecture-5x4.json \
+  --all --phase acceptance \
+  --flash-image build/experiments/images/no-plist-no-vm-pgtable/flash.bin \
+  --max-cycles 25000000000 --timeout-hours 8
+python3 experiments/run_physical_queue.py experiments/next-architecture-5x4.json \
+  > build/experiments/next-architecture-5x4.log 2>&1
+```
+
+The 8×2 combined run can reuse that same RTL/image acceptance once it has
+passed, without repeating Linux. The 5×4 queue still performs full KLayout
+DRC and checks LVS on **every** new GDS, regardless of reused Linux evidence.
 
 ## LVS scope
 

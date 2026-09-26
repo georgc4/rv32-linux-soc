@@ -1,0 +1,16 @@
+{
+  "name": "next-5x4-architecture-sweep",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "four-bank core register file", "ref": "1dea578e7597c4d0d2187b6d1644f0e26adfcc22"},
+    {"label": "shared core address and integer adder", "ref": "31d9966b2614eef50522c33f3d25f0b6c7ebb356"},
+    {"label": "shared register/immediate barrel shifter", "ref": "140e7ea4b392865bcdf74bdeb5a414a5c4962d7a"},
+    {"label": "banked register file plus shared adder and shifter", "ref": "c1c485de7289d9d203c0bf3057a132d29fdcd781"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

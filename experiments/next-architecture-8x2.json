@@ -1,0 +1,13 @@
+{
+  "name": "next-8x2-combined-architecture",
+  "tile_shape": "8x2",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "banked register file plus shared adder and shifter", "ref": "c1c485de7289d9d203c0bf3057a132d29fdcd781"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

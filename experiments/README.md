@@ -137,7 +137,10 @@ or flash image needs its own complete true-serial ash/program run. Each
 GDS and the complete LibreLane work directory.
 
 See [NEXT-SESSION.md](NEXT-SESSION.md) for the ordered, commit-pinned 5×4 and
-8×2 experiments, their exact manifests, and the decision gates. New physical
+8×2 experiments, including four RTL architecture variants that bank the
+register file and share core arithmetic/shifter logic. Their exact manifests
+are [5×4](next-architecture-5x4.json) and [8×2](next-architecture-8x2.json).
+New physical
 runs execute full KLayout DRC after LibreLane produces final GDS, even when a
 separate LVS or antenna check fails. On macOS the runner uses the KLayout app
 binary; on Linux it uses `klayout` from `PATH`.

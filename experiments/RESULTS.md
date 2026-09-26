@@ -182,3 +182,27 @@ for the passing variants. Timing signoff at 20 MHz still needs dedicated
 reset, UART, SPI, and external-memory I/O constraints and review of routed
 multi-corner setup and hold reports; these runs used zero extra hold-repair
 margin and the flow's fallback SDC.
+
+## Architecture synthesis screen, 2026-09-25
+
+Four new commit-pinned revisions retain the 4-entry TLB and true-serial
+peripherals. Each passed directed core and S-mode supervisor tests and
+Verilator lint. The combined revision also passed the integrated ROM → NOR →
+PSRAM → UART SoC boot test. Its full Linux acceptance and all new GDS checks
+remain pending.
+
+| Core RTL revision | Change relative to 4-entry shared-read reference | Mapped cells | Standalone mapped area | Area change |
+|---|---|---:|---:|---:|
+| `b3fdd5a` | Existing reference | 18,077 | 175,393 µm² | — |
+| `1dea578` | Four banks of eight registers | 17,785 | 174,186 µm² | −0.7% |
+| `31d9966` | Shared address/integer adder | 17,691 | 173,464 µm² | −1.1% |
+| `140e7ea` | Shared left/right and immediate/register shifter | 17,482 | 172,394 µm² | −1.7% |
+| `c1c485d` | All three changes combined | **17,017** | **170,029 µm²** | **−3.1%** |
+
+The savings are from standalone Yosys mapping and are not proof of physical
+area or timing improvement. The [next architecture matrix](next-architecture-5x4.json)
+records those synthesis runs and schedules true-serial ash/program acceptance
+and full 5×4 GDS/KLayout/Netgen checks. The combined revision also has a
+separate [8×2 manifest](next-architecture-8x2.json). The custom SRAM
+register-file idea is not integrated into any of these commits; it still
+needs independently verified physical and timing views.
