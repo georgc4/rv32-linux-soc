@@ -1,8 +1,11 @@
 # Register-file bit-cell layout experiment
 
-The **editable source** is `magic/rf8t_routed.mag`, with three referenced
-transistor PCells in the same directory. Edit and save that cell in Magic.
-The generated GDS under `build/` is only an export and is not the source.
+For the current KLayout bitcell work, the **editable source** is
+[`klayout/rf8t_bitcell.gds`](klayout/rf8t_bitcell.gds). Open it using
+[`klayout/open.sh`](klayout/open.sh) and follow the
+[`KLayout workspace guide`](klayout/README.md). The earlier Magic prototype
+remains in `magic/rf8t_routed.mag` for comparison and its existing checks;
+the generated GDS under `build/` is only an export.
 The electrical reference is `rf8t_reference.spice`; `rf8t_schematic.svg` is
 its graphical transistor schematic. Regenerate the SVG with
 `python3 experiments/register-file/layout/generate_schematic.py`. The generator
