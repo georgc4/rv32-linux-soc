@@ -1,6 +1,6 @@
 # RV32 Linux SoC — TTSKY26d draft
 
-This project targets an 8×2 tile allocation on TTSKY26d. The RTL contains an
+This project targets a 5×4 tile allocation on TTSKY26d. The RTL contains an
 RV32IMA CPU, Sv32 address translation, UART, timer, interrupt controller, and
 serial interface to four external quad PSRAM chips and one quad NOR flash.
 The logical Tiny Tapeout pins are documented in [the pin budget](pin-budget.md).
@@ -11,8 +11,9 @@ repository's full serial RTL simulation reached `/init` and printed
 `RV32 Linux userspace ready` on the baseline design. A stronger BusyBox ash
 and user-program gate is being evaluated on experiment branches.
 
-**Draft status:** This design has not passed the TTSKY26d physical flow. The
-8×2 local trial did not generate a signoff GDS. This repository revision
+**Draft status:** The submitted RTL snapshot has not passed the TTSKY26d
+physical flow. The earlier 8×2 local trial did not generate a signoff GDS.
+This repository revision
 must not be selected as a fabrication revision until GDS, precheck, timing,
 and gate-level checks pass. The external board and pinout also need validation.
 
