@@ -43,6 +43,8 @@ module serial_mem_bridge #(
     output wire [5:0] spi_dq_oe,
     output wire initialized
 );
+    localparam integer POWER_COUNT_BITS = POWERUP_CYCLES > 1 ?
+                                           $clog2(POWERUP_CYCLES) : 1;
     localparam [3:0] POWER_WAIT = 4'd0, INIT_LAUNCH = 4'd1,
                      IDLE = 4'd2, SETUP = 4'd3, HIGH = 4'd4,
                      LOW = 4'd5, GAP = 4'd6, DONE = 4'd7,
@@ -57,7 +59,7 @@ module serial_mem_bridge #(
                      AFTER_CTRL_DONE = 3'd6;
     reg [3:0] state;
     reg [2:0] kind, after_gap;
-    reg [31:0] power_count;
+    reg [POWER_COUNT_BITS-1:0] power_count;
     reg [1:0] init_chip;
     reg init_reset_cmd;
     reg selected_flash;
@@ -65,11 +67,10 @@ module serial_mem_bridge #(
     reg [31:0] header;
     reg [6:0] bit_index, total_bits;
     reg mosi;
-    reg [31:0] read_shift, response_data;
+    reg [31:0] read_shift;
     reg response_error;
     reg [23:0] base_address;
     reg [31:0] write_word;
-    reg [31:0] serial_write_shift;
     reg [3:0] quad_mosi;
     reg [3:0] pending_strb;
     reg [1:0] lane;
@@ -82,6 +83,11 @@ module serial_mem_bridge #(
     reg [19:0] ctrl_polls;
     reg [31:0] ctrl_response_data;
     reg ctrl_response_error;
+    wire [31:0] serial_write_word = pending_strb == 4'hf ?
+        {write_word[7:0], write_word[15:8], write_word[23:16], write_word[31:24]} :
+        {write_byte, 24'b0};
+    wire [31:0] reordered_read_data =
+        {read_shift[7:0], read_shift[15:8], read_shift[23:16], read_shift[31:24]};
     wire unused_spi_inputs = &{1'b0, spi_dq_in[0]};
     wire [3:0] remaining_strb = pending_strb & ~(4'b0001 << lane);
     wire ram_quad_addr = (kind == K_RAM_READ || kind == K_RAM_WRITE) &&
@@ -113,8 +119,8 @@ module serial_mem_bridge #(
     assign flash_req_ready = state == IDLE && !ram_req_valid;
     assign ram_resp_valid = state == DONE && !selected_flash;
     assign flash_resp_valid = state == DONE && selected_flash;
-    assign ram_resp_rdata = response_data;
-    assign flash_resp_rdata = response_data;
+    assign ram_resp_rdata = reordered_read_data;
+    assign flash_resp_rdata = reordered_read_data;
     assign ram_resp_err = response_error;
     assign flash_resp_err = response_error;
     assign ctrl_req_ready = state == IDLE && !ram_req_valid && !flash_req_valid;
@@ -140,11 +146,9 @@ module serial_mem_bridge #(
             bit_index <= 0;
             total_bits <= 0;
             read_shift <= 0;
-            response_data <= 0;
             response_error <= 0;
             base_address <= 0;
             write_word <= 0;
-            serial_write_shift <= 0;
             quad_mosi <= 0;
             pending_strb <= 0;
             lane <= 0;
@@ -162,7 +166,8 @@ module serial_mem_bridge #(
                 spi_cs_n <= 5'b11111;
                 spi_sck <= 0;
                 mosi <= 0;
-                if (power_count == POWERUP_CYCLES - 1) state <= INIT_LAUNCH;
+                if ({{(32-POWER_COUNT_BITS){1'b0}}, power_count} == POWERUP_CYCLES - 1)
+                    state <= INIT_LAUNCH;
                 else power_count <= power_count + 1;
             end
             INIT_LAUNCH: begin
@@ -184,12 +189,8 @@ module serial_mem_bridge #(
                     selected_chip <= {1'b0, ram_req_addr[24:23]};
                     base_address <= {1'b0, ram_req_addr[22:0]} & 24'hfffffc;
                     write_word <= ram_req_wdata;
-                    serial_write_shift <= {ram_req_wdata[7:0], ram_req_wdata[15:8],
-                                           ram_req_wdata[23:16], ram_req_wdata[31:24]};
-                    if (ram_req_wstrb != 4'hf)
-                        serial_write_shift <= {ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8], 24'b0};
                     pending_strb <= ram_req_wstrb;
-                    response_data <= 0;
+                    read_shift <= 0;
                     response_error <= ram_req_addr[31:25] != 0;
                     if (ram_req_addr[31:25] != 0 || (ram_req_write && ram_req_wstrb == 0)) state <= DONE;
                     else begin
@@ -210,7 +211,7 @@ module serial_mem_bridge #(
                 end else if (flash_req_valid) begin
                     selected_flash <= 1;
                     selected_chip <= 3'd4;
-                    response_data <= 0;
+                    read_shift <= 0;
                     response_error <= flash_req_write || flash_req_addr[31:24] != 0;
                     if (flash_req_write || flash_req_addr[31:24] != 0) state <= DONE;
                     else begin
@@ -331,8 +332,6 @@ module serial_mem_bridge #(
                             after_gap <= AFTER_CTRL_POLL;
                         end
                     end else begin
-                        response_data <= {read_shift[7:0], read_shift[15:8],
-                                          read_shift[23:16], read_shift[31:24]};
                         after_gap <= AFTER_DONE;
                     end
                     state <= GAP;
@@ -343,7 +342,7 @@ module serial_mem_bridge #(
                              bit_index >= 7'd7 && bit_index < 7'd13)
                         quad_mosi <= header[23 - 4*(bit_index - 7'd7) -: 4];
                     else if (kind == K_RAM_WRITE && bit_index >= 7'd13)
-                        quad_mosi <= serial_write_shift[31 - 4*(bit_index - 7'd13) -: 4];
+                        quad_mosi <= serial_write_word[31 - 4*(bit_index - 7'd13) -: 4];
                     else if (bit_index < 7'd31) mosi <= header[30 - bit_index];
                     else if (kind == K_FLASH_PROGRAM)
                         mosi <= write_byte[7 - (bit_index - 7'd31)];
@@ -359,7 +358,6 @@ module serial_mem_bridge #(
                     AFTER_INIT: state <= INIT_LAUNCH;
                     AFTER_WRITE: begin
                         write_byte <= write_word[8*lane +: 8];
-                        serial_write_shift <= {write_word[8*lane +: 8], 24'b0};
                         header <= {8'h38, base_address + {22'b0, lane}};
                         total_bits <= 7'd16;
                         bit_index <= 0;
