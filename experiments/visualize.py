@@ -51,6 +51,7 @@ def historical_baseline() -> dict | None:
                     "mapped_cells": None, "acceptance_cycles": None,
                     "shell_command_cycles": None},
         "synth": "pass", "pnr": "failed at detailed placement",
+        "physical_checks": "pending",
         "acceptance": "boot marker only", "qualified": False,
         "gds_present": False,
         "link": "history/sky26d-120d965.json",
@@ -149,8 +150,8 @@ document.getElementById('runs').textContent=rows.length;
 document.getElementById('qualified').textContent=rows.filter(r=>r.qualified).length;
 document.getElementById('failed').textContent=rows.filter(r=>r.pnr.startsWith('fail')||r.acceptance.startsWith('fail')).length;
 function fmt(value,digits=1){return Number.isFinite(value)?value.toLocaleString(undefined,{maximumFractionDigits:digits}):'—'}
-function klass(value){return value==='pass'?'pass':value.startsWith('fail')||value==='error'||value==='timeout'?'failed':'pending'}
-function tag(value){const span=document.createElement('span');span.className='status '+klass(value);span.textContent=value;return span}
+function klass(value){const status=String(value??'pending');return status==='pass'?'pass':status.startsWith('fail')||status==='error'||status==='timeout'?'failed':'pending'}
+function tag(value){const status=String(value??'pending');const span=document.createElement('span');span.className='status '+klass(status);span.textContent=status;return span}
 function textCell(tr,value,cls){const td=document.createElement('td');td.textContent=value;if(cls)td.className=cls;tr.appendChild(td);return td}
 for(const r of rows){const tr=document.createElement('tr');const first=document.createElement('td');const link=document.createElement('a');link.href=r.link;link.textContent=r.name+' · '+r.id;first.appendChild(link);tr.appendChild(first);textCell(tr,r.commit.slice(0,12),'mono');for(const key of ['synth','pnr','physical_checks','acceptance']){const td=document.createElement('td');td.appendChild(tag(r[key]));tr.appendChild(td)}textCell(tr,fmt(r.metrics.mapped_area_um2,0));textCell(tr,fmt(r.metrics.placed_area_um2,0));textCell(tr,fmt(r.metrics.setup_wns_ns,2));textCell(tr,fmt(r.metrics.acceptance_cycles,0));textCell(tr,Number.isFinite(r.metrics.shell_command_cycles)?fmt(r.metrics.shell_command_cycles/20000000,2):'—');if(r.failure_reason){tr.title=r.failure_reason}document.getElementById('ledger').appendChild(tr)}
 const ns='http://www.w3.org/2000/svg';function el(type,attrs){const node=document.createElementNS(ns,type);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);svg.appendChild(node);return node}
