@@ -25,8 +25,12 @@ hits, flush, SATP change, permissions and A/D updates.
 
 Run the full true-serial Linux 6.12 / BusyBox ash acceptance on each RTL
 revision. Use the exact smaller-kernel image SHA-256 recorded by the runner.
-Physical trials use 5×4 only, with a baseline 50 ns/`AREA 2` GDS run for
-each candidate and 45 ns/`DELAY 2` trials for the two eight-line candidates.
+Physical trials use 5×4 only, with a 50 ns/`AREA 2` GDS run for each
+candidate and 45 ns/`DELAY 2` trials for the two eight-line candidates.
+The queue starts with a one-line cache rerun at 0.05 ns post-placement hold
+margin. Its zero-margin run produced GDS and passed Magic DRC/LVS, but the
+flow failed final hold timing; KLayout was not run by the experiment gate.
+The added margin is a measured repair attempt, not a claimed fix.
 The 45 ns trials measure implementation headroom; a faster silicon clock
 also requires a matching UART divisor, timer frequency and device tree.
 

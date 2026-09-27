@@ -9,7 +9,7 @@
   "matrix": {
     "synth_strategy": ["DELAY 2"],
     "clock_period_ns": [45.0],
-    "hold_margin_ns": [0.0],
+    "hold_margin_ns": [0.05],
     "grt_hold_margin_ns": [0.0]
   }
 }
