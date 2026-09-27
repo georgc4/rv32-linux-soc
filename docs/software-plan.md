@@ -1,5 +1,7 @@
 # Software and memory plan
 
+> Historical image plan and size snapshot. For current source/build behavior and boot evidence, see [Linux image and programs](boot/linux-image-and-programs.md) and [boot chain](boot/boot-chain.md).
+
 **Linux 6.12 LTS is the selected prototype baseline** (user decision 2026-09-23). A local build of 6.12.111 now produces an RV32 `Image` with embedded BusyBox 1.37.0 ash and the digit demo, plus a DTB. Sources, SHA256 values, configs, container recipe, and build script are pinned in `linux/`. Zig 0.15.2 cross-compiles the static RV32IMA userspace. This is an image build, not evidence of a boot. **BusyBox ash is accepted for the first fabricated shell milestone**; GNU Bash is optional later work.
 
 Measured 2026-09-23: `Image` is 4,890,708 bytes on flash and its header reports 5,135,112 bytes of occupied kernel memory at `0x8040_0000`; the uncompressed initramfs CPIO is about 433 KiB, including a 365,984-byte BusyBox and 74,592-byte digit demo. The DTB is 1,662 bytes after adding the PLIC and UART interrupt route. With provisional 256 KiB firmware and 4 KiB DTB flash allowances, the kernel has 16,510,976 bytes of flash room. The actual kernel and rootfs runtime peak remains unmeasured. The image disables strict kernel RWX protection: on this RV32 build, its 4 MiB section alignment expanded the file to about 17 MiB, over the NOR budget. This is a security tradeoff for the prototype and should be revisited once a compressed boot image or a larger flash layout is available.

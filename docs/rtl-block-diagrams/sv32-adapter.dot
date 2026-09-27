@@ -9,7 +9,7 @@ digraph sv32_adapter {
   cpu [label="CPU instruction + data ports\ni_req_* / d_req_*", fillcolor="#e3eefb"];
   arb [label="One-request arbiter\ndata priority"];
   mode [label="Effective privilege + mode\nMPRV / Sv32 enable"];
-  tlb [label="16-entry direct-mapped TLB\nvalid / VPN / context / PTE / level"];
+  tlb [label="4-entry direct-mapped TLB\nvalid / VPN / shared context / PTE / level"];
   hit [label="Hit permissions + address\nR/W/X, U/S, SUM/MXR"];
   access [label="Physical access address\n4 KiB / 4 MiB / bypass"];
   mux [label="Physical bus request mux\nPTE read / A-D write / access", fillcolor="#f3ecfa", color="#9870b2"];

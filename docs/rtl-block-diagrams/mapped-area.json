@@ -8,34 +8,34 @@
       "area_um2": 30749.4912
     },
     "other_local_logic": {
-      "cells": 6967,
-      "area_um2": 52102.4704
+      "cells": 5677,
+      "area_um2": 40727.8112
     },
     "mdu": {
-      "cells": 2700,
-      "area_um2": 22180.0224
+      "cells": 2054,
+      "area_um2": 15945.2928
     },
     "privilege": {
-      "cells": 1965,
-      "area_um2": 18355.104
+      "cells": 1966,
+      "area_um2": 18347.5968
     }
   },
   "sv32_adapter": {
     "tlb_storage": {
-      "cells": 1280,
-      "area_um2": 32030.72
+      "cells": 219,
+      "area_um2": 5480.256
     },
     "other_logic": {
-      "cells": 4105,
-      "area_um2": 31330.048
+      "cells": 1470,
+      "area_um2": 13925.856
     }
   },
   "core_total": {
-    "cells": 12656,
-    "area_um2": 123387.088
+    "cells": 10721,
+    "area_um2": 105770.192
   },
   "sv32_adapter_total": {
-    "cells": 5385,
-    "area_um2": 63360.768
+    "cells": 1689,
+    "area_um2": 19406.112
   }
 }

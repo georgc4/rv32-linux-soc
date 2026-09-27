@@ -1,5 +1,7 @@
 # Verification ladder
 
+> Historical plan. The current directed tests and full true-serial Linux acceptance are detailed in [tests and models](verification/tests-and-models.md).
+
 | Stage | Current evidence | Next acceptance gate |
 |---|---|---|
 | Interconnect | `test` checks decode, boundaries, stalls, held responses and control window | Timeout/fault injection |

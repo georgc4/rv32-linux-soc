@@ -1,0 +1,21 @@
+# Reproducing and debugging a result
+
+## Choose the right test layer
+
+For a local RTL edit, run the smallest directed bench for the touched unit, then `make lint`. For changed CPU/MMU/serial/interrupt behavior, run the integrated small-image tests and full serial Linux acceptance at the new Git commit. A changed Linux config or `/init` changes the flash hash and needs a new full acceptance even if RTL is identical. For physical-only knob changes, use the exact prior commit/image acceptance evidence and run full GDS checks on each new physical result. This sequence avoids attributing a timeout in a billion-cycle workload to an untested small logic change.
+
+Fast commands and their full compile lists are in [`Makefile`](../../Makefile). The CI workflow [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs Icarus directed tests, host digit fixtures, and Verilator lint on Ubuntu 24.04 for pushes and PRs. It does **not** build the large Linux image or run hours-long full acceptance or physical PNR. A green CI badge therefore means fast regression only. Tool package versions installed with apt in CI are not an exact frozen simulator environment; pinned run logs and artifact hashes are stronger evidence for a specific result.
+
+## Inspect a full Linux trace
+
+The Verilator bench prints `UART <cycle>: <line>`, `PROGRESS`, `GUEST`, `SHELL_PROMPT`, `SHELL_INPUT`, and `ACCEPTANCE`. `PROGRESS` includes `pc`, privilege, SATP, machine/supervisor timer traps, supervisor external traps, UART IRQ edges, PLIC claim/nonzero/zero/complete counts, SBI ECALLs, retirement delta, RAM/flash requests, page faults, other synchronous traps, per-chip SPI command counts, and UART text tail. `GUEST` includes key integer registers plus `sepc/scause/mepc/mcause`, current instruction, and core state. To watch recent UART output, use `tail -n N` on filtered lines, for example `grep 'UART ' build/.../acceptance.log | tail -n 20`; `watch` can rerun that pipeline. A high SBI count often reflects frequent timer programming/traps, while high RAM request and SPI counts reflect the uncached memory path. These are hypotheses until correlated with PC and phase markers.
+
+The acceptance bench can take plusargs: `+max_cycles`, `+report_first`, `+report_step`, `+watch_pc_lo`, `+watch_pc_hi`, and `+watch_after`. Use a narrow PC range and delayed watch start to avoid gigantic logs. `WATCH` reports distinct return addresses up to its fixed limit. Every additional hierarchical trace can slow simulation or inflate logs; preserve the command line and RTL/image hashes when changing instrumentation. The experiment runner uses a fixed harness/model hash and a 25-billion-cycle cap in the current area batch.
+
+## Diagnosing physical failures
+
+Start with a run's `result.json`: verify commit, flow hash, PDK identity, image SHA, tile shape, strategy, clock, density, hold margins, and per-stage status. Read `pnr.log` near the first error, then named stage metrics and reports. If there is no final GDS, DRC/LVS cannot pass. If there is GDS, inspect the final GDS checksum and the exact KLayout deck/options, Magic DRC count, Netgen text+JSON, antenna report, and routed timing. Placement legalization failure is about cell geometry/density at that stage; test whether hold/antenna repair inserted enough cells to create the local crowding. Do not infer a logic-function failure from PNR alone. The [physical guide](../physical/flow-and-evidence.md) defines the gate.
+
+## Reproducibility boundaries
+
+The repository checks in RTL, boot ROM hex, configs, scripts, manifests, small assembly fixtures, and some historical reports. Large Linux sources, compiled images, Verilator binaries, and physical run workspaces are ignored under `build/`. The image build verifies source archives, but a local `build/linux/flash.bin` is only identifiable by its SHA and metadata. The experiment runner pins Git commit, script/model hashes, PDK source/Liberty identity, physical deck/GDS/report hashes, and acceptance image/log association. If one is missing, say which evidence is unavailable instead of treating the run as equivalent. Firmware/RTL files must be committed before Tiny Tapeout staging so `baseline.json` names their actual contents.

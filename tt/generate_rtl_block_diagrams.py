@@ -113,12 +113,14 @@ def mapped_metrics() -> dict:
                   if cell["type"] in areas}
     adapter_cells = {name: cell for name, cell in adapter["cells"].items()
                      if cell["type"] in areas}
-    reg_names = storage_cell_names(core, ("regs[",))
+    reg_names = storage_cell_names(core, ("regs_bank0[", "regs_bank1[",
+                                          "regs_bank2[", "regs_bank3["))
     tlb_names = storage_cell_names(adapter,
-                                   ("tlb_valid", "tlb_vpn[", "tlb_context[",
+                                   ("tlb_valid", "tlb_vpn_tag[", "tlb_context",
                                     "tlb_pte[", "tlb_level1["))
-    if len(reg_names) != 1024 or len(tlb_names) != 1280:
-        raise RuntimeError("Mapped storage bit counts changed; review attribution")
+    if len(reg_names) != 1024 or not 100 <= len(tlb_names) <= 239:
+        raise RuntimeError(f"Mapped storage attribution changed: RF={len(reg_names)}, "
+                           f"TLB={len(tlb_names)}; review diagram")
 
     result = {
         "library": liberty.name,
@@ -162,18 +164,18 @@ def main() -> None:
     require(core, ["state", "pc", "instr", "a", "b", "next_pc", "result",
                    "access_addr_hold", "atomic_write_data", "i_req_addr",
                    "d_req_addr", "retire_valid", "current_satp", "current_mstatus"],
-            {"mdu": "rv32_mdu", "priv_unit": "rv32_priv_unit"}, ["regs"])
+            {"mdu": "rv32_mdu", "priv_unit": "rv32_priv_unit"},
+            ["regs_bank0", "regs_bank1", "regs_bank2", "regs_bank3"])
     require(core, ["mdu_done", "mdu_result", "trap_commit", "irq_pending"])
 
     adapter = run_yosys("sv32_bus_adapter", [
         "rtl/interconnect/sv32_bus_adapter.v",
     ])
     require(adapter, ["state", "choose_data", "request_vaddr", "request_priv",
-                      "do_translate", "virtual_addr", "root_context",
-                      "tlb_valid", "tlb_vpn[0]", "tlb_vpn[15]",
-                      "tlb_context[0]", "tlb_context[15]",
-                      "tlb_pte[0]", "tlb_pte[15]",
-                      "tlb_level1[0]", "tlb_level1[15]", "tlb_hit",
+                      "do_translate", "virtual_addr",
+                      "tlb_valid", "tlb_vpn_tag[0]", "tlb_vpn_tag[3]",
+                      "tlb_context", "tlb_pte[0]", "tlb_pte[3]",
+                      "tlb_level1[0]", "tlb_level1[3]", "tlb_hit",
                       "cached_permission_ok", "cached_privilege_ok",
                       "walk_addr", "next_walk_addr", "pte_leaf", "pte_invalid",
                       "permission_ok", "privilege_ok", "leaf_addr", "pte_updated",
@@ -191,7 +193,7 @@ def main() -> None:
   if_bus [label="Instruction port\ni_req_* / i_resp_*", fillcolor="#e3eefb"];
   fetch [label="Fetch + PC control\nPC, next PC, core FSM"];
   decode [label="Instruction register + decode\nopcode, immediates, rs1/rs2/rd"];
-  rf [label="Register file\n32 × 32 bits; x0 reads zero", fillcolor="#e9f6ef", color="#5c9b7d"];
+  rf [label="Four 8-word register banks\n31 writable × 32 bits; one read path", fillcolor="#e9f6ef", color="#5c9b7d"];
 
   alu [label="Integer ALU + branch\nresult / next PC", fillcolor="#e9f6ef", color="#5c9b7d"];
   lsu [label="Load/store + atomics\naddress, lanes, AMO", fillcolor="#e9f6ef", color="#5c9b7d"];
@@ -226,7 +228,7 @@ def main() -> None:
   cpu [label="CPU instruction + data ports\ni_req_* / d_req_*", fillcolor="#e3eefb"];
   arb [label="One-request arbiter\ndata priority"];
   mode [label="Effective privilege + mode\nMPRV / Sv32 enable"];
-  tlb [label="16-entry direct-mapped TLB\nvalid / VPN / context / PTE / level"];
+  tlb [label="4-entry direct-mapped TLB\nvalid / VPN / shared context / PTE / level"];
   hit [label="Hit permissions + address\nR/W/X, U/S, SUM/MXR"];
   access [label="Physical access address\n4 KiB / 4 MiB / bypass"];
   mux [label="Physical bus request mux\nPTE read / A-D write / access", fillcolor="#f3ecfa", color="#9870b2"];

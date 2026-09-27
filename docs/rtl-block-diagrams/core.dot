@@ -9,7 +9,7 @@ digraph core {
   if_bus [label="Instruction port\ni_req_* / i_resp_*", fillcolor="#e3eefb"];
   fetch [label="Fetch + PC control\nPC, next PC, core FSM"];
   decode [label="Instruction register + decode\nopcode, immediates, rs1/rs2/rd"];
-  rf [label="Register file\n32 × 32 bits; x0 reads zero", fillcolor="#e9f6ef", color="#5c9b7d"];
+  rf [label="Four 8-word register banks\n31 writable × 32 bits; one read path", fillcolor="#e9f6ef", color="#5c9b7d"];
 
   alu [label="Integer ALU + branch\nresult / next PC", fillcolor="#e9f6ef", color="#5c9b7d"];
   lsu [label="Load/store + atomics\naddress, lanes, AMO", fillcolor="#e9f6ef", color="#5c9b7d"];

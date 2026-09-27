@@ -1,8 +1,10 @@
 # Physical memory map in the integrated RTL
 
+For the current bus contract and peripheral details, use the [engineering handbook](README.md). This page is a compact address reference.
+
 | Device | Byte addresses | Size | Implemented behavior |
 |---|---:|---:|---|
-| Boot ROM | `0x0000_0000..0x0000_0fff` | 4 KiB window | 11 populated words; out-of-image access faults |
+| Boot ROM | `0x0000_0000..0x0000_0fff` | 4 KiB window | 27 populated words; out-of-image access faults |
 | CLINT-like timer | `0x0200_0000..0x0200_ffff` | 64 KiB | `msip`, `mtimecmp`, `mtime` at standard offsets |
 | PLIC | `0x0c00_0000..0x0c3f_ffff` | 4 MiB | one UART source, S-mode context 0; priority, pending, enable, threshold, claim/complete |
 | UART | `0x1000_0000..0x1000_0fff` | 4 KiB | 16550-like byte registers at 4-byte spacing |

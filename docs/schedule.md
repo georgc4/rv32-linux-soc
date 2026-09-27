@@ -1,5 +1,7 @@
 # SKY26d evidence gates
 
+> Historical planning schedule. Current work is tracked by [experiment manifests and results](../experiments/RESULTS.md); dates below are not a current build-status report.
+
 Target: TTSKY26d, currently listed to close **2026-11-30**. Dates below are planning gates, not promises. A full Linux boot on original fabricated silicon cannot be proven until chips return; pre-tapeout evidence must include simulation and FPGA behavior plus physical signoff. Budget remains ≤approximately USD 2,000 for tapeout. Recheck live shuttle date and offer at each gate.
 
 | Gate by | Evidence required to continue at full scope |

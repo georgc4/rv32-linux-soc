@@ -1,5 +1,7 @@
 # Host and build workflow
 
+> Historical host snapshot. The current build, test, and experiment commands are in the [engineering handbook](README.md).
+
 Inspected on the primary M3 Pro macOS host on 2026-09-23: Icarus Verilog 13.0, Verilator 5.046, Yosys 0.63, Python 3.14.6, and `riscv64-unknown-elf-gcc` 15.1.0 are present. Make and a host C compiler are present. A RISC-V **Linux** cross compiler was not found. No system packages were installed or updated in this session.
 
 Fast local loop: `make test test-core test-digit lint synth-bus synth-core`. The synthesis targets report generic Yosys cells in `build/synth-*.log`, not mapped area or frequency. `make regen-smoke` rebuilds the checked-in diagnostic program using local GNU RISC-V binutils 2.45; CI does not require that cross toolchain because it uses the committed hex image. CI uses Ubuntu 24.04 with apt-installed Icarus and Verilator. The distribution package versions are not yet pinned; before release, pin a container digest or exact package versions and record the toolchain in build manifests.

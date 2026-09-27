@@ -1,20 +1,11 @@
-# Architecture sketch (provisional)
+# Architecture
 
-```text
-  instruction fetch ─┐
-                     ├─ arbitration ─ physical_bus ─ PSRAM controller ─ 4 chips
-  data / page walks ─┘                     ├───────── flash controller ─ NOR
-                                          ├───────── UART
-                                          ├───────── timer / interrupts
-                                          └───────── immutable boot ROM
-```
+The current architecture reference is the [engineering handbook](README.md):
 
-The CPU issues **physical** requests after translation. Sv32 applies to instruction fetch and loads/stores in applicable privilege modes; ordinary M-mode and bare accesses bypass it, with MPRV data-access semantics to be handled explicitly. Separate instruction and data ingress require arbitration before the existing single-outstanding `physical_bus`. Page-table walks also use physical memory and must not recursively translate. This structure deliberately keeps PSRAM/flash protocol state outside the core.
+- [System architecture](system/architecture.md) describes the integrated hierarchy, clock/reset boundary, and memory paths.
+- [Bus contract and map](system/bus-and-address-map.md) gives the physical interface and address decode.
+- [CPU](rtl/cpu-core.md), [privilege/MDU](rtl/mdu-and-privilege.md), [Sv32](rtl/sv32.md), [serial memories](rtl/serial-memory.md), and [peripherals](rtl/peripherals.md) cover each hardware unit.
+- [Pin integration](rtl/integration-and-pins.md) covers ASIC and FPGA wrappers.
+- [RTL-derived diagrams](rtl-block-diagrams/README.md) show current source-checked partitions and mapped-area overlays.
 
-Exploratory ISA target: RV32IMA_Zicsr_Zifencei, M/S/U privilege, Sv32, traps, `MRET`/`SRET`, delegation, timer and external interrupts, `FENCE`/`FENCE.I`/`SFENCE.VMA`. The exact implemented subset, Linux configuration, and handling of misaligned accesses and PTE A/D bits require a pinned kernel and tests. `A` includes LR/SC and AMOs; serial memory must preserve an atomic word transaction across read-modify-write. A single hart makes this simpler but does not remove architecturally required reservation behavior. A 32-bit physical bus is a design choice and needs a defined fault policy for Sv32 PTE physical addresses beyond implemented RAM/MMIO.
-
-`physical_bus` contract: one accepted request outstanding; `valid && ready` accepts it. Payload must remain stable while stalled. The selected slave receives byte **offset** within its window plus write data and byte strobes. A response occurs no earlier than the next cycle and remains valid until `resp_ready`. Unmapped requests complete with `resp_err=1`. Reset cancels an in-flight request. Current windows are parameters for simulation, not a committed SoC map. Sizes must be powers of two; bases must be size-aligned and nonoverlapping. There is no timeout yet: a slave that never responds hangs the bus, an item for later fault handling.
-
-Current implementation: `rtl/soc/soc_top.v` connects the CPU, Sv32 walker, physical interconnect, ROM, CLINT-like timer, UART, and serial memory bridge. `tt_um_rv32_linux_soc.v` maps these signals to the Tiny Tapeout logical interface. The CPU implements the tested RV32I/M/A operations, selected machine and supervisor CSRs, `ECALL`, `MRET`, `SRET`, interrupts, and traps. The walker handles 4 KiB pages and 4 MiB superpages, permissions, page faults, A/D updates, and a 16-entry TLB invalidated by `SFENCE.VMA`. There is no instruction/data cache yet, so `FENCE.I` needs no cache flush. Unit tests exercise machine traps, M-to-S handoff, translated fetch/store and a delegated S-mode external interrupt; the UART level is wired to both M and S external interrupt inputs so firmware can enable the chosen target. The integrated ROM image remains a diagnostic; the SoC test runs it with `DIAGNOSTIC_MODE=1`, while the wrapper defaults to architectural trap behavior (`DIAGNOSTIC_MODE=0`).
-
-The built 6.12.111 kernel, DTB, M-mode SBI firmware, and BusyBox initramfs booted through full-capacity bit-level serial memory models with quad-lane transfers. Linux ran `/init`, whose `#!/bin/sh` interpreter is BusyBox ash, and printed its userspace-ready marker at cycle 12,454,790,706. The test ends at that marker; interactive input, the shell prompt, and the digit demo still need end-to-end checks. The run emitted three recoverable soft-lockup warnings during late kernel initialization. The machine/supervisor implementation is not a full privileged-spec compliance claim. Privilege protection/PMP, comprehensive interrupt and CSR tests, full ISA compliance, exception corner cases, image update firmware, and physical timing remain. The multiplier/divider runs in 32 steps. Generic Yosys cells are not mapped SKY130 area, power, or timing figures and cannot establish shuttle tile fit. Atomics use a virtual-address reservation and a serialized single-master bus; architectural reservation edge cases need further review.
+The earlier architecture sketch described a 16-entry TLB and an earlier boot milestone. It remains available in Git history, but the current RTL has a four-entry TLB and the full serial Linux shell/program acceptance gate.

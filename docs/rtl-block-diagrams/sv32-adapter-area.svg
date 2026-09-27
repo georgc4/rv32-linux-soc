@@ -15,7 +15,7 @@
 <title>tlb</title>
 <path fill="#e9f6ef" stroke="#5c9b7d" stroke-width="1.5" d="M360.22,-278.12C360.22,-278.12 103.53,-278.12 103.53,-278.12 97.53,-278.12 91.53,-272.12 91.53,-266.12 91.53,-266.12 91.53,-222.08 91.53,-222.08 91.53,-216.08 97.53,-210.08 103.53,-210.08 103.53,-210.08 360.22,-210.08 360.22,-210.08 366.22,-210.08 372.22,-216.08 372.22,-222.08 372.22,-222.08 372.22,-266.12 372.22,-266.12 372.22,-272.12 366.22,-278.12 360.22,-278.12"/>
 <text xml:space="preserve" text-anchor="middle" x="231.88" y="-253.3" font-family="Helvetica,sans-Serif" font-size="14.00">TLB storage FFs</text>
-<text xml:space="preserve" text-anchor="middle" x="231.88" y="-238.3" font-family="Helvetica,sans-Serif" font-size="14.00">1,280 cells · 32,030.7 µm²</text>
+<text xml:space="preserve" text-anchor="middle" x="231.88" y="-238.3" font-family="Helvetica,sans-Serif" font-size="14.00">219 cells · 5,480.3 µm²</text>
 <text xml:space="preserve" text-anchor="middle" x="231.88" y="-223.3" font-family="Helvetica,sans-Serif" font-size="14.00">Valid / VPN / context / live PTE / level bits</text>
 </g>
 <!-- other -->
@@ -23,7 +23,7 @@
 <title>other</title>
 <path fill="#f2f6fb" stroke="#6380a5" stroke-width="1.5" d="M403.34,-167.08C403.34,-167.08 60.41,-167.08 60.41,-167.08 54.41,-167.08 48.41,-161.08 48.41,-155.08 48.41,-155.08 48.41,-111.04 48.41,-111.04 48.41,-105.04 54.41,-99.04 60.41,-99.04 60.41,-99.04 403.34,-99.04 403.34,-99.04 409.34,-99.04 415.34,-105.04 415.34,-111.04 415.34,-111.04 415.34,-155.08 415.34,-155.08 415.34,-161.08 409.34,-167.08 403.34,-167.08"/>
 <text xml:space="preserve" text-anchor="middle" x="231.88" y="-142.26" font-family="Helvetica,sans-Serif" font-size="14.00">Other adapter logic</text>
-<text xml:space="preserve" text-anchor="middle" x="231.88" y="-127.26" font-family="Helvetica,sans-Serif" font-size="14.00">4,105 cells · 31,330.0 µm²</text>
+<text xml:space="preserve" text-anchor="middle" x="231.88" y="-127.26" font-family="Helvetica,sans-Serif" font-size="14.00">1,470 cells · 13,925.9 µm²</text>
 <text xml:space="preserve" text-anchor="middle" x="231.88" y="-112.26" font-family="Helvetica,sans-Serif" font-size="14.00">TLB lookup mux / compare / walk / A&#45;D / bus / response</text>
 </g>
 <!-- tlb&#45;&gt;other -->
@@ -38,7 +38,7 @@
 <title>total</title>
 <path fill="lightgrey" stroke="none" stroke-width="1.5" d="M329.09,-56.04C329.09,-56.04 134.66,-56.04 134.66,-56.04 128.66,-56.04 122.66,-50.04 122.66,-44.04 122.66,-44.04 122.66,-12 122.66,-12 122.66,-6 128.66,0 134.66,0 134.66,0 329.09,0 329.09,0 335.09,0 341.09,-6 341.09,-12 341.09,-12 341.09,-44.04 341.09,-44.04 341.09,-50.04 335.09,-56.04 329.09,-56.04"/>
 <text xml:space="preserve" text-anchor="middle" x="231.88" y="-29.32" font-family="Helvetica,sans-Serif" font-size="16.00" fill="#17243a">sv32_bus_adapter total</text>
-<text xml:space="preserve" text-anchor="middle" x="231.88" y="-12.82" font-family="Helvetica,sans-Serif" font-size="16.00" fill="#17243a">5,385 cells · 63,360.8 µm²</text>
+<text xml:space="preserve" text-anchor="middle" x="231.88" y="-12.82" font-family="Helvetica,sans-Serif" font-size="16.00" fill="#17243a">1,689 cells · 19,406.1 µm²</text>
 </g>
 <!-- other&#45;&gt;total -->
 </g>

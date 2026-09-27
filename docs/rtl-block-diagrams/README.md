@@ -1,5 +1,11 @@
 # RTL block diagrams and mapped area
 
+Regenerated for the current four-bank core and four-entry Sv32 adapter. The
+area overlay is a standalone Yosys/SKY130 mapping of the present working
+tree; it is **not** a routed or DRC-qualified physical result. Its library
+SHA and Yosys version are in [`mapped-area.json`](mapped-area.json). To compare
+with an experiment, use that experiment's exact commit and flow identity.
+
 The flow diagrams here are hand-authored architectural interpretations checked
 against Yosys net names and module instances. For schematics whose cells and
 connections are rendered directly from elaborated RTL, run `make rtl-tool-views`
@@ -25,12 +31,14 @@ kept here.
 
 The core local module, MDU, and privilege unit have true synthesis hierarchy
 boundaries. Within core-local logic, **register-file storage** is the mapped
-flip-flops driving `regs[0:31]`; every other mapped cell is in **other
+flip-flops driving `regs_bank0..3`; every other mapped cell is in **other
 core-local logic**, including register-file read muxes and write control.
 Within the adapter, **TLB storage** is the mapped flip-flops driving the named
 TLB state; **other adapter logic** includes lookup muxes/comparators, walk,
-A/D updates, bus control, and responses. Yosys prunes 80 unused cached-PTE
-bits, leaving 1,280 mapped TLB storage flip-flops. The partitions sum to each
+A/D updates, bus control, and responses. This mapping attributes 1,024 RF
+storage flip-flops and 219 TLB/context flip-flops. The RF count includes the
+physically declared x0 bank word, even though architectural x0 is a constant
+read bypass and writes to it are suppressed. The partitions sum to each
 module total without double counting. The area is **pre-placement cell area**;
 it excludes placement repair buffers, clock tree, and routing. The functional
 boxes in the flow diagrams do not have independent mapped areas because they
@@ -38,7 +46,7 @@ share logic inside their parent module.
 
 The core diagram includes the register file, integer execution, load/store
 and atomic path, iterative MDU, and privilege/CSR submodule. The Sv32 diagram
-shows the 16-entry TLB hit path and the miss path through page-table walk,
+shows the four-entry TLB hit path and the miss path through page-table walk,
 permission checks, optional A/D-bit update, and physical bus access. The
 adapter's one-request state machine sequences these operations. A miss reads
 PTEs through the same physical bus shown at the bottom of the diagram; that

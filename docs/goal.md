@@ -1,5 +1,7 @@
 # Goal and acceptance criteria
 
+> Historical milestone ledger. For present implementation and physical qualification status, start with the [engineering handbook](README.md) and [experiment results](../experiments/RESULTS.md).
+
 **End goal:** fabricated, original RV32 SoC runs a reproducibly built Linux image using the purchased 32 MiB external PSRAM, presents an interactive UART shell, then runs a user-space 8×8 grayscale digit classifier with fixed expected outputs. Performance is secondary to correctness and an achievable shuttle submission. Tapeout budget ceiling: approximately USD 2,000 excluding prototype hardware.
 
 Milestone evidence:

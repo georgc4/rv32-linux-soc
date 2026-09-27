@@ -1,24 +1,25 @@
-# RV32 Linux SoC experiment
+# RV32 Linux SoC
 
-Goal: an original RV32 SoC on a Tiny Tapeout die that boots Linux from external NOR into 32 MiB of external PSRAM, exposes a UART shell, and runs an 8×8 grayscale digit classifier.
+An RV32IMA, Sv32 capable, single-hart SoC for Tiny Tapeout SKY130. The integrated RTL uses four external 8 MiB quad PSRAM chips, one 16 MiB serial NOR chip, a 16550-like UART, CLINT timer, one-source PLIC, boot ROM, and a small resident M-mode SBI loader. A locally built Linux 6.12.111 image embeds BusyBox ash and user programs.
 
-The repository now contains an integrated RTL path: RV32IMA CPU, selected machine/supervisor CSRs and traps, Sv32 walker, 4-bank SPI PSRAM and NOR read/program/erase, boot ROM, UART, CLINT-like timer, one-source PLIC, physical interconnect and Tiny Tapeout logical pin wrapper. Simulations boot a checked diagnostic flash image and reject a corrupt one. A local build produces a Linux 6.12.111 RV32 `Image`, DTB, embedded BusyBox ash initramfs, digit demo, M-mode SBI loader, and a 16 MiB NOR image. A full-image RTL simulation reached `/init` through real serial transfers across the modeled NOR and four PSRAM chips; BusyBox ash executed the init script and printed `RV32 Linux userspace ready` at cycle 12,454,790,706. The test exits at that marker, before checking the interactive shell prompt. The first SKY26d 8×2 physical attempt [failed detailed placement](tt/physical-baseline.md) after high area density and buffer insertion. ASIC fit, compliance testing, routed timing, and board validation remain open.
+**Start with the [engineering handbook](docs/README.md).** It traces the machine from instruction fetch and page walks through serial memory transactions, firmware, Linux, verification, physical flow, power/IO, and custom register-file layout. The [source map](docs/reference/source-map.md) indexes the implementation files. [Experiment results](experiments/RESULTS.md) are dated; each complete run's exact evidence is under ignored `build/experiments/runs/<id>/`.
 
-## Local checks
+## Current evidence
 
-Install Icarus Verilog, Verilator, Yosys, Make, Python 3 and a C compiler. RISC-V GNU binutils are needed to regenerate checked-in program/ROM hex files and to strip the RV32 BusyBox image. `make image-linux-flash` also needs RV32-capable LLVM Clang, Podman, curl, and the local Podman machine; it downloads sources and tools into ignored `build/` without installing host packages.
+The full digital acceptance test boots the packed image through the production ROM and bit/nibble-level serial model of all five external chips. It sees the BusyBox ash prompt, sends `/bin/acceptance_smoke` over the SoC UART RX pin, and recognizes `ASH_PROGRAM_OK` from UART TX. A 5×4 SKY26d reference GDS for an earlier pinned RTL commit passed independent KLayout DRC, Magic DRC, and Netgen LVS; newer 8×2/5×4 optimizations are being evaluated separately. A 50 ns physical constraint is a target, not a signed-off 20 MHz silicon frequency. FPGA and fabricated-board tests remain to be performed. The custom 8T register-file cell is exploratory and is not integrated.
+
+## Local commands
 
 ```sh
 make test test-core test-mdu test-priv test-sv32 test-supervisor
-make test-serial test-uart test-timer test-plic test-soc-bad test-digit
-make lint
-make synth-core synth-soc
-make image-smoke  # creates build/rv32i_smoke.flash.bin
-make image-linux-flash  # builds local RV32 Linux artifacts and 16 MiB NOR image
-make test-linux-handoff # simulates loader, SBI, timer, and PLIC handoff
-make test-linux-serial-boot # long run: full Image through five quad-capable SPI chip models
+make test-serial test-uart test-physical-uart test-timer test-plic
+make test-soc-bad test-digit lint
+make image-linux-flash       # Podman, Zig, RISC-V binutils and source downloads
+make test-linux-handoff      # focused loader/SBI simulation
+make test-linux-serial-boot  # long full-image serial simulation
+make synth-sky130            # mapped-cell screen, not routed signoff
+make stage-sky26d            # pinned Tiny Tapeout staging with current UART pins
+make experiment-chart        # interactive run ledger/Pareto chart
 ```
 
-`synth-core` and `synth-soc` report generic Yosys cells, not SKY130 mapped area or timing. Fast checks run in GitHub Actions. RTL is in `rtl/`; behavioral device models and directed tests are in `sim/`. The FPGA board constraints and shuttle-specific physical configuration remain open.
-
-See [architecture](docs/architecture.md), [physical map](docs/memory-map.md), [boot flow](docs/boot-flow.md), [requirements trace](docs/requirements-trace.md) and [verification plan](docs/verification-plan.md). Source provenance is in [references](docs/references.md).
+See [build details](docs/boot/linux-image-and-programs.md), [test scope](docs/verification/tests-and-models.md), and [physical qualification](docs/physical/flow-and-evidence.md) before interpreting a command's output.

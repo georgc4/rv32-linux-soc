@@ -46,9 +46,9 @@
 <!-- tlb -->
 <g id="node4" class="node">
 <title>tlb</title>
-<path fill="#f2f6fb" stroke="#6380a5" stroke-width="1.4" d="M317.02,-537.96C317.02,-537.96 119.98,-537.96 119.98,-537.96 113.98,-537.96 107.98,-531.96 107.98,-525.96 107.98,-525.96 107.98,-505.68 107.98,-505.68 107.98,-499.68 113.98,-493.68 119.98,-493.68 119.98,-493.68 317.02,-493.68 317.02,-493.68 323.02,-493.68 329.02,-499.68 329.02,-505.68 329.02,-505.68 329.02,-525.96 329.02,-525.96 329.02,-531.96 323.02,-537.96 317.02,-537.96"/>
-<text xml:space="preserve" text-anchor="middle" x="218.5" y="-516.97" font-family="Helvetica,sans-Serif" font-size="13.00">16&#45;entry direct&#45;mapped TLB</text>
-<text xml:space="preserve" text-anchor="middle" x="218.5" y="-503.47" font-family="Helvetica,sans-Serif" font-size="13.00">valid / VPN / context / PTE / level</text>
+<path fill="#f2f6fb" stroke="#6380a5" stroke-width="1.4" d="M339.52,-537.96C339.52,-537.96 97.48,-537.96 97.48,-537.96 91.48,-537.96 85.48,-531.96 85.48,-525.96 85.48,-525.96 85.48,-505.68 85.48,-505.68 85.48,-499.68 91.48,-493.68 97.48,-493.68 97.48,-493.68 339.52,-493.68 339.52,-493.68 345.52,-493.68 351.52,-499.68 351.52,-505.68 351.52,-505.68 351.52,-525.96 351.52,-525.96 351.52,-531.96 345.52,-537.96 339.52,-537.96"/>
+<text xml:space="preserve" text-anchor="middle" x="218.5" y="-516.97" font-family="Helvetica,sans-Serif" font-size="13.00">4&#45;entry direct&#45;mapped TLB</text>
+<text xml:space="preserve" text-anchor="middle" x="218.5" y="-503.47" font-family="Helvetica,sans-Serif" font-size="13.00">valid / VPN / shared context / PTE / level</text>
 </g>
 <!-- mode&#45;&gt;tlb -->
 <g id="edge4" class="edge">
