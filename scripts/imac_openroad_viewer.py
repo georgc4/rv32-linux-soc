@@ -46,12 +46,14 @@ def main() -> int:
     command = ["docker", "run", "--rm", "--user", f"{os.getuid()}:{os.getgid()}",
                "--mount", "type=bind,src=/tmp/.X11-unix,dst=/tmp/.X11-unix,readonly",
                "--mount", f"type=bind,src={auth},dst={auth},readonly",
-               "--mount", f"type=bind,src={RUNS},dst=/odb,readonly",
+               # Bind the parent ext4 directory so Docker's root daemon need not
+               # stat the user-only FUSE mount itself. The container runs as us.
+               "--mount", f"type=bind,src={ROOT / 'build'},dst=/build,readonly,bind-propagation=rslave",
                "--env", f"DISPLAY={desktop['DISPLAY']}",
                "--env", f"XAUTHORITY={auth}",
                "--env", "QT_X11_NO_MITSHM=1",
                "--entrypoint", "openroad", IMAGE,
-               "-no_init", "-gui", "-db", str(Path("/odb") / relative)]
+               "-no_init", "-gui", "-db", str(Path("/build/mac-experiments-runs") / relative)]
     print(f"Opening Mac checkpoint {relative} on the iMac desktop", flush=True)
     return subprocess.run(command, check=False).returncode
 
