@@ -1,0 +1,13 @@
+{
+  "name": "shared-adder-only-8x2",
+  "tile_shape": "8x2",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "shared core adder without register banking or shifter sharing", "ref": "31d9966b2614eef50522c33f3d25f0b6c7ebb356"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}
