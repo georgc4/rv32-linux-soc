@@ -208,6 +208,10 @@ module serial_mem_bridge_tb;
         // Four distinct words in one 16-byte instruction line.
         for (integer i = 0; i < 16; i = i + 1)
             rams[0].ram.memory[32 + i] = i + 1;
+        for (integer i = 0; i < 16; i = i + 1) begin
+            rams[0].ram.memory[128 + i] = i + 1;
+            rams[0].ram.memory[144 + i] = i + 17;
+        end
         repeat (3) @(negedge clk);
         rst_n = 1;
         cycles = 0;
@@ -249,6 +253,16 @@ module serial_mem_bridge_tb;
         ram_request(32'h0000_0024, 0, 0, 0);
         ram_response(32'haabb_ccdd, 0);
         if (commands[0] != 8) $fatal(1, "store must invalidate instruction line");
+        ram_request(32'h0000_0080, 0, 0, 0);
+        ram_response(32'h0403_0201, 0);
+        ram_request(32'h0000_0090, 0, 0, 0);
+        ram_response(32'h1413_1211, 0);
+        if (commands[0] != 10) $fatal(1, "two instruction lines require two serial fills");
+        ram_request(32'h0000_0080, 0, 0, 0);
+        ram_response(32'h0403_0201, 0);
+        ram_request(32'h0000_0090, 0, 0, 0);
+        ram_response(32'h1413_1211, 0);
+        if (commands[0] != 10) $fatal(1, "both resident instruction lines must hit");
         ram_req_instr = 0;
         flash_request(0, 0);
         flash_response(32'h1234_5678, 0);

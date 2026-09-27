@@ -5,7 +5,8 @@
 // DQ mapping: [0]=shared SI/IO0, [1]=shared SO/IO1,
 // [3:2]=PSRAM SIO2/3, [5:4]=NOR /WP,/HOLD (IO2/3).
 module serial_mem_bridge #(
-    parameter integer POWERUP_CYCLES = 3000
+    parameter integer POWERUP_CYCLES = 3000,
+    parameter integer CACHE_INDEX_BITS = 2
 ) (
     input wire clk, rst_n,
     input wire ram_req_valid,
@@ -67,12 +68,15 @@ module serial_mem_bridge #(
     reg [6:0] bit_index, total_bits;
     reg mosi;
     reg [31:0] read_shift, response_data;
-    // One physically tagged 16-byte line. Every miss still performs a real
-    // quad-serial PSRAM transaction; the data array is invalidated by writes.
-    reg cache_valid;
-    reg [20:0] cache_tag;
-    reg [127:0] cache_line, cache_line_shift;
+    // Direct-mapped, physically tagged 16-byte instruction lines. Each miss
+    // performs a real quad-serial PSRAM transaction; stores invalidate all lines.
+    localparam integer CACHE_LINES = 1 << CACHE_INDEX_BITS;
+    reg [CACHE_LINES-1:0] cache_valid;
+    reg [20-CACHE_INDEX_BITS:0] cache_tag [0:CACHE_LINES-1];
+    reg [127:0] cache_line [0:CACHE_LINES-1];
+    reg [127:0] cache_line_shift;
     reg cache_fill;
+    reg [CACHE_INDEX_BITS-1:0] cache_fill_index;
     reg [1:0] cache_word_index;
     reg response_error;
     reg [23:0] base_address;
@@ -90,8 +94,11 @@ module serial_mem_bridge #(
     reg [19:0] ctrl_polls;
     reg [31:0] ctrl_response_data;
     reg ctrl_response_error;
-    wire cache_hit = cache_valid && cache_tag == ram_req_addr[24:4];
-    wire [31:0] cache_hit_word = cache_line[127 - 32*ram_req_addr[3:2] -: 32];
+    wire [CACHE_INDEX_BITS-1:0] cache_lookup_index = ram_req_addr[4 +: CACHE_INDEX_BITS];
+    wire cache_hit = cache_valid[cache_lookup_index] &&
+                     cache_tag[cache_lookup_index] == ram_req_addr[24:4+CACHE_INDEX_BITS];
+    wire [127:0] cache_lookup_line = cache_line[cache_lookup_index];
+    wire [31:0] cache_hit_word = cache_lookup_line[127 - 32*ram_req_addr[3:2] -: 32];
     wire [31:0] cache_fill_word = cache_line_shift[127 - 32*cache_word_index -: 32];
     wire unused_spi_inputs = &{1'b0, spi_dq_in[0]};
     wire [3:0] remaining_strb = pending_strb & ~(4'b0001 << lane);
@@ -133,13 +140,13 @@ module serial_mem_bridge #(
     assign ctrl_resp_rdata = ctrl_response_data;
     assign ctrl_resp_err = ctrl_response_error;
 
-    // A full 32-nibble fill flushes all old bits; only cache_valid needs reset.
+    // A full 32-nibble fill flushes all old bits; only valid bits need reset.
     always @(posedge clk) begin
         if (state == HIGH && kind == K_RAM_READ && cache_fill && bit_index >= 7'd20)
             cache_line_shift <= {cache_line_shift[123:0], spi_dq_in[3:0]};
         if (state == LOW && kind == K_RAM_READ && cache_fill &&
             bit_index + 7'd1 == total_bits)
-            cache_line <= cache_line_shift;
+            cache_line[cache_fill_index] <= cache_line_shift;
     end
 
     always @(posedge clk or negedge rst_n) begin
@@ -162,8 +169,8 @@ module serial_mem_bridge #(
             read_shift <= 0;
             response_data <= 0;
             cache_valid <= 0;
-            cache_tag <= 0;
             cache_fill <= 0;
+            cache_fill_index <= 0;
             cache_word_index <= 0;
             response_error <= 0;
             base_address <= 0;
@@ -226,6 +233,7 @@ module serial_mem_bridge #(
                     else begin
                         kind <= ram_req_write ? K_RAM_WRITE : K_RAM_READ;
                         cache_fill <= !ram_req_write && ram_req_instr;
+                        cache_fill_index <= ram_req_addr[4 +: CACHE_INDEX_BITS];
                         cache_word_index <= ram_req_addr[3:2];
                         lane <= first_lane(ram_req_wstrb);
                         write_byte <= ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8];
@@ -346,8 +354,9 @@ module serial_mem_bridge #(
                     end else if (kind == K_RAM_READ && cache_fill) begin
                         response_data <= {cache_fill_word[7:0], cache_fill_word[15:8],
                                           cache_fill_word[23:16], cache_fill_word[31:24]};
-                        cache_tag <= {selected_chip[1:0], base_address[22:4]};
-                        cache_valid <= 1;
+                        cache_tag[cache_fill_index] <=
+                            {selected_chip[1:0], base_address[22:4+CACHE_INDEX_BITS]};
+                        cache_valid[cache_fill_index] <= 1;
                         after_gap <= AFTER_DONE;
                     end else if (kind == K_RAM_WRITE) begin
                         pending_strb <= pending_strb == 4'hf ? 4'b0 : remaining_strb;
