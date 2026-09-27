@@ -1,6 +1,7 @@
 `timescale 1ns/1ps
-// 32-step RV32M multiply/divide unit. One 64-bit add path for multiplication
-// and one 33-bit subtract/compare path for division keep area bounded.
+// 32-step RV32M multiply/divide unit. The upper/lower halves of work hold
+// partial product/multiplier during multiply and remainder/quotient during
+// divide. A stationary operand serves as multiplicand or divisor.
 module rv32_mdu (
     input wire clk, rst_n,
     input wire start,
@@ -14,22 +15,23 @@ module rv32_mdu (
     reg [5:0] count;
     reg [31:0] original_a, original_b;
     reg sign_a, sign_b;
-    reg [63:0] accumulator, multiplicand;
-    reg [31:0] multiplier;
-    reg [31:0] quotient, divisor;
-    reg [31:0] remainder;
-    wire [63:0] mul_next = accumulator + (multiplier[0] ? multiplicand : 64'b0);
+    reg [63:0] work;
+    reg [31:0] stationary_operand;
+    wire [32:0] mul_sum = {1'b0, work[63:32]} +
+                          {1'b0, (work[0] ? stationary_operand : 32'b0)};
+    wire [63:0] mul_next = {mul_sum, work[31:1]};
     wire [31:0] mul_high_ss = mul_next[63:32] -
                                 (sign_a ? original_b : 32'b0) -
                                 (sign_b ? original_a : 32'b0);
     wire [31:0] mul_high_su = mul_next[63:32] -
                                 (sign_a ? original_b : 32'b0);
-    wire [32:0] div_trial = {remainder, quotient[31]};
-    wire [33:0] div_difference = {1'b0, div_trial} - {2'b0, divisor};
+    wire [32:0] div_trial = {work[63:32], work[31]};
+    wire [33:0] div_difference = {1'b0, div_trial} -
+                                 {2'b0, stationary_operand};
     wire unused_div_difference_bit = &{1'b0, div_difference[32]};
     wire div_ge = !div_difference[33];
     wire [31:0] div_remainder_next = div_ge ? div_difference[31:0] : div_trial[31:0];
-    wire [31:0] div_quotient_next = {quotient[30:0], div_ge};
+    wire [31:0] div_quotient_next = {work[30:0], div_ge};
     wire [31:0] div_raw_result = op[1] ? div_remainder_next : div_quotient_next;
     wire div_negate_result = op[1] ? (op == 3'd6 && sign_a) :
                              (op == 3'd4 && (sign_a ^ sign_b));
@@ -48,12 +50,8 @@ module rv32_mdu (
             original_b <= 0;
             sign_a <= 0;
             sign_b <= 0;
-            accumulator <= 0;
-            multiplicand <= 0;
-            multiplier <= 0;
-            quotient <= 0;
-            divisor <= 0;
-            remainder <= 0;
+            work <= 0;
+            stationary_operand <= 0;
             done <= 0;
             result <= 0;
         end else begin
@@ -66,12 +64,8 @@ module rv32_mdu (
                 sign_a <= operand_a[31];
                 sign_b <= operand_b[31];
                 division <= operation[2];
-                accumulator <= 0;
-                multiplicand <= {32'b0, operand_a};
-                multiplier <= operand_b;
-                quotient <= abs_a;
-                divisor <= abs_b;
-                remainder <= 0;
+                work <= {32'b0, operation[2] ? abs_a : operand_b};
+                stationary_operand <= operation[2] ? abs_b : operand_a;
                 if (operation[2] && operand_b == 0) begin
                     result <= operation[1] ? operand_a : 32'hffff_ffff;
                     done <= 1;
@@ -80,17 +74,14 @@ module rv32_mdu (
             end else if (active) begin
                 count <= count + 1;
                 if (division) begin
-                    quotient <= div_quotient_next;
-                    remainder <= div_remainder_next;
+                    work <= {div_remainder_next, div_quotient_next};
                     if (count == 6'd31) begin
                         result <= div_negate_result ? -div_raw_result : div_raw_result;
                         active <= 0;
                         done <= 1;
                     end
                 end else begin
-                    accumulator <= mul_next;
-                    multiplicand <= multiplicand << 1;
-                    multiplier <= multiplier >> 1;
+                    work <= mul_next;
                     if (count == 6'd31) begin
                         case (op)
                             3'd0: result <= mul_next[31:0];
