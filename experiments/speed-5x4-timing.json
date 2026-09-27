@@ -1,0 +1,15 @@
+{
+  "name": "speed-5x4-physical-timing",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "eight lines at 45ns", "ref": "6ed28d632fc1815256b465542d49df1329f2b261"},
+    {"label": "eight lines plus eight TLB entries at 45ns", "ref": "7825dd2f9db9c7f625c11846d62bfb4c2f1f1665"}
+  ],
+  "matrix": {
+    "synth_strategy": ["DELAY 2"],
+    "clock_period_ns": [45.0],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}
