@@ -47,7 +47,13 @@ module rv32i_core #(
     reg [31:0] pc, instr;
     reg [31:0] regs [0:31];
     reg [31:0] operand_a, operand_b;
-    reg write_rd, access, store, illegal, stop_normal;
+    reg write_rd, access, store, decode_illegal, stop_normal;
+    // Decode legality while reading rs2. All legality inputs (instruction,
+    // rs1/address, privilege and CSR access permissions) are stable in READ_RS2;
+    // no check depends on the rs2 value captured at its closing edge.
+    // This removes combinational legality decode from EXEC writeback gating.
+    reg illegal_hold;
+    wire illegal = illegal_hold;
     wire [4:0] rd = instr[11:7];
     wire [4:0] rs1 = instr[19:15];
     wire [4:0] rs2 = instr[24:20];
@@ -156,7 +162,7 @@ module rv32i_core #(
         write_rd = 0;
         access = 0;
         store = 0;
-        illegal = 0;
+        decode_illegal = 0;
         stop_normal = 0;
         access_addr = 0;
         store_data = 0;
@@ -179,7 +185,7 @@ module rv32i_core #(
                 next_pc = pc + imm_j;
             end
             7'b1100111: begin // JALR
-                if (funct3 != 0) illegal = 1;
+                if (funct3 != 0) decode_illegal = 1;
                 else begin
                     write_rd = 1;
                     result = pc + 32'd4;
@@ -194,7 +200,7 @@ module rv32i_core #(
                     3'b101: branch_taken = $signed(a) >= $signed(b);
                     3'b110: branch_taken = a < b;
                     3'b111: branch_taken = a >= b;
-                    default: illegal = 1;
+                    default: decode_illegal = 1;
                 endcase
                 if (branch_taken) next_pc = pc + imm_b;
             end
@@ -203,9 +209,9 @@ module rv32i_core #(
                 access_addr = shared_add;
                 case (funct3)
                     3'b000, 3'b100: begin end // LB, LBU
-                    3'b001, 3'b101: if (access_addr[0]) illegal = 1; // LH, LHU
-                    3'b010: if (access_addr[1:0] != 0) illegal = 1; // LW
-                    default: illegal = 1;
+                    3'b001, 3'b101: if (access_addr[0]) decode_illegal = 1; // LH, LHU
+                    3'b010: if (access_addr[1:0] != 0) decode_illegal = 1; // LW
+                    default: decode_illegal = 1;
                 endcase
             end
             7'b0100011: begin // stores
@@ -215,14 +221,14 @@ module rv32i_core #(
                 case (funct3)
                     3'b000: store_strb = 4'b0001 << access_addr[1:0];
                     3'b001: begin
-                        if (access_addr[0]) illegal = 1;
+                        if (access_addr[0]) decode_illegal = 1;
                         store_strb = 4'b0011 << access_addr[1:0];
                     end
                     3'b010: begin
-                        if (access_addr[1:0] != 0) illegal = 1;
+                        if (access_addr[1:0] != 0) decode_illegal = 1;
                         store_strb = 4'b1111;
                     end
-                    default: illegal = 1;
+                    default: decode_illegal = 1;
                 endcase
                 store_data = b << {access_addr[1:0], 3'b000};
             end
@@ -236,13 +242,13 @@ module rv32i_core #(
                     3'b110: result = a | imm_i;
                     3'b111: result = a & imm_i;
                     3'b001: begin
-                        if (funct7 != 0) illegal = 1;
+                        if (funct7 != 0) decode_illegal = 1;
                         result = a << instr[24:20];
                     end
                     3'b101: begin
                         if (funct7 == 7'b0000000) result = a >> instr[24:20];
                         else if (funct7 == 7'b0100000) result = $signed(a) >>> instr[24:20];
-                        else illegal = 1;
+                        else decode_illegal = 1;
                     end
                 endcase
             end
@@ -254,15 +260,15 @@ module rv32i_core #(
                     3'b000: begin
                         if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
                             result = shared_add;
-                        else illegal = 1;
+                        else decode_illegal = 1;
                     end
                     3'b101: begin
                         if (funct7 == 7'b0000000) result = a >> b[4:0];
                         else if (funct7 == 7'b0100000) result = $signed(a) >>> b[4:0];
-                        else illegal = 1;
+                        else decode_illegal = 1;
                     end
                     default: begin
-                        if (funct7 != 0) illegal = 1;
+                        if (funct7 != 0) decode_illegal = 1;
                         case (funct3)
                             3'b001: result = a << b[4:0];
                             3'b010: result = $signed(a) < $signed(b) ? 32'd1 : 32'd0;
@@ -270,7 +276,7 @@ module rv32i_core #(
                             3'b100: result = a ^ b;
                             3'b110: result = a | b;
                             3'b111: result = a & b;
-                            default: illegal = 1;
+                            default: decode_illegal = 1;
                         endcase
                     end
                 endcase
@@ -280,11 +286,11 @@ module rv32i_core #(
                 access_addr = a;
                 store_strb = 4'b1111;
                 store_data = b;
-                if (funct3 != 3'b010 || a[1:0] != 0) illegal = 1;
+                if (funct3 != 3'b010 || a[1:0] != 0) decode_illegal = 1;
                 case (instr[31:27])
                     5'b00010: begin // LR.W
                         atomic_kind = 1;
-                        if (rs2 != 0) illegal = 1;
+                        if (rs2 != 0) decode_illegal = 1;
                     end
                     5'b00011: begin // SC.W
                         atomic_kind = 2;
@@ -296,15 +302,15 @@ module rv32i_core #(
                         atomic_kind = 3;
                         store = 1;
                     end
-                    default: illegal = 1;
+                    default: decode_illegal = 1;
                 endcase
             end
             7'b0001111: begin // FENCE/FENCE.I; no instruction cache yet.
-                if (funct3 != 3'b000 && funct3 != 3'b001) illegal = 1;
+                if (funct3 != 3'b000 && funct3 != 3'b001) decode_illegal = 1;
             end
             7'b1110011: begin
                 if (csr_instruction) begin
-                    if (funct3 == 3'b100 || csr_illegal) illegal = 1;
+                    if (funct3 == 3'b100 || csr_illegal) decode_illegal = 1;
                     else begin
                         write_rd = 1;
                         result = csr_rdata;
@@ -314,15 +320,15 @@ module rv32i_core #(
                 end else if (ecall_instruction || mret_instruction ||
                              sret_instruction || sfence_instruction ||
                              instr == 32'h1050_0073) begin
-                    if (mret_instruction && current_privilege != 2'd3) illegal = 1;
-                    if (sret_instruction && current_privilege == 2'd0) illegal = 1;
-                    if (sret_instruction && current_privilege == 2'd1 && current_mstatus[22]) illegal = 1;
+                    if (mret_instruction && current_privilege != 2'd3) decode_illegal = 1;
+                    if (sret_instruction && current_privilege == 2'd0) decode_illegal = 1;
+                    if (sret_instruction && current_privilege == 2'd1 && current_mstatus[22]) decode_illegal = 1;
                     if (sfence_instruction && (current_privilege == 2'd0 ||
-                        (current_privilege == 2'd1 && current_mstatus[20]))) illegal = 1;
-                    if (instr == 32'h1050_0073 && current_privilege != 2'd3 && current_mstatus[21]) illegal = 1;
-                end else illegal = 1;
+                        (current_privilege == 2'd1 && current_mstatus[20]))) decode_illegal = 1;
+                    if (instr == 32'h1050_0073 && current_privilege != 2'd3 && current_mstatus[21]) decode_illegal = 1;
+                end else decode_illegal = 1;
             end
-            default: illegal = 1;
+            default: decode_illegal = 1;
         endcase
     end
 
@@ -427,6 +433,7 @@ module rv32i_core #(
             state <= FETCH_REQ;
             pc <= RESET_PC;
             instr <= 0;
+            illegal_hold <= 0;
             operand_a <= 0;
             operand_b <= 0;
             fault <= 0;
@@ -474,6 +481,7 @@ module rv32i_core #(
                     end
                 end
                 READ_RS2: begin
+                    illegal_hold <= decode_illegal;
                     operand_b <= reg_read_data;
                     state <= EXEC;
                 end
@@ -593,4 +601,10 @@ module rv32i_core #(
             endcase
         end
     end
+`ifndef SYNTHESIS
+    always @(negedge clk) begin
+        if (state == EXEC && illegal_hold !== decode_illegal)
+            $fatal(1, "registered legality differs from live decode in EXEC");
+    end
+`endif
 endmodule
