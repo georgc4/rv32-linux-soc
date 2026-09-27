@@ -1,0 +1,13 @@
+{
+  "name": "one-line-instruction-cache-5x4",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "16-byte physical instruction line", "ref": "7ebde5cec555806030467657d8bdd1e4f48fe0e6"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

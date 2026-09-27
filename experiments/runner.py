@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import itertools
 import json
@@ -512,8 +513,17 @@ def run_one(run: dict, phase: str, flash_image: Path | None,
             value = {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
         value["started_utc"] = started
         value["ended_utc"] = utc_now()
-        result["stages"][stage_name] = value
-        write_result(result_path, result)
+        # Acceptance and PNR are independent and may finish in either order.
+        # Merge with the latest on-disk result while holding a per-run lock so
+        # neither stage overwrites the other's evidence.
+        with (run_dir / "result.lock").open("a+") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            latest = json.loads(result_path.read_text())
+            if stage_name in latest["stages"]:
+                raise RuntimeError(f"{run['id']} already has {stage_name}")
+            latest["stages"][stage_name] = value
+            write_result(result_path, latest)
+            result = latest
         print(f"{run['id']} {stage_name}: {value['status']}", flush=True)
         if value["status"] != "pass":
             passed = False
