@@ -45,7 +45,30 @@ module rv32i_core #(
                      MDU_WAIT = 4'd8, READ_RS2 = 4'd9;
     reg [3:0] state;
     reg [31:0] pc, instr;
-    reg [31:0] regs [0:31];
+    // Four independently addressed eight-word banks leave x0 as a read bypass.
+    // This partitions the 32:1 read selection and limits write-enable fanout.
+    reg [31:0] regs_bank0 [0:7];
+    reg [31:0] regs_bank1 [0:7];
+    reg [31:0] regs_bank2 [0:7];
+    reg [31:0] regs_bank3 [0:7];
+    // Preserve the diagnostic testbench's logical-register hierarchy.
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire [31:0] regs [0:31];
+    /* verilator lint_on UNUSEDSIGNAL */
+    genvar rf_index;
+    generate for (rf_index = 0; rf_index < 32; rf_index = rf_index + 1) begin: rf_trace
+        if (rf_index == 0) begin : zero
+            assign regs[rf_index] = 32'b0;
+        end else if (rf_index < 8) begin : bank0
+            assign regs[rf_index] = regs_bank0[rf_index];
+        end else if (rf_index < 16) begin : bank1
+            assign regs[rf_index] = regs_bank1[rf_index-8];
+        end else if (rf_index < 24) begin : bank2
+            assign regs[rf_index] = regs_bank2[rf_index-16];
+        end else begin : bank3
+            assign regs[rf_index] = regs_bank3[rf_index-24];
+        end
+    end endgenerate
     reg [31:0] operand_a, operand_b;
     reg write_rd, access, store, illegal, stop_normal;
     wire [4:0] rd = instr[11:7];
@@ -54,7 +77,14 @@ module rv32i_core #(
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
     wire [4:0] reg_read_index = state == FETCH_RESP ? i_resp_data[19:15] : rs2;
-    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : regs[reg_read_index];
+    wire [31:0] bank_read0 = regs_bank0[reg_read_index[2:0]];
+    wire [31:0] bank_read1 = regs_bank1[reg_read_index[2:0]];
+    wire [31:0] bank_read2 = regs_bank2[reg_read_index[2:0]];
+    wire [31:0] bank_read3 = regs_bank3[reg_read_index[2:0]];
+    wire [31:0] bank_read_data = reg_read_index[4:3] == 2'd0 ? bank_read0 :
+                                 reg_read_index[4:3] == 2'd1 ? bank_read1 :
+                                 reg_read_index[4:3] == 2'd2 ? bank_read2 : bank_read3;
+    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : bank_read_data;
     wire [31:0] a = operand_a;
     wire [31:0] b = operand_b;
     wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
@@ -109,6 +139,31 @@ module rv32i_core #(
     wire [31:0] imm_b = {{19{instr[31]}}, instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
     wire [31:0] imm_u = {instr[31:12], 12'b0};
     wire [31:0] imm_j = {{11{instr[31]}}, instr[31], instr[19:12], instr[20], instr[30:21], 1'b0};
+    // Reuse one datapath adder for base+offset, integer ADD/ADDI, and SUB.
+    wire subtract = instr[6:0] == 7'b0110011 && funct3 == 3'b000 &&
+                    funct7 == 7'b0100000;
+    wire [31:0] add_rhs = instr[6:0] == 7'b0100011 ? imm_s :
+                          (instr[6:0] == 7'b0000011 ||
+                           instr[6:0] == 7'b1100111 ||
+                           instr[6:0] == 7'b0010011) ? imm_i : b;
+    wire [31:0] shared_add = a + (subtract ? ~add_rhs : add_rhs) + {31'b0, subtract};
+    function [31:0] reverse_bits;
+        input [31:0] value;
+        integer bit_index;
+        begin
+            for (bit_index = 0; bit_index < 32; bit_index = bit_index + 1)
+                reverse_bits[bit_index] = value[31-bit_index];
+        end
+    endfunction
+    // A single right shifter handles register/immediate and left/right modes.
+    wire shift_left = funct3 == 3'b001;
+    wire shift_arithmetic = funct3 == 3'b101 && funct7 == 7'b0100000;
+    wire [4:0] shift_amount = instr[6:0] == 7'b0010011 ? instr[24:20] : b[4:0];
+    wire [31:0] shift_input = shift_left ? reverse_bits(a) : a;
+    wire [32:0] shift_extended = {shift_arithmetic && a[31], shift_input};
+    wire [32:0] shifted = $signed(shift_extended) >>> shift_amount;
+    wire unused_shifted_msb = &{1'b0, shifted[32]};
+    wire [31:0] shift_result = shift_left ? reverse_bits(shifted[31:0]) : shifted[31:0];
 
     reg [31:0] next_pc, result, access_addr, store_data;
     reg [3:0] store_strb;
@@ -116,7 +171,7 @@ module rv32i_core #(
     reg [1:0] atomic_kind; // 0=ordinary, 1=LR, 2=SC, 3=AMO
     reg [1:0] atomic_kind_hold;
     reg [4:0] atomic_function_hold;
-    reg [31:0] atomic_operand_hold, atomic_old, atomic_write_data;
+    reg [31:0] atomic_old, atomic_write_data;
     reg reservation_valid;
     reg [31:0] reservation_addr;
     reg branch_taken;
@@ -175,7 +230,7 @@ module rv32i_core #(
                 else begin
                     write_rd = 1;
                     result = pc + 32'd4;
-                    next_pc = (a + imm_i) & 32'hffff_fffe;
+                    next_pc = shared_add & 32'hffff_fffe;
                 end
             end
             7'b1100011: begin // branches
@@ -192,7 +247,7 @@ module rv32i_core #(
             end
             7'b0000011: begin // loads
                 access = 1;
-                access_addr = a + imm_i;
+                access_addr = shared_add;
                 case (funct3)
                     3'b000, 3'b100: begin end // LB, LBU
                     3'b001, 3'b101: if (access_addr[0]) illegal = 1; // LH, LHU
@@ -203,7 +258,7 @@ module rv32i_core #(
             7'b0100011: begin // stores
                 access = 1;
                 store = 1;
-                access_addr = a + imm_s;
+                access_addr = shared_add;
                 case (funct3)
                     3'b000: store_strb = 4'b0001 << access_addr[1:0];
                     3'b001: begin
@@ -221,7 +276,7 @@ module rv32i_core #(
             7'b0010011: begin // OP-IMM
                 write_rd = 1;
                 case (funct3)
-                    3'b000: result = a + imm_i;
+                    3'b000: result = shared_add;
                     3'b010: result = $signed(a) < $signed(imm_i) ? 32'd1 : 32'd0;
                     3'b011: result = a < imm_i ? 32'd1 : 32'd0;
                     3'b100: result = a ^ imm_i;
@@ -229,11 +284,11 @@ module rv32i_core #(
                     3'b111: result = a & imm_i;
                     3'b001: begin
                         if (funct7 != 0) illegal = 1;
-                        result = a << instr[24:20];
+                        result = shift_result;
                     end
                     3'b101: begin
-                        if (funct7 == 7'b0000000) result = a >> instr[24:20];
-                        else if (funct7 == 7'b0100000) result = $signed(a) >>> instr[24:20];
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shift_result;
                         else illegal = 1;
                     end
                 endcase
@@ -244,19 +299,19 @@ module rv32i_core #(
                     result = 0; // retired from the iterative MDU_WAIT state
                 end else case (funct3)
                     3'b000: begin
-                        if (funct7 == 7'b0000000) result = a + b;
-                        else if (funct7 == 7'b0100000) result = a - b;
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shared_add;
                         else illegal = 1;
                     end
                     3'b101: begin
-                        if (funct7 == 7'b0000000) result = a >> b[4:0];
-                        else if (funct7 == 7'b0100000) result = $signed(a) >>> b[4:0];
+                        if (funct7 == 7'b0000000 || funct7 == 7'b0100000)
+                            result = shift_result;
                         else illegal = 1;
                     end
                     default: begin
                         if (funct7 != 0) illegal = 1;
                         case (funct3)
-                            3'b001: result = a << b[4:0];
+                            3'b001: result = shift_result;
                             3'b010: result = $signed(a) < $signed(b) ? 32'd1 : 32'd0;
                             3'b011: result = a < b ? 32'd1 : 32'd0;
                             3'b100: result = a ^ b;
@@ -412,7 +467,12 @@ module rv32i_core #(
         end
     end
     always @(posedge clk) if (reg_write_enable && reg_write_index != 0)
-        regs[reg_write_index] <= reg_write_data;
+        case (reg_write_index[4:3])
+            2'd0: regs_bank0[reg_write_index[2:0]] <= reg_write_data;
+            2'd1: regs_bank1[reg_write_index[2:0]] <= reg_write_data;
+            2'd2: regs_bank2[reg_write_index[2:0]] <= reg_write_data;
+            2'd3: regs_bank3[reg_write_index[2:0]] <= reg_write_data;
+        endcase
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -435,7 +495,6 @@ module rv32i_core #(
             data_is_load <= 0;
             atomic_kind_hold <= 0;
             atomic_function_hold <= 0;
-            atomic_operand_hold <= 0;
             atomic_old <= 0;
             atomic_write_data <= 0;
             reservation_valid <= 0;
@@ -508,7 +567,6 @@ module rv32i_core #(
                         data_is_load <= !store || atomic_kind == 3;
                         atomic_kind_hold <= atomic_kind;
                         atomic_function_hold <= instr[31:27];
-                        atomic_operand_hold <= b;
                         if (store) reservation_valid <= 0;
                         state <= DATA_REQ;
                     end else begin
@@ -537,15 +595,15 @@ module rv32i_core #(
                         if (atomic_kind_hold == 3) begin
                             atomic_old <= d_resp_data;
                             case (atomic_function_hold)
-                                5'b00000: atomic_write_data <= d_resp_data + atomic_operand_hold;
-                                5'b00001: atomic_write_data <= atomic_operand_hold;
-                                5'b00100: atomic_write_data <= d_resp_data ^ atomic_operand_hold;
-                                5'b01000: atomic_write_data <= d_resp_data | atomic_operand_hold;
-                                5'b01100: atomic_write_data <= d_resp_data & atomic_operand_hold;
-                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b11000: atomic_write_data <= d_resp_data < atomic_operand_hold ? d_resp_data : atomic_operand_hold;
-                                5'b11100: atomic_write_data <= d_resp_data > atomic_operand_hold ? d_resp_data : atomic_operand_hold;
+                                5'b00000: atomic_write_data <= d_resp_data + b;
+                                5'b00001: atomic_write_data <= b;
+                                5'b00100: atomic_write_data <= d_resp_data ^ b;
+                                5'b01000: atomic_write_data <= d_resp_data | b;
+                                5'b01100: atomic_write_data <= d_resp_data & b;
+                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(b) ? d_resp_data : b;
+                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(b) ? d_resp_data : b;
+                                5'b11000: atomic_write_data <= d_resp_data < b ? d_resp_data : b;
+                                5'b11100: atomic_write_data <= d_resp_data > b ? d_resp_data : b;
                                 default: atomic_write_data <= d_resp_data;
                             endcase
                             state <= AMO_WRITE_REQ;
