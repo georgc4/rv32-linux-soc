@@ -22,7 +22,6 @@ ACCEPTANCE = "experiments/next-state-5x4.json"
 PHYSICAL = (
     "experiments/next-state-8x2.json",
     "experiments/next-jumper-repair-8x2.json",
-    "experiments/next-state-5x4.json",
 )
 
 
