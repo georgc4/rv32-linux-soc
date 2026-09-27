@@ -17,6 +17,15 @@ def archive_stage(run_dir: Path) -> None:
     stage = run_dir / "pnr-stage"
     if not stage.is_dir():
         return
+    checkpoints = list((stage / "runs" / "wokwi").rglob("*.odb"))
+    if checkpoints:
+        latest = max(checkpoints, key=lambda path: path.stat().st_mtime_ns)
+        shutil.copy2(latest, run_dir / "latest.odb")
+        (run_dir / "latest-odb.json").write_text(json.dumps({
+            "source": str(latest.relative_to(run_dir)),
+            "bytes": latest.stat().st_size,
+            "saved_utc": utc_now(),
+        }, indent=2) + "\n")
     archive = run_dir / "pnr-stage.tar.zst"
     if archive.exists():
         raise RuntimeError(f"refusing to overwrite {archive}")
