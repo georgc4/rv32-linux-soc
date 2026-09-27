@@ -7,12 +7,27 @@ import argparse
 import json
 import re
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = ROOT / "build/experiments/runs"
 DEFAULT_OUTPUT = ROOT / "build/experiments/pareto.html"
+
+
+@lru_cache(maxsize=None)
+def shell_command_cycles(log_path: Path) -> int | None:
+    """Measure UART command dispatch through completion of acceptance_smoke."""
+    if not log_path.is_file():
+        return None
+    log = log_path.read_text(errors="replace")
+    sent = re.search(r"SHELL_INPUT cycles=(\d+) command=/bin/acceptance_smoke", log)
+    done = re.search(r"ACCEPTANCE ash_program=pass cycles=(\d+)", log)
+    if not sent or not done:
+        return None
+    elapsed = int(done.group(1)) - int(sent.group(1))
+    return elapsed if elapsed >= 0 else None
 
 
 def historical_baseline() -> dict | None:
@@ -33,7 +48,8 @@ def historical_baseline() -> dict | None:
                     "placed_area_um2": placement["design__instance__area__stdcell"],
                     "setup_wns_ns": wns,
                     "utilization_pct": 100 * placement["design__instance__utilization__stdcell"],
-                    "mapped_cells": None, "acceptance_cycles": None},
+                    "mapped_cells": None, "acceptance_cycles": None,
+                    "shell_command_cycles": None},
         "synth": "pass", "pnr": "failed at detailed placement",
         "acceptance": "boot marker only", "qualified": False,
         "link": "history/sky26d-120d965.json",
@@ -52,6 +68,10 @@ def collect() -> list[dict]:
         pnr = stages.get("pnr", {})
         checks = pnr.get("checks", {})
         acceptance = stages.get("acceptance", {})
+        latency = (shell_command_cycles(
+            (result_path.parent / acceptance["log"]).resolve())
+            if acceptance.get("status") == "pass" and acceptance.get("log")
+            else None)
         failure_reason = None
         pnr_log = result_path.parent / pnr.get("log", "") if pnr.get("log") else None
         if pnr.get("status") == "failed" and pnr_log and pnr_log.is_file():
@@ -80,6 +100,7 @@ def collect() -> list[dict]:
                 "utilization_pct": (100 * pnr["utilization"]
                                     if "utilization" in pnr else None),
                 "acceptance_cycles": acceptance.get("cycles"),
+                "shell_command_cycles": latency,
             },
             "synth": synth.get("status", "pending"),
             "pnr": pnr.get("status", "pending"),
@@ -111,15 +132,16 @@ table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;colo
 <div class="top"><div><div class="eyebrow">SKY26d design space</div><h1>SoC experiment explorer</h1><p>Compare immutable RTL revisions and physical-flow settings. Points enter the Pareto frontier only after routed GDS, KLayout DRC, LVS, and ash-program acceptance pass.</p></div><div class="stamp" id="stamp"></div></div>
 <div class="cards"><div class="card"><b id="runs">0</b><span>Recorded experiments</span></div><div class="card"><b id="qualified">0</b><span>Routed + functional pass</span></div><div class="card"><b id="frontier">0</b><span>Current Pareto points</span></div><div class="card"><b id="failed">0</b><span>Failed or reference runs</span></div></div>
 <section class="panel"><h2>Tradeoff view</h2><div class="controls"><label>Horizontal axis<select id="xaxis"></select></label><label>Vertical axis<select id="yaxis"></select></label><label class="check"><input type="checkbox" id="showfailed" checked>Show failed and reference runs</label><label class="check"><input type="checkbox" id="showpending" checked>Show incomplete runs</label></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 1100 565" role="img" aria-label="Experiment tradeoff scatter plot"></svg><div class="tooltip" id="tooltip"></div></div><div class="legend"><span><i class="swatch q"></i>Routed + ash pass</span><span><i class="swatch f"></i>Failed / historical reference</span><span><i class="swatch p"></i>Incomplete</span></div><p class="note" id="frontiernote"></p></section>
-<section class="panel"><h2>Run ledger</h2><div class="table-scroll"><table><thead><tr><th>Experiment</th><th>Git revision</th><th>Mapping</th><th>PNR</th><th>Physical checks</th><th>ash program</th><th>Mapped area</th><th>Placed area</th><th>Setup WNS</th><th>Cycles</th></tr></thead><tbody id="ledger"></tbody></table></div><p class="note">Cell area is before placement; placed area is the latest available physical-flow metric. Early WNS is not routed signoff. Green frontier points require routed GDS, zero KLayout and Magic DRC, clean Netgen LVS and antenna reports, and the serial-shell gate.</p></section>
+<section class="panel"><h2>Run ledger</h2><div class="table-scroll"><table><thead><tr><th>Experiment</th><th>Git revision</th><th>Mapping</th><th>PNR</th><th>Physical checks</th><th>ash program</th><th>Mapped area</th><th>Placed area</th><th>Setup WNS</th><th>Boot cycles</th><th>Command s @20MHz</th></tr></thead><tbody id="ledger"></tbody></table></div><p class="note">Command time spans the UART command dispatch through the acceptance program's completion, including fork, exec and the program. It is computed at the 20 MHz simulation clock. Cell area is before placement; placed area is the latest available physical-flow metric. Early WNS is not routed signoff. Green frontier points require routed GDS, zero KLayout and Magic DRC, clean Netgen LVS and antenna reports, and the serial-shell gate.</p></section>
 </main><script>
 const rows=__DATA__;
-const dims={mapped_area_um2:{name:'Mapped cell area (µm²)',goal:'min'},placed_area_um2:{name:'Physical instance area (µm²)',goal:'min'},mapped_cells:{name:'Mapped cell count',goal:'min'},setup_wns_ns:{name:'Setup WNS (ns)',goal:'max'},utilization_pct:{name:'Core utilization (%)',goal:'min'},acceptance_cycles:{name:'ash program cycles',goal:'min'}};
+const dims={mapped_area_um2:{name:'Mapped cell area (µm²)',goal:'min'},placed_area_um2:{name:'Physical instance area (µm²)',goal:'min'},mapped_cells:{name:'Mapped cell count',goal:'min'},setup_wns_ns:{name:'Setup WNS (ns)',goal:'max'},utilization_pct:{name:'Core utilization (%)',goal:'min'},acceptance_cycles:{name:'ash program cycles',goal:'min'},shell_command_cycles:{name:'ash command cycles',goal:'min'}};
 const xaxis=document.getElementById('xaxis'),yaxis=document.getElementById('yaxis'),svg=document.getElementById('chart'),tooltip=document.getElementById('tooltip');
 for(const [key,dim] of Object.entries(dims)){for(const select of [xaxis,yaxis]){const option=document.createElement('option');option.value=key;option.textContent=dim.name;select.appendChild(option)}}
-xaxis.value='placed_area_um2';yaxis.value='setup_wns_ns';
+xaxis.value='placed_area_um2';yaxis.value='shell_command_cycles';
 if(!rows.some(r=>Number.isFinite(r.metrics.placed_area_um2)))xaxis.value='mapped_area_um2';
-if(!rows.some(r=>Number.isFinite(r.metrics.setup_wns_ns)))yaxis.value='mapped_cells';
+if(!rows.some(r=>Number.isFinite(r.metrics.shell_command_cycles)))yaxis.value='setup_wns_ns';
+if(!rows.some(r=>Number.isFinite(r.metrics[yaxis.value])))yaxis.value='mapped_cells';
 document.getElementById('stamp').textContent='Generated __GENERATED_UTC__';
 document.getElementById('runs').textContent=rows.length;
 document.getElementById('qualified').textContent=rows.filter(r=>r.qualified).length;
@@ -128,7 +150,7 @@ function fmt(value,digits=1){return Number.isFinite(value)?value.toLocaleString(
 function klass(value){return value==='pass'?'pass':value.startsWith('fail')||value==='error'||value==='timeout'?'failed':'pending'}
 function tag(value){const span=document.createElement('span');span.className='status '+klass(value);span.textContent=value;return span}
 function textCell(tr,value,cls){const td=document.createElement('td');td.textContent=value;if(cls)td.className=cls;tr.appendChild(td);return td}
-for(const r of rows){const tr=document.createElement('tr');const first=document.createElement('td');const link=document.createElement('a');link.href=r.link;link.textContent=r.name+' · '+r.id;first.appendChild(link);tr.appendChild(first);textCell(tr,r.commit.slice(0,12),'mono');for(const key of ['synth','pnr','physical_checks','acceptance']){const td=document.createElement('td');td.appendChild(tag(r[key]));tr.appendChild(td)}textCell(tr,fmt(r.metrics.mapped_area_um2,0));textCell(tr,fmt(r.metrics.placed_area_um2,0));textCell(tr,fmt(r.metrics.setup_wns_ns,2));textCell(tr,fmt(r.metrics.acceptance_cycles,0));if(r.failure_reason){tr.title=r.failure_reason}document.getElementById('ledger').appendChild(tr)}
+for(const r of rows){const tr=document.createElement('tr');const first=document.createElement('td');const link=document.createElement('a');link.href=r.link;link.textContent=r.name+' · '+r.id;first.appendChild(link);tr.appendChild(first);textCell(tr,r.commit.slice(0,12),'mono');for(const key of ['synth','pnr','physical_checks','acceptance']){const td=document.createElement('td');td.appendChild(tag(r[key]));tr.appendChild(td)}textCell(tr,fmt(r.metrics.mapped_area_um2,0));textCell(tr,fmt(r.metrics.placed_area_um2,0));textCell(tr,fmt(r.metrics.setup_wns_ns,2));textCell(tr,fmt(r.metrics.acceptance_cycles,0));textCell(tr,Number.isFinite(r.metrics.shell_command_cycles)?fmt(r.metrics.shell_command_cycles/20000000,2):'—');if(r.failure_reason){tr.title=r.failure_reason}document.getElementById('ledger').appendChild(tr)}
 const ns='http://www.w3.org/2000/svg';function el(type,attrs){const node=document.createElementNS(ns,type);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);svg.appendChild(node);return node}
 function dominates(a,b,x,y){const dx=dims[x].goal==='min'?a.metrics[x]<=b.metrics[x]:a.metrics[x]>=b.metrics[x];const dy=dims[y].goal==='min'?a.metrics[y]<=b.metrics[y]:a.metrics[y]>=b.metrics[y];const strict=a.metrics[x]!==b.metrics[x]||a.metrics[y]!==b.metrics[y];return dx&&dy&&strict}
 function draw(){svg.replaceChildren();const x=xaxis.value,y=yaxis.value;const showfailed=document.getElementById('showfailed').checked,showpending=document.getElementById('showpending').checked;const points=rows.filter(r=>Number.isFinite(r.metrics[x])&&Number.isFinite(r.metrics[y])&&(r.qualified||(klass(r.pnr)==='failed'||klass(r.acceptance)==='failed'?showfailed:showpending)));const qualified=points.filter(r=>r.qualified);const front=qualified.filter(r=>!qualified.some(s=>s!==r&&dominates(s,r,x,y)));document.getElementById('frontier').textContent=front.length;document.getElementById('frontiernote').textContent=front.length?'Dashed line joins nondominated, fully qualified designs for the selected axes.':'No Pareto frontier yet: routed PNR and the ash-program acceptance gate must both pass.';

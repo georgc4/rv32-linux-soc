@@ -47,7 +47,11 @@ by the runner. No new candidate replaces the working reference until both
 gates pass. Compare cycles to the ash program marker, serial command counts,
 routed setup/hold slack, utilization, and instance area. Boot-cycle count is
 not an interactive latency benchmark; after the first qualified winner, run
-a short shell-command latency workload on the same image.
+a short shell-command latency workload on the same image. The current
+acceptance command already exposes a first comparison: the dashboard reads
+`SHELL_INPUT` and `ACCEPTANCE` markers and plots command-to-completion cycles.
+The accepted no-cache reference takes 132,317,853 cycles, or 6.62 seconds
+at the 20 MHz simulation clock, for `/bin/acceptance_smoke`.
 
 ## Commands and run logs
 
