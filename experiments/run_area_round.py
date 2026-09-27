@@ -98,7 +98,7 @@ def main() -> int:
         for manifest in PHYSICAL:
             name = f"physical:{Path(manifest).stem}"
             job(name, [sys.executable, "experiments/run_physical_queue.py",
-                       manifest, "--timeout-hours", "3"], True)
+                       manifest, "--timeout-hours", "12"], True)
 
     save()
     threads = [threading.Thread(target=acceptance_lane),

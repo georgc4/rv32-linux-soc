@@ -39,7 +39,7 @@ def archive_stage(run_dir: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
-    parser.add_argument("--timeout-hours", type=float, default=3.0)
+    parser.add_argument("--timeout-hours", type=float, default=12.0)
     args = parser.parse_args()
     if args.timeout_hours <= 0:
         parser.error("timeout must be positive")
