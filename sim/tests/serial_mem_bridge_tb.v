@@ -4,6 +4,7 @@ module serial_mem_bridge_tb;
     always #5 clk = ~clk;
     reg rst_n = 0;
     reg ram_req_valid = 0, ram_req_write = 0;
+    reg ram_req_instr = 0;
     reg [31:0] ram_req_addr = 0, ram_req_wdata = 0;
     reg [3:0] ram_req_wstrb = 0;
     wire ram_req_ready, ram_resp_valid, ram_resp_err;
@@ -49,6 +50,7 @@ module serial_mem_bridge_tb;
         .clk(clk), .rst_n(rst_n),
         .ram_req_valid(ram_req_valid), .ram_req_ready(ram_req_ready),
         .ram_req_addr(ram_req_addr), .ram_req_write(ram_req_write),
+        .ram_req_instr(ram_req_instr),
         .ram_req_wdata(ram_req_wdata), .ram_req_wstrb(ram_req_wstrb),
         .ram_resp_valid(ram_resp_valid), .ram_resp_ready(ram_resp_ready),
         .ram_resp_rdata(ram_resp_rdata), .ram_resp_err(ram_resp_err),
@@ -203,6 +205,9 @@ module serial_mem_bridge_tb;
         flash.memory[1] = 8'h56;
         flash.memory[2] = 8'h34;
         flash.memory[3] = 8'h12;
+        // Four distinct words in one 16-byte instruction line.
+        for (integer i = 0; i < 16; i = i + 1)
+            rams[0].ram.memory[32 + i] = i + 1;
         repeat (3) @(negedge clk);
         rst_n = 1;
         cycles = 0;
@@ -225,6 +230,26 @@ module serial_mem_bridge_tb;
         ram_response(0, 0);
         ram_request(32'h0180_0000, 0, 0, 0);
         ram_response(32'h0000_5a00, 0);
+        ram_req_instr = 1;
+        ram_request(32'h0000_0020, 0, 0, 0);
+        ram_response(32'h0403_0201, 0);
+        if (commands[0] != 5) $fatal(1, "instruction miss needs one quad burst");
+        ram_request(32'h0000_0024, 0, 0, 0);
+        ram_response(32'h0807_0605, 0);
+        ram_request(32'h0000_002c, 0, 0, 0);
+        ram_response(32'h100f_0e0d, 0);
+        if (commands[0] != 5) $fatal(1, "same-line instruction reads must hit");
+        ram_req_instr = 0;
+        ram_request(32'h0000_0024, 0, 0, 0);
+        ram_response(32'h0807_0605, 0);
+        if (commands[0] != 6) $fatal(1, "data reads must bypass instruction line");
+        ram_request(32'h0000_0024, 32'haabb_ccdd, 1, 4'hf);
+        ram_response(0, 0);
+        ram_req_instr = 1;
+        ram_request(32'h0000_0024, 0, 0, 0);
+        ram_response(32'haabb_ccdd, 0);
+        if (commands[0] != 8) $fatal(1, "store must invalidate instruction line");
+        ram_req_instr = 0;
         flash_request(0, 0);
         flash_response(32'h1234_5678, 0);
         flash_request(0, 1);

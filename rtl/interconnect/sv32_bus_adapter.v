@@ -32,6 +32,7 @@ module sv32_bus_adapter #(
     output wire bus_req_valid,
     input wire bus_req_ready,
     output wire [31:0] bus_req_addr,
+    output wire bus_req_instr,
     output wire bus_req_write,
     output wire [31:0] bus_req_wdata,
     output wire [3:0] bus_req_wstrb,
@@ -109,6 +110,8 @@ module sv32_bus_adapter #(
                            state == UPDATE_REQ ||
                            (state == ACCESS_REQ && access_addr[33:32] == 0);
     assign bus_req_addr = state == ACCESS_REQ ? access_addr[31:0] : walk_addr[31:0];
+    // Page-table walks and data loads must not populate the instruction line.
+    assign bus_req_instr = state == ACCESS_REQ && !is_data;
     assign bus_req_write = state == UPDATE_REQ || (state == ACCESS_REQ && is_write);
     assign bus_req_wdata = state == UPDATE_REQ ? pte_updated : write_data;
     assign bus_req_wstrb = state == UPDATE_REQ ? 4'b1111 :
