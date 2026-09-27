@@ -6,7 +6,7 @@
 // [3:2]=PSRAM SIO2/3, [5:4]=NOR /WP,/HOLD (IO2/3).
 module serial_mem_bridge #(
     parameter integer POWERUP_CYCLES = 3000,
-    parameter integer CACHE_INDEX_BITS = 2
+    parameter integer CACHE_INDEX_BITS = 3
 ) (
     input wire clk, rst_n,
     input wire ram_req_valid,
