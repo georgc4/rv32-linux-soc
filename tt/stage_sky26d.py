@@ -36,6 +36,8 @@ parser.add_argument("--synth-strategy", choices=[f"{kind} {level}" for kind in (
 parser.add_argument("--synth-abc-area-use-nf", action="store_true")
 parser.add_argument("--hold-margin-ns", type=float, default=0.1)
 parser.add_argument("--grt-hold-margin-ns", type=float, default=0.05)
+parser.add_argument("--antenna-jumper-only", action="store_true")
+parser.add_argument("--antenna-repair-iters", type=int, default=3)
 args = parser.parse_args()
 
 rtl_root = args.rtl_root.resolve()
@@ -46,6 +48,8 @@ if not 0 < args.clock_period_ns or not 0 < args.density_pct < 100:
     parser.error("clock period must be positive and density must be between 0 and 100")
 if args.hold_margin_ns < 0 or args.grt_hold_margin_ns < 0:
     parser.error("hold margins must be nonnegative")
+if args.antenna_repair_iters < 1:
+    parser.error("antenna repair iterations must be positive")
 if not (rtl_root / "rtl/soc/tt_um_rv32_linux_soc.v").is_file():
     parser.error(f"RTL source tree missing at {rtl_root}")
 
@@ -73,6 +77,8 @@ config["SYNTH_STRATEGY"] = args.synth_strategy
 config["SYNTH_ABC_AREA_USE_NF"] = args.synth_abc_area_use_nf
 config["PL_RESIZER_HOLD_SLACK_MARGIN"] = args.hold_margin_ns
 config["GRT_RESIZER_HOLD_SLACK_MARGIN"] = args.grt_hold_margin_ns
+config["GRT_ANTENNA_REPAIR_JUMPER_ONLY"] = args.antenna_jumper_only
+config["GRT_ANTENNA_REPAIR_ITERS"] = args.antenna_repair_iters
 config_path.write_text(json.dumps(config, indent=2) + "\n")
 
 pinout = {
@@ -127,6 +133,8 @@ lines += ["yaml_version: 6"]
             "synth_abc_area_use_nf": args.synth_abc_area_use_nf,
             "hold_margin_ns": args.hold_margin_ns,
             "grt_hold_margin_ns": args.grt_hold_margin_ns,
+            "antenna_jumper_only": args.antenna_jumper_only,
+            "antenna_repair_iters": args.antenna_repair_iters,
         },
         indent=2,
     )

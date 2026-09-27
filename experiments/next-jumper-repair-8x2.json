@@ -1,0 +1,16 @@
+{
+  "name": "next-8x2-jumper-antenna-repair",
+  "tile_shape": "8x2",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "combined architecture, jumper-only antenna repair", "ref": "c1c485de7289d9d203c0bf3057a132d29fdcd781"},
+    {"label": "compact MDU architecture, jumper-only antenna repair", "ref": "4f836c5b3e6c818eb66556b4554e3750304ada80"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0],
+    "antenna_jumper_only": [true],
+    "antenna_repair_iters": [8]
+  }
+}

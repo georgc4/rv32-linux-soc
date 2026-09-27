@@ -1,0 +1,15 @@
+{
+  "name": "next-8x2-state-sharing",
+  "tile_shape": "8x2",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "atomic operand reuse", "ref": "fa31771aafbe2e0dade44815050f2c82e28499d4"},
+    {"label": "atomic plus serial bridge state", "ref": "8f952addec6f51c36532546ea7cdb286555d9a6b"},
+    {"label": "atomic plus bridge plus compact MDU", "ref": "4f836c5b3e6c818eb66556b4554e3750304ada80"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.0],
+    "grt_hold_margin_ns": [0.0]
+  }
+}

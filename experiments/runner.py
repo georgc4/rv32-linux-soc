@@ -27,6 +27,8 @@ MATRIX_DEFAULTS = {
     "placement_density_pct": [60.0],
     "hold_margin_ns": [0.1],
     "grt_hold_margin_ns": [0.05],
+    "antenna_jumper_only": [False],
+    "antenna_repair_iters": [3],
 }
 RTL_SOURCES = [
     "rtl/soc/soc_top.v", "rtl/cpu/rv32i_core.v", "rtl/cpu/rv32_priv_unit.v",
@@ -102,6 +104,10 @@ def planned_runs(manifest: Path) -> list[dict]:
                 raise ValueError("invalid LibreLane synth strategy")
             if not 0 < config["clock_period_ns"] or not 0 < config["placement_density_pct"] < 100:
                 raise ValueError("clock period and placement density are outside allowed ranges")
+            if not isinstance(config["antenna_jumper_only"], bool):
+                raise ValueError("antenna_jumper_only must be a boolean")
+            if not isinstance(config["antenna_repair_iters"], int) or config["antenna_repair_iters"] < 1:
+                raise ValueError("antenna_repair_iters must be a positive integer")
             canonical = json.dumps({"commit": commit, "config": config,
                                     "flow_sha256": flow_hash,
                                     "pdk_identity": pdk_identity,
@@ -316,7 +322,10 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
                "--density-pct", str(config["placement_density_pct"]),
                "--synth-strategy", config["synth_strategy"],
                "--hold-margin-ns", str(config["hold_margin_ns"]),
-               "--grt-hold-margin-ns", str(config["grt_hold_margin_ns"])]
+               "--grt-hold-margin-ns", str(config["grt_hold_margin_ns"]),
+               "--antenna-repair-iters", str(config["antenna_repair_iters"])]
+    if config["antenna_jumper_only"]:
+        command.append("--antenna-jumper-only")
     if config["synth_abc_area_use_nf"]:
         command.append("--synth-abc-area-use-nf")
     status, code = run_logged(command, ROOT, run_dir / "pnr-stage.log", 600)
