@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/home/carlos/.local/opt/sshfs/usr/bin/sshfs -f -o ro,reconnect,BatchMode=yes,IdentityFile=/home/carlos/.ssh/rv32_odb_mount_ed25519,ServerAliveInterval=15 cgeorges@192.168.1.200:/Users/cgeorges/rv32-linux-soc/build/experiments/runs /home/carlos/rv32-linux-soc/build/mac-experiments-runs
+ExecStart=/home/carlos/.local/opt/sshfs/usr/bin/sshfs -f -o ro,reconnect,BatchMode=yes,IdentityFile=/home/carlos/.ssh/rv32_odb_mount_ed25519,ServerAliveInterval=15 cgeorges@Mac.attlocal.net:/Users/cgeorges/rv32-linux-soc/build/experiments/runs /home/carlos/rv32-linux-soc/build/mac-experiments-runs
 ExecStop=/usr/bin/fusermount3 -u /home/carlos/rv32-linux-soc/build/mac-experiments-runs
 Restart=on-failure
 RestartSec=15
