@@ -1,0 +1,13 @@
+{
+  "name": "speed-5x4-one-line-tlb8-linux",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "one instruction line plus eight TLB entries", "ref": "246c244cbeacd2ec97082df21556b773fdbba616"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.1],
+    "grt_hold_margin_ns": [0.05]
+  }
+}
