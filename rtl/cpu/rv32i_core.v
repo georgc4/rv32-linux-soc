@@ -171,7 +171,7 @@ module rv32i_core #(
     reg [1:0] atomic_kind; // 0=ordinary, 1=LR, 2=SC, 3=AMO
     reg [1:0] atomic_kind_hold;
     reg [4:0] atomic_function_hold;
-    reg [31:0] atomic_operand_hold, atomic_old, atomic_write_data;
+    reg [31:0] atomic_old, atomic_write_data;
     reg reservation_valid;
     reg [31:0] reservation_addr;
     reg branch_taken;
@@ -495,7 +495,6 @@ module rv32i_core #(
             data_is_load <= 0;
             atomic_kind_hold <= 0;
             atomic_function_hold <= 0;
-            atomic_operand_hold <= 0;
             atomic_old <= 0;
             atomic_write_data <= 0;
             reservation_valid <= 0;
@@ -568,7 +567,6 @@ module rv32i_core #(
                         data_is_load <= !store || atomic_kind == 3;
                         atomic_kind_hold <= atomic_kind;
                         atomic_function_hold <= instr[31:27];
-                        atomic_operand_hold <= b;
                         if (store) reservation_valid <= 0;
                         state <= DATA_REQ;
                     end else begin
@@ -597,15 +595,15 @@ module rv32i_core #(
                         if (atomic_kind_hold == 3) begin
                             atomic_old <= d_resp_data;
                             case (atomic_function_hold)
-                                5'b00000: atomic_write_data <= d_resp_data + atomic_operand_hold;
-                                5'b00001: atomic_write_data <= atomic_operand_hold;
-                                5'b00100: atomic_write_data <= d_resp_data ^ atomic_operand_hold;
-                                5'b01000: atomic_write_data <= d_resp_data | atomic_operand_hold;
-                                5'b01100: atomic_write_data <= d_resp_data & atomic_operand_hold;
-                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b11000: atomic_write_data <= d_resp_data < atomic_operand_hold ? d_resp_data : atomic_operand_hold;
-                                5'b11100: atomic_write_data <= d_resp_data > atomic_operand_hold ? d_resp_data : atomic_operand_hold;
+                                5'b00000: atomic_write_data <= d_resp_data + b;
+                                5'b00001: atomic_write_data <= b;
+                                5'b00100: atomic_write_data <= d_resp_data ^ b;
+                                5'b01000: atomic_write_data <= d_resp_data | b;
+                                5'b01100: atomic_write_data <= d_resp_data & b;
+                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(b) ? d_resp_data : b;
+                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(b) ? d_resp_data : b;
+                                5'b11000: atomic_write_data <= d_resp_data < b ? d_resp_data : b;
+                                5'b11100: atomic_write_data <= d_resp_data > b ? d_resp_data : b;
                                 default: atomic_write_data <= d_resp_data;
                             endcase
                             state <= AMO_WRITE_REQ;
