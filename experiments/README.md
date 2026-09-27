@@ -112,7 +112,8 @@ prior ash-program evidence for an identical RTL commit and flash image when
 the simulator harness has since changed. It verifies the prior result and
 log, and records the original harness hash and run ID. The multi-billion-cycle
 boot runs once for that functional design. `--timeout-hours` and `--max-cycles`
-bound long trials. No sweep
+bound Linux acceptance trials; physical staging, routing, and full KLayout DRC
+have no runner wall-clock timeout. No sweep
 changes RTL, the memory topology, the ISA, or the shell image by itself.
 
 The [`sky26d-5x4-rtl-sweep.json`](sky26d-5x4-rtl-sweep.json) matrix runs eight

@@ -131,7 +131,7 @@ def write_result(path: Path, data: dict) -> None:
 
 
 def run_logged(command: list[str], cwd: Path, log_path: Path,
-               timeout_seconds: float, env: dict | None = None) -> tuple[str, int | None]:
+               timeout_seconds: float | None, env: dict | None = None) -> tuple[str, int | None]:
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("w", buffering=1) as log:
         print(f"COMMAND {json.dumps(command)}", file=log, flush=True)
@@ -177,7 +177,7 @@ def mapped_cells(module_name: str, modules: dict) -> int:
     return count
 
 
-def synthesize(run: dict, run_dir: Path, source: Path, timeout: float) -> dict:
+def synthesize(run: dict, run_dir: Path, source: Path) -> dict:
     output = run_dir / "synth"
     env = os.environ.copy()
     env["RTL_ROOT"] = str(source)
@@ -188,7 +188,7 @@ def synthesize(run: dict, run_dir: Path, source: Path, timeout: float) -> dict:
     else:
         env["ABC_DELAY_PS"] = str(delay)
     status, code = run_logged(["bash", str(ROOT / "tt/run_sky130_synth.sh")],
-                              source, run_dir / "synth-command.log", timeout, env)
+                              source, run_dir / "synth-command.log", None, env)
     result = {"status": status, "returncode": code, "log": "synth-command.log"}
     yosys_log = output / "yosys.log"
     netlist = output / "tt_um_rv32_linux_soc_mapped.json"
@@ -232,7 +232,7 @@ def collect_pnr_metrics(stage: Path) -> dict:
 
 
 def check_physical_artifacts(run_dir: Path, stage: Path, pdk_revision: str | None,
-                             timeout: float) -> dict:
+                             timeout: float | None) -> dict:
     """Audit the final GDS and the signoff reports, failing closed on missing data."""
     run_root = stage / "runs" / "wokwi"
     gds = run_root / "final/gds/tt_um_rv32_linux_soc.gds"
@@ -312,7 +312,7 @@ def check_physical_artifacts(run_dir: Path, stage: Path, pdk_revision: str | Non
     return checks
 
 
-def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> dict:
+def place_and_route(run: dict, run_dir: Path, source: Path) -> dict:
     config = run["config"]
     stage = run_dir / "pnr-stage"
     command = [sys.executable, str(ROOT / "tt/stage_sky26d_uart.py"),
@@ -328,7 +328,7 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
         command.append("--antenna-jumper-only")
     if config["synth_abc_area_use_nf"]:
         command.append("--synth-abc-area-use-nf")
-    status, code = run_logged(command, ROOT, run_dir / "pnr-stage.log", 600)
+    status, code = run_logged(command, ROOT, run_dir / "pnr-stage.log", None)
     if status != "pass":
         return {"status": status, "returncode": code, "log": "pnr-stage.log"}
     python = ROOT / "build/sky130/venv/bin/python"
@@ -340,11 +340,11 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
     env.setdefault("DYLD_FALLBACK_LIBRARY_PATH", "/opt/homebrew/lib")
     tool = stage / "tt/tt_tool.py"
     status, code = run_logged([str(python), str(tool), "--create-user-config"],
-                              stage, run_dir / "pnr-config.log", 600, env)
+                              stage, run_dir / "pnr-config.log", None, env)
     if status != "pass":
         return {"status": status, "returncode": code, "log": "pnr-config.log"}
     status, code = run_logged([str(python), str(tool), "--harden"],
-                              stage, run_dir / "pnr.log", timeout, env)
+                              stage, run_dir / "pnr.log", None, env)
     gds = stage / "runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds"
     result = {"status": status if status != "pass" or gds.is_file() else "failed",
               "returncode": code, "log": "pnr.log", "gds_present": gds.is_file()}
@@ -354,7 +354,7 @@ def place_and_route(run: dict, run_dir: Path, source: Path, timeout: float) -> d
     result.update(collect_pnr_metrics(stage))
     if status == "pass" and gds.is_file():
         result["checks"] = check_physical_artifacts(
-            run_dir, stage, result.get("physical_pdk_revision"), min(timeout, 7200))
+            run_dir, stage, result.get("physical_pdk_revision"), None)
         if any(check["status"] != "pass" for check in result["checks"].values()):
             result["status"] = "failed"
     return result
@@ -491,9 +491,9 @@ def run_one(run: dict, phase: str, flash_image: Path | None,
         started = utc_now()
         try:
             if stage_name == "synth":
-                value = synthesize(run, run_dir, source, 1800)
+                value = synthesize(run, run_dir, source)
             elif stage_name == "pnr":
-                value = place_and_route(run, run_dir, source, timeout_hours * 3600)
+                value = place_and_route(run, run_dir, source)
             elif stage_name == "reuse-acceptance":
                 if run["image_sha256"] is None:
                     raise ValueError("manifest flash_image is required to reuse acceptance")

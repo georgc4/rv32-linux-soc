@@ -39,10 +39,7 @@ def archive_stage(run_dir: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
-    parser.add_argument("--timeout-hours", type=float, default=12.0)
     args = parser.parse_args()
-    if args.timeout_hours <= 0:
-        parser.error("timeout must be positive")
     runs = planned_runs(args.manifest)
     print(f"{utc_now()} queued {len(runs)} physical runs", flush=True)
     failures = 0
@@ -52,7 +49,7 @@ def main() -> int:
         prior = json.loads(result_path.read_text()) if result_path.is_file() else {}
         print(f"{utc_now()} [{index}/{len(runs)}] {run['name']} {run['id']}", flush=True)
         if "pnr" not in prior.get("stages", {}):
-            run_one(run, "pnr", None, args.timeout_hours, 20_000_000_000)
+            run_one(run, "pnr", None, 8.0, 20_000_000_000)
         result = json.loads(result_path.read_text())
         pnr = result["stages"]["pnr"]
         if pnr["status"] != "pass":
@@ -64,7 +61,7 @@ def main() -> int:
                 print(f"{utc_now()} no verified ash pass for exact commit/image; "
                       "acceptance remains pending", flush=True)
             else:
-                run_one(run, "reuse-acceptance", None, args.timeout_hours,
+                run_one(run, "reuse-acceptance", None, 8.0,
                         20_000_000_000)
         archive_stage(run_dir)
         if pnr.get("log") in ("pnr-stage.log", "pnr-config.log") and \

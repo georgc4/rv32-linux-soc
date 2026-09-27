@@ -98,8 +98,7 @@ def main() -> int:
                     "--all", "--phase", "acceptance", "--flash-image", IMAGE,
                     "--max-cycles", "25000000000", "--timeout-hours", "8"]
                    if lane == "acceptance" else
-                   [sys.executable, "experiments/run_physical_queue.py", manifest,
-                    "--timeout-hours", "3"])
+                   [sys.executable, "experiments/run_physical_queue.py", manifest])
         with log.open("w", buffering=1) as output:
             process = subprocess.Popen(command, cwd=ROOT, stdout=output,
                                        stderr=subprocess.STDOUT)
