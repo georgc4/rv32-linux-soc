@@ -1,0 +1,13 @@
+{
+  "name": "speed-5x4-no-cache-tlb8-linux",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "no instruction cache plus eight TLB entries", "ref": "d76550884dd8674fedca0cab67741d55ca234741"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.1],
+    "grt_hold_margin_ns": [0.05]
+  }
+}

@@ -7,7 +7,7 @@ said SKY26d sales were not open on 2026-09-27.
 ## Candidates
 
 The reference is the 16-byte, one-line instruction cache at `7ebde5c`.
-The next five immutable RTL revisions are pinned in
+The next six immutable RTL revisions are pinned in
 [`speed-5x4-acceptance.json`](speed-5x4-acceptance.json) and
 the related candidate manifests:
 
@@ -18,6 +18,7 @@ the related candidate manifests:
 | `7825dd2` | Eight instruction lines plus eight Sv32 TLB entries | Reduce page walks if the Linux working set conflicts in the four-entry TLB. |
 | `f07fc47` | Sixteen instruction lines plus eight TLB entries | Spend more of the 5×4 area margin to retain code across a larger working set. |
 | `246c244` | One instruction line plus eight TLB entries | Isolate the larger TLB's speed benefit while keeping the cache layout close to the routed one-line design. |
+| `d765508` | No instruction cache plus eight TLB entries | Measure the TLB gain without cache flops or cache routing. |
 
 All misses use the actual quad-serial PSRAM pins and protocol. A line fill is
 still 16 bytes, keeping the PSRAM chip-select interval unchanged. Stores
@@ -32,6 +33,9 @@ revision; the sixteen-line candidate uses
 The one-line/eight-TLB comparison uses
 [`speed-5x4-one-line-tlb8-acceptance.json`](speed-5x4-one-line-tlb8-acceptance.json)
 and [`speed-5x4-one-line-tlb8-physical.json`](speed-5x4-one-line-tlb8-physical.json).
+The no-cache/eight-TLB comparison uses
+[`speed-5x4-no-cache-tlb8-acceptance.json`](speed-5x4-no-cache-tlb8-acceptance.json)
+and [`speed-5x4-no-cache-tlb8-physical.json`](speed-5x4-no-cache-tlb8-physical.json).
 Use the exact smaller-kernel image SHA-256 recorded by the runner.
 Physical trials use 5×4 only, with a 50 ns/`AREA 2` GDS run for each
 candidate and 45/40 ns `DELAY 2` trials for the eight- and sixteen-line
