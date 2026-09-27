@@ -1,0 +1,13 @@
+{
+  "name": "speed-5x4-sixteen-line-linux-acceptance",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {"label": "sixteen instruction lines plus eight TLB entries", "ref": "f07fc47422eef37b86540a477800619c598b7209"}
+  ],
+  "matrix": {
+    "synth_strategy": ["AREA 2"],
+    "hold_margin_ns": [0.1],
+    "grt_hold_margin_ns": [0.05]
+  }
+}

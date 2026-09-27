@@ -7,14 +7,16 @@ said SKY26d sales were not open on 2026-09-27.
 ## Candidates
 
 The reference is the 16-byte, one-line instruction cache at `7ebde5c`.
-The next three immutable RTL revisions are listed in
-[`speed-5x4-acceptance.json`](speed-5x4-acceptance.json):
+The next four immutable RTL revisions are pinned in
+[`speed-5x4-acceptance.json`](speed-5x4-acceptance.json) and
+[`speed-5x4-large-acceptance.json`](speed-5x4-large-acceptance.json):
 
 | Revision | Change | Why it may help |
 |---|---|---|
 | `ceb45b7` | Four direct-mapped 16-byte physical instruction lines | Retain several adjacent code lines instead of evicting on every line crossing. |
 | `6ed28d6` | Eight direct-mapped instruction lines | Reduce instruction misses across short calls and branches. |
 | `7825dd2` | Eight instruction lines plus eight Sv32 TLB entries | Reduce page walks if the Linux working set conflicts in the four-entry TLB. |
+| `f07fc47` | Sixteen instruction lines plus eight TLB entries | Spend more of the 5×4 area margin to retain code across a larger working set. |
 
 All misses use the actual quad-serial PSRAM pins and protocol. A line fill is
 still 16 bytes, keeping the PSRAM chip-select interval unchanged. Stores
@@ -24,14 +26,17 @@ two actual fills, and cache invalidation. The TLB test checks page walks,
 hits, flush, SATP change, permissions and A/D updates.
 
 Run the full true-serial Linux 6.12 / BusyBox ash acceptance on each RTL
-revision. Use the exact smaller-kernel image SHA-256 recorded by the runner.
+revision; the sixteen-line candidate uses
+[`speed-5x4-large-acceptance.json`](speed-5x4-large-acceptance.json).
+Use the exact smaller-kernel image SHA-256 recorded by the runner.
 Physical trials use 5×4 only, with a 50 ns/`AREA 2` GDS run for each
-candidate and 45 ns/`DELAY 2` trials for the two eight-line candidates.
+candidate and 45/40 ns `DELAY 2` trials for the eight- and sixteen-line
+candidates.
 The queue starts with a one-line cache rerun at 0.05 ns post-placement hold
 margin. Its zero-margin run produced GDS and passed Magic DRC/LVS, but the
 flow failed final hold timing; KLayout was not run by the experiment gate.
 The added margin is a measured repair attempt, not a claimed fix.
-The 45 ns trials measure implementation headroom; a faster silicon clock
+The 45/40 ns trials measure implementation headroom; a faster silicon clock
 also requires a matching UART divisor, timer frequency and device tree.
 
 Every physical candidate must reach final GDS and pass full KLayout DRC,
