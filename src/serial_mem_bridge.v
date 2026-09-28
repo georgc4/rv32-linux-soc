@@ -11,6 +11,7 @@ module serial_mem_bridge #(
     input wire ram_req_valid,
     output wire ram_req_ready,
     input wire [31:0] ram_req_addr,
+    input wire ram_req_instr,
     input wire ram_req_write,
     input wire [31:0] ram_req_wdata,
     input wire [3:0] ram_req_wstrb,
@@ -66,6 +67,13 @@ module serial_mem_bridge #(
     reg [6:0] bit_index, total_bits;
     reg mosi;
     reg [31:0] read_shift, response_data;
+    // One physically tagged 16-byte line. Every miss still performs a real
+    // quad-serial PSRAM transaction; the data array is invalidated by writes.
+    reg cache_valid;
+    reg [20:0] cache_tag;
+    reg [127:0] cache_line, cache_line_shift;
+    reg cache_fill;
+    reg [1:0] cache_word_index;
     reg response_error;
     reg [23:0] base_address;
     reg [31:0] write_word;
@@ -82,6 +90,9 @@ module serial_mem_bridge #(
     reg [19:0] ctrl_polls;
     reg [31:0] ctrl_response_data;
     reg ctrl_response_error;
+    wire cache_hit = cache_valid && cache_tag == ram_req_addr[24:4];
+    wire [31:0] cache_hit_word = cache_line[127 - 32*ram_req_addr[3:2] -: 32];
+    wire [31:0] cache_fill_word = cache_line_shift[127 - 32*cache_word_index -: 32];
     wire unused_spi_inputs = &{1'b0, spi_dq_in[0]};
     wire [3:0] remaining_strb = pending_strb & ~(4'b0001 << lane);
     wire ram_quad_addr = (kind == K_RAM_READ || kind == K_RAM_WRITE) &&
@@ -122,6 +133,15 @@ module serial_mem_bridge #(
     assign ctrl_resp_rdata = ctrl_response_data;
     assign ctrl_resp_err = ctrl_response_error;
 
+    // A full 32-nibble fill flushes all old bits; only cache_valid needs reset.
+    always @(posedge clk) begin
+        if (state == HIGH && kind == K_RAM_READ && cache_fill && bit_index >= 7'd20)
+            cache_line_shift <= {cache_line_shift[123:0], spi_dq_in[3:0]};
+        if (state == LOW && kind == K_RAM_READ && cache_fill &&
+            bit_index + 7'd1 == total_bits)
+            cache_line <= cache_line_shift;
+    end
+
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state <= POWER_WAIT;
@@ -141,6 +161,10 @@ module serial_mem_bridge #(
             total_bits <= 0;
             read_shift <= 0;
             response_data <= 0;
+            cache_valid <= 0;
+            cache_tag <= 0;
+            cache_fill <= 0;
+            cache_word_index <= 0;
             response_error <= 0;
             base_address <= 0;
             write_word <= 0;
@@ -190,17 +214,28 @@ module serial_mem_bridge #(
                         serial_write_shift <= {ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8], 24'b0};
                     pending_strb <= ram_req_wstrb;
                     response_data <= 0;
+                    cache_fill <= 0;
+                    if (ram_req_write) cache_valid <= 0;
                     response_error <= ram_req_addr[31:25] != 0;
                     if (ram_req_addr[31:25] != 0 || (ram_req_write && ram_req_wstrb == 0)) state <= DONE;
+                    else if (!ram_req_write && ram_req_instr && cache_hit) begin
+                        response_data <= {cache_hit_word[7:0], cache_hit_word[15:8],
+                                          cache_hit_word[23:16], cache_hit_word[31:24]};
+                        state <= DONE;
+                    end
                     else begin
                         kind <= ram_req_write ? K_RAM_WRITE : K_RAM_READ;
+                        cache_fill <= !ram_req_write && ram_req_instr;
+                        cache_word_index <= ram_req_addr[3:2];
                         lane <= first_lane(ram_req_wstrb);
                         write_byte <= ram_req_wdata[8*first_lane(ram_req_wstrb) +: 8];
                         header <= {ram_req_write ? 8'h38 : 8'heb,
-                                   ({1'b0, ram_req_addr[22:0]} & 24'hfffffc) +
+                                   ({1'b0, ram_req_addr[22:0]} &
+                                    (!ram_req_write && ram_req_instr ? 24'hfffff0 : 24'hfffffc)) +
                                    (ram_req_write ? {22'b0, first_lane(ram_req_wstrb)} : 24'b0)};
                         total_bits <= ram_req_write ?
-                                      (ram_req_wstrb == 4'hf ? 7'd22 : 7'd16) : 7'd28;
+                                      (ram_req_wstrb == 4'hf ? 7'd22 : 7'd16) :
+                                      (ram_req_instr ? 7'd52 : 7'd28);
                         bit_index <= 0;
                         read_shift <= 0;
                         mosi <= ram_req_write ? 1'b0 : 1'b1;
@@ -282,7 +317,7 @@ module serial_mem_bridge #(
             SETUP: state <= HIGH;
             HIGH: begin
                 spi_sck <= 1;
-                if (kind == K_RAM_READ && bit_index >= 7'd20)
+                if (kind == K_RAM_READ && !cache_fill && bit_index >= 7'd20)
                     read_shift <= {read_shift[27:0], spi_dq_in[3:0]};
                 else if (kind == K_FLASH_READ && bit_index >= 7'd40)
                     read_shift <= {read_shift[27:0], spi_dq_in[5:4], spi_dq_in[1:0]};
@@ -308,6 +343,12 @@ module serial_mem_bridge #(
                             init_complete <= 1;
                             after_gap <= AFTER_IDLE;
                         end
+                    end else if (kind == K_RAM_READ && cache_fill) begin
+                        response_data <= {cache_fill_word[7:0], cache_fill_word[15:8],
+                                          cache_fill_word[23:16], cache_fill_word[31:24]};
+                        cache_tag <= {selected_chip[1:0], base_address[22:4]};
+                        cache_valid <= 1;
+                        after_gap <= AFTER_DONE;
                     end else if (kind == K_RAM_WRITE) begin
                         pending_strb <= pending_strb == 4'hf ? 4'b0 : remaining_strb;
                         if (pending_strb != 4'hf && remaining_strb != 0) begin

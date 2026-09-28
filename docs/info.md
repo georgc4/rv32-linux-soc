@@ -7,15 +7,25 @@ The logical Tiny Tapeout pins are documented in [the pin budget](pin-budget.md).
 
 The external NOR holds a bootloader, Linux 6.12 kernel, device tree, and a
 BusyBox ash initramfs. The external PSRAM provides 32 MiB of memory. The
-repository's full serial RTL simulation reached `/init` and printed
-`RV32 Linux userspace ready` on the baseline design. A stronger BusyBox ash
-and user-program gate is being evaluated on experiment branches.
+repository's full serial RTL simulation boots Linux, reaches the BusyBox
+ash prompt, sends `/bin/acceptance_smoke` through UART RX, and observes
+`ASH_PROGRAM_OK` on UART TX for the source snapshot below.
 
-**Draft status:** The submitted RTL snapshot has not passed the TTSKY26d
-physical flow. The earlier 8×2 local trial did not generate a signoff GDS.
-This repository revision
-must not be selected as a fabrication revision until GDS, precheck, timing,
-and gate-level checks pass. The external board and pinout also need validation.
+**Qualification status:** The source snapshot matches RTL commit
+`7ebde5cec555806030467657d8bdd1e4f48fe0e6`: one 16-byte instruction-cache
+line and four TLB entries. Its local 5×4 run
+`7ebde5cec555-e811a35c1f2d` passed full serial Linux/BusyBox acceptance
+in 13,877,255,869 cycles, full KLayout FEOL/BEOL/off-grid DRC, Magic DRC,
+Netgen LVS, and antenna checks. This submission reproduces its AREA 2
+mapping and 0.05/0 ns hold margins, with KLayout DRC also enabled in CI.
+
+It is **not fully timing-qualified or fabrication-ready**: final slow-corner
+setup slack is −9.447 ns at the 50 ns target, electrical limit violations
+remain, and external I/O timing constraints are provisional. Passing the
+standard GDS action does not close those gaps. The recorded evidence and
+full timing audit are in [tt/qualification/7ebde5c](../tt/qualification/7ebde5c).
+GitHub GDS, precheck, and gate-level results must be checked on this exact
+submission commit.
 
 The 20 MHz `clk` input and `rst_n` are the standard Tiny Tapeout interface.
 UART RX is `ui_in[3]`; UART TX is `uo_out[4]`, the demoboard's documented

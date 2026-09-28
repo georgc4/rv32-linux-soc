@@ -6,3 +6,10 @@ src/config_merged.json
 src/user_config.json
 docs/independent-design-review.md
 docs/design-review-follow-up.md
+
+# Tiny Tapeout cocotb outputs
+/test/sim_build/
+/test/results.xml
+/test/tb.fst
+/test/__pycache__/
+/test/gate_level_netlist.v
