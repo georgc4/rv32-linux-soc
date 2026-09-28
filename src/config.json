@@ -25,5 +25,31 @@
   "SYNTH_STRATEGY": "AREA 2",
   "SYNTH_ABC_AREA_USE_NF": false,
   "GRT_ANTENNA_REPAIR_JUMPER_ONLY": false,
-  "GRT_ANTENNA_REPAIR_ITERS": 3
+  "GRT_ANTENNA_REPAIR_ITERS": 3,
+  "PL_TIMING_DRIVEN": true,
+  "RUN_POST_GRT_RESIZER_TIMING": false,
+  "DRT_THREADS": 4,
+  "STA_THREADS": 2,
+  "PNR_CORNERS": [
+    "nom_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "min_ff_n40C_1v95"
+  ],
+  "RSZ_CORNERS": [
+    "nom_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "min_ff_n40C_1v95"
+  ],
+  "SETUP_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "HOLD_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_SLEW_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_CAP_VIOLATION_CORNERS": [
+    "*"
+  ]
 }

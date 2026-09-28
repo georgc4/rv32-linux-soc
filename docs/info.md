@@ -17,7 +17,9 @@ Its canonical RTL matches tested revision
 `f91a5e108ca57f257d740447d6e14c926b77360b`. That revision passed full serial
 Linux/BusyBox acceptance in 13,877,255,869 cycles, identical to its parent.
 
-Physical validation is pending at the unchanged 50 ns clock target. Two
+Physical validation is pending at the unchanged 50 ns clock target. CI uses
+timing-driven placement and TT/SS/FF optimization corners, and checks
+setup, hold, slew, and capacitance across all signoff corners. Two
 local comparisons cover multicorner timing-driven placement and the
 previously routable baseline physical settings. This candidate must not be
 called timing-qualified until extracted setup and hold pass at every
