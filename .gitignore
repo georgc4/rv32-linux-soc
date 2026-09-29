@@ -13,3 +13,10 @@ docs/design-review-follow-up.md
 /test/tb.fst
 /test/__pycache__/
 /test/gate_level_netlist.v
+
+# Local physical-flow smoke outputs
+/runs/
+/plugin-smoke*.log
+/smoke-config.json
+/tt/
+/tt_submission/

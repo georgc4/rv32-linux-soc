@@ -7,14 +7,14 @@
   "LINTER_INCLUDE_PDK_MODELS": 1,
   "CLOCK_PORT": "clk",
   "RUN_KLAYOUT_XOR": 0,
-  "RUN_KLAYOUT_DRC": 1,
+  "RUN_KLAYOUT_DRC": true,
   "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": 0,
   "TOP_MARGIN_MULT": 1,
   "BOTTOM_MARGIN_MULT": 1,
   "LEFT_MARGIN_MULT": 6,
   "RIGHT_MARGIN_MULT": 6,
   "FP_SIZING": "absolute",
-  "GRT_ALLOW_CONGESTION": 1,
+  "GRT_ALLOW_CONGESTION": false,
   "FP_IO_HLENGTH": 2,
   "FP_IO_VLENGTH": 2,
   "FP_PDN_VPITCH": 38.87,
@@ -51,5 +51,13 @@
   ],
   "MAX_CAP_VIOLATION_CORNERS": [
     "*"
-  ]
+  ],
+  "PL_SKIP_INITIAL_PLACEMENT": true,
+  "MAX_TRANSITION_CONSTRAINT": 1.5,
+  "meta": {
+    "version": 1,
+    "flow": "RV32Partitioned"
+  },
+  "PL_ROUTABILITY_DRIVEN": true,
+  "MAX_CAPACITANCE_CONSTRAINT": 0.2
 }
