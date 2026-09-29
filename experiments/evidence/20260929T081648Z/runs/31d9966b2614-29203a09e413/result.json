@@ -1,0 +1,55 @@
+{
+  "commit": "31d9966b2614eef50522c33f3d25f0b6c7ebb356",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "8x2"
+  },
+  "created_utc": "2026-09-27T00:30:22.468525+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "31d9966b2614-29203a09e413",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "shared core adder without register banking or shifter sharing",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17129216271,
+      "ended_utc": "2026-09-27T00:44:36.969850+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "../31d9966b2614-5dea292570bf/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "returncode": 0,
+      "reused_from_run": "31d9966b2614-5dea292570bf",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-27T00:44:36.968679+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "39-openroad-globalrouting",
+      "core_area_um2": 302420,
+      "ended_utc": "2026-09-27T00:44:36.917736+00:00",
+      "gds_present": false,
+      "instance_area_um2": 237204,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 27.3547,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-27T00:30:22.733534+00:00",
+      "status": "failed",
+      "timing_stage": "38-openroad-stamidpnr-2",
+      "utilization": 0.784352
+    }
+  }
+}

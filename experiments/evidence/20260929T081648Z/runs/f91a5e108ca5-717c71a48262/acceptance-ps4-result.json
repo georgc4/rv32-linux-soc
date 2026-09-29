@@ -1,0 +1,16 @@
+{
+  "architecture": "amd64",
+  "compile_log": "acceptance-ps4-compile.log",
+  "container_image_id": "sha256:f91b21d75f79871f9ccf37451020b5d2f7b3236881a997ff709c561e8280a30f",
+  "cycles": 13877255869,
+  "ended_utc": "2026-09-28T13:07:55.385252+00:00",
+  "execution_host": "ps4",
+  "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "log": "acceptance-ps4.log",
+  "returncode": 0,
+  "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+  "started_utc": "2026-09-28T03:03:56.701610+00:00",
+  "status": "pass",
+  "uart_rx_bytes": 22
+}

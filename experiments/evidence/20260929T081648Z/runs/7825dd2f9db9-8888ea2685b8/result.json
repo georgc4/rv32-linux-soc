@@ -1,0 +1,57 @@
+{
+  "commit": "7825dd2f9db9c7f625c11846d62bfb4c2f1f1665",
+  "config": {
+    "abc_delay_ps": null,
+    "antenna_jumper_only": false,
+    "antenna_repair_iters": 3,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.05,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-27T18:30:51.555045+00:00",
+  "flow_sha256": "7abe3ea0dc97bfd72d3253c3b2b7080a1b7abb6411bde9a3ddd40d0b38dc9cff",
+  "id": "7825dd2f9db9-8888ea2685b8",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "eight instruction lines plus eight TLB entries",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 9020445908,
+      "ended_utc": "2026-09-27T19:33:16.606515+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "../7825dd2f9db9-8eb167311f5b/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "returncode": 0,
+      "reused_from_run": "7825dd2f9db9-8eb167311f5b",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-27T19:33:16.597076+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "35-openroad-cts",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-27T18:48:32.836609+00:00",
+      "gds_present": false,
+      "instance_area_um2": 316818,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 27.8081,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-27T18:30:51.786055+00:00",
+      "status": "failed",
+      "timing_stage": "36-openroad-stamidpnr-1",
+      "utilization": 0.735865
+    }
+  }
+}

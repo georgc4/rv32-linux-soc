@@ -1,0 +1,125 @@
+{
+  "area_stage": "54-openroad-rcx",
+  "core_area_um2": 430538,
+  "hold_buffers": 2126,
+  "hold_ws_ns": 0.026547875760266872,
+  "instance_area_um2": 282602,
+  "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+  "resolved_config_sha256": "4bc878350b8899ec8ee3a17c3589c7ad90f53df1e0411395e0681c05f6601359",
+  "route_wirelength_um": 1273703,
+  "setup_r2r_ws_ns": -9.446585,
+  "setup_wns_ns": -9.446584226683568,
+  "timing": {
+    "corners": {
+      "max_ff_n40C_1v95": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.026547875760266872,
+        "max_cap_violations": 17,
+        "max_slew_violations": 1806,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 25.945838212301073
+      },
+      "max_ss_100C_1v60": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.722246727312231,
+        "max_cap_violations": 245,
+        "max_slew_violations": 11980,
+        "setup_tns_ns": -3611.9512172430077,
+        "setup_violations": 979,
+        "setup_ws_ns": -9.446584226683568
+      },
+      "max_tt_025C_1v80": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.21935986981080355,
+        "max_cap_violations": 43,
+        "max_slew_violations": 4374,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 19.960965001439405
+      },
+      "min_ff_n40C_1v95": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.03513034407255796,
+        "max_cap_violations": 6,
+        "max_slew_violations": 1039,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 26.257336603754396
+      },
+      "min_ss_100C_1v60": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.7137675097441502,
+        "max_cap_violations": 136,
+        "max_slew_violations": 9566,
+        "setup_tns_ns": -1675.8543116456071,
+        "setup_violations": 817,
+        "setup_ws_ns": -6.341110926937442
+      },
+      "min_tt_025C_1v80": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.2292037735593496,
+        "max_cap_violations": 14,
+        "max_slew_violations": 2759,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 22.763402473954443
+      },
+      "nom_ff_n40C_1v95": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.028414826851277518,
+        "max_cap_violations": 11,
+        "max_slew_violations": 1498,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 26.080265796281395
+      },
+      "nom_ss_100C_1v60": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.7174472330410375,
+        "max_cap_violations": 188,
+        "max_slew_violations": 10751,
+        "setup_tns_ns": -2722.800522559788,
+        "setup_violations": 947,
+        "setup_ws_ns": -8.089387166865082
+      },
+      "nom_tt_025C_1v80": {
+        "hold_tns_ns": 0,
+        "hold_violations": 0,
+        "hold_ws_ns": 0.22074209751555396,
+        "max_cap_violations": 27,
+        "max_slew_violations": 3589,
+        "setup_tns_ns": 0,
+        "setup_violations": 0,
+        "setup_ws_ns": 21.202883604547875
+      }
+    },
+    "electrical_status": "failed",
+    "io_constraints": "fallback_provisional",
+    "required_corners": [
+      "nom_tt_025C_1v80",
+      "nom_ss_100C_1v60",
+      "nom_ff_n40C_1v95",
+      "min_tt_025C_1v80",
+      "min_ss_100C_1v60",
+      "min_ff_n40C_1v95",
+      "max_tt_025C_1v80",
+      "max_ss_100C_1v60",
+      "max_ff_n40C_1v95"
+    ],
+    "setup_hold_status": "failed",
+    "source": "final/metrics.json",
+    "source_sha256": "90a905b343b1c0ee9f6add3a485797c142ae72efdc3d3688b2a70a2f794ce365",
+    "status": "failed"
+  },
+  "timing_stage": "final/metrics.json",
+  "utilization": 0.656393
+}

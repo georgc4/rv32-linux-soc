@@ -1,0 +1,33 @@
+{
+  "commit": "8f952addec6f51c36532546ea7cdb286555d9a6b",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-27T01:01:51.347833+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "8f952addec6f-e131c4ab21e1",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "atomic plus serial bridge state",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "synth": {
+      "ended_utc": "2026-09-27T01:01:59.884547+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 165650.1216,
+      "mapped_cells": 16685,
+      "returncode": 0,
+      "started_utc": "2026-09-27T01:01:51.457304+00:00",
+      "status": "pass"
+    }
+  }
+}

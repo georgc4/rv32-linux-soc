@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "checked_original_input_pins": 55312,
+  "equivalent_family_resizes": 6,
+  "noninverting_buffers": 17,
+  "scope": "Static driver-connectivity equivalence, stripping added noninverting buffers; not timing or physical signoff"
+}

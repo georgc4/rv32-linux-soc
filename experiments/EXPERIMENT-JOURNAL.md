@@ -147,8 +147,21 @@ A dry run and static connectivity comparison verified 55,312 original input
 pins and top-level output drivers, tracing through the added non-inverting
 buffers. That is logical connectivity evidence, not timing signoff.
 `electrical-library15-targeted-v3` was still running at the initial journal
-checkpoint. Do not supply a successful ending until its final reports exist
-and pass review. External memory/board I/O timing remains provisional.
+checkpoint. It finished at **2026-09-29 07:06:15 UTC** and failed electrical
+signoff: **197 slew / 27 capacitance violations** at max-SS under the 1.5 ns
+target. Setup and hold passed all nine corners (worst setup **+5.129248 ns**,
+worst hold **+0.079761 ns**); routing/Magic/KLayout DRC, LVS, and antenna were
+clean. This was worse than the original candidate's 20/7 diagnostic under
+the same target, so it was not promoted.
+
+The downstream post-global-route timing repair increased instance count from
+28,631 to 29,786: a net addition of **1,155 instances** beyond the manual ECO
+and preceding antenna repair. This confounds attribution to the small ECO.
+A follow-up, `electrical-library15-targeted-only`, uses the same original
+checkpoint and verified ECO, with that broad timing-repair stage disabled.
+It still rebuilds routes and runs the final all-corner and physical checks;
+it is not an incremental-route-only experiment. At this update it is running,
+with no final result yet. External memory/board I/O timing remains provisional.
 
 ## Where the evidence lives
 

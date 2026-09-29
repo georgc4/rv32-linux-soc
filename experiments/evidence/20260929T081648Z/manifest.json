@@ -1,0 +1,1101 @@
+{
+  "captured_utc": "2026-09-29T08:16:48.748390+00:00",
+  "source_head": "261e93543c6b80f568af5bbe4ed0bb1f07b38ba2",
+  "scope": "Compact local evidence snapshot. Active results remain provisional.",
+  "captured_files": [
+    {
+      "source": "build/experiments/locality-campaign/ps4-acceptance.json",
+      "copy": "locality-campaign/ps4-acceptance.json",
+      "bytes": 1754,
+      "sha256": "08286b8375f33f5300a704f85452f8a147099a4016093b0ad59216341c70ab97"
+    },
+    {
+      "source": "build/experiments/locality-campaign/status.json",
+      "copy": "locality-campaign/status.json",
+      "bytes": 19209,
+      "sha256": "c1ef93524e5bee0382b78807040aa45785960205c28d48290d00633cdab6869c"
+    },
+    {
+      "source": "build/experiments/runs/140e7ea4b392-1daf0cc153a0/result.json",
+      "copy": "runs/140e7ea4b392-1daf0cc153a0/result.json",
+      "bytes": 4136,
+      "sha256": "b87a55d1bbe7c276a247eda5d83fd4055165cd420a8dfa26bd00ad24b6ecb07b"
+    },
+    {
+      "source": "build/experiments/runs/19cb40a50abe-4330ae47043a/result.json",
+      "copy": "runs/19cb40a50abe-4330ae47043a/result.json",
+      "bytes": 1057,
+      "sha256": "b2f8de06fcb1d35da5f5595a7df7e4ab877702b78485a3c6edabf2e6e06130dc"
+    },
+    {
+      "source": "build/experiments/runs/1dea578e7597-eb3eaa14eaaf/result.json",
+      "copy": "runs/1dea578e7597-eb3eaa14eaaf/result.json",
+      "bytes": 2239,
+      "sha256": "743cc13b287666fee700c1e77b62dcba97147e03a0ee47388094c155016de8e1"
+    },
+    {
+      "source": "build/experiments/runs/1edce9ce221c-62f95b88b0a5/result.json",
+      "copy": "runs/1edce9ce221c-62f95b88b0a5/result.json",
+      "bytes": 1552,
+      "sha256": "1aa56686cd03516b7460f70b021ec3e61e5d486798a08c72f91e5357e33e0f20"
+    },
+    {
+      "source": "build/experiments/runs/1edce9ce221c-8133781ac931/result.json",
+      "copy": "runs/1edce9ce221c-8133781ac931/result.json",
+      "bytes": 1389,
+      "sha256": "686f49f6b0c7ec3694ea03e7ce5481e43e307e0e900be8ef8bedfa00408064de"
+    },
+    {
+      "source": "build/experiments/runs/246c244cbeac-105362e499c1/result.json",
+      "copy": "runs/246c244cbeac-105362e499c1/result.json",
+      "bytes": 900,
+      "sha256": "cc8f4bd689403196953d803233b5016e248221990725bf1fd1b0b909fe918955"
+    },
+    {
+      "source": "build/experiments/runs/246c244cbeac-b87fc324af80/result.json",
+      "copy": "runs/246c244cbeac-b87fc324af80/result.json",
+      "bytes": 1755,
+      "sha256": "2a6489bba57e43d68fdc8bf3d65d7afbb8cdae30f785560f73c471bf6a45e9b7"
+    },
+    {
+      "source": "build/experiments/runs/246c244cbeac-f5a15bbee41e/result.json",
+      "copy": "runs/246c244cbeac-f5a15bbee41e/result.json",
+      "bytes": 1452,
+      "sha256": "1fc75cf5df331b9c2aba95d0cb8e8edac86e0c3935534f0f35357a9b19a9d9f0"
+    },
+    {
+      "source": "build/experiments/runs/31d9966b2614-29203a09e413/result.json",
+      "copy": "runs/31d9966b2614-29203a09e413/result.json",
+      "bytes": 2142,
+      "sha256": "3fe40a0f62a39656dbdf0a95522b5fa6a7eb1e8000fcf24132d561b19fed4cc8"
+    },
+    {
+      "source": "build/experiments/runs/31d9966b2614-5dea292570bf/result.json",
+      "copy": "runs/31d9966b2614-5dea292570bf/result.json",
+      "bytes": 4129,
+      "sha256": "91d38f8534fc9bd0a3ecee386e3bfaf9ee8b3c0c791e4a0e89bf3e05e643d5f8"
+    },
+    {
+      "source": "build/experiments/runs/410115b594b1-2561150e0d1d/result.json",
+      "copy": "runs/410115b594b1-2561150e0d1d/result.json",
+      "bytes": 1057,
+      "sha256": "e4b37836faada8a6a07670510ceaa35cfa1343791c1136cada9ee4e14a483aca"
+    },
+    {
+      "source": "build/experiments/runs/4f836c5b3e6c-2447128dd710/result.json",
+      "copy": "runs/4f836c5b3e6c-2447128dd710/result.json",
+      "bytes": 2181,
+      "sha256": "ffa8dd9a78b1dec8791e3e8d19eef7999bf8f9dcc1041c7a84222e9ca039b825"
+    },
+    {
+      "source": "build/experiments/runs/4f836c5b3e6c-3a934ee08209/result.json",
+      "copy": "runs/4f836c5b3e6c-3a934ee08209/result.json",
+      "bytes": 907,
+      "sha256": "3dd532bcc23f55568030342061f05d4d409390570e545aee16161d6bcead50a9"
+    },
+    {
+      "source": "build/experiments/runs/4f836c5b3e6c-76f7597418a2/result.json",
+      "copy": "runs/4f836c5b3e6c-76f7597418a2/result.json",
+      "bytes": 1109,
+      "sha256": "f1353ec55cf4a914f0cb1780a1dd7300ff826a2cce22b7c8c7368e98ba485143"
+    },
+    {
+      "source": "build/experiments/runs/4f836c5b3e6c-e26490735ffc/result.json",
+      "copy": "runs/4f836c5b3e6c-e26490735ffc/result.json",
+      "bytes": 1725,
+      "sha256": "fbcc71c246eaf7c8cd07f2dea49d03df487490c4835536eb6baf42591ee6a0d8"
+    },
+    {
+      "source": "build/experiments/runs/6ed28d632fc1-40f371baebef/result.json",
+      "copy": "runs/6ed28d632fc1-40f371baebef/result.json",
+      "bytes": 1441,
+      "sha256": "842eb2ab4de0113f2ba9f0a003cbbf9884b57cd325abe0866ce6db33555ad2b0"
+    },
+    {
+      "source": "build/experiments/runs/7825dd2f9db9-8888ea2685b8/result.json",
+      "copy": "runs/7825dd2f9db9-8888ea2685b8/result.json",
+      "bytes": 2182,
+      "sha256": "838f25c0c77b5f5d2ec7f3cdeb33e07845dfa5e02d22993ed0642e5fb1738197"
+    },
+    {
+      "source": "build/experiments/runs/7825dd2f9db9-8eb167311f5b/result.json",
+      "copy": "runs/7825dd2f9db9-8eb167311f5b/result.json",
+      "bytes": 1455,
+      "sha256": "bbdd817769bcd82f05723cb62f6ce06b97e3dc86672a42ddcca12e70809617e4"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-2731c4eab380/result.json",
+      "copy": "runs/7ebde5cec555-2731c4eab380/result.json",
+      "bytes": 1747,
+      "sha256": "aacaf37dc7d35154271bcc642c2881230eeaec358b3c341f0e24b5241b0c9edb"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-51f0bc864dc3/result.json",
+      "copy": "runs/7ebde5cec555-51f0bc864dc3/result.json",
+      "bytes": 1765,
+      "sha256": "79e04dd465217f830a0e97fe18c28312d24209fa33a6b623b586afc373fcb100"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-59b382078698/result.json",
+      "copy": "runs/7ebde5cec555-59b382078698/result.json",
+      "bytes": 1757,
+      "sha256": "ce2574249da40fc0379552b44d6a607e579e0f38fd4f59c8abbd5dc3dd73a66a"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-925d12c67dca/result.json",
+      "copy": "runs/7ebde5cec555-925d12c67dca/result.json",
+      "bytes": 1763,
+      "sha256": "242753b870efbb85d9297ff494656a115493776b2ec9c7f1d7fc8ab64108ffa3"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-b3656215b233/result.json",
+      "copy": "runs/7ebde5cec555-b3656215b233/result.json",
+      "bytes": 2310,
+      "sha256": "b19beb5f4f065020265742b73c353e2430a958900e41961f3494541462bdfeb8"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-e811a35c1f2d/final-timing-audit.json",
+      "copy": "runs/7ebde5cec555-e811a35c1f2d/final-timing-audit.json",
+      "bytes": 3891,
+      "sha256": "93a41a6f571989526674e31a10872115785cd7d8d799eecfeea90cd81bdca3db"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-e811a35c1f2d/result.json",
+      "copy": "runs/7ebde5cec555-e811a35c1f2d/result.json",
+      "bytes": 4040,
+      "sha256": "f7b801c6878f5273680d5e5c254245a21e3ce06dbef35ded46309d558f7793c9"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-ed29499a915c/result.json",
+      "copy": "runs/7ebde5cec555-ed29499a915c/result.json",
+      "bytes": 1749,
+      "sha256": "9715e08905c35edf98e2808fc0f01c44a1e09bdb15d7e0788455fac39b8b1c44"
+    },
+    {
+      "source": "build/experiments/runs/7ebde5cec555-efc8d13d6306/result.json",
+      "copy": "runs/7ebde5cec555-efc8d13d6306/result.json",
+      "bytes": 1757,
+      "sha256": "4ee66c2b727b38ae129314e4e924d45e9030fe4043e3121ca7bba8db8768d8d6"
+    },
+    {
+      "source": "build/experiments/runs/847766b991d3-63116fd53ae8/result.json",
+      "copy": "runs/847766b991d3-63116fd53ae8/result.json",
+      "bytes": 1184,
+      "sha256": "842d95e7350e2c3aaa8ce9f3d76b178b30816bc238ac4aa78633f0cb414b6588"
+    },
+    {
+      "source": "build/experiments/runs/847766b991d3-c48fdd247ae2/result.json",
+      "copy": "runs/847766b991d3-c48fdd247ae2/result.json",
+      "bytes": 789,
+      "sha256": "1929638d0c908ee11e5f34b585f6f09c1d4ea906bfd8bcedafc1701fdd57f715"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-0d11820a05ce/result.json",
+      "copy": "runs/8b2424d1772d-0d11820a05ce/result.json",
+      "bytes": 4026,
+      "sha256": "008f1bc763b3ee86978bc42efc50868c413e44e7a75726824b64d52b9cbf53bc"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-123e2f49b13f/result.json",
+      "copy": "runs/8b2424d1772d-123e2f49b13f/result.json",
+      "bytes": 3660,
+      "sha256": "16c14ac69be772fe661a71444041eb2164e125f733647bb7be502aea35b0dff7"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-2f8d95529e52/result.json",
+      "copy": "runs/8b2424d1772d-2f8d95529e52/result.json",
+      "bytes": 3660,
+      "sha256": "d2f926f6119a8cdbe0743bc7ef3a18b80ed9b53f029c484094a95cb9c9957d26"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-3c5858075043/result.json",
+      "copy": "runs/8b2424d1772d-3c5858075043/result.json",
+      "bytes": 4026,
+      "sha256": "99595bafe6cbcc919c5f19309a96b2111e2ac54a898e57e75b21d8b04baed7eb"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-4b86b7212906/result.json",
+      "copy": "runs/8b2424d1772d-4b86b7212906/result.json",
+      "bytes": 3576,
+      "sha256": "5a16e97ef73319425421833283d398d425da03512efc636725753619511e9d57"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-838eea57daf9/result.json",
+      "copy": "runs/8b2424d1772d-838eea57daf9/result.json",
+      "bytes": 1334,
+      "sha256": "b59464b5715fde681e305cc88c891dd96028a07cbd3f65d74a98e0f7dffeb000"
+    },
+    {
+      "source": "build/experiments/runs/8b2424d1772d-b65f8315269b/result.json",
+      "copy": "runs/8b2424d1772d-b65f8315269b/result.json",
+      "bytes": 1354,
+      "sha256": "54d3acb81757ea24fca91d4449de4dfcef6af8f6d90cf267136cd9b05e6e61c8"
+    },
+    {
+      "source": "build/experiments/runs/8f952addec6f-65a14196299d/result.json",
+      "copy": "runs/8f952addec6f-65a14196299d/result.json",
+      "bytes": 1721,
+      "sha256": "e0f6c175b5bbaabcdc162ab8687f6a018c8b0cbd875dc59f530c1f476026d565"
+    },
+    {
+      "source": "build/experiments/runs/8f952addec6f-a4a296a37d95/result.json",
+      "copy": "runs/8f952addec6f-a4a296a37d95/result.json",
+      "bytes": 2177,
+      "sha256": "a0886f952ec19771ee9cd3a7439945fb07664dac9103bfa34cb9c58511b14f5e"
+    },
+    {
+      "source": "build/experiments/runs/8f952addec6f-e131c4ab21e1/result.json",
+      "copy": "runs/8f952addec6f-e131c4ab21e1/result.json",
+      "bytes": 1105,
+      "sha256": "297608a4b2bfde74ec1e97a517b9b93757aefb8d948e34269d4c81aa853f957b"
+    },
+    {
+      "source": "build/experiments/runs/ad9aadc152a9-66c43f5c1658/result.json",
+      "copy": "runs/ad9aadc152a9-66c43f5c1658/result.json",
+      "bytes": 1401,
+      "sha256": "35fd7701c3fb178a3ae334a2f6a38e5ade613590f087e531367068dd6b2dea62"
+    },
+    {
+      "source": "build/experiments/runs/ad9aadc152a9-ed0920a7f0c1/result.json",
+      "copy": "runs/ad9aadc152a9-ed0920a7f0c1/result.json",
+      "bytes": 1581,
+      "sha256": "6a00983b231425e6891ec8670cf22a74bf5a19fe1342242b8d0ad52371f4b66a"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-0c84b3f2e8f4/result.json",
+      "copy": "runs/b32aa9141c69-0c84b3f2e8f4/result.json",
+      "bytes": 1385,
+      "sha256": "914ce2fded4cd012bce82bdc28f337c8ef9b64f58746fb9f04e90a5e35495436"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-205728210eb8/result.json",
+      "copy": "runs/b32aa9141c69-205728210eb8/result.json",
+      "bytes": 1376,
+      "sha256": "37145a670237a0bb667aa299ab5b7c176a957e5464bc52e4550dbdacd9972802"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-6af96b90d257/result.json",
+      "copy": "runs/b32aa9141c69-6af96b90d257/result.json",
+      "bytes": 1377,
+      "sha256": "bdb2b47515c1289f6b1df9197e166a32899aa3965c6f4d18412e4d8c69e96be8"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-8ab9a1c88db9/result.json",
+      "copy": "runs/b32aa9141c69-8ab9a1c88db9/result.json",
+      "bytes": 1377,
+      "sha256": "d1f1966b103f0b5f1f589dc2116b561e838ca78d946f6409dfde051c6cbde907"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-b6d08c7228df/result.json",
+      "copy": "runs/b32aa9141c69-b6d08c7228df/result.json",
+      "bytes": 1405,
+      "sha256": "72c8a0566e8de07590f285a6db059973b74987a4c044b7a76fbb386f779d063e"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-e40122a30bfc/result.json",
+      "copy": "runs/b32aa9141c69-e40122a30bfc/result.json",
+      "bytes": 1357,
+      "sha256": "60fd6b6f78c6d6d852b09df829e6b198e9366a2e20e90b6ee5e3e93c1405d9a4"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-e5d2879d63ec/result.json",
+      "copy": "runs/b32aa9141c69-e5d2879d63ec/result.json",
+      "bytes": 1567,
+      "sha256": "e0d75c0508821ec8f0c795694d9415f125cfb2d17439440e15b74aac1bc7d2ff"
+    },
+    {
+      "source": "build/experiments/runs/b32aa9141c69-fa7fa29f819d/result.json",
+      "copy": "runs/b32aa9141c69-fa7fa29f819d/result.json",
+      "bytes": 1277,
+      "sha256": "4ae1de7163e0e773e6cdcd1eeabd0bc51ac8499c3a56d5b0f698e36eea41ad28"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-06e6284a1720/result.json",
+      "copy": "runs/b3fdd5a8fa31-06e6284a1720/result.json",
+      "bytes": 1575,
+      "sha256": "3adec82e0f7fd225e3fdcbbcad6520edfb757ce7aab7fef6e7724f0460e17161"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-350791157809/result.json",
+      "copy": "runs/b3fdd5a8fa31-350791157809/result.json",
+      "bytes": 2102,
+      "sha256": "9d27712bafe0506cd652b97e9120f3c1404e2c9500b1d3a2cbbf6f871b94cce5"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-497df9e5ae0c/result.json",
+      "copy": "runs/b3fdd5a8fa31-497df9e5ae0c/result.json",
+      "bytes": 2117,
+      "sha256": "2a6efe065cb2ca204aa469ea9b218af7a58252a5680b681de76d7fadccc95f1f"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-5eb25c7d5662/result.json",
+      "copy": "runs/b3fdd5a8fa31-5eb25c7d5662/result.json",
+      "bytes": 2111,
+      "sha256": "a184fe22bf4819d02379af6cb1a418b3f1bae1423b0a9095754e88d25ffe6cbd"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-6b48e2724103/result.json",
+      "copy": "runs/b3fdd5a8fa31-6b48e2724103/result.json",
+      "bytes": 2116,
+      "sha256": "ed43de77fa7b63f4a0c5fbafbdc1c4e698f7abb1bccdc7a62252cf636c25c3f9"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-7b73e3ee2ca8/result.json",
+      "copy": "runs/b3fdd5a8fa31-7b73e3ee2ca8/result.json",
+      "bytes": 1366,
+      "sha256": "c3fb14e1ef90f07824d6e3322c50a4ce6dcd942ec16a847485774e2139e4d99b"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-a1822f8ccbbe/result.json",
+      "copy": "runs/b3fdd5a8fa31-a1822f8ccbbe/result.json",
+      "bytes": 1407,
+      "sha256": "10f24168491031c179312a486855f685187537a0356fdee9afec8e7b8febd324"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-af3b9db59426/result.json",
+      "copy": "runs/b3fdd5a8fa31-af3b9db59426/result.json",
+      "bytes": 3979,
+      "sha256": "2d14f22ff812a43bb7755e6b411073e5b601cddcaa7c8c36a266ee1ec192a60c"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-cc80ca45baa6/result.json",
+      "copy": "runs/b3fdd5a8fa31-cc80ca45baa6/result.json",
+      "bytes": 2104,
+      "sha256": "abfdcf8a6bb117a1b017668c4d73f3d5b14030468a75121baec16b02e76a18b8"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-cf957b8fb895/result.json",
+      "copy": "runs/b3fdd5a8fa31-cf957b8fb895/result.json",
+      "bytes": 2111,
+      "sha256": "6d1b69a60c95e3bdec070a84ab86a3ba7eedb43aa8465454d94422bea71c9264"
+    },
+    {
+      "source": "build/experiments/runs/b3fdd5a8fa31-efaad4ecbf05/result.json",
+      "copy": "runs/b3fdd5a8fa31-efaad4ecbf05/result.json",
+      "bytes": 1395,
+      "sha256": "683aed353ba81d05361ec37ee6296095324a66e3f60ad965d36b0fbb49c93697"
+    },
+    {
+      "source": "build/experiments/runs/c1c485de7289-54bea73668a9/result.json",
+      "copy": "runs/c1c485de7289-54bea73668a9/result.json",
+      "bytes": 2131,
+      "sha256": "c74486ed3fca4b6f231f3201af115077bc42812c6954469cd2ccc99956478f5e"
+    },
+    {
+      "source": "build/experiments/runs/c1c485de7289-679940ae8188/result.json",
+      "copy": "runs/c1c485de7289-679940ae8188/result.json",
+      "bytes": 904,
+      "sha256": "2b8400899897c8dc3379a3136b62507afbe74fc32e621c893d6c3eb26b074a45"
+    },
+    {
+      "source": "build/experiments/runs/c1c485de7289-7de81c983449/result.json",
+      "copy": "runs/c1c485de7289-7de81c983449/result.json",
+      "bytes": 2261,
+      "sha256": "112584a687117f63ef81f765033576ad7d6d7375b171699920e93c43714ebecd"
+    },
+    {
+      "source": "build/experiments/runs/ceb45b71e8b4-d0f829710470/result.json",
+      "copy": "runs/ceb45b71e8b4-d0f829710470/result.json",
+      "bytes": 1440,
+      "sha256": "9918f06e251294d3a2727d188642ea32d603b27d9b6237fc425af9b6b57f8398"
+    },
+    {
+      "source": "build/experiments/runs/ceb45b71e8b4-f3f6adb64e1a/result.json",
+      "copy": "runs/ceb45b71e8b4-f3f6adb64e1a/result.json",
+      "bytes": 887,
+      "sha256": "dabbd94ca10b01765e3456715134550f508bea7fee4468e9522ee37b54486717"
+    },
+    {
+      "source": "build/experiments/runs/cefb9b04354d-967faaf82030/result.json",
+      "copy": "runs/cefb9b04354d-967faaf82030/result.json",
+      "bytes": 1581,
+      "sha256": "a9e7f2cecd17aecb42ed0acc7247c9dccb80efba9e266f15ed319100ed9d24af"
+    },
+    {
+      "source": "build/experiments/runs/cefb9b04354d-ad57775a3c67/result.json",
+      "copy": "runs/cefb9b04354d-ad57775a3c67/result.json",
+      "bytes": 1401,
+      "sha256": "34415499f077ccc2efc4ece967b1ab59d2cff7da8f08de355039f90fa34dddae"
+    },
+    {
+      "source": "build/experiments/runs/d76550884dd8-85f1ffb42c35/result.json",
+      "copy": "runs/d76550884dd8-85f1ffb42c35/result.json",
+      "bytes": 1453,
+      "sha256": "80f3b6243c9bdb40703dcd23e2a73c5cf529e203456e7d6a9c957cb8463a8412"
+    },
+    {
+      "source": "build/experiments/runs/e360da0c62dc-8b8cfd771b18/result.json",
+      "copy": "runs/e360da0c62dc-8b8cfd771b18/result.json",
+      "bytes": 1394,
+      "sha256": "d0f5fcb7ef0315d97e45e2dea470b6d43ac839a77b94eae6be1a356789d4a0c3"
+    },
+    {
+      "source": "build/experiments/runs/e360da0c62dc-d1ec44d08f27/result.json",
+      "copy": "runs/e360da0c62dc-d1ec44d08f27/result.json",
+      "bytes": 1576,
+      "sha256": "f6242fd6c8a941aca367c012141b399bb7c3df4438fd73a915fef7b4313531bd"
+    },
+    {
+      "source": "build/experiments/runs/e360da0c62dc-e3c4304ba44c/result.json",
+      "copy": "runs/e360da0c62dc-e3c4304ba44c/result.json",
+      "bytes": 1407,
+      "sha256": "20eff95a8c4ac64c9e4ee5147677f1b1d1f0db4d29d3de9c95e530a020a446b5"
+    },
+    {
+      "source": "build/experiments/runs/e55522ce01ea-466a3a085ba0/result.json",
+      "copy": "runs/e55522ce01ea-466a3a085ba0/result.json",
+      "bytes": 1325,
+      "sha256": "6bf73ba90f27b272086a1a16a4e7b5f4e47f0f56075e074115182e6d5a5c67f6"
+    },
+    {
+      "source": "build/experiments/runs/e55522ce01ea-a0d52a83dac6/result.json",
+      "copy": "runs/e55522ce01ea-a0d52a83dac6/result.json",
+      "bytes": 2081,
+      "sha256": "2bc64da9af951927aa5c4859584609f02b61262be9a5bad6211dd5500a7b46db"
+    },
+    {
+      "source": "build/experiments/runs/e55522ce01ea-ca84c30571cf/result.json",
+      "copy": "runs/e55522ce01ea-ca84c30571cf/result.json",
+      "bytes": 2081,
+      "sha256": "35db31ce60e8dfd19e8d46865498a50272eb148b8e38253a9d5170961ef6782d"
+    },
+    {
+      "source": "build/experiments/runs/e55522ce01ea-cb8d6240f564/result.json",
+      "copy": "runs/e55522ce01ea-cb8d6240f564/result.json",
+      "bytes": 1641,
+      "sha256": "f2a7edbc6211c43f36d22fa790c333c0cbee9b50619b43c1f3fac6d78923b3f7"
+    },
+    {
+      "source": "build/experiments/runs/f07fc47422ee-ee8e729f5131/result.json",
+      "copy": "runs/f07fc47422ee-ee8e729f5131/result.json",
+      "bytes": 1457,
+      "sha256": "9245790af8d4a66caf2d1e83371c4b18e8bb3b0b18e42c361bcf8a8d359d3127"
+    },
+    {
+      "source": "build/experiments/runs/f91a5e108ca5-53b1f547f273/result.json",
+      "copy": "runs/f91a5e108ca5-53b1f547f273/result.json",
+      "bytes": 2007,
+      "sha256": "6a95dcd0ac260df6e3c61fb81edfa0c5ec79cba300736522bb5180632255fded"
+    },
+    {
+      "source": "build/experiments/runs/f91a5e108ca5-717c71a48262/acceptance-ps4-result.json",
+      "copy": "runs/f91a5e108ca5-717c71a48262/acceptance-ps4-result.json",
+      "bytes": 692,
+      "sha256": "9c4db6e1d606d91ad198e23c01fdd1675509410431fd5c24015639e4dbcebcef"
+    },
+    {
+      "source": "build/experiments/runs/f91a5e108ca5-717c71a48262/result.json",
+      "copy": "runs/f91a5e108ca5-717c71a48262/result.json",
+      "bytes": 2496,
+      "sha256": "04e6eb961044750a47258bd3e02a28915f1e971dc1342d55afc98e34c8a16f6a"
+    },
+    {
+      "source": "build/experiments/runs/fa31771aafbe-3b5aba2ebc92/result.json",
+      "copy": "runs/fa31771aafbe-3b5aba2ebc92/result.json",
+      "bytes": 2170,
+      "sha256": "9e0d3e0aaa4d2cbbc1cbe257979fe0fbfeda9a2994a0cfc8a2ae25d97ce64ebc"
+    },
+    {
+      "source": "build/experiments/runs/fa31771aafbe-775ba388d66a/result.json",
+      "copy": "runs/fa31771aafbe-775ba388d66a/result.json",
+      "bytes": 1710,
+      "sha256": "6c3180f8a5dbff920f4fa7559d2ace9cd1c7189c6c5f2c2fbefcb2236603f575"
+    },
+    {
+      "source": "build/experiments/runs/fa31771aafbe-8cb2f3246f9c/result.json",
+      "copy": "runs/fa31771aafbe-8cb2f3246f9c/result.json",
+      "bytes": 1094,
+      "sha256": "cf30f71f413e124d257d54d80f93043a1d9c531949fe855a731ff689de2f68d0"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/all-corner-summary.json",
+      "copy": "soft-partition-screen/constraint-diagnostic/all-corner-summary.json",
+      "bytes": 2391,
+      "sha256": "687e35913b08e4cfe610e912d8ee5cdc5d874005b1487e95729adc61c7b1184d"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/max_ff_n40C_1v95.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/max_ff_n40C_1v95.log",
+      "bytes": 2484,
+      "sha256": "ccd6640ce5ec16641d842634de102db796fb7c3b6a0d4dac4a8b6223d401c03c"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/max_ff_n40C_1v95.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/max_ff_n40C_1v95.tcl",
+      "bytes": 1193,
+      "sha256": "af190387f01cc293a199beaf42a85b3e2035121d66a985670a02d80c3e6181be"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/max_tt_025C_1v80.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/max_tt_025C_1v80.log",
+      "bytes": 2990,
+      "sha256": "0f3bd70ace2f3f08adfa881811fcd68ced75933261de55285ed836d823ff901b"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/max_tt_025C_1v80.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/max_tt_025C_1v80.tcl",
+      "bytes": 1193,
+      "sha256": "89f81edeee7e2489e78dbbd1e060a7947be675d12554a3710a0c05d554f56a96"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_ff_n40C_1v95.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_ff_n40C_1v95.log",
+      "bytes": 2315,
+      "sha256": "d0a5c95f967433bd535b55ff0c3d7159668ba0609535c7ca933aad9fdd32e7f6"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_ff_n40C_1v95.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_ff_n40C_1v95.tcl",
+      "bytes": 1193,
+      "sha256": "738052037bc6ad19813ed750d834cbde1f1601fa9406daa297cb486003d39faa"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_ss_100C_1v60.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_ss_100C_1v60.log",
+      "bytes": 3748,
+      "sha256": "161fccf8494bc700c4892b1c89175234e67cbcdbee44111bf9512cb4f69e6653"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_ss_100C_1v60.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_ss_100C_1v60.tcl",
+      "bytes": 1193,
+      "sha256": "e444f6fb31c9dd158965ab72e548bb560086dfe08cdd4535018ddacf74c94c59"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_tt_025C_1v80.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_tt_025C_1v80.log",
+      "bytes": 2400,
+      "sha256": "12ca77a6df0d8562988288a1ee1377a7377502105e842c51b25e81dcba369eac"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/min_tt_025C_1v80.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/min_tt_025C_1v80.tcl",
+      "bytes": 1193,
+      "sha256": "ca0d02dbcd384b849bc8d68e394a5dcdcc4b9a96ae378d7b44f18bfed5876185"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_ff_n40C_1v95.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_ff_n40C_1v95.log",
+      "bytes": 2315,
+      "sha256": "ffed3bf3433830555978ff89fc75a23fb2d4c5fb27a58c776aa285e56c698fd9"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_ff_n40C_1v95.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_ff_n40C_1v95.tcl",
+      "bytes": 1193,
+      "sha256": "52b68c7c771b54c8b6d11693a49f36a27bf01fd2ab1fd339713bfccb4ca4828d"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_ss_100C_1v60.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_ss_100C_1v60.log",
+      "bytes": 3748,
+      "sha256": "594b542100cf7a384cd4db4101ce73e9c746c76f5df48da606b7f11fcf0ac4c1"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_ss_100C_1v60.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_ss_100C_1v60.tcl",
+      "bytes": 1193,
+      "sha256": "f63d11f60e798e80acdd8a17f7e06c24ac44a0b68b01deed8d74c61298cf925c"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_tt_025C_1v80.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_tt_025C_1v80.log",
+      "bytes": 2652,
+      "sha256": "9bb9bc60e385ebd6252f0b0f9389f5c6dfd8f13532f7fa85d49df9649fcadb87"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/nom_tt_025C_1v80.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/nom_tt_025C_1v80.tcl",
+      "bytes": 1193,
+      "sha256": "53d0f923a4ae2571559aed4caa4ac6d2173aeb5ba09e1ea1947ae91320069d3e"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/slew-limits.log",
+      "copy": "soft-partition-screen/constraint-diagnostic/slew-limits.log",
+      "bytes": 3832,
+      "sha256": "93bf91d0c3cd0a300ef20c54f2fb8ff156dcf83a124c54de2b9786d911bb6730"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/constraint-diagnostic/slew-limits.tcl",
+      "copy": "soft-partition-screen/constraint-diagnostic/slew-limits.tcl",
+      "bytes": 1193,
+      "sha256": "97278ce1ddf1c73a2e3dcdab5559a05568a0b93b59801bf1ea23322e3c3aebfe"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/density-only-55/config.json",
+      "copy": "soft-partition-screen/density-only-55/config.json",
+      "bytes": 2997,
+      "sha256": "d7b3b35453274c7dff9f880872f5364a18f3f52ee21a5af0e22643c9ee80bb92"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/density-only-55/initial-state.json",
+      "copy": "soft-partition-screen/density-only-55/initial-state.json",
+      "bytes": 1641,
+      "sha256": "4e1b99328de9dc68b37a6706a76a1e379a10da8e18ed0626a3a28075721703e6"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/density-only-55/result.json",
+      "copy": "soft-partition-screen/density-only-55/result.json",
+      "bytes": 3904,
+      "sha256": "e094efa5328a50aea856b2be7831f2e5ccae0b616d510fd18692a6bbee0e6fe8"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-20/config.json",
+      "copy": "soft-partition-screen/electrical-extracted-20/config.json",
+      "bytes": 3541,
+      "sha256": "38ed9b03023a5ee3f4c2bbb95af177b331fcc291a56c15b2a8c80561d2b0af22"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-20/initial-state.json",
+      "copy": "soft-partition-screen/electrical-extracted-20/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-20/result.json",
+      "copy": "soft-partition-screen/electrical-extracted-20/result.json",
+      "bytes": 7426,
+      "sha256": "a785b19287af7a3a3c90cf88f8bedfd64f68ac515a0fde3151d0e67160e21ece"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/config.json",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/config.json",
+      "bytes": 3554,
+      "sha256": "a5932734bfec950a26b455095cde2e40631e5071b01c94a095c0450868523311"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/initial-state.json",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/result.json",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/result.json",
+      "bytes": 7735,
+      "sha256": "1fe60a400a3c8408c2a06cfbcd02cd09bce46b77a5761ab1670c0c6ba613ad41"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/24-magic-drc/reports/drc.magic.rpt",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/24-magic-drc/reports/drc.magic.rpt",
+      "bytes": 114,
+      "sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/30-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/30-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 223953,
+      "sha256": "fe16c53f717e1c1285aef859e631227a6238500c1ecc4e9c3a7f8bf02524bdc6"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/final/metrics.json",
+      "bytes": 17425,
+      "sha256": "865f6f27edac69c8ae72be872f9833f2e67fbb9a6c83459d28983ebdc32527fa"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted/config.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted/config.json",
+      "bytes": 3501,
+      "sha256": "bd64fc4367561735f3f3f44c265e46be9f5307342fc4325622b1707f94785482"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted/initial-state.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted/result.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted/result.json",
+      "bytes": 7334,
+      "sha256": "7c0e5737f5069ed36119ebd1a5482700241ca4b00e9e5f5acf689025a661c1e3"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/config.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/config.json",
+      "bytes": 3505,
+      "sha256": "7488b125262079ff24a33b43cebfcc7545c8478ed5198e71e19aef0cbdfa4c34"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/initial-state.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/result.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/result.json",
+      "bytes": 2265,
+      "sha256": "7ba53bb068406c9f5252a511a5d7c4543525b93d178c5003feaca633feac1659"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v2/config.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v2/config.json",
+      "bytes": 3504,
+      "sha256": "2747b54797fad0654d930e5e09088ca30f89eb30af858e5edf9eef0b764f0949"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v2/initial-state.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v2/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v2/result.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v2/result.json",
+      "bytes": 7463,
+      "sha256": "b82d29089cd8d229cbd804fd6e30c9980a6a8de1b25573cb0579f820e1517cbb"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/config.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/config.json",
+      "bytes": 3504,
+      "sha256": "84f8bf61aad94928d13abcee6ecd666f1e32548f5a8d45a29b054d0f696ef9a7"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/initial-state.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/initial-state.json",
+      "bytes": 1727,
+      "sha256": "d942d48f3bd8a9bbe8b32dd1881b0bd2b47e20ca6a1e6e6551b7ce7351dc787a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/result.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/result.json",
+      "bytes": 7650,
+      "sha256": "b42d3f5c577f642e1124b82a05898a87972257f789db2ce14ca7967a28df99eb"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/24-magic-drc/reports/drc.magic.rpt",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/24-magic-drc/reports/drc.magic.rpt",
+      "bytes": 114,
+      "sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/30-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/30-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 208526,
+      "sha256": "43060fdccad357a7310f4e9e8762e4e8ca1c64a8256c94044d32d56ab6901d51"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/final/metrics.json",
+      "bytes": 17151,
+      "sha256": "b238a38bc2f620fcf4678fa8eb5ddd48301cb96fd87a95e06936832f9812b07a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-20/config.json",
+      "copy": "soft-partition-screen/electrical-repair-20/config.json",
+      "bytes": 3246,
+      "sha256": "b101f7488af08cdfc1bf6c81ef0f1c4066a4738e8512465551c81c5e718e8ab6"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-20/result.json",
+      "copy": "soft-partition-screen/electrical-repair-20/result.json",
+      "bytes": 7107,
+      "sha256": "ddec83875d247ac84ad25b3c7dc2dbc3ce0867c5bd411c1f2959f4c6255a1a64"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-20/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "copy": "soft-partition-screen/electrical-repair-20/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "bytes": 114,
+      "sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-20/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "soft-partition-screen/electrical-repair-20/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 210024,
+      "sha256": "d12087a945dfed0f37e41b181b4ec2de4b08618470a57b09a8904611f705858c"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-20/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/electrical-repair-20/runs/wokwi/final/metrics.json",
+      "bytes": 18279,
+      "sha256": "1c75c2dd3f392d6dec389110396229ac725e66e5cb5bcd61dac1459971417f56"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-35/config.json",
+      "copy": "soft-partition-screen/electrical-repair-35/config.json",
+      "bytes": 3246,
+      "sha256": "57903deb0d2cd742fbae0a29f1a3fc539788cfcdc66588f9bd36296a8dbed8e6"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-35/result.json",
+      "copy": "soft-partition-screen/electrical-repair-35/result.json",
+      "bytes": 7104,
+      "sha256": "8c0281dea847e64c2485a33a71e3705e5c7a422ec040afe150702d1064eb919a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-35/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "copy": "soft-partition-screen/electrical-repair-35/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "bytes": 114,
+      "sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-35/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "soft-partition-screen/electrical-repair-35/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 211639,
+      "sha256": "bc863852ff703c9f0b359c32071c15c7c08e86bfac8ff435e5ea27717b93c96b"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-repair-35/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/electrical-repair-35/runs/wokwi/final/metrics.json",
+      "bytes": 18247,
+      "sha256": "3d6dd2d39848b5b1678bec770194f061f8d436ce2cea8925bf5d17eec6e5d625"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-grt-feedback-60/config.json",
+      "copy": "soft-partition-screen/four-part-grt-feedback-60/config.json",
+      "bytes": 3188,
+      "sha256": "05afbfc0c88975f18cea8c9a98acdd0ac80768f3bc534616bb0858178d37a696"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-grt-feedback-60/result.json",
+      "copy": "soft-partition-screen/four-part-grt-feedback-60/result.json",
+      "bytes": 3813,
+      "sha256": "eb7e40ac46f2a55db05996cb5fa61fbba073750e58ac243f7539dc0249e02a16"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/config.json",
+      "copy": "soft-partition-screen/four-part-qualification/config.json",
+      "bytes": 3092,
+      "sha256": "375587bdd7c6dfd89e39278fad1ee385af3322099b50cd50c9662e203b778e05"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/result.json",
+      "copy": "soft-partition-screen/four-part-qualification/result.json",
+      "bytes": 6821,
+      "sha256": "3604d02929fdf5705abb759cbb9ba803ae4524cd4132f45682bb126e4116be61"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/16-openroad-stapostpnr/max_ss_100C_1v60/checks.rpt",
+      "copy": "soft-partition-screen/four-part-qualification/runs/wokwi/16-openroad-stapostpnr/max_ss_100C_1v60/checks.rpt",
+      "bytes": 326078,
+      "sha256": "46235394559be12c99302435751171fdb05754d711da577f98467691776aefb5"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "copy": "soft-partition-screen/four-part-qualification/runs/wokwi/23-magic-drc/reports/drc.magic.rpt",
+      "bytes": 114,
+      "sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "soft-partition-screen/four-part-qualification/runs/wokwi/29-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 205117,
+      "sha256": "7e9da72064f67d2629391de810827ef7e2d52a7bef13169186d157e89325978c"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/four-part-qualification/runs/wokwi/final/metrics.json",
+      "bytes": 17657,
+      "sha256": "41c310496a22465523e52608097031ab7db345c92ebb984a0430b1a629777a64"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-seed-60/config.json",
+      "copy": "soft-partition-screen/four-part-seed-60/config.json",
+      "bytes": 2996,
+      "sha256": "bf761080976f65f479de4387ecb574431a9a6344b8b8f81b6ea454e122ca44bf"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-seed-60/initial-state.json",
+      "copy": "soft-partition-screen/four-part-seed-60/initial-state.json",
+      "bytes": 1573,
+      "sha256": "f33bde999c21c5c8a0686766fd471a3c38241b1eccb7eafdab63e1de81b56c12"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/four-part-seed-60/result.json",
+      "copy": "soft-partition-screen/four-part-seed-60/result.json",
+      "bytes": 3983,
+      "sha256": "ffa7a1c033b6748e68cca5db6fe85001115f3e23472729f765f81506bb18c240"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-inputs/eco.json",
+      "copy": "soft-partition-screen/library15-targeted-inputs/eco.json",
+      "bytes": 5132,
+      "sha256": "d4e26df60332979c66d399948183d7393c4e89f49efdb31d3dd44d2e7c808b4b"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-inputs/eco.tcl",
+      "copy": "soft-partition-screen/library15-targeted-inputs/eco.tcl",
+      "bytes": 4848,
+      "sha256": "8878931ac0d6dbb871d0dc159c7d1470a1c235fc16f775f9a4f483434d165351"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-v2-inputs/eco.tcl",
+      "copy": "soft-partition-screen/library15-targeted-v2-inputs/eco.tcl",
+      "bytes": 5034,
+      "sha256": "cdc32966792cec8de46d021cc154199a7c5362c463f2517be3e2b66efd348e4e"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-v3-inputs/connectivity-verification.json",
+      "copy": "soft-partition-screen/library15-targeted-v3-inputs/connectivity-verification.json",
+      "bytes": 250,
+      "sha256": "3478d8bb1b11b8c539a3b37c0ab1166dab0287ce6a6cce50c91934d820d029ad"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-v3-inputs/eco.tcl",
+      "copy": "soft-partition-screen/library15-targeted-v3-inputs/eco.tcl",
+      "bytes": 8906,
+      "sha256": "5f8b9dbd56b458d21ed28c7c99dffb21d5386d57a065b21b23889b9536aa6e7c"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-v3-inputs/verify-eco.py",
+      "copy": "soft-partition-screen/library15-targeted-v3-inputs/verify-eco.py",
+      "bytes": 2104,
+      "sha256": "c5c8edd72efe4e016098ed83dfeee70ecf20238d8ddd1b054f39b6eef47bf8c5"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/partition-probe.tcl",
+      "copy": "soft-partition-screen/partition-probe.tcl",
+      "bytes": 543,
+      "sha256": "9397b664edcbd217453b16e4d1857be10d2a04fafdcfd7ca00e09ee30679a6d3"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/partition.txt",
+      "copy": "soft-partition-screen/partition.txt",
+      "bytes": 232816,
+      "sha256": "2a31baf851f6f73894c3e2cdc6acb719723382b139988951413c7a55bf2f0984"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/seeded.odb.json",
+      "copy": "soft-partition-screen/seeded.odb.json",
+      "bytes": 1028,
+      "sha256": "519dafd7dc9451220af2f79610e5c87b738876702feadcc2e20108955460ce36"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "build/experiments/soft-partition-screen/density-only-55/screen.log",
+      "bytes": 163680,
+      "sha256": "dda6aec5e42e6e674479d6c94247463e10baf61addac2a0bd1ab47fa293f9269",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-extracted-20/worker.log",
+      "bytes": 302869,
+      "sha256": "bf06367bf9de10ae7a12bb0002a7665c799c1e228e8a9a324b4c70677ec124f9",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+      "bytes": 43170182,
+      "sha256": "6f62779d3780a4a4d088eff0f0f32b4767ea3183a12b2625069085c7e752aa37",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/runs/wokwi/final/odb/tt_um_rv32_linux_soc.odb",
+      "bytes": 43274440,
+      "sha256": "f1d02b1fb5b33224e049b1cbddf64c7ecd39bb6521ae5d76185f1668fb5c063d",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-extracted-fullroute-20/worker.log",
+      "bytes": 1276985,
+      "sha256": "6de98b49e5601864dbef8ecbda918dd35ae13514f22aa408aeb707fa54717ad8",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted/worker.log",
+      "bytes": 14852,
+      "sha256": "407953a25834e815d16bf4208e1acbb8256d767bb6043e385bf9ebf64e4f94bc",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted-v2/worker.log",
+      "bytes": 15014,
+      "sha256": "cfca7331329ab6d22cd39b68ee9e6d78a049dccd2b48d2fbefb0b597ccd364e7",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+      "bytes": 43809342,
+      "sha256": "d5043bae13b81301b3d4aafbbd08055eefc6f8276377670de02ceb9812c45d0d",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/runs/wokwi/final/odb/tt_um_rv32_linux_soc.odb",
+      "bytes": 43961743,
+      "sha256": "c985fabc4002e7f1f1f4b07c61f900d62f393f5c0398ea8ed6cd108fbd6574e4",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted-v3/worker.log",
+      "bytes": 1186448,
+      "sha256": "62477cb283e75b40f65af1f786ee374ba21fcfd7055e8fb6cb9f1a57e707474f",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-20/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+      "bytes": 43746738,
+      "sha256": "caeaf73d325a861ea8725bb7eeaf9846402b3c26a38acd1759d9e4567c046fe7",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-20/runs/wokwi/final/odb/tt_um_rv32_linux_soc.odb",
+      "bytes": 42932195,
+      "sha256": "d7d671ebe3c2dd585661bb41ef1cd3569c1643def3594e2cf450180883542e8c",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-20/worker.log",
+      "bytes": 1171821,
+      "sha256": "0c71128577d1d5f0729e5d8d5b4d9b664cb5002e36349f09ff6ec5d019c7ca69",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-35/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+      "bytes": 43853746,
+      "sha256": "2ee00d2f37775d4fdc9a36a0863f45beb42e70b88ebebca3cd0f1a75f828ef6e",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-35/runs/wokwi/final/odb/tt_um_rv32_linux_soc.odb",
+      "bytes": 42955557,
+      "sha256": "a6f7275bc13350379fd524e36496d556a05563c6ec07f25ff9f13636ce8b1dec",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-repair-35/worker.log",
+      "bytes": 1152431,
+      "sha256": "af0c04ba271237b2906932b2414baf5bfb3c2bc18d183a42de30397f524aff74",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/four-part-grt-feedback-60/worker.log",
+      "bytes": 32036,
+      "sha256": "6e69fa1184b50ff88df149716fc724f585f3464eb77ead69496dc11d70765e56",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+      "bytes": 43649680,
+      "sha256": "a09ee66c67925892dae5b1a424579c7f2e5f117c5fb0c7f3b777b03708fcb36c",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/final/odb/tt_um_rv32_linux_soc.odb",
+      "bytes": 42889887,
+      "sha256": "a948636981a9ee35898976c795d45e9a9b5fec5d5aa26b20deff270b9e1d09a3",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/four-part-qualification/worker.log",
+      "bytes": 892240,
+      "sha256": "4cf38acc530031d1e2d9afe9058d157cf616e157e8b7205db5444a3c88419de3",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/four-part-seed-60/screen.log",
+      "bytes": 128619,
+      "sha256": "7a292eeb2c9f5ac3f117eec9d9c2db7a3946a70da334622fe512d5040d2e168e",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/seeded.odb",
+      "bytes": 13525793,
+      "sha256": "921737fa3594528b14371c7aad03c0fd6d9f24dc46dddb1ed91e27391c052f87",
+      "storage": "outside_git; remote_backup_not_verified_by_this_snapshot"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+[
+  [
+    "nom_tt_025C_1v80",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=98 cap_violations=5",
+      "DIAGNOSTIC transition=1.0 slew_violations=20 cap_violations=5",
+      "DIAGNOSTIC transition=1.5 slew_violations=8 cap_violations=5"
+    ]
+  ],
+  [
+    "nom_ss_100C_1v60",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=2379 cap_violations=6",
+      "DIAGNOSTIC transition=1.0 slew_violations=491 cap_violations=6",
+      "DIAGNOSTIC transition=1.5 slew_violations=20 cap_violations=6"
+    ]
+  ],
+  [
+    "nom_ff_n40C_1v95",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=20 cap_violations=5",
+      "DIAGNOSTIC transition=1.0 slew_violations=8 cap_violations=5",
+      "DIAGNOSTIC transition=1.5 slew_violations=4 cap_violations=5"
+    ]
+  ],
+  [
+    "min_tt_025C_1v80",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=20 cap_violations=5",
+      "DIAGNOSTIC transition=1.0 slew_violations=17 cap_violations=5",
+      "DIAGNOSTIC transition=1.5 slew_violations=5 cap_violations=5"
+    ]
+  ],
+  [
+    "min_ss_100C_1v60",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=1547 cap_violations=6",
+      "DIAGNOSTIC transition=1.0 slew_violations=205 cap_violations=6",
+      "DIAGNOSTIC transition=1.5 slew_violations=20 cap_violations=6"
+    ]
+  ],
+  [
+    "min_ff_n40C_1v95",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=20 cap_violations=5",
+      "DIAGNOSTIC transition=1.0 slew_violations=8 cap_violations=5",
+      "DIAGNOSTIC transition=1.5 slew_violations=4 cap_violations=5"
+    ]
+  ],
+  [
+    "max_tt_025C_1v80",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=212 cap_violations=7",
+      "DIAGNOSTIC transition=1.0 slew_violations=20 cap_violations=7",
+      "DIAGNOSTIC transition=1.5 slew_violations=10 cap_violations=7"
+    ]
+  ],
+  [
+    "max_ff_n40C_1v95",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=20 cap_violations=6",
+      "DIAGNOSTIC transition=1.0 slew_violations=12 cap_violations=6",
+      "DIAGNOSTIC transition=1.5 slew_violations=5 cap_violations=6"
+    ]
+  ],
+  [
+    "max_ss_100C_1v60",
+    0,
+    [
+      "DIAGNOSTIC transition=0.75 slew_violations=3328 cap_violations=7",
+      "DIAGNOSTIC transition=1.0 slew_violations=765 cap_violations=7",
+      "DIAGNOSTIC transition=1.5 slew_violations=20 cap_violations=7"
+    ]
+  ]
+]

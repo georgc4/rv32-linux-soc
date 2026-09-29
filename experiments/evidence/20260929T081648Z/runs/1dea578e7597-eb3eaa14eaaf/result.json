@@ -1,0 +1,62 @@
+{
+  "commit": "1dea578e7597c4d0d2187b6d1644f0e26adfcc22",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-26T06:52:54.519950+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "1dea578e7597-eb3eaa14eaaf",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "four-bank core register file",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17129216271,
+      "ended_utc": "2026-09-26T08:05:01.940490+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "acceptance.log",
+      "returncode": 0,
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-26T06:59:57.776634+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "54-openroad-rcx",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-26T15:25:39.669077+00:00",
+      "gds_present": true,
+      "instance_area_um2": 245033,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 27.9614,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-26T14:52:12.637327+00:00",
+      "status": "failed",
+      "timing_stage": "43-openroad-stamidpnr-3",
+      "utilization": 0.569131
+    },
+    "synth": {
+      "ended_utc": "2026-09-26T06:53:06.596691+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 174185.808,
+      "mapped_cells": 17785,
+      "returncode": 0,
+      "started_utc": "2026-09-26T06:52:54.666193+00:00",
+      "status": "pass"
+    }
+  }
+}
