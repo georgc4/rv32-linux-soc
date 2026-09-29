@@ -1,0 +1,42 @@
+{
+  "commit": "e360da0c62dc093284aa8832d21ad298ffa11d21",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.05,
+    "hold_margin_ns": 0.1,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 0"
+  },
+  "created_utc": "2026-09-25T18:37:53.146791+00:00",
+  "flow_sha256": "680505c4d03f4f65e72d6dccbe05efc130b5d1ff21ffe4d35fc3df193e6b4a5e",
+  "id": "e360da0c62dc-d1ec44d08f27",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "TLB 2 + single core read port",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "ended_utc": "2026-09-25T20:43:40.615390+00:00",
+      "harness_sha256": "4778b5a23a041ce0d5b19ee23883c47b97db82dc47c592fc934d917057118426",
+      "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+      "log": "acceptance.log",
+      "returncode": 1,
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-25T18:38:16.886396+00:00",
+      "status": "failed"
+    },
+    "synth": {
+      "ended_utc": "2026-09-25T18:38:06.939933+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 171635.8624,
+      "mapped_cells": 17690,
+      "returncode": 0,
+      "started_utc": "2026-09-25T18:37:53.275735+00:00",
+      "status": "pass"
+    }
+  }
+}

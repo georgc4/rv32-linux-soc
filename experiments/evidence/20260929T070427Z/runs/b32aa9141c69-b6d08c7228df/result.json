@@ -1,0 +1,41 @@
+{
+  "commit": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-26T03:35:46.527908+00:00",
+  "flow_sha256": "c7c1d15dea64a7f77378c28369c0b44a97066919b39696ff2aa317cb10a7c2c7",
+  "id": "b32aa9141c69-b6d08c7228df",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "4-entry TLB, shared context",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "pnr": {
+      "area_stage": "54-openroad-rcx",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-26T04:06:31.425876+00:00",
+      "gds_present": true,
+      "instance_area_um2": 251993,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 0,
+      "setup_r2r_ws_ns": 24.1633,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-26T03:35:46.671691+00:00",
+      "status": "pass",
+      "timing_stage": "43-openroad-stamidpnr-3",
+      "utilization": 0.585298
+    }
+  }
+}

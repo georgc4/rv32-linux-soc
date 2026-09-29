@@ -1,0 +1,47 @@
+{
+  "acceptance": "pass",
+  "architecture": "amd64",
+  "collector_pid": 14198,
+  "ended_utc": "2026-09-28T13:07:55.693541+00:00",
+  "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+  "host": "ps4",
+  "image_id": "sha256:f91b21d75f79871f9ccf37451020b5d2f7b3236881a997ff709c561e8280a30f",
+  "remote_root": "/srv/ps4-data/rv32-locality/rootfs",
+  "returncode": 0,
+  "run": {
+    "commit": "f91a5e108ca57f257d740447d6e14c926b77360b",
+    "config": {
+      "abc_delay_ps": null,
+      "antenna_jumper_only": false,
+      "antenna_repair_iters": 3,
+      "clock_period_ns": 50.0,
+      "grt_hold_margin_ns": 0.0,
+      "hold_margin_ns": 0.05,
+      "physical_options": {
+        "cluster_profile": "none",
+        "corner_profile": "multicorner",
+        "max_cores": 4,
+        "post_grt_timing": false,
+        "timing_driven": true
+      },
+      "placement_density_pct": 60.0,
+      "synth_abc_area_use_nf": false,
+      "synth_strategy": "AREA 2",
+      "tile_shape": "5x4"
+    },
+    "flow_sha256": "34dafc5ba78beb2a92834c686e1a92f4f223e5d2163a19ec254d06e5dbca6c07",
+    "id": "f91a5e108ca5-717c71a48262",
+    "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+    "name": "registered legality in existing operand-read cycle",
+    "pdk_identity": {
+      "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+      "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+    }
+  },
+  "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+  "started_utc": "2026-09-28T03:03:56.701610+00:00",
+  "status": "finished",
+  "updated_utc": "2026-09-28T13:06:23.880357+00:00",
+  "via": "imac",
+  "worker_pid": 5252
+}

@@ -1,0 +1,15 @@
+{
+  "json_h": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/05-yosys-jsonheader/tt_um_rv32_linux_soc.h.json",
+  "nl": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v",
+  "odb": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/14-odb-cellfrequencytables/tt_um_rv32_linux_soc.odb",
+  "def": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/14-odb-cellfrequencytables/tt_um_rv32_linux_soc.def",
+  "sdc": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.sdc",
+  "pnl": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.pnl.v",
+  "vh": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-seed-60/runs/screen/02-odb-writeverilogheader/tt_um_rv32_linux_soc.vh",
+  "spef": {
+    "nom_*": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/15-openroad-rcx/nom/tt_um_rv32_linux_soc.nom.spef",
+    "min_*": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/15-openroad-rcx/min/tt_um_rv32_linux_soc.min.spef",
+    "max_*": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/15-openroad-rcx/max/tt_um_rv32_linux_soc.max.spef"
+  },
+  "metrics": {}
+}

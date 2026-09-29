@@ -1,0 +1,232 @@
+{
+  "source_odb": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/14-odb-cellfrequencytables/tt_um_rv32_linux_soc.odb",
+  "source_odb_sha256": "a948636981a9ee35898976c795d45e9a9b5fec5d5aa26b20deff270b9e1d09a3",
+  "tcl_sha256": "8878931ac0d6dbb871d0dc159c7d1470a1c235fc16f775f9a4f483434d165351",
+  "resized_drivers": 6,
+  "inserted_buffers": 17,
+  "edits": [
+    {
+      "resize": "_25583_",
+      "from": "sky130_fd_sc_hd__nor2_2",
+      "to": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "buffer": "eco_lib15_b4f70784d3_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_15176_/C1"
+      ],
+      "location_um": [
+        283.20833333333337,
+        83.88733333333333
+      ]
+    },
+    {
+      "buffer": "eco_lib15_b4f70784d3_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_b4f70784d3_2/A"
+      ],
+      "location_um": [
+        333.9096666666667,
+        90.05466666666666
+      ]
+    },
+    {
+      "resize": "_26497_",
+      "from": "sky130_fd_sc_hd__a211o_2",
+      "to": "sky130_fd_sc_hd__a211o_4"
+    },
+    {
+      "buffer": "eco_lib15_46eee729a7_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_26504_/A2"
+      ],
+      "location_um": [
+        355.19033333333334,
+        56.498333333333335
+      ]
+    },
+    {
+      "buffer": "eco_lib15_46eee729a7_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_46eee729a7_2/A"
+      ],
+      "location_um": [
+        284.64866666666666,
+        54.571666666666665
+      ]
+    },
+    {
+      "resize": "_26205_",
+      "from": "sky130_fd_sc_hd__or3_2",
+      "to": "sky130_fd_sc_hd__or3_4"
+    },
+    {
+      "buffer": "eco_lib15_c952639915_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_26214_/A2"
+      ],
+      "location_um": [
+        364.0996666666666,
+        53.03366666666666
+      ]
+    },
+    {
+      "buffer": "eco_lib15_c952639915_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_c952639915_2/A"
+      ],
+      "location_um": [
+        298.7873333333333,
+        50.25233333333333
+      ]
+    },
+    {
+      "resize": "_25685_",
+      "from": "sky130_fd_sc_hd__nor2_2",
+      "to": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "buffer": "eco_lib15_7473a2883a_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_15238_/B1"
+      ],
+      "location_um": [
+        253.687,
+        81.80733333333333
+      ]
+    },
+    {
+      "buffer": "eco_lib15_7473a2883a_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_7473a2883a_2/A"
+      ],
+      "location_um": [
+        314.089,
+        89.01466666666666
+      ]
+    },
+    {
+      "resize": "_26547_",
+      "from": "sky130_fd_sc_hd__or2_2",
+      "to": "sky130_fd_sc_hd__or2_4"
+    },
+    {
+      "buffer": "eco_lib15_0cc3dbbd89_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_15759_/B1_N"
+      ],
+      "location_um": [
+        177.98833333333334,
+        42.330999999999996
+      ]
+    },
+    {
+      "buffer": "eco_lib15_0cc3dbbd89_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_0cc3dbbd89_2/A"
+      ],
+      "location_um": [
+        236.39466666666667,
+        44.96
+      ]
+    },
+    {
+      "buffer": "eco_lib15_ae43b11cad_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_26548_/A2"
+      ],
+      "location_um": [
+        353.354,
+        55.593
+      ]
+    },
+    {
+      "buffer": "eco_lib15_6f3b2e8a5c_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_26570_/B1"
+      ],
+      "location_um": [
+        353.8805,
+        57.2145
+      ]
+    },
+    {
+      "resize": "_22420_",
+      "from": "sky130_fd_sc_hd__inv_2",
+      "to": "sky130_fd_sc_hd__inv_4"
+    },
+    {
+      "buffer": "eco_lib15_6331d0f588_3",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "_24896_/A2"
+      ],
+      "location_um": [
+        331.252,
+        63.74075
+      ]
+    },
+    {
+      "buffer": "eco_lib15_6331d0f588_2",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_6331d0f588_3/A"
+      ],
+      "location_um": [
+        407.82899999999995,
+        63.7615
+      ]
+    },
+    {
+      "buffer": "eco_lib15_6331d0f588_1",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "loads": [
+        "eco_lib15_6331d0f588_2/A"
+      ],
+      "location_um": [
+        484.40599999999995,
+        63.78225
+      ]
+    },
+    {
+      "buffer": "eco_lib15_clock_west",
+      "cell": "sky130_fd_sc_hd__clkbuf_16",
+      "loads": [
+        "clkbuf_3_0_0_clk/A",
+        "clkbuf_3_1_0_clk/A",
+        "clkbuf_3_2_0_clk/A",
+        "clkbuf_3_3_0_clk/A"
+      ],
+      "location_um": [
+        411.067,
+        262.53
+      ]
+    },
+    {
+      "buffer": "eco_lib15_clock_east",
+      "cell": "sky130_fd_sc_hd__clkbuf_16",
+      "loads": [
+        "clkbuf_3_4_0_clk/A",
+        "clkbuf_3_5_0_clk/A",
+        "clkbuf_3_6_0_clk/A",
+        "clkbuf_3_7_0_clk/A"
+      ],
+      "location_um": [
+        451.067,
+        262.53
+      ]
+    }
+  ]
+}

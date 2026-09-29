@@ -1,0 +1,47 @@
+{
+  "commit": "fa31771aafbe2e0dade44815050f2c82e28499d4",
+  "config": {
+    "abc_delay_ps": null,
+    "antenna_jumper_only": false,
+    "antenna_repair_iters": 3,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-27T01:03:46.996755+00:00",
+  "flow_sha256": "b1ade82d6f886323ecc5a7251d6b645ba4a02b358337c09eb00bd3be163901c3",
+  "id": "fa31771aafbe-775ba388d66a",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "atomic operand reuse",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17129216271,
+      "ended_utc": "2026-09-27T02:32:46.276523+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "acceptance.log",
+      "returncode": 0,
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-27T01:05:00.462676+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "synth": {
+      "ended_utc": "2026-09-27T01:03:56.067762+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 169048.3808,
+      "mapped_cells": 17050,
+      "returncode": 0,
+      "started_utc": "2026-09-27T01:03:47.138152+00:00",
+      "status": "pass"
+    }
+  }
+}

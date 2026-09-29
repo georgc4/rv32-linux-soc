@@ -1,0 +1,28 @@
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21766, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_1009.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21783, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_1147.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21807, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_1342.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 48251, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_TAPCELL_ROW_0_372.
+DIAGNOSTIC transition=0.75 slew_violations=20 cap_violations=6
+DIAGNOSTIC transition=1.0 slew_violations=12 cap_violations=6
+DIAGNOSTIC transition=1.5 slew_violations=5 cap_violations=6
+max slew
+
+Pin                                        Limit        Slew       Slack
+------------------------------------------------------------------------
+_15176_/C1                              1.500000    1.906150   -0.406150 (VIOLATED)
+_25583_/Y                               1.494397    1.879596   -0.385199 (VIOLATED)
+_25584_/A_N                             1.500000    1.880482   -0.380482 (VIOLATED)
+_25585_/A2                              1.500000    1.880111   -0.380112 (VIOLATED)
+_26504_/A2                              1.500000    1.643999   -0.143999 (VIOLATED)
+
+max capacitance
+
+Pin                                        Limit         Cap       Slack
+------------------------------------------------------------------------
+_26497_/X                               0.200000    0.382080   -0.182080 (VIOLATED)
+_26205_/X                               0.200000    0.355385   -0.155385 (VIOLATED)
+_22420_/Y                               0.200000    0.264416   -0.064416 (VIOLATED)
+_25583_/Y                               0.195017    0.247883   -0.052866 (VIOLATED)
+_26547_/X                               0.200000    0.245851   -0.045851 (VIOLATED)
+clkbuf_0_clk/X                          0.200000    0.209862   -0.009862 (VIOLATED)
+

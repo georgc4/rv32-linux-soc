@@ -1,0 +1,33 @@
+{
+  "commit": "4f836c5b3e6c818eb66556b4554e3750304ada80",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-27T01:01:59.886072+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "4f836c5b3e6c-76f7597418a2",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "atomic plus bridge plus compact MDU",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "synth": {
+      "ended_utc": "2026-09-27T01:02:08.369667+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 160129.8272,
+      "mapped_cells": 16164,
+      "returncode": 0,
+      "started_utc": "2026-09-27T01:01:59.964149+00:00",
+      "status": "pass"
+    }
+  }
+}

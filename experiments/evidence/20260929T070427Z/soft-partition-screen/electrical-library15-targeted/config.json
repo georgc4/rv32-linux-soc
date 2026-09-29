@@ -1,0 +1,88 @@
+{
+  "PL_TARGET_DENSITY_PCT": 60.0,
+  "CLOCK_PERIOD": 50.0,
+  "PL_RESIZER_HOLD_SLACK_MARGIN": 0.05,
+  "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.1,
+  "RUN_LINTER": 1,
+  "LINTER_INCLUDE_PDK_MODELS": 1,
+  "CLOCK_PORT": "clk",
+  "RUN_KLAYOUT_XOR": 0,
+  "RUN_KLAYOUT_DRC": true,
+  "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": 0,
+  "TOP_MARGIN_MULT": 1,
+  "BOTTOM_MARGIN_MULT": 1,
+  "LEFT_MARGIN_MULT": 6,
+  "RIGHT_MARGIN_MULT": 6,
+  "FP_SIZING": "absolute",
+  "GRT_ALLOW_CONGESTION": false,
+  "FP_IO_HLENGTH": 2,
+  "FP_IO_VLENGTH": 2,
+  "FP_PDN_VPITCH": 38.87,
+  "RUN_CTS": 1,
+  "FP_PDN_MULTILAYER": 0,
+  "MAGIC_DEF_LABELS": 0,
+  "MAGIC_WRITE_LEF_PINONLY": 1,
+  "SYNTH_STRATEGY": "AREA 2",
+  "SYNTH_ABC_AREA_USE_NF": false,
+  "GRT_ANTENNA_REPAIR_JUMPER_ONLY": false,
+  "GRT_ANTENNA_REPAIR_ITERS": 3,
+  "PL_TIMING_DRIVEN": true,
+  "RUN_POST_GRT_RESIZER_TIMING": true,
+  "DRT_THREADS": 4,
+  "STA_THREADS": 2,
+  "PNR_CORNERS": [
+    "nom_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "min_ff_n40C_1v95"
+  ],
+  "RSZ_CORNERS": [
+    "nom_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "min_ff_n40C_1v95"
+  ],
+  "SETUP_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "HOLD_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "DESIGN_NAME": "tt_um_rv32_linux_soc",
+  "VERILOG_FILES": [
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/rv32_mdu.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/rv32_priv_unit.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/rv32i_core.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/cpu_bus_adapter.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/physical_bus.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/sv32_bus_adapter.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/serial_mem_bridge.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/boot_rom.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/clint_timer.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/plic_lite.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/uart16550_lite.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/soc_top.v",
+    "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/src/tt_um_rv32_linux_soc.v"
+  ],
+  "DIE_AREA": "0 0 856.52 511.36",
+  "FP_DEF_TEMPLATE": "/Users/cgeorges/rv32-linux-soc/build/tt-support-tools/tech/sky130A/def/tt_block_5x4_pg.def",
+  "VDD_PIN": "VPWR",
+  "GND_PIN": "VGND",
+  "RT_MAX_LAYER": "met4",
+  "PL_SKIP_INITIAL_PLACEMENT": true,
+  "MAX_SLEW_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_CAP_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_TRANSITION_CONSTRAINT": 1.5,
+  "RUN_POST_GRT_DESIGN_REPAIR": true,
+  "GRT_DESIGN_REPAIR_RUN_GRT": true,
+  "ELECTRICAL_TARGETED_TCL": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/library15-targeted-inputs/eco.tcl",
+  "meta": {
+    "version": 1,
+    "flow": "Classic",
+    "substituting_steps": {
+      "OpenROAD.RepairDesignPostGRT": "Electrical.LibraryLimitRepair"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "commit": "19cb40a50abec1db30baf7332790ac22d1c009c8",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.05,
+    "hold_margin_ns": 0.1,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 0"
+  },
+  "created_utc": "2026-09-25T07:06:02.494440+00:00",
+  "flow_sha256": "8dc8b36fb040446e77eea90128f0731115dce7c2b5899ab51401e1677eca6a46",
+  "id": "19cb40a50abe-4330ae47043a",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "baseline",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "synth": {
+      "ended_utc": "2026-09-25T07:06:13.752136+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 224972.016,
+      "mapped_cells": 22088,
+      "returncode": 0,
+      "started_utc": "2026-09-25T07:06:02.567149+00:00",
+      "status": "pass"
+    }
+  }
+}

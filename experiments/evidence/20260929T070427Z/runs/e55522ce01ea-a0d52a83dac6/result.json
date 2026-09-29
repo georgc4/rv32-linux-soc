@@ -1,0 +1,55 @@
+{
+  "commit": "e55522ce01ea8b672031eba061b6dc77b720164b",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-25T21:53:24.143228+00:00",
+  "flow_sha256": "561a1af589105e6fbdc4bf681bf215fbee594ae0f5ad750191b4859bd99ec372",
+  "id": "e55522ce01ea-a0d52a83dac6",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "8-entry TLB",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17221284460,
+      "ended_utc": "2026-09-25T22:27:58.077960+00:00",
+      "harness_sha256": "4778b5a23a041ce0d5b19ee23883c47b97db82dc47c592fc934d917057118426",
+      "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+      "log": "../e55522ce01ea-466a3a085ba0/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "returncode": 0,
+      "reused_from_run": "e55522ce01ea-466a3a085ba0",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-25T22:27:58.066485+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "54-openroad-rcx",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-25T22:27:58.038980+00:00",
+      "gds_present": true,
+      "instance_area_um2": 272460,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 24.0234,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-25T21:53:24.254448+00:00",
+      "status": "failed",
+      "timing_stage": "43-openroad-stamidpnr-3",
+      "utilization": 0.632836
+    }
+  }
+}

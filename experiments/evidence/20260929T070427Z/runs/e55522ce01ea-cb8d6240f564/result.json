@@ -1,0 +1,38 @@
+{
+  "commit": "e55522ce01ea8b672031eba061b6dc77b720164b",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.05,
+    "hold_margin_ns": 0.1,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 0"
+  },
+  "created_utc": "2026-09-25T18:11:22.006734+00:00",
+  "flow_sha256": "d24832ab4ac5c3e4172aa41028f8d378126c765b130f4c5fcf89e16dcff64852",
+  "id": "e55522ce01ea-cb8d6240f564",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "TLB 8",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "ended_utc": "2026-09-25T18:11:52.896528+00:00",
+      "error": "CalledProcessError: Command '['/opt/homebrew/opt/python@3.14/bin/python3.14', '/Users/cgeorges/rv32-linux-soc/scripts/flash_to_bytehex.py', '/Users/cgeorges/rv32-linux-soc/build/experiments/runs/e55522ce01ea-cb8d6240f564/source/build/linux/flash.bin', '/Users/cgeorges/rv32-linux-soc/build/experiments/runs/e55522ce01ea-cb8d6240f564/source/build/linux/flash.serial.hex']' returned non-zero exit status 1.",
+      "started_utc": "2026-09-25T18:11:52.766817+00:00",
+      "status": "error"
+    },
+    "synth": {
+      "ended_utc": "2026-09-25T18:11:34.460362+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 199110.9632,
+      "mapped_cells": 19960,
+      "returncode": 0,
+      "started_utc": "2026-09-25T18:11:22.103846+00:00",
+      "status": "pass"
+    }
+  }
+}

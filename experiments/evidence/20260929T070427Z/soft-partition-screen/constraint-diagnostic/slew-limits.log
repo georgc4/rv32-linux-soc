@@ -1,0 +1,44 @@
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21766, module sky130_ef_sc_hd__decap_12 not found. Creating black box for FILLER_0_1009.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21783, module sky130_fd_sc_hd__fill_1 not found. Creating black box for FILLER_0_1147.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 21807, module sky130_fd_sc_hd__fill_2 not found. Creating black box for FILLER_0_1342.
+Warning: /Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/four-part-qualification/runs/wokwi/13-openroad-fillinsertion/tt_um_rv32_linux_soc.nl.v line 48251, module sky130_fd_sc_hd__tapvpwrvgnd_1 not found. Creating black box for TAP_TAPCELL_ROW_0_372.
+DIAGNOSTIC transition=0.75 slew_violations=3328 cap_violations=7
+DIAGNOSTIC transition=1.0 slew_violations=765 cap_violations=7
+DIAGNOSTIC transition=1.5 slew_violations=20 cap_violations=7
+max slew
+
+Pin                                        Limit        Slew       Slack
+------------------------------------------------------------------------
+_15176_/C1                              1.500000    4.200315   -2.700315 (VIOLATED)
+_25583_/Y                               1.496266    4.188866   -2.692600 (VIOLATED)
+_25584_/A_N                             1.500000    4.189264   -2.689264 (VIOLATED)
+_25585_/A2                              1.500000    4.189097   -2.689097 (VIOLATED)
+_26504_/A2                              1.500000    2.963624   -1.463625 (VIOLATED)
+_26214_/A2                              1.500000    2.816026   -1.316026 (VIOLATED)
+_26497_/X                               1.496547    2.800044   -1.303497 (VIOLATED)
+_26205_/X                               1.500000    2.736122   -1.236122 (VIOLATED)
+_25685_/Y                               1.496266    2.449128   -0.952862 (VIOLATED)
+_15238_/B1                              1.500000    2.451129   -0.951129 (VIOLATED)
+_25687_/A2                              1.500000    2.449169   -0.949169 (VIOLATED)
+_25686_/A_N                             1.500000    2.449166   -0.949166 (VIOLATED)
+_26548_/A2                              1.500000    1.954895   -0.454895 (VIOLATED)
+_26570_/B1                              1.500000    1.954885   -0.454885 (VIOLATED)
+_15759_/B1_N                            1.500000    1.939892   -0.439892 (VIOLATED)
+_26547_/X                               1.500000    1.935655   -0.435655 (VIOLATED)
+_24896_/A2                              1.500000    1.884989   -0.384989 (VIOLATED)
+_22420_/Y                               1.498289    1.876339   -0.378050 (VIOLATED)
+_23298_/A2                              1.500000    1.876452   -0.376452 (VIOLATED)
+_19489_/A                               1.500000    1.876339   -0.376339 (VIOLATED)
+
+max capacitance
+
+Pin                                        Limit         Cap       Slack
+------------------------------------------------------------------------
+_26497_/X                               0.200000    0.382075   -0.182075 (VIOLATED)
+_25583_/Y                               0.086070    0.247637   -0.161567 (VIOLATED)
+_26205_/X                               0.195017    0.355380   -0.160363 (VIOLATED)
+_22420_/Y                               0.200000    0.264333   -0.064333 (VIOLATED)
+_25685_/Y                               0.086070    0.143713   -0.057643 (VIOLATED)
+_26547_/X                               0.190440    0.245642   -0.055202 (VIOLATED)
+clkbuf_0_clk/X                          0.200000    0.209550   -0.009550 (VIOLATED)
+

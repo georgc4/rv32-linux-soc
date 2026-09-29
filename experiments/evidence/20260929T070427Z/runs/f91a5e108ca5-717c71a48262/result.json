@@ -1,0 +1,64 @@
+{
+  "commit": "f91a5e108ca57f257d740447d6e14c926b77360b",
+  "config": {
+    "abc_delay_ps": null,
+    "antenna_jumper_only": false,
+    "antenna_repair_iters": 3,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.05,
+    "physical_options": {
+      "cluster_profile": "none",
+      "corner_profile": "multicorner",
+      "max_cores": 4,
+      "post_grt_timing": false,
+      "timing_driven": true
+    },
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-27T23:19:49.602240+00:00",
+  "flow_sha256": "34dafc5ba78beb2a92834c686e1a92f4f223e5d2163a19ec254d06e5dbca6c07",
+  "id": "f91a5e108ca5-717c71a48262",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "registered legality in existing operand-read cycle",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "architecture": "amd64",
+      "compile_log": "acceptance-ps4-compile.log",
+      "container_image_id": "sha256:f91b21d75f79871f9ccf37451020b5d2f7b3236881a997ff709c561e8280a30f",
+      "cycles": 13877255869,
+      "ended_utc": "2026-09-28T13:07:55.385252+00:00",
+      "execution_host": "ps4",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "acceptance-ps4.log",
+      "returncode": 0,
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-28T03:03:56.701610+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "synth": {
+      "ended_utc": "2026-09-27T23:20:09.737176+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 184664.608,
+      "mapped_cells": 18238,
+      "returncode": 0,
+      "started_utc": "2026-09-27T23:19:49.820284+00:00",
+      "status": "pass"
+    },
+    "pnr": {
+      "status": "cancelled",
+      "reason": "Superseded by partition candidate with clean final DRC and positive extracted setup/hold; prioritize electrical signoff repair. Preserve source checkpoints used by continuation experiments.",
+      "ended_utc": "2026-09-29T05:41:49.646069+00:00",
+      "checkpoints_preserved": true
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "commit": "31d9966b2614eef50522c33f3d25f0b6c7ebb356",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-26T06:53:06.598690+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "31d9966b2614-5dea292570bf",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "shared core address and integer adder",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17129216271,
+      "ended_utc": "2026-09-26T08:59:48.222597+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "acceptance.log",
+      "returncode": 0,
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-26T08:05:01.979956+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "54-openroad-rcx",
+      "checks": {
+        "antenna": {
+          "report": "pnr-stage/runs/wokwi/46-openroad-checkantennas-1/reports/antenna_summary.rpt",
+          "report_sha256": "bd4c6489f063ba0e337ce9356da7a70bf063e08c5713b64eac28b6f9cd496d6a",
+          "status": "pass",
+          "violations": 0
+        },
+        "klayout_drc": {
+          "beol": true,
+          "deck": "/Users/cgeorges/.volare/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/klayout/drc/sky130A_mr.drc",
+          "deck_sha256": "caf4a6b08cb12f78d6bb2d120737424c786b3bae8d6489234b9b269e91107bfc",
+          "feol": true,
+          "gds": "pnr-stage/runs/wokwi/final/gds/tt_um_rv32_linux_soc.gds",
+          "gds_sha256": "06cd4166b3ddf9b88d94b3070636a28eea8709fa6ebf92d1ec0e67b29b89b832",
+          "log": "klayout-full-drc.log",
+          "offgrid": true,
+          "report": "klayout-full-drc.lyrdb",
+          "report_sha256": "707e38e0f6dfd1256df7602b011a3ed20697cf94c3349fc212129c5ef10559c8",
+          "returncode": 0,
+          "seal": false,
+          "sram_exclude": false,
+          "status": "pass",
+          "violations": 0
+        },
+        "lvs": {
+          "report": "pnr-stage/runs/wokwi/66-netgen-lvs/reports/lvs.netgen.rpt",
+          "report_sha256": "c126e96563f2660d5b92b5a01a668ad48cf6896bef593197fa6b0d82b3a92c68",
+          "status": "pass"
+        },
+        "lvs_json": {
+          "report": "pnr-stage/runs/wokwi/66-netgen-lvs/reports/lvs.netgen.json",
+          "report_sha256": "52ab497382cbda8b62ec703669d3005ce30a8925837e46a17a7484df839c3ae7",
+          "status": "pass"
+        },
+        "magic_drc": {
+          "report": "pnr-stage/runs/wokwi/62-magic-drc/reports/drc.magic.rpt",
+          "report_sha256": "8029ed54b95d6954f14446465d12b8a2884d16524ac1ca3b26878b998e83ab71",
+          "status": "pass",
+          "violations": 0
+        }
+      },
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-26T15:57:36.939883+00:00",
+      "gds_present": true,
+      "instance_area_um2": 243230,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 0,
+      "setup_r2r_ws_ns": 26.4824,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-26T15:25:46.395834+00:00",
+      "status": "pass",
+      "timing_stage": "43-openroad-stamidpnr-3",
+      "utilization": 0.564943
+    },
+    "synth": {
+      "ended_utc": "2026-09-26T06:53:18.164492+00:00",
+      "log": "synth-command.log",
+      "mapped_area_um2": 173463.8656,
+      "mapped_cells": 17691,
+      "returncode": 0,
+      "started_utc": "2026-09-26T06:53:06.725472+00:00",
+      "status": "pass"
+    }
+  }
+}

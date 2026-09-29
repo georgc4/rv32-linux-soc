@@ -1,0 +1,75 @@
+{
+  "commit": "8b2424d1772dea68066f662f3578a466f4087943",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-25T21:45:54.185065+00:00",
+  "flow_sha256": "561a1af589105e6fbdc4bf681bf215fbee594ae0f5ad750191b4859bd99ec372",
+  "id": "8b2424d1772d-0d11820a05ce",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "16-entry TLB baseline",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "binary": "acceptance-binary",
+      "binary_sha256": "ffe371bec21f300b5e524b471b1203521685b7e8f4b36d4b723cf81112843d01",
+      "cycles": 13010943367,
+      "ended_utc": "2026-09-25T21:53:22.918139+00:00",
+      "harness_sha256": "4778b5a23a041ce0d5b19ee23883c47b97db82dc47c592fc934d917057118426",
+      "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+      "importer_sha256": "ea3b200d6b3ae4dba544ba05941e285e6c9e48ac10cc2e320cdd37c0bdd529b4",
+      "log": "../8b2424d1772d-4b86b7212906/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "reused_from_run": "8b2424d1772d-4b86b7212906",
+      "serial_hex_sha256": "97d1a96e84d6c2d1a72d6c3252a5e93323a584dcf5541b639e4cefead5a38273",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "source_files_sha256": {
+        "firmware/boot_rom.hex": "b068293a2a31ebd3444a3a58f567c9e88b14b8bf88aab73a681dad9b9fac229d",
+        "rtl/cpu/rv32_mdu.v": "765e27f88db04e4d879e67cdf88133d7691b32e923d79f1b3d242508280e9684",
+        "rtl/cpu/rv32_priv_unit.v": "51f8387578a35a22f89eb12366f9f322a3ed93db0d421fdc7bf779df5a9fbd74",
+        "rtl/cpu/rv32i_core.v": "93970cb601fb6eea594cf664f9854a017bc1eeaf9740a7b5b64ebb0a46311ef2",
+        "rtl/interconnect/physical_bus.v": "8f82f8eadbb3af0f30e09023791803774dcac13ff56d78db95239fdb1d445693",
+        "rtl/interconnect/sv32_bus_adapter.v": "582b2545163ab1a54fce6d7e1fd82520d1d06e66bdc8aea61effd18484cb0ce1",
+        "rtl/memory/serial_mem_bridge.v": "f89f23bfe460a54a4ecaa23c7402749b996df2014341ae06a1853810d629e3f2",
+        "rtl/peripherals/boot_rom.v": "bfebd881b1e0e81cc86c898aa6bcf9a2a5ebe98fbce8203a80bf18a339260300",
+        "rtl/peripherals/clint_timer.v": "31664c6701d3a708b8f2b67c213dd886b2accc985f02310cc706f730040b540f",
+        "rtl/peripherals/plic_lite.v": "ca048a4d615e601bc0559b7ecec0187511b4a93e89e1b46eb98e10a30ad33537",
+        "rtl/peripherals/uart16550_lite.v": "7f8b4fcec704654a75dbc6698ada2eef357de11056bf683be6559d8a7bca7b93",
+        "rtl/soc/soc_top.v": "efecc40cd273a88c542dada29e5182493fed620ac1784442cead69a063c211e6",
+        "sim/models/serial_spi_model.v": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+        "sim/tests/linux_serial_boot_tb.v": "4778b5a23a041ce0d5b19ee23883c47b97db82dc47c592fc934d917057118426"
+      },
+      "source_log_sha256": "429f5017cc44a26e354cd8a8986e82c0f0873be89985c2346076eaca165e462a",
+      "started_utc": "2026-09-25T21:53:22.909893+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "28-openroad-globalplacement",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-25T21:53:22.882086+00:00",
+      "gds_present": false,
+      "instance_area_um2": 258560,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 15.9074,
+      "setup_wns_ns": -18.928,
+      "started_utc": "2026-09-25T21:45:54.287435+00:00",
+      "status": "failed",
+      "timing_stage": "31-openroad-stamidpnr",
+      "utilization": 0.600552
+    }
+  }
+}

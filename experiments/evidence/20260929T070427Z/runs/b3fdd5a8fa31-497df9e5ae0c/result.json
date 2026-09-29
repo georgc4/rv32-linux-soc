@@ -1,0 +1,55 @@
+{
+  "commit": "b3fdd5a8fa314e87c668ff91851b106f33181541",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.05,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-26T07:35:21.786883+00:00",
+  "flow_sha256": "93453787cef391e8e70de771e71ee6f9865806bcf51a93ce122e5b2647d40d87",
+  "id": "b3fdd5a8fa31-497df9e5ae0c",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "4-entry shared-read hold margin",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 17129216271,
+      "ended_utc": "2026-09-26T10:35:25.031872+00:00",
+      "harness_sha256": "4778b5a23a041ce0d5b19ee23883c47b97db82dc47c592fc934d917057118426",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "../b3fdd5a8fa31-7b73e3ee2ca8/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "returncode": 0,
+      "reused_from_run": "b3fdd5a8fa31-7b73e3ee2ca8",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-26T10:35:25.029672+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    },
+    "pnr": {
+      "area_stage": "39-openroad-globalrouting",
+      "core_area_um2": 430538,
+      "ended_utc": "2026-09-26T10:35:24.980647+00:00",
+      "gds_present": false,
+      "instance_area_um2": 263081,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": null,
+      "setup_r2r_ws_ns": 25.6009,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-26T07:35:21.916153+00:00",
+      "status": "timeout",
+      "timing_stage": "43-openroad-stamidpnr-3",
+      "utilization": 0.611052
+    }
+  }
+}

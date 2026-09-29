@@ -1,0 +1,14 @@
+{
+  "json_h": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/05-yosys-jsonheader/tt_um_rv32_linux_soc.h.json",
+  "nl": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/21-openroad-generatepdn/tt_um_rv32_linux_soc.nl.v",
+  "sdf": {
+    "nom_tt_025C_1v80": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/12-openroad-staprepnr/nom_tt_025C_1v80/tt_um_rv32_linux_soc__nom_tt_025C_1v80.sdf",
+    "nom_ss_100C_1v60": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/12-openroad-staprepnr/nom_ss_100C_1v60/tt_um_rv32_linux_soc__nom_ss_100C_1v60.sdf",
+    "nom_ff_n40C_1v95": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/12-openroad-staprepnr/nom_ff_n40C_1v95/tt_um_rv32_linux_soc__nom_ff_n40C_1v95.sdf"
+  },
+  "odb": "/Users/cgeorges/rv32-linux-soc/build/experiments/soft-partition-screen/seeded.odb",
+  "def": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/27-odb-applydeftemplate/tt_um_rv32_linux_soc.def",
+  "sdc": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/21-openroad-generatepdn/tt_um_rv32_linux_soc.sdc",
+  "pnl": "/Users/cgeorges/rv32-linux-soc/build/experiments/runs/f91a5e108ca5-717c71a48262/pnr-stage/runs/wokwi/21-openroad-generatepdn/tt_um_rv32_linux_soc.pnl.v",
+  "metrics": {}
+}

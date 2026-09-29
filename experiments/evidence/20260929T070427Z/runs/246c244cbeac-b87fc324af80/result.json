@@ -1,0 +1,47 @@
+{
+  "commit": "246c244cbeacd2ec97082df21556b773fdbba616",
+  "config": {
+    "abc_delay_ps": null,
+    "antenna_jumper_only": false,
+    "antenna_repair_iters": 3,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.05,
+    "physical_options": {
+      "cluster_profile": "combined",
+      "corner_profile": "multicorner",
+      "max_cores": 4,
+      "post_grt_timing": false,
+      "timing_driven": true
+    },
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 2",
+    "tile_shape": "5x4"
+  },
+  "created_utc": "2026-09-28T18:52:22.733768+00:00",
+  "flow_sha256": "34dafc5ba78beb2a92834c686e1a92f4f223e5d2163a19ec254d06e5dbca6c07",
+  "id": "246c244cbeac-b87fc324af80",
+  "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "name": "11-one-line-tlb8",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "acceptance": {
+      "cycles": 9856801148,
+      "ended_utc": "2026-09-28T18:52:22.755571+00:00",
+      "harness_sha256": "84123d364ac0479aea3d2ba36e6e7725ab667b07ec9a0c887d48dc0bff608a08",
+      "image_sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+      "log": "../246c244cbeac-f5a15bbee41e/acceptance.log",
+      "provenance": "reused_verified_commit_and_image",
+      "returncode": 0,
+      "reused_from_run": "246c244cbeac-f5a15bbee41e",
+      "serial_model_sha256": "3fd7824b1395c431565bcbbbd49e11fe74bb6379fdeaf264355f6136acb65040",
+      "started_utc": "2026-09-28T18:52:22.751951+00:00",
+      "status": "pass",
+      "uart_rx_bytes": 22
+    }
+  }
+}

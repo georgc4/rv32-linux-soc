@@ -1,5 +1,12 @@
 # Reproducible design experiments
 
+The [experiment journal](EXPERIMENT-JOURNAL.md) records the placement and
+signoff investigation, including failed trials, constraint changes, and open
+questions. [Timestamped evidence snapshots](evidence/) preserve compact
+results and hashes in Git. Large databases, full logs, and GDS files remain
+outside Git; an artifact hash alone is not a backup. Preservation commits
+record when evidence was saved, not every intermediate edit or chat message.
+
 The first gate is `make test-linux-serial-boot`. It runs the actual boot ROM,
 quad-serial NOR, four serial PSRAM models, Linux image, and UART. The test now
 waits for the interactive BusyBox ash prompt, sends `/bin/acceptance_smoke`
@@ -57,8 +64,10 @@ Open `build/experiments/pareto.html` in a browser. The dashboard is self
 contained and offline. It shows source commits, sweep settings, stage status,
 measured area, early setup slack, and Linux cycles. Change either axis to
 inspect tradeoffs. A point joins the Pareto frontier only if the physical flow
-produced final GDS, all recorded physical checks passed, **and** the
-ash-program acceptance passed. Failed physical runs,
+produced final GDS, all recorded physical checks passed, final setup/hold and
+slew/capacitance checks passed at every required corner, **and** the
+ash-program acceptance passed. Missing final timing evidence fails this gate.
+Failed physical runs,
 including the first 2026-09-24 baseline, remain visible but are excluded from
 the candidate frontier. New physical runs also require full KLayout FEOL,
 BEOL, and off-grid DRC with zero items, Magic DRC with zero violations, Netgen
@@ -66,7 +75,9 @@ LVS with uniquely matching circuits, and a zero-violation antenna report.
 The final GDS, pinned PDK revision, rule-deck SHA-256, GDS SHA-256, and check
 reports are saved with each run. Old runs without these recorded checks remain
 historical points and cannot enter the qualified frontier. Routing and this
-gate do not replace final timing, power, and pad signoff.
+gate do not replace power, pad, or board-level timing signoff. Historical
+qualification labels in older results predate the final all-corner gate;
+consult the final timing audits before interpreting them as qualified.
 That baseline reached about 85% core utilization at global placement;
 OpenROAD raised its effective placement density to 97% and detailed placement
 failed. A lower requested density cannot create more tile area. RTL area

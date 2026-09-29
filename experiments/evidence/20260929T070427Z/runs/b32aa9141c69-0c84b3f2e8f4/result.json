@@ -1,0 +1,40 @@
+{
+  "commit": "b32aa9141c6933d89ba6307bd8c13c0c0001dbc8",
+  "config": {
+    "abc_delay_ps": null,
+    "clock_period_ns": 50.0,
+    "grt_hold_margin_ns": 0.0,
+    "hold_margin_ns": 0.0,
+    "placement_density_pct": 60.0,
+    "synth_abc_area_use_nf": false,
+    "synth_strategy": "AREA 0"
+  },
+  "created_utc": "2026-09-25T18:27:11.902270+00:00",
+  "flow_sha256": "680505c4d03f4f65e72d6dccbe05efc130b5d1ff21ffe4d35fc3df193e6b4a5e",
+  "id": "b32aa9141c69-0c84b3f2e8f4",
+  "image_sha256": "d7ca41e95c47af4ae02fe69c3fd0f56c9b33e41545bc2a0b8a95a23cac485b0c",
+  "name": "TLB 4 shared context",
+  "pdk_identity": {
+    "liberty_sha256": "8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+    "source": "open_pdks 0fe599b2afb6708d281543108caf8310912f54af"
+  },
+  "stages": {
+    "pnr": {
+      "area_stage": "39-openroad-globalrouting",
+      "core_area_um2": 302420,
+      "ended_utc": "2026-09-25T18:40:31.314958+00:00",
+      "gds_present": false,
+      "instance_area_um2": 248577,
+      "librelane_version": "3.0.14",
+      "log": "pnr.log",
+      "physical_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+      "returncode": 1,
+      "setup_r2r_ws_ns": 25.5025,
+      "setup_wns_ns": 0,
+      "started_utc": "2026-09-25T18:27:12.019249+00:00",
+      "status": "failed",
+      "timing_stage": "38-openroad-stamidpnr-2",
+      "utilization": 0.82196
+    }
+  }
+}
