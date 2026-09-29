@@ -1,0 +1,30 @@
+{
+  "captured_utc": "2026-09-29T17:45:19.171325+00:00",
+  "scope": "Completed targeted-only follow-up; compact evidence delta",
+  "captured_files": [
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/result.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/result.json",
+      "bytes": 7635,
+      "sha256": "7166a4fce98f469a25a4923f232fac816000c9b2f708ab10bb09ce4a9f9eab5f"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/config.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/config.json",
+      "bytes": 3505,
+      "sha256": "7488b125262079ff24a33b43cebfcc7545c8478ed5198e71e19aef0cbdfa4c34"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/runs/wokwi/final/metrics.json",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/runs/wokwi/final/metrics.json",
+      "bytes": 17015,
+      "sha256": "da4ea664e78eb066e5d003d3633a9f9a9e11e8bc45e4c5f798612b24af17a5b1"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/runs/wokwi/16-openroad-stapostpnr/max_ss_100C_1v60/checks.rpt",
+      "copy": "soft-partition-screen/electrical-library15-targeted-only/runs/wokwi/16-openroad-stapostpnr/max_ss_100C_1v60/checks.rpt",
+      "bytes": 60779,
+      "sha256": "1aba67a69ab7f0a41b54691b5c6cc5d1a853cb1ff3a6858eb632a21eb97a7a64"
+    }
+  ]
+}

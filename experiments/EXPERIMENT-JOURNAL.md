@@ -160,8 +160,18 @@ and preceding antenna repair. This confounds attribution to the small ECO.
 A follow-up, `electrical-library15-targeted-only`, uses the same original
 checkpoint and verified ECO, with that broad timing-repair stage disabled.
 It still rebuilds routes and runs the final all-corner and physical checks;
-it is not an incremental-route-only experiment. At this update it is running,
-with no final result yet. External memory/board I/O timing remains provisional.
+it is not an incremental-route-only experiment.
+
+That follow-up finished at **2026-09-29 08:44:07 UTC**. It improved on v3 but
+still failed electrical signoff: worst-corner **121 slew / 20 capacitance**
+violations at the same 1.5 ns target. Setup and hold passed all nine corners
+(worst setup **+8.694642 ns**, worst hold **+0.053322 ns**); routing, Magic,
+KLayout, LVS, antenna, and disconnected-pin counts were zero. Standard-cell
+area fell from v3's 276,617 to 264,828 square micrometres. This remains worse
+than the original partition candidate's 20/7 diagnostic. Removing broad timing
+repair helped, but did not isolate or cure the remaining ECO/rerouting effects.
+The worst reported slew was about **6.57 ns**, so the residual violations are
+not merely rounding errors. External memory/board I/O timing remains provisional.
 
 ## Where the evidence lives
 
