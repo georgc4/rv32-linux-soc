@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "errors": [],
+  "protected_nets": 21385,
+  "wire_types": {
+    "FIXED": 21385
+  },
+  "changed_protected_routes": [],
+  "moved_instances": [
+    "_25685_",
+    "_26497_",
+    "eco_lib15_clock_east11046",
+    "eco_lib15_clock_west11045",
+    "eco_lib15_6331d0f588_111044",
+    "eco_lib15_6331d0f588_211043",
+    "eco_lib15_6331d0f588_311042",
+    "eco_lib15_6f3b2e8a5c_111041",
+    "eco_lib15_ae43b11cad_111040",
+    "eco_lib15_0cc3dbbd89_111039",
+    "eco_lib15_0cc3dbbd89_211038",
+    "eco_lib15_7473a2883a_111037",
+    "eco_lib15_7473a2883a_211036",
+    "eco_lib15_c952639915_111035",
+    "eco_lib15_c952639915_211034",
+    "eco_lib15_46eee729a7_111033",
+    "eco_lib15_46eee729a7_211032",
+    "eco_lib15_b4f70784d3_111031",
+    "eco_lib15_b4f70784d3_211030"
+  ],
+  "manifest_sha256": "c9c7f4ed27d3cfe53dcf3b1949c936d0c7e5006fbf8c3097d09f73193e35d3e0",
+  "before_sha256": "e3a3ef97329d5ebf94efb68c776dabda74762bf65acee3f2ea122f7349ae2c69",
+  "after_sha256": "e7d8b71e2b7d0bf996b14f3ab8c7656329f6b147a78abe11db9e5c643aa6e1d9"
+}

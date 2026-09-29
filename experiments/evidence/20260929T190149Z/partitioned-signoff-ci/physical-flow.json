@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "flow": "RV32Partitioned",
+  "librelane_version": "3.0.14",
+  "files": {
+    "librelane_plugin_rv32.py": "40dfc452afb09289e208ba2c642c89ffd91fc0c212ee207598889febf10b2549",
+    "physical/partition.tcl": "e08b0b97d99157542fbf126737002f49afdab4753c0efbc5b6c0c8f27de45286",
+    "physical/seed_soft_partitions.py": "510f75f0c30282368f96b661d4cde00ae6aadae9b94e480d7f79997bf251f520"
+  },
+  "config": {
+    "PL_TARGET_DENSITY_PCT": 60.0,
+    "CLOCK_PERIOD": 50.0,
+    "PL_RESIZER_HOLD_SLACK_MARGIN": 0.05,
+    "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0,
+    "RUN_LINTER": 1,
+    "LINTER_INCLUDE_PDK_MODELS": 1,
+    "CLOCK_PORT": "clk",
+    "RUN_KLAYOUT_XOR": 0,
+    "RUN_KLAYOUT_DRC": true,
+    "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": 0,
+    "TOP_MARGIN_MULT": 1,
+    "BOTTOM_MARGIN_MULT": 1,
+    "LEFT_MARGIN_MULT": 6,
+    "RIGHT_MARGIN_MULT": 6,
+    "FP_SIZING": "absolute",
+    "GRT_ALLOW_CONGESTION": false,
+    "RUN_CTS": 1,
+    "MAGIC_DEF_LABELS": 0,
+    "MAGIC_WRITE_LEF_PINONLY": 1,
+    "SYNTH_STRATEGY": "AREA 2",
+    "SYNTH_ABC_AREA_USE_NF": false,
+    "GRT_ANTENNA_REPAIR_JUMPER_ONLY": false,
+    "GRT_ANTENNA_REPAIR_ITERS": 3,
+    "PL_TIMING_DRIVEN": true,
+    "RUN_POST_GRT_RESIZER_TIMING": false,
+    "DRT_THREADS": 4,
+    "STA_THREADS": 2,
+    "PNR_CORNERS": [
+      "nom_tt_025C_1v80",
+      "max_ss_100C_1v60",
+      "min_ff_n40C_1v95"
+    ],
+    "RSZ_CORNERS": [
+      "nom_tt_025C_1v80",
+      "max_ss_100C_1v60",
+      "min_ff_n40C_1v95"
+    ],
+    "SETUP_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "HOLD_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "MAX_SLEW_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "MAX_CAP_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "PL_SKIP_INITIAL_PLACEMENT": true,
+    "MAX_TRANSITION_CONSTRAINT": 1.5,
+    "PL_ROUTABILITY_DRIVEN": true,
+    "MAX_CAPACITANCE_CONSTRAINT": 0.2
+  },
+  "required_steps": [
+    "rv32-partitiondesign",
+    "rv32-seedplacement"
+  ],
+  "corners": [
+    "nom_tt_025C_1v80",
+    "nom_ss_100C_1v60",
+    "nom_ff_n40C_1v95",
+    "min_tt_025C_1v80",
+    "min_ss_100C_1v60",
+    "min_ff_n40C_1v95",
+    "max_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "max_ff_n40C_1v95"
+  ],
+  "zero_metrics": [
+    "route__drc_errors",
+    "magic__drc_error__count",
+    "klayout__drc_error__count",
+    "design__lvs_error__count",
+    "route__antenna_violation__count",
+    "design__critical_disconnected_pin__count"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "initial placement seeds, no persistent constraints",
+  "counts": [
+    4895,
+    5423,
+    3253,
+    3412
+  ],
+  "area_um2": [
+    64524.38399999697,
+    64750.85119999567,
+    43177.66080000014,
+    43485.45599999914
+  ],
+  "quadrant_assignment": [
+    2,
+    0,
+    3,
+    1
+  ],
+  "movable_instances": 16983,
+  "fixed_instances_unchanged": 6482,
+  "connectivity_sha256": "3b750c8706c5cfdc7e29a2016a693a159fe05fe71d734056fe36d4ff252d8b2f",
+  "partition_sha256": "2a31baf851f6f73894c3e2cdc6acb719723382b139988951413c7a55bf2f0984",
+  "cross_partition_nets": 509,
+  "costed_interpartition_or_io_nets": 540,
+  "seed_windows_dbu": {
+    "1": [
+      2760,
+      2720,
+      512225.89216907613,
+      256123.14089100956
+    ],
+    "0": [
+      2760,
+      256123.14089100956,
+      512225.89216907613,
+      508640
+    ],
+    "3": [
+      512225.89216907613,
+      2720,
+      853760,
+      256578.41995841995
+    ],
+    "2": [
+      512225.89216907613,
+      256578.41995841995,
+      853760,
+      508640
+    ]
+  }
+}

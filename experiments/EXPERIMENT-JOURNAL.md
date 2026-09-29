@@ -185,6 +185,65 @@ passes; 26 newly violating slew pins belong to antenna diodes. These are
 observations, not proof assigning the regression to any single cause. Wire RC,
 upstream loading, placement changes, and antenna repair need separate analysis.
 
+## 2026-09-29 — Carry the physical flow into CI and preserve ECO routes
+
+The user obtained confirmation from Tiny Tapeout on Discord that the action can
+use a support-tools fork, and authorized publishing our flow changes. Created
+`georgc4/tt-support-tools`, branch `codex/project-physical-flow`, pinned fork commit
+`5d6e7f9` (based on upstream `01d5d2814fa9dd61e9d211e0b235a4a592a9316a`).
+Its optional project contract validates script hashes and critical configuration,
+requires completed custom steps, gates all declared corners' setup/hold/slew/cap
+plus physical metrics, and copies provenance and a GDS SHA-256 into the standard
+Tiny Tapeout submission. Seven fail-closed contract tests passed.
+
+SoC branch `codex/partitioned-signoff-ci` carries the registered-decode RTL and a
+clean Classic-flow extension: TritonPart followed by our four-part seed wrapper,
+immediately before global placement. No local checkpoint is required in CI.
+The two custom steps passed a pinned-container smoke test: 16,983 movable cells,
+6,482 fixed instances unchanged, unchanged logical connectivity. The fork and
+Tiny Tapeout action are pinned by full SHA; LibreLane remains 3.0.14. The
+1.5 ns transition ceiling retains tighter library pin limits; 0.2 pF capacitance
+and all nine signoff corners remain required. Post-GRT broad timing repair remains
+disabled, matching the successful partition recipe. No unqualified ECO is baked
+into this CI flow.
+
+Draft PR: https://github.com/georgc4/rv32-linux-soc/pull/1 . Latest integration
+commit at launch: `303c3a4`; GDS run:
+https://github.com/georgc4/rv32-linux-soc/actions/runs/36615192813 . Fast checks and
+docs passed; GDS was still running when this entry was written. An earlier CI run
+was cancelled after correcting the contract for four legacy configuration fields
+that LibreLane removes during migration. Main remains `adf6fd6`; this branch is
+not yet a qualified submission. External I/O constraints remain provisional.
+
+The companion route-preserving ECO starts with the same six equivalent-family
+resizes and 17 noninverting buffers. Comparing connectivity and resized-cell
+pins identifies 37 affected nets. The other 21,385 detailed routes are encoded
+FIXED; unrelated cells are LOCKED during legalization. Only ECO cells moved, and
+an exact normalized per-net DEF geometry comparison verified every protected
+route unchanged. Logical pin connectivity was also checked after the roundtrip.
+
+Pinned TritonRoute reads the *encoded wire-path type*: `dbNet.setWireType` alone
+is insufficient. DEF export/re-import converts the encoding. An initial prototype
+left master-pin access-point IDs referencing the destroyed block and crashed in
+`dbMPin::getPinAccess` during detailed-route initialization. The preparer now clears
+preferred access points and destroys old block access-point records before the
+roundtrip. This changes cached routing metadata, not protected geometry.
+
+Other integration findings retained in the logs: use exact OpenDB net lookup
+instead of pattern matching an escaped bus net; disable the separate automatic
+antenna-repair step, not only its iteration count. The first selective global
+route reported eight coarse-grid overflow units. This experiment permits coarse
+overflow to test actual detailed routability while keeping every final signoff
+check enabled. CI still disallows global congestion. Final antenna checking is
+retained even though automatic broad antenna repair is disabled.
+
+Current attempt: `electrical-library15-preserved-routes-v6`, input directory
+`build/experiments/route-preserving-eco-inputs-v3`. The runner automatically audits
+protected routes after detailed routing and records missing evidence as missing.
+A prepared/ legalized database passing the preservation audit is not a completed
+ECO or a signoff pass. Prior short failed attempts and the router crash are kept
+as failed results; no final slew improvement is claimed yet.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

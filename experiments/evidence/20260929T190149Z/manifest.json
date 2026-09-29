@@ -1,0 +1,84 @@
+{
+  "captured_utc": "2026-09-29T19:01:49.273298+00:00",
+  "scope": "CI integration and selective routed ECO. Running results are incomplete. Large ODB/GDS artifacts remain outside Git.",
+  "ci_commit": "303c3a4c4fcea2561e0fc6684b44cba97034caec",
+  "support_fork_commit": "5d6e7f9dc17c4e8c1e6bad75b7c70870addb1b79",
+  "ci_run": "https://github.com/georgc4/rv32-linux-soc/actions/runs/36615192813",
+  "files": [
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes/result.json",
+      "sha256": "2e6d707cceb059aef7a213d07d0f3367e9bc3ced39cfc84044bd0b6f7c16f8f7"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes/config.json",
+      "sha256": "caebce056b846e36389bb76fbe6d22320ad0f60440ddd8267a6653dc70972a7f"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v2/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v2/result.json",
+      "sha256": "52f96c2ed7097e6592a267e0bff00a3bb2f75bfa4d5145f5bf04367d180f2043"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v2/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v2/config.json",
+      "sha256": "caebce056b846e36389bb76fbe6d22320ad0f60440ddd8267a6653dc70972a7f"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v3/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v3/result.json",
+      "sha256": "04e3bc3a7c1d80081d5458457c581e205c35c191d2ba6251bb84e0877e4d6ff9"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v3/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v3/config.json",
+      "sha256": "caebce056b846e36389bb76fbe6d22320ad0f60440ddd8267a6653dc70972a7f"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v4/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v4/result.json",
+      "sha256": "53eca780b5e3dab633fe3d28c8fa10826d99d2d514b8a98732cd739f11a4e346"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v4/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v4/config.json",
+      "sha256": "810b35f5f7d6009f1231d2a6bc00079925e70a88f505c2a7fca902717bdcac18"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v5/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v5/result.json",
+      "sha256": "8796bf8d3439f8f7391da348e98fccb123624fe1746aa93ef86db434dea1b84a"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v5/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v5/config.json",
+      "sha256": "7e1d9b7333caed54406a6fd6124bd74e16da7130ba142d5da1fc9e577b0287b7"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v6/result.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v6/result.json",
+      "sha256": "fa165218b22039b6a7c82ab4d83300c1aefb337c431c44ef4a0a4c908b58a05f"
+    },
+    {
+      "source": "build/experiments/soft-partition-screen/electrical-library15-preserved-routes-v6/config.json",
+      "copy": "experiments/soft-partition-screen/electrical-library15-preserved-routes-v6/config.json",
+      "sha256": "26c48af64a5da945cfeedfb46ef2b38ec782a56468eed0076fc7949770049781"
+    },
+    {
+      "source": "build/experiments/route-preserving-eco-inputs-v3/canonical-audit.json",
+      "copy": "experiments/route-preserving-eco-inputs-v3/canonical-audit.json",
+      "sha256": "4a19271012c75ec6b144b46a2e27a1352444da226d652e6302fd88733bf62137"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/physical-flow.json",
+      "copy": "partitioned-signoff-ci/physical-flow.json",
+      "sha256": "dd495208ffbda77ab1294a31511b4412106527a2edc9299e5bebd00166924ddd"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/runs/plugin-smoke2/02-rv32-seedplacement/seeded.odb.json",
+      "copy": "partitioned-signoff-ci/runs/plugin-smoke2/02-rv32-seedplacement/seeded.odb.json",
+      "sha256": "519dafd7dc9451220af2f79610e5c87b738876702feadcc2e20108955460ce36"
+    }
+  ]
+}
