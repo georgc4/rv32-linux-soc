@@ -173,6 +173,18 @@ repair helped, but did not isolate or cure the remaining ECO/rerouting effects.
 The worst reported slew was about **6.57 ns**, so the residual violations are
 not merely rounding errors. External memory/board I/O timing remains provisional.
 
+A subsequent pin-identity comparison clarifies this result: in the max-SS
+report at the same 1.5 ns target, **all 20 original slew-violating pins and all
+seven original capacitance-violating pins disappeared from those violation
+lists**. The 121 slew and 20 capacitance violations are on different pins;
+none of the added ECO buffers appears in the slow-corner slew list. Thus the
+targeted changes did resolve the original reported failures locally. The
+overall result regressed after rerouting and subsequent processing. One new
+violation is on input `_26547_/B` of a resized gate, while its repaired output
+passes; 26 newly violating slew pins belong to antenna diodes. These are
+observations, not proof assigning the regression to any single cause. Wire RC,
+upstream loading, placement changes, and antenna repair need separate analysis.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

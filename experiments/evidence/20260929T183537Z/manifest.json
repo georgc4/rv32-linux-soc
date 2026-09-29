@@ -1,0 +1,22 @@
+{
+  "captured_utc": "2026-09-29T18:35:37.655835+00:00",
+  "scope": "Original versus targeted-only max-SS electrical violation pin comparison",
+  "captured_files": [
+    {
+      "source": "build/experiments/soft-partition-screen/library15-targeted-only-comparison.json",
+      "copy": "library15-targeted-only-comparison.json",
+      "bytes": 4573,
+      "sha256": "87da2361184e7f3be811c0c62a79fc769d47033935a36349b4690a990d9fe74a"
+    }
+  ],
+  "source_reports": [
+    {
+      "path": "build/experiments/soft-partition-screen/constraint-diagnostic/slew-limits.log",
+      "sha256": "93bf91d0c3cd0a300ef20c54f2fb8ff156dcf83a124c54de2b9786d911bb6730"
+    },
+    {
+      "path": "build/experiments/soft-partition-screen/electrical-library15-targeted-only/runs/wokwi/16-openroad-stapostpnr/max_ss_100C_1v60/checks.rpt",
+      "sha256": "1aba67a69ab7f0a41b54691b5c6cc5d1a853cb1ff3a6858eb632a21eb97a7a64"
+    }
+  ]
+}
