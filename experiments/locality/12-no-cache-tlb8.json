@@ -1,0 +1,32 @@
+{
+  "name": "12-no-cache-tlb8",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {
+      "label": "12-no-cache-tlb8",
+      "ref": "d76550884dd8674fedca0cab67741d55ca234741"
+    }
+  ],
+  "matrix": {
+    "synth_strategy": [
+      "AREA 2"
+    ],
+    "clock_period_ns": [
+      50.0
+    ],
+    "hold_margin_ns": [
+      0.05
+    ],
+    "grt_hold_margin_ns": [
+      0.0
+    ]
+  },
+  "physical_options": {
+    "timing_driven": true,
+    "corner_profile": "multicorner",
+    "cluster_profile": "operands",
+    "post_grt_timing": false,
+    "max_cores": 4
+  }
+}

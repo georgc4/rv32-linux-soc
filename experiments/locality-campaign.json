@@ -1,0 +1,57 @@
+{
+  "name": "5x4 locality and timing closure",
+  "experiments": [
+    {
+      "name": "11-one-line-tlb8",
+      "manifest": "experiments/locality/11-one-line-tlb8.json"
+    },
+    {
+      "name": "01-timing-nominal",
+      "manifest": "experiments/locality/01-timing-nominal.json"
+    },
+    {
+      "name": "02-timing-multicorner",
+      "manifest": "experiments/locality/02-timing-multicorner.json"
+    },
+    {
+      "name": "03-corners-only",
+      "manifest": "experiments/locality/03-corners-only.json"
+    },
+    {
+      "name": "04-timer-csr",
+      "manifest": "experiments/locality/04-timer-csr.json"
+    },
+    {
+      "name": "05-operands",
+      "manifest": "experiments/locality/05-operands.json"
+    },
+    {
+      "name": "06-cache",
+      "manifest": "experiments/locality/06-cache.json"
+    },
+    {
+      "name": "07-combined",
+      "manifest": "experiments/locality/07-combined.json"
+    },
+    {
+      "name": "08-combined-multicorner",
+      "manifest": "experiments/locality/08-combined-multicorner.json"
+    },
+    {
+      "name": "09-delay-mapping",
+      "manifest": "experiments/locality/09-delay-mapping.json"
+    },
+    {
+      "name": "10-route-timing-repair",
+      "manifest": "experiments/locality/10-route-timing-repair.json"
+    },
+    {
+      "name": "12-no-cache-tlb8",
+      "manifest": "experiments/locality/12-no-cache-tlb8.json"
+    },
+    {
+      "name": "13-registered-legality",
+      "manifest": "experiments/locality/13-registered-legality.json"
+    }
+  ]
+}

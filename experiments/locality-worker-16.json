@@ -1,0 +1,9 @@
+{
+  "name": "16-operands-multicorner",
+  "experiments": [
+    {
+      "name": "16-operands-multicorner",
+      "manifest": "experiments/locality/16-operands-multicorner.json"
+    }
+  ]
+}

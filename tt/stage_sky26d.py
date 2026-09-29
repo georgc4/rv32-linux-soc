@@ -5,9 +5,12 @@ import argparse
 import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from experiments.physical_profiles import flow_overrides
 BUILD = ROOT / "build"
 TEMPLATE_REV = "83d305501d505b157cd6e9ba87bc8ffd949526fd"
 TOOLS_REV = "01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
@@ -38,6 +41,7 @@ parser.add_argument("--hold-margin-ns", type=float, default=0.1)
 parser.add_argument("--grt-hold-margin-ns", type=float, default=0.05)
 parser.add_argument("--antenna-jumper-only", action="store_true")
 parser.add_argument("--antenna-repair-iters", type=int, default=3)
+parser.add_argument("--physical-options", type=Path)
 args = parser.parse_args()
 
 rtl_root = args.rtl_root.resolve()
@@ -79,6 +83,12 @@ config["PL_RESIZER_HOLD_SLACK_MARGIN"] = args.hold_margin_ns
 config["GRT_RESIZER_HOLD_SLACK_MARGIN"] = args.grt_hold_margin_ns
 config["GRT_ANTENNA_REPAIR_JUMPER_ONLY"] = args.antenna_jumper_only
 config["GRT_ANTENNA_REPAIR_ITERS"] = args.antenna_repair_iters
+if args.physical_options:
+    options = json.loads(args.physical_options.read_text())
+    config.update(flow_overrides(options))
+    if options.get("cluster_profile", "none") != "none":
+        for filename in ("librelane_plugin_locality.py", "placement_clusters.tcl"):
+            shutil.copy2(ROOT / "tt" / filename, stage / filename)
 config_path.write_text(json.dumps(config, indent=2) + "\n")
 
 pinout = {

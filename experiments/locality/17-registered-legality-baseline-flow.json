@@ -1,0 +1,32 @@
+{
+  "name": "17-registered-legality-baseline-flow",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {
+      "label": "registered legality with proven baseline physical settings",
+      "ref": "f91a5e108ca57f257d740447d6e14c926b77360b"
+    }
+  ],
+  "matrix": {
+    "synth_strategy": [
+      "AREA 2"
+    ],
+    "clock_period_ns": [
+      50.0
+    ],
+    "hold_margin_ns": [
+      0.05
+    ],
+    "grt_hold_margin_ns": [
+      0.0
+    ]
+  },
+  "physical_options": {
+    "timing_driven": false,
+    "corner_profile": "default",
+    "cluster_profile": "none",
+    "post_grt_timing": false,
+    "max_cores": 4
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "10-route-timing-repair",
+  "tile_shape": "5x4",
+  "flash_image": "build/experiments/images/no-plist-no-vm-pgtable/flash.bin",
+  "revisions": [
+    {
+      "label": "10-route-timing-repair",
+      "ref": "7ebde5cec555806030467657d8bdd1e4f48fe0e6"
+    }
+  ],
+  "matrix": {
+    "synth_strategy": [
+      "AREA 2"
+    ],
+    "clock_period_ns": [
+      50.0
+    ],
+    "hold_margin_ns": [
+      0.05
+    ],
+    "grt_hold_margin_ns": [
+      0.0
+    ]
+  },
+  "physical_options": {
+    "timing_driven": true,
+    "corner_profile": "multicorner",
+    "cluster_profile": "none",
+    "post_grt_timing": true,
+    "max_cores": 4
+  }
+}

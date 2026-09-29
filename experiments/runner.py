@@ -14,8 +14,14 @@ import shutil
 import signal
 import subprocess
 import sys
+import math
 from datetime import datetime, timezone
 from pathlib import Path
+
+try:
+    from .physical_profiles import validate as validate_physical_options
+except ImportError:
+    from physical_profiles import validate as validate_physical_options
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,7 +64,7 @@ def sha256(path: Path) -> str:
 
 def planned_runs(manifest: Path) -> list[dict]:
     data = json.loads(manifest.read_text())
-    if set(data) - {"name", "revisions", "matrix", "flash_image", "tile_shape"}:
+    if set(data) - {"name", "revisions", "matrix", "flash_image", "tile_shape", "physical_options"}:
         raise ValueError("manifest contains unsupported top-level keys")
     tile_shape = data.get("tile_shape", "8x2")
     if tile_shape not in ("8x2", "5x4"):
@@ -78,6 +84,8 @@ def planned_runs(manifest: Path) -> list[dict]:
             ROOT / "tt/run_sky130_synth.sh", ROOT / "sim/tests/linux_serial_boot_tb.v",
             ROOT / "sim/tests/linux_serial_boot_main.cpp",
             ROOT / "sim/models/serial_spi_model.v",
+            ROOT / "experiments/physical_profiles.py",
+            ROOT / "tt/librelane_plugin_locality.py", ROOT / "tt/placement_clusters.tcl",
         ))).hexdigest()
     pdk_root = Path(os.environ.get("PDK_ROOT", Path.home() / ".volare")) / "sky130A"
     pdk_source = pdk_root / "SOURCES"
@@ -93,6 +101,8 @@ def planned_runs(manifest: Path) -> list[dict]:
         commit = git("rev-parse", "--verify", f"{revision['ref']}^{{commit}}")
         for values in itertools.product(*matrix.values()):
             config = dict(zip(matrix, values))
+            if "physical_options" in data:
+                config["physical_options"] = validate_physical_options(data["physical_options"])
             if "tile_shape" in data:
                 config["tile_shape"] = tile_shape
             if config["abc_delay_ps"] is not None and (
@@ -223,13 +233,68 @@ def collect_pnr_metrics(stage: Path) -> dict:
             result["core_area_um2"] = values["design__core__area"]
         if "design__instance__utilization__stdcell" in values:
             result["utilization"] = values["design__instance__utilization__stdcell"]
-        for key, value in values.items():
-            if key.startswith("timing__setup__wns__corner:"):
-                result["setup_wns_ns"] = value
+        # These are provisional values only. Never pick a corner by dict order.
+        for prefix, output in (("timing__setup__wns__corner:", "setup_wns_ns"),
+                               ("timing__setup_r2r__ws__corner:", "setup_r2r_ws_ns")):
+            samples = [v for k, v in values.items() if k.startswith(prefix)]
+            if samples:
+                result[output] = min(samples)
                 result["timing_stage"] = path.parent.name
-            if key.startswith("timing__setup_r2r__ws__corner:"):
-                result["setup_r2r_ws_ns"] = value
+    final = run_root / "final/metrics.json"
+    # STA writes state metrics even if a deferred check fails before final export.
+    sta_states = sorted(run_root.glob("*-openroad-stapostpnr/state_out.json"))
+    final_metrics = (json.loads(final.read_text()) if final.is_file() else
+                     json.loads(sta_states[-1].read_text()).get("metrics", {}) if sta_states else {})
+    result["timing"] = audit_final_timing(final_metrics, resolved)
+    if final_metrics:
+        result["timing_stage"] = "final/metrics.json" if final.is_file() else sta_states[-1].parent.name
+        result["timing"]["source"] = result["timing_stage"]
+        result["timing"]["source_sha256"] = sha256(final if final.is_file() else sta_states[-1])
+        for metric, field in (("timing__setup__wns", "setup_wns_ns"),
+                              ("timing__setup_r2r__ws", "setup_r2r_ws_ns"),
+                              ("timing__hold__ws", "hold_ws_ns")):
+            samples = [v for k, v in final_metrics.items()
+                       if (k == metric or k.startswith(metric + "__corner:"))
+                       and isinstance(v, (int, float)) and math.isfinite(v)]
+            if samples:
+                result[field] = min(samples)
+        result["route_wirelength_um"] = final_metrics.get("route__wirelength")
+        result["hold_buffers"] = final_metrics.get("design__instance__count__hold_buffer")
+    if resolved.is_file():
+        result["resolved_config_sha256"] = sha256(resolved)
     return result
+
+
+def audit_final_timing(metrics: dict, resolved: Path) -> dict:
+    """Fail closed on missing corners, negative slack, or electrical violations."""
+    config = json.loads(resolved.read_text()) if resolved.is_file() else {}
+    expected = config.get("STA_CORNERS", [])
+    corners = {}
+    fields = {"setup_ws_ns": "timing__setup__ws", "hold_ws_ns": "timing__hold__ws",
+              "setup_tns_ns": "timing__setup__tns", "hold_tns_ns": "timing__hold__tns",
+              "setup_violations": "timing__setup_vio__count", "hold_violations": "timing__hold_vio__count",
+              "max_slew_violations": "design__max_slew_violation__count",
+              "max_cap_violations": "design__max_cap_violation__count"}
+    found = {k.split("__corner:", 1)[1] for k in metrics if "__corner:" in k}
+    for corner in sorted(set(expected) | found):
+        corners[corner] = {name: metrics.get(f"{prefix}__corner:{corner}")
+                           for name, prefix in fields.items()}
+    complete = bool(expected) and all(
+        all(isinstance(v, (int, float)) and math.isfinite(v) for v in corners[c].values())
+        for c in expected)
+    setup_hold = complete and all(
+        d["setup_ws_ns"] >= 0 and d["hold_ws_ns"] >= 0
+        and d["setup_violations"] == 0 and d["hold_violations"] == 0
+        and d["setup_tns_ns"] >= 0 and d["hold_tns_ns"] >= 0
+        for c, d in corners.items() if c in expected)
+    electrical = complete and all(
+        d["max_slew_violations"] == 0 and d["max_cap_violations"] == 0
+        for c, d in corners.items() if c in expected)
+    return {"status": "pass" if setup_hold and electrical else "failed" if complete else "missing",
+            "setup_hold_status": "pass" if setup_hold else "failed" if complete else "missing",
+            "electrical_status": "pass" if electrical else "failed" if complete else "missing",
+            "required_corners": expected, "corners": corners,
+            "io_constraints": "explicit" if config.get("SIGNOFF_SDC_FILE") else "fallback_provisional"}
 
 
 def check_physical_artifacts(run_dir: Path, stage: Path, pdk_revision: str | None,
@@ -329,6 +394,10 @@ def place_and_route(run: dict, run_dir: Path, source: Path) -> dict:
         command.append("--antenna-jumper-only")
     if config["synth_abc_area_use_nf"]:
         command.append("--synth-abc-area-use-nf")
+    if "physical_options" in config:
+        options_file = run_dir / "physical-options.json"
+        write_result(options_file, config["physical_options"])
+        command += ["--physical-options", str(options_file)]
     status, code = run_logged(command, ROOT, run_dir / "pnr-stage.log", None)
     if status != "pass":
         return {"status": status, "returncode": code, "log": "pnr-stage.log"}
@@ -353,7 +422,8 @@ def place_and_route(run: dict, run_dir: Path, source: Path) -> dict:
         [str(python), "-c", "from importlib.metadata import version; print(version('librelane'))"],
         text=True).strip()
     result.update(collect_pnr_metrics(stage))
-    if status == "pass" and gds.is_file():
+    # Audit a produced GDS even when the flow returns nonzero for timing.
+    if gds.is_file():
         result["checks"] = check_physical_artifacts(
             run_dir, stage, result.get("physical_pdk_revision"), None)
         if any(check["status"] != "pass" for check in result["checks"].values()):

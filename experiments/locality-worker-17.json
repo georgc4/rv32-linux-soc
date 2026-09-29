@@ -1,0 +1,9 @@
+{
+  "name": "17-registered-legality-baseline-flow",
+  "experiments": [
+    {
+      "name": "17-registered-legality-baseline-flow",
+      "manifest": "experiments/locality/17-registered-legality-baseline-flow.json"
+    }
+  ]
+}

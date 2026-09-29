@@ -1,0 +1,9 @@
+{
+  "name": "15-timer-csr-multicorner",
+  "experiments": [
+    {
+      "name": "15-timer-csr-multicorner",
+      "manifest": "experiments/locality/15-timer-csr-multicorner.json"
+    }
+  ]
+}
