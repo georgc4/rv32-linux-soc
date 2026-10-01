@@ -434,6 +434,34 @@ The new physical CI build was dispatched by pushing 0fc5c9b to the draft PR #1
 branch. Main is unchanged. The existing two-profile Linux matrix **36811470885**
 continues without a restart; no full Linux acceptance was established here.
 
+## 2026-10-01 — CI antenna repair loses protected routes
+
+The user asked to inspect failed GDS run [36822832367](https://github.com/georgc4/rv32-linux-soc/actions/runs/36822832367).
+The 207-buffer shared-tree plan, legalization, and pre-route audit passed. The
+first ECO detailed-route checkpoint preserved all **8,950 protected nets**.
+After antenna repair/reroute pass 1, **218 protected routes were missing**; after
+passes 2 and 3, **228 were missing**. Surviving protected paths were unchanged.
+Example `_00378_` retains logical pins `_13425_/X` and `_27062_/D` but loses its
+wire geometry. The guard stopped at **RV32.AuditECORoutes**, not buffer planning.
+This is a real connectivity concern, not a harmless DEF text-format mismatch.
+
+CI inserted **255 antenna diodes** across the three passes. The final router DRC
+count is **zero**. A fresh local antenna check on the exact final CI ODB also
+reports **zero net and pin violations**; the metrics file's 2 nets/3 pins were
+from the check before the last repair. Neither zero count proves connectivity.
+Post-ECO disconnected-pin checking, extracted STA, Magic/KLayout and LVS were
+not reached. No repaired-GDS qualification is claimed.
+
+The separate local route, which omitted antenna repair, completed in 13m20s with
+zero router DRC and now passes the post-route audit (55,220 original input pins,
+8,950 protected routes). This comparison isolates the failure to the antenna
+repair/reroute loop. The next correction should preserve protected wires across
+that loop, or explicitly promote affected nets into the editable set and route
+them; audit every pass and check disconnected pins before signoff. Exact tool
+operation causing the loss remains to be instrumented. Main is unchanged.
+
+Evidence: [checkpoint comparison](evidence/20261001T180539Z/).
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

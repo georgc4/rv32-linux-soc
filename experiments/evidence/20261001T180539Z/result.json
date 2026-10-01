@@ -1,0 +1,27 @@
+{
+  "ci_run": 36822832367,
+  "commit": "0fc5c9b50c365a1a6a70c00a2187dad2de37e6f9",
+  "failure_step": "63-rv32-auditecoroutes",
+  "first_failing_net": "_00378_",
+  "protected_routes": 8950,
+  "missing_after_initial_detail_route": 0,
+  "missing_after_antenna_repair_passes": [
+    218,
+    228,
+    228
+  ],
+  "changed_surviving_protected_routes": 0,
+  "final_router_drc_errors": 0,
+  "final_antenna_check_on_downloaded_odb": {
+    "net_violations": 0,
+    "pin_violations": 0
+  },
+  "post_eco_lvs_completed": false,
+  "post_eco_sta_completed": false,
+  "antenna_diodes_added": 255,
+  "final_ci_odb_sha256": "7701ff7fe52356d6164d8a87c849ee6790261de02db09b0a27c90ff6376707f8",
+  "local_without_antenna_repair": {
+    "router_drc": 0,
+    "post_route_audit": "pass"
+  }
+}
