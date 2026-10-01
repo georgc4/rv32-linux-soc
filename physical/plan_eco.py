@@ -10,6 +10,7 @@ import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import odb
+from eco_tree import shared_buffer_tree
 
 
 def quote(value):
@@ -31,13 +32,14 @@ def main():
         if net.getSigType() in ['POWER','GROUND']: raise ValueError('Electrical violation on supply: '+name)
         nets[net.getName()]=net
     if len(nets)>100: raise ValueError('More than 100 failing nets; refusing an unbounded ECO')
-    lines=['set eco_movable {}'];edits=[];serial=0
+    lines=['set eco_movable {}'];edits=[];net_plans=[];serial=0
     def point(t):
         valid,x,y=t.getAvgXY();assert valid
         return x/u,y/u
     def pin(t):return t.getInst().getName()+'/'+t.getMTerm().getName()
     def insert(cell,loads,x,y):
         nonlocal serial
+        if db.findMaster(cell) is None: raise ValueError('Missing buffer master: '+cell)
         serial+=1;name=f'ci_eco_{serial:04d}'
         assert b.findInst(name) is None
         lines.append('set created [insert_buffer -buffer_cell '+quote(cell)+' -load_pins [list '+ ' '.join(loads)+'] -location {'+f'{x:.3f} {y:.3f}'+'} -buffer_name '+quote(name)+' -net_name '+quote(name+'_net')+']')
@@ -49,6 +51,7 @@ def main():
         if len(drivers)!=1: raise ValueError('Expected one internal driver: '+name)
         driver=drivers[0];inst=driver.getInst();master=inst.getMaster().getName();loads=sorted([t for t in net.getITerms() if t.getIoType()=='INPUT'],key=pin)
         dx,dy=point(driver)
+        before=serial
         clock='__clkbuf_' in master or net.getSigType()=='CLOCK'
         if clock:
             if '__clkbuf_' not in master or len(loads)<2: raise ValueError('Unsupported clock repair: '+name)
@@ -59,6 +62,7 @@ def main():
             for group in [ordered[:middle],ordered[middle:]]:
                 gx=sum(point(t)[0] for t in group)/len(group);gy=sum(point(t)[1] for t in group)/len(group)
                 insert('sky130_fd_sc_hd__clkbuf_16',[quote(pin(t)) for t in group],dx+(gx-dx)*0.25,dy+(gy-dy)*0.25)
+            net_plans.append(dict(net=name,kind='clock_split',sinks=len(loads),buffers=serial-before,independent_chain_buffers=None))
             continue
         match=re.fullmatch(r'(sky130_fd_sc_hd__.+)_(\d+)',master)
         if not match: raise ValueError('Unsupported driver family: '+master)
@@ -69,14 +73,32 @@ def main():
             if oldpins!=newpins: raise ValueError('Resize pin interface changed')
             lines.extend(['replace_cell '+quote(inst.getName())+' '+quote(replacement),'estimate_parasitics -placement','lappend eco_movable '+quote(inst.getName())])
             edits.append(dict(kind='resize',instance=inst.getName(),old=master,new=replacement))
-        inserted=0
-        for load in loads:
-            lx,ly=point(load);count=max(0,math.ceil((abs(lx-dx)+abs(ly-dy))/80)-1);sink=quote(pin(load))
-            for index in range(count,0,-1):
-                f=index/(count+1);sink=insert('sky130_fd_sc_hd__buf_4',[sink],dx+(lx-dx)*f,dy+(ly-dy)*f);inserted+=1
+        locations=[(pin(load),*point(load)) for load in loads]
+        independent=sum(max(0,math.ceil((abs(x-dx)+abs(y-dy))/80)-1)
+                        for _,x,y in locations)
+        tree=shared_buffer_tree((dx,dy),locations,force=not replacement)
+        refs={}
+        for node in tree['buffers']:
+            sink_refs=[quote(ref['pin']) if 'pin' in ref else refs[ref['buffer']]
+                       for ref in node['loads']]
+            refs[node['id']]=insert(node['cell'],sink_refs,*node['point_um'])
+        inserted=serial-before
+        net_plans.append(dict(net=name,kind='shared_tree',sinks=len(loads),
+                              buffers=inserted,independent_chain_buffers=independent,
+                              driver_pin=pin(driver),driver_um=[dx,dy],
+                              sinks_um=locations,tree=tree))
         if not replacement and not inserted: raise ValueError('No supported repair for '+name)
-    if serial>250: raise ValueError('More than 250 buffers; refusing an unbounded ECO')
-    out=Path(a.output);out.write_text('\n'.join(lines)+'\n')
-    out.with_suffix('.json').write_text(json.dumps(dict(target_pins=pins,target_nets=sorted(nets),edits=edits,odb_sha256=hashlib.sha256(Path(a.odb).read_bytes()).hexdigest()),indent=2)+'\n')
+    out=Path(a.output)
+    record=dict(target_pins=pins,target_nets=sorted(nets),edits=edits,
+                buffer_count=serial,buffer_limit=250,net_plans=net_plans,
+                status='ready' if serial<=250 else 'buffer_limit_exceeded',
+                odb_sha256=hashlib.sha256(Path(a.odb).read_bytes()).hexdigest())
+    # Preserve diagnostics even when the bound rejects the proposed plan.
+    out.with_suffix('.json').write_text(json.dumps(record,indent=2)+'\n')
+    print(json.dumps(dict(buffer_count=serial,buffer_limit=250,target_nets=len(nets),
+                         independent_chain_buffers=sum(n['buffers'] if n['independent_chain_buffers'] is None else n['independent_chain_buffers']
+                                                       for n in net_plans)),sort_keys=True))
+    if serial>250: raise ValueError('More than 250 buffers; refusing an unbounded ECO; see '+str(out.with_suffix('.json')))
+    out.write_text('\n'.join(lines)+'\n')
 
 if __name__=='__main__':main()

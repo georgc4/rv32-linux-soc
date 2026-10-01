@@ -68,7 +68,10 @@ class PrepareECONeighborhood(Step):
     inputs=[DF.ODB];outputs=[DF.ODB]
     def run(self,state_in,**kwargs):
         out=FilePath(self.step_dir);original=sibling(self,'rv32-planelectricaleco')/'original.odb'
-        run_python(self,'prepare_eco_routes.py','--original',original,'--eco',state_in[DF.ODB],'--output-dir',out)
+        # The 37-net CI fixture needs 58.85% with 20/5 um halos. Keep those
+        # halos and bound this distributed-repair trial explicitly at 65%.
+        run_python(self,'prepare_eco_routes.py','--original',original,'--eco',state_in[DF.ODB],'--output-dir',out,
+                   '--max-editable-fraction','0.65')
         run_python(self,'audit_eco.py','--odb',out/'prepared.odb','--manifest',out/'preservation.json','--output',out/'pre-route-audit.json')
         m=json.loads((out/'preservation.json').read_text())
         return {DF.ODB:Path(str(out/'prepared.odb'))},{'rv32__eco__editable_nets':len(m['editable_nets']),'rv32__eco__protected_nets':len(m['protected_nets'])}

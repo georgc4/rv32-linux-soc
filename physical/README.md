@@ -28,7 +28,8 @@ CI run must additionally validate the clean RTL-to-GDS path.
 
 ## Expanded routed ECO in CI (2026-09-30)
 
-All full physical experiments now run through GitHub Actions. Following the first
+Full RTL-to-GDS qualification runs through GitHub Actions; local checkpoint
+screens can reject unsuitable experiments before dispatch. Following the first
 nine-corner extracted STA pass, the flow reads slew/capacitance violations from
 that run's reports. It derives driver nets from the CI-produced ODB, selects
 same-family stronger cells, inserts noninverting buffers on long branches, and
@@ -39,7 +40,9 @@ After legalization, the flow unlocks affected nets plus wires within 20 micromet
 of the old/new changed-cell footprints and 5 micrometres of the original affected
 routes. Whole selected nets are editable; the rest retain FIXED encoded paths.
 The neighborhood is selected from actual DEF segments, not whole-net bounding
-boxes, and a 25% net-count ceiling prevents an accidental design-wide reroute.
+boxes. The current shared-tree experiment explicitly allows up to 65% of the
+original routed-net count (including new ECO nets in the numerator); the selector
+default remains 25%. This bound limits rerouting, not physical qualification.
 Cells outside the ECO remain locked. Antenna repair is enabled in detailed routing.
 
 Logical connectivity (tracing through added buffers) and exact normalized geometry
@@ -50,8 +53,40 @@ artifact. Local-route global congestion may proceed to detailed-route diagnosis;
 no final physical gate is relaxed. The normal initial global-route congestion gate
 remains enabled. A shorted GDS cannot become a submission through a clean STA result.
 
-Validation: nine pure helper tests cover report parsing, absent clean-report
+Validation: fifteen pure helper tests cover report parsing, absent clean-report
 sections, relative DEF coordinates, corridor/footprint neighborhood selection,
-and missing geometry. Plugin loading and all 95 flow steps' configuration were
+missing geometry, tree connectivity/fanout/segment bounds, and the actual
+failed-CI sink geometry. Plugin loading and all 95 flow steps' configuration were
 validated in the pinned container without running a local physical build. Full
 backend validation and the actual experiment run in CI.
+
+## Shared-tree repair experiment (2026-09-30)
+
+CI run 36811470893 stopped before applying its ECO: independent per-sink chains
+requested 874 buffers for 37 target nets, exceeding the 250-buffer limit. The new
+planner recursively divides sinks along their widest spatial axis, shares branch
+trunks, and removes redundant junctions while bounding planned Manhattan segments
+to 90 micrometres and fanout to eight. Leaf groups span at most 80 micrometres.
+Leaf buffers use buf_4 and repeaters/branch drivers use buf_8. Original drivers
+still receive equivalent-family resizes; the existing clock split is unchanged.
+These are geometric heuristics, not electrical proof. Legalization and routing
+can increase distances, and only extracted timing determines success.
+
+The exact failed-CI ODB produces 207 buffers and 36 resizes. Local application and
+placement legality passed. Before routing, the audit verified 55,220 original
+input-pin drivers and 8,950 exact protected routes. The checked-in geometry
+fixture and tree tests reproduce the buffer-budget regression without OpenDB.
+Planner diagnostics are retained even when the budget rejects a plan.
+
+Keeping the 20/5 micrometre cell/route halos selects 12,505 editable nets against
+21,248 original routed nets (58.85%, conservatively counting 207 new nets).
+Cell halos alone touch 9,490 nets. Even 1/0.5 micrometre halos select 7,080 nets,
+so the former 25% bound cannot accommodate this distributed repair. This trial
+explicitly raises the routing budget to 65% while retaining the wide halos and
+all final signoff gates. It does not claim to be a small local repair. Its risk is
+that rerouted neighboring nets acquire new electrical violations.
+
+The local screen uses the exact CI database and pinned LibreLane 3.0.14/OpenROAD
+binary. Its linking Liberty comes from locally installed PDK 0fe599b2, whereas CI
+uses 8afc8346; therefore local screening does not constitute timing qualification.
+CI repeats the complete flow, including antenna repair and nine-corner extraction.

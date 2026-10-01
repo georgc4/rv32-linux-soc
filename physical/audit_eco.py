@@ -22,7 +22,7 @@ def main():
             if term.getIoType()!='OUTPUT':continue
             inst=term.getInst();name=inst.getName()
             if name.startswith('ci_eco_'):
-                if inst.getMaster().getName() not in ['sky130_fd_sc_hd__buf_4','sky130_fd_sc_hd__clkbuf_16']:raise ValueError('Unexpected ECO cell')
+                if inst.getMaster().getName() not in ['sky130_fd_sc_hd__buf_4','sky130_fd_sc_hd__buf_8','sky130_fd_sc_hd__clkbuf_16']:raise ValueError('Unexpected ECO cell')
                 result.extend(drivers(inst.findITerm('A').getNet(),depth+1))
             else:result.append(name+'/'+term.getMTerm().getName())
         result.extend('PORT:'+t.getName() for t in net.getBTerms() if t.getIoType()=='INPUT')
