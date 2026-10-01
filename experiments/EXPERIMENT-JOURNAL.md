@@ -360,6 +360,35 @@ regressions, production-pin boot/rejection, and all three full-capacity timing
 profiles passed in GitHub Actions. Both GDS runs (36808009959 and 36809950961)
 were still in progress at this check; gate-level/physical results remain pending.
 
+## 2026-09-30 — Full Linux against datasheet memory models
+
+User asked whether to run Linux with the stricter chip models. CI commit
+**6dc707f7766bc5b4c69bab2367034dd77d818fd7** adds the long acceptance workflow:
+https://github.com/georgc4/rv32-linux-soc/actions/runs/36811346832 .
+
+The test uses the exact previously accepted NOR image (SHA-256 590ed638...), now
+stored as a 1.6 MiB compressed, size/hash-checked fixture with its kernel config.
+It compiles staged production `src/*.v`, loads only the external NOR, and boots
+through real serial transfers. The C++ driver now runs at 20 MHz and processes
+all pending timed events so chip output/release delays cannot be skipped.
+The CI branch's image build recipe also gained the existing ash prompt and
+acceptance-program source, which were missing there despite the harness
+expecting them.
+
+Two profiles test 6 ns outputs / A5 PSRAM and 2 ns outputs / 5A PSRAM. The
+nonzero patterns test some startup-data dependencies under Verilator's two-state
+semantics; they are not four-state X propagation. Both local million-cycle
+compile/driver smoke runs passed, and all 17 chip-model checks passed under both
+Icarus and Verilator. Those smoke runs explicitly report linux_accepted=false.
+
+A full pass requires userspace, an ash prompt, all 22 UART command bytes, and
+ASH_PROGRAM_OK from /bin/acceptance_smoke. Every job preserves source, ROM,
+physical config, image and simulator hashes plus progress/output/result files.
+The limit is 20 billion cycles / 5.5 wall hours per hosted runner; an unfinished
+run fails, rather than being treated as a boot pass. Full CI results were still
+pending at launch. This tests RTL with modeled external chips, not gate-level
+Linux or board analog behavior. Main is unchanged.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
