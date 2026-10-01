@@ -389,6 +389,15 @@ run fails, rather than being treated as a boot pass. Full CI results were still
 pending at launch. This tests RTL with modeled external chips, not gate-level
 Linux or board analog behavior. Main is unchanged.
 
+### Linux CI compiler compatibility correction
+
+First launch 36811346832 passed both simulators' chip-model tests, then failed
+C++ compilation because Ubuntu's Verilator lacks the optional
+`VerilatedContext::statsPrintSummary` method. Commit **26f81b8** removes only
+that reporting call. The million-cycle smoke still passed; the corrected long
+matrix is https://github.com/georgc4/rv32-linux-soc/actions/runs/36811470885 .
+This was a host-tool compatibility failure, not Linux or chip timing evidence.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
