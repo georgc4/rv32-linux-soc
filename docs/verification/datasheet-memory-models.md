@@ -127,3 +127,37 @@ These experiments do not close the provisional external I/O STA budgets. Actual
 pad/carrier delays, fanout, ringing and supply sequencing still require board
 information or measurement. Linux acceptance is also a separate qualification;
 the short boot program does not replace it.
+
+## Full Linux acceptance
+
+The `linux-datasheet-acceptance` workflow compiles **the staged `src/*.v` used by
+GDS**, the full serial Linux harness, and the strict chip models with Verilator.
+It uses the previously accepted flash image, SHA-256 `590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615`,
+from a size/hash-checked compressed fixture. It does not preload Linux into RAM,
+replace the ROM, or bypass the serial bridge. The C++ driver advances to every
+pending timed event as well as every 25 ns half-clock edge; the previous driver
+only visited 5 ns half-clock edges and could not correctly simulate chip delays.
+
+Two CI profiles use 6 ns outputs/A5 initial PSRAM and 2 ns outputs/5A initial
+PSRAM. Verilator is a two-state simulator: these nonzero patterns expose some
+uninitialized-memory dependencies, but do not provide four-state X propagation.
+Icarus retains X initialization in the shorter strict checks. Both simulators
+run the 17 chip-model self-tests before the long CI job.
+
+Success requires Linux userspace, the BusyBox ash prompt, receipt of the UART
+command `/bin/acceptance_smoke`, its `ASH_PROGRAM_OK` result, and the complete
+acceptance marker. A boot banner, zero process exit, smoke run or timeout cannot
+be counted as Linux acceptance. Normal Linux boot exercises reads and PSRAM
+writes; NOR program/erase timing is covered by the separate bridge matrix.
+
+Each profile has a 20-billion-cycle ceiling and a 5.5-hour wall deadline, leaving
+room within the hosted runner's job timeout to upload results. Incomplete runs
+fail and retain their progress; they are not promoted to a pass. Artifacts retain
+source/config/image/simulator hashes, simulator version, timing/pattern settings,
+compile log, guest progress/UART log and a machine-readable outcome. This is RTL
+Linux acceptance, not a full-chip gate-level or analog-board test.
+
+`python3 scripts/linux_datasheet_ci.py` reproduces the long run. For quick driver
+validation, use `--smoke-cycles 1000000`; its result explicitly says
+`linux_accepted: false` and `status: smoke_only`. Do not supply that option in the
+acceptance workflow. The local million-cycle validation passed in both profiles; the full Linux CI result is pending at launch.

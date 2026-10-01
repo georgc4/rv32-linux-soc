@@ -1,0 +1,12 @@
+{
+  "bytes": 16777216,
+  "sha256": "590ed63886833648537907532aac191c210e3eb4e36e300c99c4de4707e6f615",
+  "firmware_bytes": 1156,
+  "firmware_entry": "0x80000000",
+  "manifest_offset": 262144,
+  "dtb_offset": 262176,
+  "kernel_offset": 266240,
+  "kernel_ram_address": "0x80400000",
+  "kernel_file_bytes": 4855980,
+  "kernel_runtime_bytes": 5090504
+}

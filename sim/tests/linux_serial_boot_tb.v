@@ -1,6 +1,9 @@
 `timescale 1ns/1ps
 // Full-image experiment: real ROM, bridge, and quad-lane SPI transfers to all chips.
-module linux_serial_boot_tb(input wire clk);
+module linux_serial_boot_tb #(
+    parameter realtime MEMORY_OUTPUT_DELAY = 6.0,
+    parameter [7:0] MEMORY_INIT_BYTE = 8'ha5
+)(input wire clk);
     reg rst_n = 0;
     reg uart_rx = 1;
     wire uart_tx, spi_sck, initialized, halted, fault;
@@ -31,6 +34,7 @@ module linux_serial_boot_tb(input wire clk);
     longint unsigned flash_requests = 0;
     longint unsigned page_faults = 0;
     longint unsigned other_sync_traps = 0;
+    longint unsigned smoke_cycles = 0;
     longint unsigned cycle_limit = 64'd20000000000;
     longint unsigned uart_rx_consumed = 0;
     reg ash_prompt_seen = 0;
@@ -60,14 +64,36 @@ module linux_serial_boot_tb(input wire clk);
     assign dq_in = (dq_out & dq_oe) | model_bus;
     genvar g;
     generate for (g = 0; g < 5; g = g + 1) begin: chips
-        serial_spi_model #(.MEM_BYTES(g == 4 ? 16777216 : 8388608),
+`ifdef DATASHEET_MODEL
+        serial_memory_datasheet_model #(.T_OUTPUT(MEMORY_OUTPUT_DELAY),
+                           .PSRAM_INIT_BYTE(MEMORY_INIT_BYTE),
+`else
+        serial_spi_model #(
+`endif
+                           .MEM_BYTES(g == 4 ? 16777216 : 8388608),
                            .IS_FLASH(g == 4)) model (
+`ifdef DATASHEET_MODEL
+            .host_oe(g == 4 ? {dq_oe[5:4], dq_oe[1:0]} : dq_oe[3:0]),
+`endif
             .cs_n(cs_n[g]), .sck(spi_sck),
             .io_in(g == 4 ? {dq_out[5:4], dq_out[1:0]} : dq_out[3:0]),
             .io_out(model_out[g]), .io_oe(model_oe[g]),
             .command_count(spi_commands[g])
         );
     end endgenerate
+
+    wire [3:0] ram_drive = model_oe[0] | model_oe[1] | model_oe[2] | model_oe[3];
+    wire [5:0] chip_drive = {model_oe[4][3:2],ram_drive[3:2],ram_drive[1:0]|model_oe[4][1:0]};
+    always @(posedge spi_sck) if (rst_n) begin
+        if ((dq_oe & chip_drive) != 0) $fatal(1, "Linux memory bus contention");
+        if (((~cs_n & 5'h1f) & ((~cs_n & 5'h1f)-5'd1)) != 0)
+            $fatal(1, "multiple Linux memory chips selected");
+    end
+    always @(dq_oe or chip_drive) begin
+        #0.001;
+        if (rst_n && (dq_oe & chip_drive) != 0)
+            $fatal(1, "Linux memory bus turnaround contention");
+    end
 
     // Send actual UART frames. Wait for the guest to read each byte because
     // this RTL UART has a one-byte receive register and no RX FIFO.
@@ -107,6 +133,12 @@ module linux_serial_boot_tb(input wire clk);
         for (flash_byte = 0; flash_byte < 16777216; flash_byte = flash_byte + 1)
             chips[4].model.memory[flash_byte] = 8'hff;
         $readmemh("build/linux/flash.serial.hex", chips[4].model.memory);
+        if ($value$plusargs("smoke_cycles=%d", smoke_cycles)) begin end
+`ifdef DATASHEET_MODEL
+        $display("MEMORY_PROFILE datasheet core_hz=20000000 output_ns=%0.3f psram_init=%h capacities=4x8MiB+16MiB", MEMORY_OUTPUT_DELAY, MEMORY_INIT_BYTE);
+`else
+        $display("MEMORY_PROFILE accelerated core_hz=20000000");
+`endif
         if ($value$plusargs("max_cycles=%d", cycle_limit)) begin end
         if ($value$plusargs("report_first=%d", next_report)) begin end
         if ($value$plusargs("report_step=%d", report_step)) begin end
@@ -234,6 +266,10 @@ module linux_serial_boot_tb(input wire clk);
             next_report = next_report + report_step;
         end
         if (fault || halted) $fatal(1, "CPU fault/halt at cycle %0d pc=%h", cycles, fault_pc);
+        if (smoke_cycles != 0 && cycles >= smoke_cycles) begin
+            $display("SMOKE_ONLY cycles=%0d NOT_LINUX_ACCEPTANCE", cycles);
+            $finish;
+        end
         if (cycles >= cycle_limit)
             $fatal(1, "boot timeout after %0d cycles pc=%h priv=%d satp=%h", cycles,
                    dut.cpu.pc, dut.current_privilege, dut.current_satp);

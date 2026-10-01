@@ -4,6 +4,7 @@
 // Time zero denotes stable VCC. No pad, PCB, refresh physics or voltage model.
 module serial_memory_datasheet_model #(
     parameter IS_FLASH = 0,
+    parameter [7:0] PSRAM_INIT_BYTE = 8'hxx,
     parameter integer MEM_BYTES = IS_FLASH ? 16777216 : 8388608,
     parameter realtime T_OUTPUT = 6.0,
     parameter realtime T_DISABLE = IS_FLASH ? 7.0 : 6.0,
@@ -50,7 +51,7 @@ module serial_memory_datasheet_model #(
     initial begin
         // PSRAM power-up contents are unspecified. Catch reads before writes.
         for (i = 0; i < MEM_BYTES; i = i + 1)
-            memory[i] = IS_FLASH ? 8'hff : 8'hxx;
+            memory[i] = IS_FLASH ? 8'hff : PSRAM_INIT_BYTE;
         for (i = 0; i < 4; i = i + 1) lane_changed[i] = -1000;
     end
 

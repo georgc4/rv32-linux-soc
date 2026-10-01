@@ -7,7 +7,7 @@ import struct
 import sys
 
 out = pathlib.Path(sys.argv[1])
-paths = {name: out / name for name in ("Image", "rv32-linux-soc.dtb", "initramfs.cpio", "busybox", "digit_demo")}
+paths = {name: out / name for name in ("Image", "rv32-linux-soc.dtb", "initramfs.cpio", "busybox", "digit_demo", "acceptance_smoke")}
 kernel = paths["Image"].read_bytes()
 dtb = paths["rv32-linux-soc.dtb"].read_bytes()
 
@@ -18,7 +18,7 @@ assert runtime_size >= len(kernel), "kernel runtime size is smaller than file"
 assert struct.unpack_from(">I", dtb)[0] == 0xD00DFEED, "bad DTB magic"
 assert struct.unpack_from(">I", dtb, 4)[0] == len(dtb), "bad DTB size"
 assert paths["initramfs.cpio"].read_bytes()[:6] in (b"070701", b"070702"), "bad initramfs"
-for name in ("busybox", "digit_demo"):
+for name in ("busybox", "digit_demo", "acceptance_smoke"):
     elf = paths[name].read_bytes()
     assert elf[:5] == b"\x7fELF\x01" and struct.unpack_from("<H", elf, 18)[0] == 243, name
 

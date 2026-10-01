@@ -23,3 +23,20 @@ No gate-level success or physical signoff is claimed from the RTL result.
 
 See `docs/verification/datasheet-memory-models.md` for assumptions, coverage and
 the newly exposed requirement to defer NOR writes until 5 ms after power-up.
+
+## Full Linux acceptance follow-up
+
+The user asked to boot Linux against the stricter memory models. Added a
+separate long-running CI matrix using the exact previously accepted flash image
+(590ed638...) and the staged production RTL. Success includes an interactive
+BusyBox ash command and its userspace acceptance program, not just boot output.
+The C++ clock driver now uses 20 MHz and visits pending timed model events.
+Two profiles vary output delay and nonzero PSRAM initialization; Verilator's
+two-state limitation is explicit. The guest fixture preserves the earlier Linux
+configuration so the comparison changes the memory modeling, not the guest.
+
+A million-cycle local compile/driver smoke passed at 6 ns/A5 with real serial
+traffic; it is labeled smoke-only. Full Linux runs are launched only in CI and
+remain pending. Each run is bounded at 20 billion cycles / 5.5 wall hours and
+retains input hashes, progress and outcome. No acceptance or physical signoff
+is inferred from the smoke result.
