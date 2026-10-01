@@ -1,5 +1,6 @@
 """Reproduce the four-part placement experiment from a clean RTL checkout."""
 import json
+import sys
 from pathlib import Path as FilePath
 from librelane.common import Path
 from librelane.state import DesignFormat
@@ -9,6 +10,8 @@ from librelane.flows import Flow, SequentialFlow
 from librelane.flows.classic import Classic
 
 ROOT = FilePath(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / 'physical'))
+from librelane_eco_steps import ECO_STEPS
 
 @Step.factory.register()
 class PartitionDesign(OpenROADStep):
@@ -52,5 +55,7 @@ class RV32Partitioned(SequentialFlow):
         if step.id == 'OpenROAD.GlobalPlacement':
             Steps.extend([PartitionDesign, SeedPlacement])
         Steps.append(step)
+        if step.id == "OpenROAD.STAPostPNR":
+            Steps.extend(ECO_STEPS)
     config_vars = Classic.config_vars
     gating_config_vars = Classic.gating_config_vars
