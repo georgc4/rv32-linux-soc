@@ -244,6 +244,35 @@ A prepared/ legalized database passing the preservation audit is not a completed
 ECO or a signoff pass. Prior short failed attempts and the router crash are kept
 as failed results; no final slew improvement is claimed yet.
 
+## 2026-09-30 — Completed ECO and clean CI outcomes
+
+The route-preserving v6 experiment finished on September 29 at 19:38 UTC.
+Its extracted STA reports zero slew and capacitance violations in all nine
+corners, positive setup/hold everywhere (worst setup +9.114224 ns, hold
++0.054048 ns), and the post-route preservation audit confirms all 21,385
+protected routes unchanged. This is promising diagnostic evidence, not signoff:
+physical verification failed with 9 router markers (8 shorts, 1 metal-spacing),
+61 Magic markers, 10 KLayout markers, 59 LVS errors, and 2 antenna-violating
+nets. These tool counts are not additive independent defects. The LVS report
+also shows supply-port matching problems requiring explicit investigation.
+Generic external I/O constraints remain provisional.
+
+The clean GitHub build completed on September 29 at 20:48 UTC. Logs prove both
+RV32.PartitionDesign and RV32.SeedPlacement executed; final DRC, LVS and antenna
+checks passed, as did setup and hold. The build correctly failed slew/capacitance
+gates. This validates that CI is executing our physical technique, but does not
+qualify its artifact or validate successful submission/provenance packaging yet.
+Precheck and gate-level jobs were skipped after GDS failed. PR #1 remains draft.
+The Mac experiment container has exited; neither of these two runs is active.
+
+Recommended next work: map the physical ECO failures first, including LVS supply
+connectivity, then enlarge the editable routing neighborhood only around the
+conflicting wires/pins while preserving distant routes. Repair the two antenna
+nets locally and rerun extraction plus all physical checks. Finally make the
+repair selection report-driven for the clean CI-produced database, rather than
+copying hard-coded cell names from the local checkpoint. Rerun CI with the
+qualified repair integrated before promoting the submission.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

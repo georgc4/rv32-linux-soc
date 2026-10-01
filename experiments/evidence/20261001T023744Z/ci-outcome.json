@@ -1,0 +1,24 @@
+{
+  "run_url": "https://github.com/georgc4/rv32-linux-soc/actions/runs/36615192813",
+  "conclusion": "failure",
+  "custom_steps_executed": [
+    "RV32.PartitionDesign",
+    "RV32.SeedPlacement"
+  ],
+  "passed": [
+    "DRC",
+    "LVS",
+    "antenna",
+    "setup",
+    "hold"
+  ],
+  "failed": [
+    "max_slew",
+    "max_cap"
+  ],
+  "skipped": [
+    "precheck",
+    "gl_test"
+  ],
+  "log_sha256": "a906886d9ec3530adc3d84e983f61955c26b085c775a3044d072605ffacc2f53"
+}
