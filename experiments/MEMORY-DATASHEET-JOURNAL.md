@@ -40,3 +40,9 @@ traffic; it is labeled smoke-only. Full Linux runs are launched only in CI and
 remain pending. Each run is bounded at 20 billion cycles / 5.5 wall hours and
 retains input hashes, progress and outcome. No acceptance or physical signoff
 is inferred from the smoke result.
+
+First Linux CI launch 36811346832 passed all model tests but failed C++ compile:
+Ubuntu's older Verilator lacks `VerilatedContext::statsPrintSummary`. Removed
+that optional reporting call; elapsed time/provenance still comes from the
+Python runner. This was a harness compatibility failure, not a guest boot or
+chip timing failure. The corrected commit restarts the matrix.

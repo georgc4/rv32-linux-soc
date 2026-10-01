@@ -29,6 +29,5 @@ int main(int argc, char** argv) {
         top->eval();
     }
     top->final();
-    context->statsPrintSummary();
     return 0;
 }
