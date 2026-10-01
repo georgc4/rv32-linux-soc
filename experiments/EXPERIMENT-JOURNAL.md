@@ -313,6 +313,46 @@ Current experiment: https://github.com/georgc4/rv32-linux-soc/actions/runs/36808
 PR #1 remains draft and main remains unchanged. This entry records the launch,
 not a successful repair or a qualified artifact.
 
+## 2026-09-30 — Datasheet-faithful memory experiments move into CI
+
+The user requested more experiments and models close to the purchased parts:
+four ESP-PSRAM64H and one W25Q128JVSIQ-TR. The public manufacturer datasheets
+were available (PSRAM via the Adafruit product mirror); no user upload was
+needed. CI branch commit **8e069576fb3384952e3f668e83c26376c29abb7b** adds a
+strict digital model alongside the existing accelerated Linux model.
+
+The strict tests use actual capacities, elapsed flash BUSY times up to 3 ms
+program / 400 ms erase, delayed outputs/release, power-up and reset requirements,
+input/CS/clock timing, page wrap, one-to-zero NOR programming, and explicit
+unsupported-command failures. Seventeen model self-tests include intentional
+invalid transactions with exact expected failure reasons. All three bridge
+profiles (typical/maximum operation latency and 6 ns/2 ns output delays) passed
+locally at 20 MHz core clock. This is not complete emulation of every vendor
+feature or analog board behavior; coverage is documented in the CI branch's
+`docs/verification/datasheet-memory-models.md`.
+
+The old gate smoke only checked reset. Its replacement uses the production
+wrapper pins and unchanged ROM to boot the diagnostic through NOR and PSRAM,
+check UART OK and RAM signature, then reject a bad-checksum reboot with UART E.
+The RTL version passed (2.67266 ms simulated). The same bench is wired into the
+GDS action's generated-netlist test, with cocotb 2.0.1 pinned to avoid upstream's
+incompatible 1.8 default. Gate-level simulation is unit-delay, not extracted SDF,
+and remains pending; no physical signoff claim follows from the RTL result.
+
+A newly exposed interface limitation: PSRAM's 150 us initialization does not
+cover NOR's up-to-5 ms write-inhibit interval. ROM/loader only read NOR. Strict
+programming tests wait until 5 ms, and a negative test proves early writes are
+rejected. A future updater must wait, or RTL must gain a separate write guard.
+No synthesized RTL or physical scripts changed in this experiment.
+
+CI launches:
+- Memory matrix / existing regressions: https://github.com/georgc4/rv32-linux-soc/actions/runs/36809950960
+- New revision GDS + stronger eventual GL test: https://github.com/georgc4/rv32-linux-soc/actions/runs/36809950961
+- Earlier repair run 36808009959 was still running when these launched.
+
+PR #1 remains draft. Main remains unchanged. CI completion and physical repair
+results were not yet known when this entry was written.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
