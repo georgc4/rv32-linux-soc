@@ -35,6 +35,7 @@ endif
 COMPILE_ARGS 		+= -I$(SRC_DIR)
 
 # Include the testbench sources:
+VERILOG_SOURCES += $(CURDIR)/../sim/models/serial_memory_datasheet_model.v
 VERILOG_SOURCES += $(CURDIR)/tb.v
 TOPLEVEL = tb
 

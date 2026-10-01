@@ -178,3 +178,15 @@ stage-sky26d:
 
 clean:
 	rm -rf build
+
+.PHONY: test-memory-datasheet test-memory-model
+# DATASHEET_WORST=0 uses typical program/erase latency; 1 uses maxima.
+DATASHEET_WORST ?= 1
+DATASHEET_OUTPUT ?= 6.0
+test-memory-datasheet:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -DDATASHEET_MODEL -s serial_mem_bridge_tb -Pserial_mem_bridge_tb.STRICT=1 -Pserial_mem_bridge_tb.WORST=$(DATASHEET_WORST) -Pserial_mem_bridge_tb.OUTPUT_DELAY=$(DATASHEET_OUTPUT) -o build/serial_datasheet_tb rtl/memory/serial_mem_bridge.v sim/models/serial_memory_datasheet_model.v sim/tests/serial_mem_bridge_tb.v
+	$(VVP) build/serial_datasheet_tb
+
+test-memory-model:
+	$(PYTHON) scripts/test_memory_model.py

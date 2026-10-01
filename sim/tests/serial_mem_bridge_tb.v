@@ -1,7 +1,13 @@
 `timescale 1ns/1ps
-module serial_mem_bridge_tb;
+module serial_mem_bridge_tb #(
+    parameter STRICT = 0,
+    parameter WORST = 1,
+    parameter realtime OUTPUT_DELAY = 6.0
+);
+    localparam integer POWERUP = STRICT ? 3000 : 4;
+    localparam integer CONTROL_TIMEOUT = STRICT ? 8200000 : 3000;
     reg clk = 0;
-    always #5 clk = ~clk;
+    always #(STRICT ? 25 : 5) clk = ~clk;
     reg rst_n = 0;
     reg ram_req_valid = 0, ram_req_write = 0;
     reg ram_req_instr = 0;
@@ -44,9 +50,14 @@ module serial_mem_bridge_tb;
         if ((spi_dq_oe & model_drive) != 0)
             $fatal(1, "controller and memory both driving a data lane");
     end
+    always @(spi_dq_oe or model_drive) begin
+        #0.001;
+        if (rst_n && (spi_dq_oe & model_drive) != 0)
+            $fatal(1, "controller and memory overlap during bus turnaround");
+    end
     integer cycles;
 
-    serial_mem_bridge #(.POWERUP_CYCLES(4)) dut (
+    serial_mem_bridge #(.POWERUP_CYCLES(POWERUP)) dut (
         .clk(clk), .rst_n(rst_n),
         .ram_req_valid(ram_req_valid), .ram_req_ready(ram_req_ready),
         .ram_req_addr(ram_req_addr), .ram_req_write(ram_req_write),
@@ -69,14 +80,26 @@ module serial_mem_bridge_tb;
     );
     genvar g;
     generate for (g = 0; g < 4; g = g + 1) begin: rams
+        `ifdef DATASHEET_MODEL
+        serial_memory_datasheet_model #(.T_OUTPUT(OUTPUT_DELAY)) ram (
+            .host_oe(spi_dq_oe[3:0]),
+`else
         serial_spi_model ram (
+`endif
             .cs_n(spi_cs_n[g]), .sck(spi_sck),
             .io_in(spi_dq_out[3:0]),
             .io_out(model_out[g]), .io_oe(model_oe[g]),
             .command_count(commands[g])
         );
     end endgenerate
+    `ifdef DATASHEET_MODEL
+    serial_memory_datasheet_model #(.IS_FLASH(1), .T_OUTPUT(OUTPUT_DELAY),
+        .T_PROGRAM(WORST ? 3000000.0 : 400000.0),
+        .T_ERASE(WORST ? 400000000.0 : 45000000.0)) flash (
+        .host_oe({spi_dq_oe[5:4], spi_dq_oe[1:0]}),
+`else
     serial_spi_model #(.IS_FLASH(1)) flash (
+`endif
         .cs_n(spi_cs_n[4]), .sck(spi_sck),
         .io_in({spi_dq_out[5:4], spi_dq_out[1:0]}),
         .io_out(model_out[4]), .io_oe(model_oe[4]),
@@ -129,7 +152,7 @@ module serial_mem_bridge_tb;
             while (!ctrl_resp_valid) begin
                 @(negedge clk);
                 cycles = cycles + 1;
-                if (cycles > 3000) $fatal(1, "control response timeout");
+                if (cycles > CONTROL_TIMEOUT) $fatal(1, "control response timeout");
             end
             if (ctrl_resp_err !== expected_error ||
                 (!expected_error && ctrl_resp_rdata !== expected))
@@ -201,6 +224,8 @@ module serial_mem_bridge_tb;
     endtask
 
     initial begin
+        #1; // avoid racing model power-up initialization
+        for (integer i = 0; i < 4; i = i + 1) rams[3].ram.memory[i] = 0;
         flash.memory[0] = 8'h78;
         flash.memory[1] = 8'h56;
         flash.memory[2] = 8'h34;
@@ -211,7 +236,7 @@ module serial_mem_bridge_tb;
         repeat (3) @(negedge clk);
         rst_n = 1;
         cycles = 0;
-        while (!initialized && cycles < 250) begin
+        while (!initialized && cycles < POWERUP + 250) begin
             @(negedge clk);
             cycles = cycles + 1;
         end
@@ -254,6 +279,27 @@ module serial_mem_bridge_tb;
         flash_response(32'h1234_5678, 0);
         flash_request(0, 1);
         flash_response(0, 1);
+        if (STRICT) begin
+            // Exercise all physical chips and top-of-chip addresses: no modulo
+            // aliasing into the small functional model's allocation.
+            for (integer bank = 0; bank < 4; bank = bank + 1) begin
+                ram_request(bank*32'h00800000 + 32'h007ffffc, 32'h12345678+bank, 1, 15);
+                ram_response(0, 0);
+            end
+            for (integer bank = 0; bank < 4; bank = bank + 1) begin
+                ram_request(bank*32'h00800000 + 32'h007ffffc, 0, 0, 0);
+                ram_response(32'h12345678+bank, 0);
+            end
+            flash.memory[24'hfffffc] = 8'h98;
+            flash.memory[24'hfffffd] = 8'hba;
+            flash.memory[24'hfffffe] = 8'hdc;
+            flash.memory[24'hffffff] = 8'hfe;
+            flash_request(24'hfffffc, 0);
+            flash_response(32'hfedcba98, 0);
+            // The ROM only reads flash. A writer must wait for tPUW separately
+            // from PSRAM initialization; there is currently no RTL write guard.
+            if ($realtime < 5000000.0) #(5000000.0 - $realtime);
+        end
         control_request(0, 0, 0, 1, 4'hf, 0); // sector address
         control_request(8, 2, 0, 1, 4'h1, 0); // WREN + 4 KiB erase + poll
         if (flash.memory[0] !== 8'hff || flash.memory[4095] !== 8'hff)
