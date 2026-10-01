@@ -273,6 +273,46 @@ repair selection report-driven for the clean CI-produced database, rather than
 copying hard-coded cell names from the local checkpoint. Rerun CI with the
 qualified repair integrated before promoting the submission.
 
+## 2026-09-30 — Expanded repair experiment moves into CI
+
+The user explicitly requested the next experiment and directed that changes run
+in CI from now on. Full physical experiments now run on
+`codex/partitioned-signoff-ci` through the pinned Tiny Tapeout action/fork. Local
+work is limited to editing, analysis and fast validation; no local PnR job was
+launched for this experiment.
+
+Follow-up inspection of the prior v6 failure established that all eight router
+short markers join a rerouted ECO net to a protected net. The extracted SPICE
+also merges the input/output nets of five inserted buffers even though their
+powered Verilog netlist keeps those terminals distinct. This confirms physical
+connectivity damage; the zero-slew result is not a valid signoff. The top-level
+supply-port matching failures do not by themselves prove a separate power-grid
+fault. Three fewer diode devices appear on the extracted side of LVS, another
+reason not to equate the 59 mismatch count with 59 independent defects.
+
+CI commit `0f2390aebcab129f10275dccba6f242ddc6c45c7` adds report-driven repair
+selection after the first extracted nine-corner STA pass. Driver identities come
+from that build's ODB, not hard-coded local checkpoint names. Same-family resizes,
+long-branch noninverting buffers and spatial clock-buffer splitting are bounded;
+unsupported repairs fail explicitly. The neighborhood includes routes within
+20 um of changed old/new cell footprints and 5 um of the original affected wire
+segments. Selected whole nets may reroute; distant routes remain encoded FIXED.
+A 25% net-count ceiling bounds accidental broad rerouting. Logical driver and
+protected-geometry audits run before and after detailed routing. Antenna repair
+is enabled; DRC/disconnected-pin checks, filler insertion, RCX and all-corner STA
+repeat before the ordinary final Magic/KLayout/LVS and electrical gates.
+
+Nine pure helper tests passed, including clean reports that omit violation
+sections and DEF relative-coordinate handling. The parser also read 21,385
+existing routed nets / 565,407 segment-point boxes. Plugin loading and all 95
+steps' configuration validated in the pinned container without a physical run.
+The tests are part of the GDS workflow. The provenance manifest requires all
+new stages and hashes all runtime flow scripts.
+
+Current experiment: https://github.com/georgc4/rv32-linux-soc/actions/runs/36808009959 .
+PR #1 remains draft and main remains unchanged. This entry records the launch,
+not a successful repair or a qualified artifact.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
