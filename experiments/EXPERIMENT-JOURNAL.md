@@ -353,6 +353,13 @@ CI launches:
 PR #1 remains draft. Main remains unchanged. CI completion and physical repair
 results were not yet known when this entry was written.
 
+### CI completion update — datasheet memory matrix
+
+Run **36809950960** completed successfully on **8e06957**: the existing RTL
+regressions, production-pin boot/rejection, and all three full-capacity timing
+profiles passed in GitHub Actions. Both GDS runs (36808009959 and 36809950961)
+were still in progress at this check; gate-level/physical results remain pending.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
