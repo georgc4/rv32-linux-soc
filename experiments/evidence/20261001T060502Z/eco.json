@@ -1,0 +1,8754 @@
+{
+  "target_pins": [
+    "ANTENNA_100/DIODE",
+    "ANTENNA_101/DIODE",
+    "ANTENNA_102/DIODE",
+    "ANTENNA_103/DIODE",
+    "ANTENNA_104/DIODE",
+    "ANTENNA_105/DIODE",
+    "ANTENNA_106/DIODE",
+    "ANTENNA_107/DIODE",
+    "ANTENNA_108/DIODE",
+    "ANTENNA_109/DIODE",
+    "ANTENNA_110/DIODE",
+    "ANTENNA_111/DIODE",
+    "ANTENNA_112/DIODE",
+    "ANTENNA_113/DIODE",
+    "ANTENNA_114/DIODE",
+    "ANTENNA_115/DIODE",
+    "ANTENNA_116/DIODE",
+    "ANTENNA_117/DIODE",
+    "ANTENNA_118/DIODE",
+    "ANTENNA_119/DIODE",
+    "ANTENNA_120/DIODE",
+    "ANTENNA_121/DIODE",
+    "ANTENNA_122/DIODE",
+    "ANTENNA_142/DIODE",
+    "ANTENNA_143/DIODE",
+    "ANTENNA_144/DIODE",
+    "ANTENNA_145/DIODE",
+    "ANTENNA_2/DIODE",
+    "ANTENNA_275/DIODE",
+    "ANTENNA_296/DIODE",
+    "ANTENNA_3/DIODE",
+    "ANTENNA_302/DIODE",
+    "ANTENNA_315/DIODE",
+    "ANTENNA_4/DIODE",
+    "ANTENNA_5/DIODE",
+    "ANTENNA_6/DIODE",
+    "ANTENNA_96/DIODE",
+    "ANTENNA_97/DIODE",
+    "ANTENNA_98/DIODE",
+    "ANTENNA_99/DIODE",
+    "_13386_/S",
+    "_13390_/S",
+    "_13661_/A",
+    "_13661_/B",
+    "_13662_/Y",
+    "_13663_/S",
+    "_13665_/S",
+    "_13669_/S",
+    "_13672_/S",
+    "_13686_/S",
+    "_13688_/S",
+    "_13895_/Y",
+    "_13897_/S",
+    "_13909_/S",
+    "_13914_/S",
+    "_13915_/S",
+    "_13920_/S",
+    "_13928_/A",
+    "_13928_/B",
+    "_14127_/A",
+    "_14127_/B",
+    "_14227_/Y",
+    "_14233_/S",
+    "_14235_/S",
+    "_14236_/S",
+    "_14239_/S",
+    "_14255_/S",
+    "_14256_/S",
+    "_14474_/A0",
+    "_14538_/Y",
+    "_14548_/S",
+    "_14554_/S",
+    "_14559_/S",
+    "_14566_/S",
+    "_14838_/A1",
+    "_14848_/C",
+    "_14909_/S1",
+    "_14912_/B1_N",
+    "_14930_/A2",
+    "_14943_/B1_N",
+    "_15164_/A",
+    "_15170_/A",
+    "_15194_/A",
+    "_15195_/A1",
+    "_15219_/A",
+    "_15250_/A1",
+    "_17872_/B",
+    "_17877_/B",
+    "_17922_/B",
+    "_19299_/B",
+    "_19362_/B",
+    "_19397_/A",
+    "_19784_/A",
+    "_19857_/A2",
+    "_19858_/A",
+    "_20060_/A",
+    "_20838_/X",
+    "_20839_/A1",
+    "_20846_/X",
+    "_20847_/A1",
+    "_20862_/X",
+    "_20863_/A1",
+    "_20864_/X",
+    "_20865_/A1",
+    "_20866_/X",
+    "_20867_/A1",
+    "_20868_/X",
+    "_20869_/A1",
+    "_20870_/X",
+    "_20871_/A1",
+    "_20872_/X",
+    "_20873_/A1",
+    "_20874_/X",
+    "_20875_/A1",
+    "_20876_/X",
+    "_20877_/A1",
+    "_20878_/X",
+    "_20879_/A1",
+    "_20880_/X",
+    "_20881_/A1",
+    "_20882_/X",
+    "_20883_/A1",
+    "_20888_/B2",
+    "_20889_/B2",
+    "_20890_/B2",
+    "_20891_/B2",
+    "_20892_/B2",
+    "_20893_/B2",
+    "_20894_/B2",
+    "_20895_/B2",
+    "_20901_/B2",
+    "_20902_/B2",
+    "_20903_/B2",
+    "_20905_/B2",
+    "_20909_/B2",
+    "_20912_/A1",
+    "_20919_/B",
+    "_20921_/A1",
+    "_20927_/A1",
+    "_20928_/A0",
+    "_20934_/A1",
+    "_20935_/A0",
+    "_20941_/A1",
+    "_20942_/A0",
+    "_20948_/A0",
+    "_20948_/A1",
+    "_20949_/A1",
+    "_20955_/A0",
+    "_20955_/A1",
+    "_20956_/A0",
+    "_20962_/A0",
+    "_20962_/A1",
+    "_21083_/A",
+    "_21083_/B",
+    "_21083_/C",
+    "_21083_/D",
+    "_21084_/A",
+    "_21084_/B",
+    "_21084_/C",
+    "_21084_/D",
+    "_21097_/A0",
+    "_21101_/A0",
+    "_21109_/A0",
+    "_21110_/A0",
+    "_21111_/A0",
+    "_21472_/B",
+    "_21472_/C",
+    "_21472_/D",
+    "_21475_/B",
+    "_21476_/B",
+    "_21477_/D_N",
+    "_21768_/A1",
+    "_21774_/A1",
+    "_21778_/A1",
+    "_21780_/A",
+    "_21788_/A1",
+    "_21791_/A0",
+    "_21797_/A_N",
+    "_21801_/A0",
+    "_21821_/A",
+    "_21826_/A1",
+    "_21829_/A1",
+    "_21838_/A1",
+    "_21851_/A0",
+    "_21915_/A1",
+    "_21920_/A1",
+    "_21925_/A1",
+    "_21929_/A",
+    "_21936_/A1",
+    "_21941_/A1",
+    "_21947_/A1",
+    "_21951_/A1",
+    "_21980_/A1",
+    "_21984_/A1",
+    "_21989_/A1",
+    "_22001_/A1",
+    "_22019_/A1",
+    "_22069_/A0",
+    "_22070_/A0",
+    "_22071_/A0",
+    "_22072_/A0",
+    "_22073_/A0",
+    "_22074_/A0",
+    "_22075_/A0",
+    "_22076_/A0",
+    "_22083_/A0",
+    "_22084_/A0",
+    "_22085_/A0",
+    "_22088_/A0",
+    "_22092_/A0",
+    "_22105_/A0",
+    "_22106_/A0",
+    "_22107_/A0",
+    "_22108_/A0",
+    "_22109_/A0",
+    "_22110_/A0",
+    "_22111_/A0",
+    "_22112_/A0",
+    "_22119_/A0",
+    "_22120_/A0",
+    "_22121_/A0",
+    "_22124_/A0",
+    "_22128_/A0",
+    "_22148_/A1",
+    "_22150_/A1",
+    "_22151_/A1",
+    "_22152_/A1",
+    "_22154_/A1",
+    "_22157_/A1",
+    "_22159_/A1",
+    "_22160_/A1",
+    "_22161_/A1",
+    "_22163_/A1",
+    "_22166_/A1",
+    "_22168_/A1",
+    "_22169_/A1",
+    "_22170_/A1",
+    "_22172_/A1",
+    "_22175_/A0",
+    "_22177_/A0",
+    "_22178_/A0",
+    "_22179_/A0",
+    "_22181_/A0",
+    "_22184_/A0",
+    "_22186_/A0",
+    "_22187_/A0",
+    "_22188_/A0",
+    "_22190_/A0",
+    "_22831_/X",
+    "_22838_/A_N",
+    "_22839_/X",
+    "_22840_/X",
+    "_22841_/A",
+    "_22841_/B",
+    "_22842_/X",
+    "_22845_/X",
+    "_22846_/A",
+    "_22846_/D",
+    "_23154_/Y",
+    "_23560_/Y",
+    "_23580_/A1",
+    "_23596_/A1",
+    "_23611_/B",
+    "_23719_/A",
+    "_23720_/A2",
+    "_23800_/B",
+    "_23895_/A2",
+    "_23906_/X",
+    "_23907_/B",
+    "_23909_/B",
+    "_23912_/B",
+    "_23975_/Y",
+    "_23976_/A",
+    "_24053_/A2",
+    "_24069_/A2",
+    "_24227_/A0",
+    "_24231_/A0",
+    "_24233_/A0",
+    "_24235_/A0",
+    "_24239_/A0",
+    "_24290_/B1",
+    "_24318_/Y",
+    "_24437_/A1",
+    "_24459_/B1",
+    "_24479_/A2",
+    "_24499_/Y",
+    "_24500_/C",
+    "_24516_/Y",
+    "_24521_/A",
+    "_24524_/Y",
+    "_24528_/Y",
+    "_24539_/A",
+    "_24539_/B",
+    "_24556_/B",
+    "_24558_/B",
+    "_24559_/B",
+    "_24598_/A2",
+    "_24626_/B1",
+    "_24627_/A2",
+    "_24629_/A2",
+    "_24636_/B1",
+    "_24666_/A2",
+    "_24685_/A2",
+    "_24695_/A2",
+    "_24702_/A2",
+    "_24711_/A2",
+    "_24725_/B1",
+    "_24814_/B1",
+    "_24852_/B1",
+    "_24858_/A2",
+    "_24879_/A2",
+    "_24880_/A2",
+    "_24914_/A2",
+    "_24950_/B1",
+    "_24977_/A2",
+    "_25213_/Y",
+    "_25230_/Y",
+    "_25231_/A1",
+    "_25231_/B1",
+    "_25232_/B",
+    "_25435_/Y",
+    "_25436_/B2",
+    "_25527_/A2",
+    "_25529_/B1",
+    "_25594_/B2",
+    "_25655_/B2",
+    "_25701_/B2",
+    "_25842_/B2",
+    "_25978_/B2",
+    "_26014_/B2",
+    "_26574_/B2",
+    "_26750_/B",
+    "_26750_/C",
+    "_26751_/Y",
+    "_26752_/S",
+    "_26754_/S",
+    "_26758_/S",
+    "_26774_/S",
+    "_30304_/SET_B",
+    "_30315_/SET_B",
+    "clkbuf_0_clk/X",
+    "fanout2248/X",
+    "place5262/A",
+    "place5263/A",
+    "place5292/A",
+    "place5293/A",
+    "place5294/A",
+    "place5299/A",
+    "place5300/A",
+    "place5301/A",
+    "place5337/A",
+    "place5338/A",
+    "place5398/A",
+    "place5679/A",
+    "place5680/A",
+    "place5710/A",
+    "place5712/A",
+    "place5735/A",
+    "place5736/A",
+    "place5743/A",
+    "place5747/A",
+    "place5749/A",
+    "place5775/A",
+    "place5788/A",
+    "place5990/A",
+    "place5991/A",
+    "place6176/A",
+    "place6181/A",
+    "place6182/A",
+    "place6183/A",
+    "place6187/A",
+    "place6896/A"
+  ],
+  "target_nets": [
+    "_03588_",
+    "_03605_",
+    "_03810_",
+    "_05062_",
+    "_05076_",
+    "_05085_",
+    "_05097_",
+    "_05154_",
+    "_09980_",
+    "_09984_",
+    "_09992_",
+    "_09993_",
+    "_09994_",
+    "_09995_",
+    "_09996_",
+    "_09997_",
+    "_09998_",
+    "_09999_",
+    "_10000_",
+    "_10001_",
+    "_10002_",
+    "_11234_",
+    "_11242_",
+    "_11243_",
+    "_11245_",
+    "_11248_",
+    "_11536_",
+    "_11942_",
+    "_12269_",
+    "_12338_",
+    "_12632_",
+    "_12779_",
+    "_12796_",
+    "_12804_",
+    "_12808_",
+    "clknet_0_clk",
+    "net2248"
+  ],
+  "edits": [
+    {
+      "kind": "resize",
+      "instance": "_25213_",
+      "old": "sky130_fd_sc_hd__a22oi_2",
+      "new": "sky130_fd_sc_hd__a22oi_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0001",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        538.891875,
+        263.26275
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0002",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        493.44725,
+        235.73649999999998
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0003",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        448.00262499999997,
+        208.21025
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_25230_",
+      "old": "sky130_fd_sc_hd__o22ai_2",
+      "new": "sky130_fd_sc_hd__o22ai_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0004",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        592.131,
+        293.65999999999997
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0005",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        584.2,
+        290.88
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0006",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        538.7444,
+        255.255
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0007",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        493.28880000000004,
+        219.63
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0008",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        447.83320000000003,
+        184.005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0009",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        402.37760000000003,
+        148.38
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_25435_",
+      "old": "sky130_fd_sc_hd__nor3_2",
+      "new": "sky130_fd_sc_hd__nor3_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0010",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        476.627,
+        130.56
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0011",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        423.3945,
+        151.82850000000002
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_26751_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0012",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        637.0835,
+        295.01
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0013",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        693.845,
+        255.67950000000002
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0014",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        744.4449999999999,
+        254.729
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0015",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        677.3335,
+        286.37475
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0016",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        717.5835,
+        277.7395
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0017",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        672.30725,
+        287.62075000000004
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_13662_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0018",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        675.2635,
+        320.95950000000005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0019",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        678.762,
+        283.83000000000004
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_13895_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0020",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        587.355,
+        433.73
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0021",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        589.713,
+        346.726
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_14227_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0022",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        660.362,
+        368.37
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0023",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        749.735,
+        400.78999999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0024",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        695.0435,
+        368.37
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0025",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        809.765,
+        435.4995
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0026",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        769.30925,
+        418.4045
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0027",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        728.8534999999999,
+        401.30949999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0028",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        696.7526666666666,
+        368.52033333333327
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0029",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        664.6518333333333,
+        335.73116666666664
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_14538_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0030",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        39.543499999999995,
+        131.81
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0031",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        96.6825,
+        140.28449999999998
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0032",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        70.545,
+        135.795
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0033",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        130.288,
+        153.06599999999997
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20838_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0034",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        104.9205,
+        327.964
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0035",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        101.9585,
+        341.56399999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0036",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        147.5935,
+        342.62350000000004
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0037",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        220.21433333333334,
+        331.2776666666667
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0038",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        292.8351666666667,
+        319.9318333333334
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20846_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0039",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        80.804,
+        346.595
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0040",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        169.881,
+        371.0875
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0041",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        133.499,
+        321.9025
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0042",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        144.3735,
+        339.16499999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0043",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        213.21412500000002,
+        325.467
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0044",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        282.05475,
+        311.769
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0045",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        350.895375,
+        298.07099999999997
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20862_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0046",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        56.166,
+        338.8985
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0047",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        89.3885,
+        331.6575
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0048",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        147.3435,
+        391.9425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0049",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        161.2325,
+        333.5425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0050",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        138.82,
+        333.5425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0051",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        198.584,
+        324.58337500000005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0052",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        258.34799999999996,
+        315.62425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0053",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        318.11199999999997,
+        306.665125
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20864_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0054",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        39.238,
+        333.39250000000004
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0055",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        94.67349999999999,
+        334.565
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0056",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        195.321,
+        350.18875
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0057",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        127.9025,
+        333.5625
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0058",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        192.0652,
+        325.3032
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0059",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        256.22790000000003,
+        317.0439
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0060",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        320.3906,
+        308.7846
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0061",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        384.55330000000004,
+        300.5253
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20866_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0062",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        48.127,
+        327.501
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0063",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        76.79849999999999,
+        328.28
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0064",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        190.19925,
+        344.47125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0065",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        132.6235,
+        327.501
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0066",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        211.76766666666668,
+        322.19166666666666
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0067",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        290.91183333333333,
+        316.8823333333333
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20868_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0068",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        14.124500000000001,
+        326.39250000000004
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0069",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        117.70000000000002,
+        381.47225
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0070",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        180.508,
+        353.05075
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0071",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        88.75025,
+        316.41200000000003
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0072",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        124.0395,
+        329.1815
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0073",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        62.19325,
+        327.007
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0074",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        110.262,
+        327.62149999999997
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0075",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        180.15550000000002,
+        318.16937499999995
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0076",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        250.049,
+        308.71725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0077",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        319.9425,
+        299.265125
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20870_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0078",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        25.1495,
+        333.0075
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0079",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        61.613,
+        315.73900000000003
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0080",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        160.43099999999998,
+        368.26250000000005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0081",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        111.691,
+        330.895
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0082",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        185.086,
+        324.4543333333333
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0083",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        258.481,
+        318.01366666666667
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20872_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0084",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        21.217,
+        342.7125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0085",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        67.133,
+        336.2155
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0086",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        116.62124999999999,
+        383.52
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0087",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        131.4175,
+        336.2155
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0088",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        66.2365,
+        339.49125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0089",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        111.256,
+        336.27
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0090",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        184.35100000000003,
+        323.909
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0091",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        257.446,
+        311.548
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0092",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        330.54100000000005,
+        299.187
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20874_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0093",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        20.7515,
+        333.3725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0094",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        150.689,
+        364.6015
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0095",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        91.6365,
+        318.0095
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0096",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        65.59525,
+        331.86699999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0097",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        110.439,
+        330.3615
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0098",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        183.73825000000002,
+        323.557625
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0099",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        257.0375,
+        316.75374999999997
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0100",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        330.33675000000005,
+        309.949875
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20876_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0101",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        46.074,
+        365.485
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0102",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        46.074,
+        324.91999999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0103",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        141.717,
+        347.50424999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0104",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        114.706,
+        329.1305
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0105",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        181.23200000000003,
+        323.443
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0106",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        247.758,
+        317.7555
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0107",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        314.284,
+        312.068
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0108",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        380.81,
+        306.3805
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20878_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0109",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        32.9585,
+        348.2335
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0110",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        154.9255,
+        363.9865
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0111",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        91.8635,
+        328.70225
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0112",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        74.73425,
+        341.50874999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0113",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        116.50999999999999,
+        334.784
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0114",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        188.0615,
+        322.18125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0115",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        259.613,
+        309.57849999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0116",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        331.1645,
+        296.97575
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20880_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0117",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        39.431,
+        342.7125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0118",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        65.0815,
+        330.618
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0119",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        222.64,
+        338.64
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0120",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        168.45374999999999,
+        338.75
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0121",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        121.3975,
+        338.8325
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0122",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        183.21712499999998,
+        329.910875
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0123",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        245.03674999999998,
+        320.98924999999997
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0124",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        306.85637499999996,
+        312.067625
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_20882_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0125",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        38.686,
+        342.7935
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0126",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        74.3415,
+        342.4955
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0127",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        139.4245,
+        342.4955
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0128",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        115.7235,
+        342.4955
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0129",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        195.866625,
+        334.018125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0130",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        276.00975,
+        325.54075
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0131",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        356.152875,
+        317.063375
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_22831_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0132",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        259.881,
+        376.5675
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0133",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        318.77700000000004,
+        380.8425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0134",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        418.6515,
+        404.2205
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0135",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        353.27700000000004,
+        386.45
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0136",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        408.55000000000007,
+        363.3043333333333
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0137",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        463.82300000000004,
+        340.15866666666665
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_22839_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0138",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        116.17275000000001,
+        377.6075
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0139",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        183.26425,
+        353.2325
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0140",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        149.7185,
+        365.42
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0141",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        320.19899999999996,
+        362.9865
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0142",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        275.47024999999996,
+        364.20325
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0143",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        230.7415,
+        365.42
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0144",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        363.9936666666666,
+        394.63533333333334
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0145",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        310.25033333333334,
+        387.7701666666666
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0146",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        256.507,
+        380.905
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0147",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        314.5966666666667,
+        353.17199999999997
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0148",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        372.6863333333333,
+        325.439
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_22840_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0149",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        153.87,
+        368.56
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0150",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        406.23699999999997,
+        396.0605
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0151",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        210.35725,
+        377.37375
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0152",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        332.68025,
+        389.84275
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0153",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        259.1235,
+        383.625
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0154",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        313.42766666666665,
+        358.612
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0155",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        367.7318333333333,
+        333.599
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_22842_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0156",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        184.7345,
+        399.6725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0157",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        354.2695,
+        378.2425
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0158",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        219.93075,
+        388.9575
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0159",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        420.7215,
+        401.5005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0160",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        347.23924999999997,
+        391.2315
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0161",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        273.757,
+        380.9625
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0162",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        326.00675,
+        364.975125
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0163",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        378.25649999999996,
+        348.98775
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0164",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        430.50624999999997,
+        333.00037499999996
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_22845_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0165",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        165.004,
+        393.935
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0166",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        247.51825,
+        363.83625
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0167",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        212.10449999999997,
+        378.2475
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0168",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        422.337,
+        401.5005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0169",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        352.072,
+        392.594
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0170",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        281.807,
+        383.6875
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0171",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        340.97,
+        354.20933333333335
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0172",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        400.133,
+        324.73116666666664
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_23154_",
+      "old": "sky130_fd_sc_hd__a21oi_2",
+      "new": "sky130_fd_sc_hd__a21oi_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0173",
+      "cell": "sky130_fd_sc_hd__buf_4",
+      "location_um": [
+        277.8845,
+        191.921
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0174",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        206.60975,
+        146.20774999999998
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0175",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        237.38649999999998,
+        164.646
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0176",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        271.93225,
+        178.50549999999998
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_23560_",
+      "old": "sky130_fd_sc_hd__o31ai_2",
+      "new": "sky130_fd_sc_hd__o31ai_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0177",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        425.233,
+        80.4475
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_23906_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0178",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        399.495,
+        242.0925
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0179",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        379.7435,
+        315.60749999999996
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0180",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        379.7435,
+        272.08
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0181",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        350.74974999999995,
+        218.3865
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_23975_",
+      "old": "sky130_fd_sc_hd__o21ai_2",
+      "new": "sky130_fd_sc_hd__o21ai_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0182",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        325.2285,
+        266.5675
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0183",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        306.575,
+        219.12199999999999
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0184",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        287.9215,
+        171.67649999999998
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_24318_",
+      "old": "sky130_fd_sc_hd__nor3_2",
+      "new": "sky130_fd_sc_hd__nor3_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0185",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        618.4960000000001,
+        108.7875
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_24499_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0186",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        130.442,
+        149.501
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_24516_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0187",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        221.2295,
+        194.6725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0188",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        185.7545,
+        194.3075
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_24524_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0189",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        93.814,
+        171.3585
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0190",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        141.1615,
+        163.2735
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_24528_",
+      "old": "sky130_fd_sc_hd__nor2_2",
+      "new": "sky130_fd_sc_hd__nor2_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0191",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        60.611999999999995,
+        146.8775
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0192",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        163.0295,
+        160.48000000000002
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0193",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        122.54950000000001,
+        146.8775
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0194",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        165.26025,
+        150.44725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0195",
+      "cell": "sky130_fd_sc_hd__clkbuf_16",
+      "location_um": [
+        381.177,
+        266.725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0196",
+      "cell": "sky130_fd_sc_hd__clkbuf_16",
+      "location_um": [
+        483.21075,
+        260.69
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "fanout2248",
+      "old": "sky130_fd_sc_hd__clkdlybuf4s25_1",
+      "new": "sky130_fd_sc_hd__clkdlybuf4s25_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0197",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        205.857,
+        423.3325
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0198",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        287.7703333333333,
+        239.4875
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0199",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        264.40066666666667,
+        287.024
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0200",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        223.44400000000002,
+        378.9465
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0201",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        241.031,
+        334.5605
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0202",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        94.9075,
+        497.605
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0203",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        123.38083333333333,
+        447.7368333333333
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0204",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        151.85416666666666,
+        397.8686666666667
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0205",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        180.3275,
+        348.0005
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0206",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        168.253,
+        399.33733333333333
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0207",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        156.1785,
+        450.6741666666667
+      ]
+    }
+  ],
+  "buffer_count": 207,
+  "buffer_limit": 250,
+  "net_plans": [
+    {
+      "net": "_03588_",
+      "kind": "shared_tree",
+      "sinks": 6,
+      "buffers": 3,
+      "independent_chain_buffers": 18,
+      "driver_pin": "_25213_/Y",
+      "driver_um": [
+        402.558,
+        180.684
+      ],
+      "sinks_um": [
+        [
+          "_13661_/A",
+          592.427,
+          295.165
+        ],
+        [
+          "_13928_/A",
+          589.667,
+          295.165
+        ],
+        [
+          "_14127_/B",
+          578.455,
+          293.285
+        ],
+        [
+          "_25231_/A1",
+          576.246,
+          286.413
+        ],
+        [
+          "_25232_/B",
+          576.863,
+          289.72
+        ],
+        [
+          "_26750_/B",
+          592.242,
+          293.31
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              538.891875,
+              263.26275
+            ],
+            "loads": [
+              {
+                "pin": "_13661_/A"
+              },
+              {
+                "pin": "_13928_/A"
+              },
+              {
+                "pin": "_14127_/B"
+              },
+              {
+                "pin": "_25231_/A1"
+              },
+              {
+                "pin": "_25232_/B"
+              },
+              {
+                "pin": "_26750_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              493.44725,
+              235.73649999999998
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              448.00262499999997,
+              208.21025
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 2
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_03605_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 6,
+      "independent_chain_buffers": 47,
+      "driver_pin": "_25230_/Y",
+      "driver_um": [
+        356.922,
+        112.755
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_2/DIODE",
+          594.78,
+          295.12
+        ],
+        [
+          "ANTENNA_3/DIODE",
+          588.34,
+          295.12
+        ],
+        [
+          "ANTENNA_4/DIODE",
+          575.46,
+          292.4
+        ],
+        [
+          "ANTENNA_5/DIODE",
+          573.62,
+          286.96
+        ],
+        [
+          "ANTENNA_6/DIODE",
+          591.1,
+          292.4
+        ],
+        [
+          "_13661_/B",
+          592.242,
+          294.21
+        ],
+        [
+          "_13928_/B",
+          589.482,
+          294.21
+        ],
+        [
+          "_14127_/A",
+          577.882,
+          292.385
+        ],
+        [
+          "_25231_/B1",
+          577.072,
+          286.64
+        ],
+        [
+          "_26750_/C",
+          591.82,
+          292.2
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              592.131,
+              293.65999999999997
+            ],
+            "loads": [
+              {
+                "pin": "_13928_/B"
+              },
+              {
+                "pin": "ANTENNA_6/DIODE"
+              },
+              {
+                "pin": "_26750_/C"
+              },
+              {
+                "pin": "_13661_/B"
+              },
+              {
+                "pin": "ANTENNA_2/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              584.2,
+              290.88
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_5/DIODE"
+              },
+              {
+                "pin": "ANTENNA_4/DIODE"
+              },
+              {
+                "pin": "_25231_/B1"
+              },
+              {
+                "pin": "_14127_/A"
+              },
+              {
+                "pin": "ANTENNA_3/DIODE"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              538.7444,
+              255.255
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              493.28880000000004,
+              219.63
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              447.83320000000003,
+              184.005
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              402.37760000000003,
+              148.38
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 5
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_03810_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 2,
+      "independent_chain_buffers": 10,
+      "driver_pin": "_25435_/Y",
+      "driver_um": [
+        380.972,
+        170.377
+      ],
+      "sinks_um": [
+        [
+          "_25436_/B2",
+          445.612,
+          126.665
+        ],
+        [
+          "_25594_/B2",
+          485.632,
+          118.135
+        ],
+        [
+          "_25655_/B2",
+          471.832,
+          142.985
+        ],
+        [
+          "_25701_/B2",
+          445.612,
+          123.575
+        ],
+        [
+          "_25842_/B2",
+          462.172,
+          148.425
+        ],
+        [
+          "_25978_/B2",
+          464.012,
+          123.575
+        ],
+        [
+          "_26014_/B2",
+          459.872,
+          121.225
+        ],
+        [
+          "_26574_/B2",
+          467.232,
+          137.545
+        ],
+        [
+          "place5710/A",
+          486.022,
+          132.11
+        ],
+        [
+          "place5712/A",
+          482.342,
+          121.23
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              476.627,
+              130.56
+            ],
+            "loads": [
+              {
+                "pin": "_26574_/B2"
+              },
+              {
+                "pin": "_25655_/B2"
+              },
+              {
+                "pin": "place5712/A"
+              },
+              {
+                "pin": "_25594_/B2"
+              },
+              {
+                "pin": "place5710/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              423.3945,
+              151.82850000000002
+            ],
+            "loads": [
+              {
+                "pin": "_25436_/B2"
+              },
+              {
+                "pin": "_25701_/B2"
+              },
+              {
+                "pin": "_26014_/B2"
+              },
+              {
+                "pin": "_25842_/B2"
+              },
+              {
+                "pin": "_25978_/B2"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 1
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_05062_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 6,
+      "independent_chain_buffers": 8,
+      "driver_pin": "_26751_/Y",
+      "driver_um": [
+        627.031,
+        297.502
+      ],
+      "sinks_um": [
+        [
+          "_13386_/S",
+          683.265,
+          287.369
+        ],
+        [
+          "_13390_/S",
+          740.765,
+          222.089
+        ],
+        [
+          "_26752_/S",
+          704.425,
+          223.99
+        ],
+        [
+          "_26754_/S",
+          630.365,
+          309.129
+        ],
+        [
+          "_26758_/S",
+          644.625,
+          256.63
+        ],
+        [
+          "_26774_/S",
+          805.625,
+          229.43
+        ],
+        [
+          "place5292/A",
+          629.542,
+          330.29
+        ],
+        [
+          "place5293/A",
+          633.222,
+          333.39
+        ],
+        [
+          "place5294/A",
+          804.342,
+          262.67
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              637.0835,
+              295.01
+            ],
+            "loads": [
+              {
+                "pin": "_26758_/S"
+              },
+              {
+                "pin": "_26754_/S"
+              },
+              {
+                "pin": "place5292/A"
+              },
+              {
+                "pin": "place5293/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              693.845,
+              255.67950000000002
+            ],
+            "loads": [
+              {
+                "pin": "_26752_/S"
+              },
+              {
+                "pin": "_13386_/S"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              744.4449999999999,
+              254.729
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_13390_/S"
+              },
+              {
+                "pin": "place5294/A"
+              },
+              {
+                "pin": "_26774_/S"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              677.3335,
+              286.37475
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              717.5835,
+              277.7395
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              672.30725,
+              287.62075000000004
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 5
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_05076_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 2,
+      "independent_chain_buffers": 6,
+      "driver_pin": "_13662_/Y",
+      "driver_um": [
+        623.351,
+        295.457
+      ],
+      "sinks_um": [
+        [
+          "_13663_/S",
+          694.305,
+          216.649
+        ],
+        [
+          "_13665_/S",
+          680.045,
+          311.03
+        ],
+        [
+          "_13669_/S",
+          657.045,
+          216.649
+        ],
+        [
+          "_13672_/S",
+          722.365,
+          287.369
+        ],
+        [
+          "_13686_/S",
+          680.045,
+          354.55
+        ],
+        [
+          "_13688_/S",
+          668.545,
+          213.11
+        ],
+        [
+          "place5337/A",
+          729.362,
+          278.99
+        ],
+        [
+          "place5338/A",
+          628.162,
+          341.17
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              675.2635,
+              320.95950000000005
+            ],
+            "loads": [
+              {
+                "pin": "place5338/A"
+              },
+              {
+                "pin": "_13665_/S"
+              },
+              {
+                "pin": "_13672_/S"
+              },
+              {
+                "pin": "_13686_/S"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              678.762,
+              283.83000000000004
+            ],
+            "loads": [
+              {
+                "pin": "_13669_/S"
+              },
+              {
+                "pin": "_13688_/S"
+              },
+              {
+                "pin": "_13663_/S"
+              },
+              {
+                "pin": "place5337/A"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 1
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_05085_",
+      "kind": "shared_tree",
+      "sinks": 7,
+      "buffers": 2,
+      "independent_chain_buffers": 7,
+      "driver_pin": "_13895_/Y",
+      "driver_um": [
+        592.071,
+        302.942
+      ],
+      "sinks_um": [
+        [
+          "_13897_/S",
+          551.245,
+          441.59
+        ],
+        [
+          "_13909_/S",
+          552.625,
+          392.63
+        ],
+        [
+          "_13914_/S",
+          616.565,
+          341.769
+        ],
+        [
+          "_13915_/S",
+          554.465,
+          368.969
+        ],
+        [
+          "_13920_/S",
+          623.465,
+          425.27
+        ],
+        [
+          "place5262/A",
+          575.262,
+          306.19
+        ],
+        [
+          "place5263/A",
+          612.522,
+          474.83
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              587.355,
+              433.73
+            ],
+            "loads": [
+              {
+                "pin": "_13909_/S"
+              },
+              {
+                "pin": "_13920_/S"
+              },
+              {
+                "pin": "_13897_/S"
+              },
+              {
+                "pin": "place5263/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              589.713,
+              346.726
+            ],
+            "loads": [
+              {
+                "pin": "place5262/A"
+              },
+              {
+                "pin": "_13915_/S"
+              },
+              {
+                "pin": "_13914_/S"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 1
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_05097_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 8,
+      "independent_chain_buffers": 24,
+      "driver_pin": "_14227_/Y",
+      "driver_um": [
+        632.551,
+        302.942
+      ],
+      "sinks_um": [
+        [
+          "_14233_/S",
+          796.425,
+          494.089
+        ],
+        [
+          "_14235_/S",
+          821.725,
+          414.39
+        ],
+        [
+          "_14236_/S",
+          823.105,
+          490.55
+        ],
+        [
+          "_14239_/S",
+          809.765,
+          483.209
+        ],
+        [
+          "_14255_/S",
+          743.985,
+          419.83
+        ],
+        [
+          "_14256_/S",
+          755.485,
+          381.75
+        ],
+        [
+          "place5299/A",
+          634.602,
+          308.53
+        ],
+        [
+          "place5300/A",
+          814.922,
+          376.91
+        ],
+        [
+          "place5301/A",
+          686.122,
+          428.21
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              660.362,
+              368.37
+            ],
+            "loads": [
+              {
+                "pin": "place5299/A"
+              },
+              {
+                "pin": "place5301/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              749.735,
+              400.78999999999996
+            ],
+            "loads": [
+              {
+                "pin": "_14255_/S"
+              },
+              {
+                "pin": "_14256_/S"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              695.0435,
+              368.37
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              809.765,
+              435.4995
+            ],
+            "loads": [
+              {
+                "pin": "place5300/A"
+              },
+              {
+                "pin": "_14235_/S"
+              },
+              {
+                "pin": "_14239_/S"
+              },
+              {
+                "pin": "_14236_/S"
+              },
+              {
+                "pin": "_14233_/S"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              769.30925,
+              418.4045
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              728.8534999999999,
+              401.30949999999996
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              696.7526666666666,
+              368.52033333333327
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              664.6518333333333,
+              335.73116666666664
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_05154_",
+      "kind": "shared_tree",
+      "sinks": 6,
+      "buffers": 4,
+      "independent_chain_buffers": 10,
+      "driver_pin": "_14538_/Y",
+      "driver_um": [
+        190.031,
+        170.337
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_296/DIODE",
+          65.78,
+          189.04
+        ],
+        [
+          "_14548_/S",
+          127.585,
+          93.43
+        ],
+        [
+          "_14554_/S",
+          18.105,
+          118.729
+        ],
+        [
+          "_14559_/S",
+          78.365,
+          91.529
+        ],
+        [
+          "_14566_/S",
+          13.505,
+          82.55
+        ],
+        [
+          "place5398/A",
+          65.582,
+          181.07
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              39.543499999999995,
+              131.81
+            ],
+            "loads": [
+              {
+                "pin": "_14566_/S"
+              },
+              {
+                "pin": "_14554_/S"
+              },
+              {
+                "pin": "place5398/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              96.6825,
+              140.28449999999998
+            ],
+            "loads": [
+              {
+                "pin": "_14559_/S"
+              },
+              {
+                "pin": "_14548_/S"
+              },
+              {
+                "pin": "ANTENNA_296/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              70.545,
+              135.795
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              130.288,
+              153.06599999999997
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 3
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09980_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 5,
+      "independent_chain_buffers": 28,
+      "driver_pin": "_20838_/X",
+      "driver_um": [
+        365.456,
+        308.586
+      ],
+      "sinks_um": [
+        [
+          "_20839_/A1",
+          74.336,
+          376.796
+        ],
+        [
+          "_20905_/B2",
+          68.412,
+          390.135
+        ],
+        [
+          "_20921_/A1",
+          112.056,
+          403.996
+        ],
+        [
+          "_21097_/A0",
+          167.727,
+          406.115
+        ],
+        [
+          "_21476_/B",
+          226.775,
+          342.27
+        ],
+        [
+          "_21838_/A1",
+          135.505,
+          279.132
+        ],
+        [
+          "_22001_/A1",
+          141.485,
+          297.507
+        ],
+        [
+          "_22088_/A0",
+          142.427,
+          340.835
+        ],
+        [
+          "_22124_/A0",
+          135.987,
+          344.605
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              104.9205,
+              327.964
+            ],
+            "loads": [
+              {
+                "pin": "_21838_/A1"
+              },
+              {
+                "pin": "_20839_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              101.9585,
+              341.56399999999996
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "pin": "_20905_/B2"
+              },
+              {
+                "pin": "_20921_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              147.5935,
+              342.62350000000004
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_22001_/A1"
+              },
+              {
+                "pin": "_22088_/A0"
+              },
+              {
+                "pin": "_22124_/A0"
+              },
+              {
+                "pin": "_21476_/B"
+              },
+              {
+                "pin": "_21097_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              220.21433333333334,
+              331.2776666666667
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              292.8351666666667,
+              319.9318333333334
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 4
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09984_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 7,
+      "independent_chain_buffers": 38,
+      "driver_pin": "_20846_/X",
+      "driver_um": [
+        419.736,
+        284.373
+      ],
+      "sinks_um": [
+        [
+          "_20847_/A1",
+          61.916,
+          357.603
+        ],
+        [
+          "_20909_/B2",
+          61.512,
+          390.135
+        ],
+        [
+          "_20949_/A1",
+          100.096,
+          395.683
+        ],
+        [
+          "_21101_/A0",
+          205.907,
+          399.005
+        ],
+        [
+          "_21475_/B",
+          227.235,
+          343.17
+        ],
+        [
+          "_21851_/A0",
+          103.787,
+          279.325
+        ],
+        [
+          "_22019_/A1",
+          88.585,
+          297.507
+        ],
+        [
+          "_22092_/A0",
+          101.487,
+          329.955
+        ],
+        [
+          "_22128_/A0",
+          112.527,
+          346.275
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              80.804,
+              346.595
+            ],
+            "loads": [
+              {
+                "pin": "_22019_/A1"
+              },
+              {
+                "pin": "_20847_/A1"
+              },
+              {
+                "pin": "_20909_/B2"
+              },
+              {
+                "pin": "_20949_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              169.881,
+              371.0875
+            ],
+            "loads": [
+              {
+                "pin": "_22128_/A0"
+              },
+              {
+                "pin": "_21101_/A0"
+              },
+              {
+                "pin": "_21475_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              133.499,
+              321.9025
+            ],
+            "loads": [
+              {
+                "pin": "_22092_/A0"
+              },
+              {
+                "pin": "_21851_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              144.3735,
+              339.16499999999996
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              213.21412500000002,
+              325.467
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              282.05475,
+              311.769
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              350.895375,
+              298.07099999999997
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 6
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09992_",
+      "kind": "shared_tree",
+      "sinks": 15,
+      "buffers": 8,
+      "independent_chain_buffers": 56,
+      "driver_pin": "_20862_/X",
+      "driver_um": [
+        377.876,
+        297.706
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_100/DIODE",
+          86.94,
+          346.8
+        ],
+        [
+          "ANTENNA_101/DIODE",
+          71.3,
+          330.48
+        ],
+        [
+          "ANTENNA_96/DIODE",
+          46.46,
+          357.68
+        ],
+        [
+          "ANTENNA_97/DIODE",
+          42.78,
+          393.04
+        ],
+        [
+          "ANTENNA_98/DIODE",
+          97.98,
+          390.32
+        ],
+        [
+          "ANTENNA_99/DIODE",
+          236.9,
+          341.36
+        ],
+        [
+          "_20863_/A1",
+          49.036,
+          357.603
+        ],
+        [
+          "_20901_/B2",
+          43.572,
+          393.225
+        ],
+        [
+          "_20948_/A0",
+          95.507,
+          389.795
+        ],
+        [
+          "_21109_/A0",
+          196.707,
+          393.565
+        ],
+        [
+          "_21472_/B",
+          239.195,
+          342.27
+        ],
+        [
+          "_21821_/A",
+          83.27,
+          273.52
+        ],
+        [
+          "_21980_/A1",
+          38.445,
+          284.572
+        ],
+        [
+          "_22083_/A0",
+          89.527,
+          346.275
+        ],
+        [
+          "_22119_/A0",
+          73.887,
+          329.955
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              56.166,
+              338.8985
+            ],
+            "loads": [
+              {
+                "pin": "_21980_/A1"
+              },
+              {
+                "pin": "_22119_/A0"
+              },
+              {
+                "pin": "ANTENNA_101/DIODE"
+              },
+              {
+                "pin": "_20863_/A1"
+              },
+              {
+                "pin": "ANTENNA_96/DIODE"
+              },
+              {
+                "pin": "ANTENNA_97/DIODE"
+              },
+              {
+                "pin": "_20901_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              89.3885,
+              331.6575
+            ],
+            "loads": [
+              {
+                "pin": "_21821_/A"
+              },
+              {
+                "pin": "_22083_/A0"
+              },
+              {
+                "pin": "ANTENNA_100/DIODE"
+              },
+              {
+                "pin": "_20948_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              147.3435,
+              391.9425
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_98/DIODE"
+              },
+              {
+                "pin": "_21109_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              161.2325,
+              333.5425
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              },
+              {
+                "pin": "ANTENNA_99/DIODE"
+              },
+              {
+                "pin": "_21472_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              138.82,
+              333.5425
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              198.584,
+              324.58337500000005
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              258.34799999999996,
+              315.62425
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              318.11199999999997,
+              306.665125
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09993_",
+      "kind": "shared_tree",
+      "sinks": 15,
+      "buffers": 8,
+      "independent_chain_buffers": 73,
+      "driver_pin": "_20864_/X",
+      "driver_um": [
+        448.716,
+        292.266
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_102/DIODE",
+          59.34,
+          387.6
+        ],
+        [
+          "ANTENNA_103/DIODE",
+          16.56,
+          393.04
+        ],
+        [
+          "ANTENNA_104/DIODE",
+          111.32,
+          393.04
+        ],
+        [
+          "ANTENNA_105/DIODE",
+          227.24,
+          390.32
+        ],
+        [
+          "ANTENNA_106/DIODE",
+          16.56,
+          346.8
+        ],
+        [
+          "ANTENNA_275/DIODE",
+          237.82,
+          341.36
+        ],
+        [
+          "_20865_/A1",
+          61.916,
+          387.676
+        ],
+        [
+          "_20902_/B2",
+          17.352,
+          393.225
+        ],
+        [
+          "_20955_/A0",
+          108.847,
+          393.565
+        ],
+        [
+          "_21110_/A0",
+          224.767,
+          389.795
+        ],
+        [
+          "_21472_/C",
+          239.245,
+          341.305
+        ],
+        [
+          "_21826_/A1",
+          80.63,
+          275.565
+        ],
+        [
+          "_21984_/A1",
+          33.955,
+          273.56
+        ],
+        [
+          "_22084_/A0",
+          78.027,
+          350.045
+        ],
+        [
+          "_22120_/A0",
+          19.147,
+          346.275
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              39.238,
+              333.39250000000004
+            ],
+            "loads": [
+              {
+                "pin": "_21984_/A1"
+              },
+              {
+                "pin": "_22120_/A0"
+              },
+              {
+                "pin": "ANTENNA_106/DIODE"
+              },
+              {
+                "pin": "ANTENNA_102/DIODE"
+              },
+              {
+                "pin": "_20865_/A1"
+              },
+              {
+                "pin": "ANTENNA_103/DIODE"
+              },
+              {
+                "pin": "_20902_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              94.67349999999999,
+              334.565
+            ],
+            "loads": [
+              {
+                "pin": "_21826_/A1"
+              },
+              {
+                "pin": "_22084_/A0"
+              },
+              {
+                "pin": "ANTENNA_104/DIODE"
+              },
+              {
+                "pin": "_20955_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              195.321,
+              350.18875
+            ],
+            "loads": [
+              {
+                "pin": "_21110_/A0"
+              },
+              {
+                "pin": "ANTENNA_105/DIODE"
+              },
+              {
+                "pin": "ANTENNA_275/DIODE"
+              },
+              {
+                "pin": "_21472_/C"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              127.9025,
+              333.5625
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              192.0652,
+              325.3032
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              256.22790000000003,
+              317.0439
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              320.3906,
+              308.7846
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              384.55330000000004,
+              300.5253
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09994_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 6,
+      "independent_chain_buffers": 34,
+      "driver_pin": "_20866_/X",
+      "driver_um": [
+        370.056,
+        311.573
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_302/DIODE",
+          238.74,
+          333.2
+        ],
+        [
+          "_20867_/A1",
+          44.896,
+          373.923
+        ],
+        [
+          "_20903_/B2",
+          35.752,
+          390.135
+        ],
+        [
+          "_20962_/A0",
+          83.547,
+          388.125
+        ],
+        [
+          "_21111_/A0",
+          213.267,
+          388.125
+        ],
+        [
+          "_21472_/D",
+          238.542,
+          341.04
+        ],
+        [
+          "_21829_/A1",
+          70.05,
+          268.435
+        ],
+        [
+          "_21989_/A1",
+          30.165,
+          264.867
+        ],
+        [
+          "_22085_/A0",
+          69.747,
+          340.835
+        ],
+        [
+          "_22121_/A0",
+          26.507,
+          328.285
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              48.127,
+              327.501
+            ],
+            "loads": [
+              {
+                "pin": "_21989_/A1"
+              },
+              {
+                "pin": "_22121_/A0"
+              },
+              {
+                "pin": "_22085_/A0"
+              },
+              {
+                "pin": "_20867_/A1"
+              },
+              {
+                "pin": "_20903_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              76.79849999999999,
+              328.28
+            ],
+            "loads": [
+              {
+                "pin": "_21829_/A1"
+              },
+              {
+                "pin": "_20962_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              190.19925,
+              344.47125
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_302/DIODE"
+              },
+              {
+                "pin": "_21472_/D"
+              },
+              {
+                "pin": "_21111_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              132.6235,
+              327.501
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              211.76766666666668,
+              322.19166666666666
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              290.91183333333333,
+              316.8823333333333
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 5
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09995_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 10,
+      "independent_chain_buffers": 37,
+      "driver_pin": "_20868_/X",
+      "driver_um": [
+        389.836,
+        289.813
+      ],
+      "sinks_um": [
+        [
+          "_20869_/A1",
+          10.396,
+          357.603
+        ],
+        [
+          "_20888_/B2",
+          8.612,
+          393.225
+        ],
+        [
+          "_20912_/A1",
+          86.296,
+          395.683
+        ],
+        [
+          "_21084_/A",
+          211.912,
+          338.84
+        ],
+        [
+          "_21768_/A1",
+          70.755,
+          262.68
+        ],
+        [
+          "_21915_/A1",
+          19.637,
+          259.56
+        ],
+        [
+          "_22069_/A0",
+          36.167,
+          344.605
+        ],
+        [
+          "_22105_/A0",
+          9.947,
+          344.605
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              14.124500000000001,
+              326.39250000000004
+            ],
+            "loads": [
+              {
+                "pin": "_21915_/A1"
+              },
+              {
+                "pin": "_22105_/A0"
+              },
+              {
+                "pin": "_20869_/A1"
+              },
+              {
+                "pin": "_20888_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              117.70000000000002,
+              381.47225
+            ],
+            "loads": [
+              {
+                "pin": "_20912_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              180.508,
+              353.05075
+            ],
+            "loads": [
+              {
+                "pin": "_21084_/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              88.75025,
+              316.41200000000003
+            ],
+            "loads": [
+              {
+                "pin": "_21768_/A1"
+              },
+              {
+                "pin": "_22069_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              124.0395,
+              329.1815
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              62.19325,
+              327.007
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              110.262,
+              327.62149999999997
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              },
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              180.15550000000002,
+              318.16937499999995
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 8,
+            "point_um": [
+              250.049,
+              308.71725
+            ],
+            "loads": [
+              {
+                "buffer": 7
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 9,
+            "point_um": [
+              319.9425,
+              299.265125
+            ],
+            "loads": [
+              {
+                "buffer": 8
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 9
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09996_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 6,
+      "independent_chain_buffers": 27,
+      "driver_pin": "_20870_/X",
+      "driver_um": [
+        331.876,
+        311.573
+      ],
+      "sinks_um": [
+        [
+          "_20871_/A1",
+          69.736,
+          368.483
+        ],
+        [
+          "_20889_/B2",
+          38.052,
+          395.575
+        ],
+        [
+          "_20919_/B",
+          109.727,
+          398.795
+        ],
+        [
+          "_21084_/B",
+          211.135,
+          337.73
+        ],
+        [
+          "_21774_/A1",
+          53.49,
+          262.995
+        ],
+        [
+          "_21920_/A1",
+          18.257,
+          270.44
+        ],
+        [
+          "_22070_/A0",
+          34.327,
+          346.275
+        ],
+        [
+          "_22106_/A0",
+          12.247,
+          355.485
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              25.1495,
+              333.0075
+            ],
+            "loads": [
+              {
+                "pin": "_21920_/A1"
+              },
+              {
+                "pin": "_22070_/A0"
+              },
+              {
+                "pin": "_22106_/A0"
+              },
+              {
+                "pin": "_20889_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              61.613,
+              315.73900000000003
+            ],
+            "loads": [
+              {
+                "pin": "_21774_/A1"
+              },
+              {
+                "pin": "_20871_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              160.43099999999998,
+              368.26250000000005
+            ],
+            "loads": [
+              {
+                "pin": "_20919_/B"
+              },
+              {
+                "pin": "_21084_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              111.691,
+              330.895
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              185.086,
+              324.4543333333333
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              258.481,
+              318.01366666666667
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 5
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09997_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 9,
+      "independent_chain_buffers": 45,
+      "driver_pin": "_20872_/X",
+      "driver_um": [
+        403.636,
+        286.826
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_107/DIODE",
+          85.1,
+          398.48
+        ],
+        [
+          "ANTENNA_108/DIODE",
+          209.76,
+          338.64
+        ],
+        [
+          "_20873_/A1",
+          19.596,
+          360.476
+        ],
+        [
+          "_20890_/B2",
+          19.192,
+          398.665
+        ],
+        [
+          "_20927_/A1",
+          82.616,
+          398.556
+        ],
+        [
+          "_21084_/C",
+          211.185,
+          338.695
+        ],
+        [
+          "_21778_/A1",
+          51.65,
+          273.875
+        ],
+        [
+          "_21925_/A1",
+          18.315,
+          286.76
+        ],
+        [
+          "_22071_/A0",
+          31.107,
+          350.045
+        ],
+        [
+          "_22107_/A0",
+          11.327,
+          350.045
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              21.217,
+              342.7125
+            ],
+            "loads": [
+              {
+                "pin": "_21925_/A1"
+              },
+              {
+                "pin": "_22071_/A0"
+              },
+              {
+                "pin": "_22107_/A0"
+              },
+              {
+                "pin": "_20873_/A1"
+              },
+              {
+                "pin": "_20890_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              67.133,
+              336.2155
+            ],
+            "loads": [
+              {
+                "pin": "_21778_/A1"
+              },
+              {
+                "pin": "_20927_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              116.62124999999999,
+              383.52
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_107/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              131.4175,
+              336.2155
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              },
+              {
+                "pin": "ANTENNA_108/DIODE"
+              },
+              {
+                "pin": "_21084_/C"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              66.2365,
+              339.49125
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              111.256,
+              336.27
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              },
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              184.35100000000003,
+              323.909
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              257.446,
+              311.548
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 8,
+            "point_um": [
+              330.54100000000005,
+              299.187
+            ],
+            "loads": [
+              {
+                "buffer": 7
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 8
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09998_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 8,
+      "independent_chain_buffers": 33,
+      "driver_pin": "_20874_/X",
+      "driver_um": [
+        403.636,
+        303.146
+      ],
+      "sinks_um": [
+        [
+          "_20875_/A1",
+          10.396,
+          373.923
+        ],
+        [
+          "_20891_/B2",
+          29.772,
+          387.785
+        ],
+        [
+          "_20934_/A1",
+          90.896,
+          390.243
+        ],
+        [
+          "_21084_/D",
+          210.482,
+          338.96
+        ],
+        [
+          "_21780_/A",
+          55.21,
+          270.48
+        ],
+        [
+          "_21929_/A",
+          30.37,
+          278.96
+        ],
+        [
+          "_22072_/A0",
+          31.107,
+          339.165
+        ],
+        [
+          "_22108_/A0",
+          50.427,
+          340.835
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              20.7515,
+              333.3725
+            ],
+            "loads": [
+              {
+                "pin": "_21929_/A"
+              },
+              {
+                "pin": "_22072_/A0"
+              },
+              {
+                "pin": "_20875_/A1"
+              },
+              {
+                "pin": "_20891_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              150.689,
+              364.6015
+            ],
+            "loads": [
+              {
+                "pin": "_20934_/A1"
+              },
+              {
+                "pin": "_21084_/D"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              91.6365,
+              318.0095
+            ],
+            "loads": [
+              {
+                "pin": "_22108_/A0"
+              },
+              {
+                "pin": "_21780_/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              65.59525,
+              331.86699999999996
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              110.439,
+              330.3615
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              },
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              183.73825000000002,
+              323.557625
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              257.0375,
+              316.75374999999997
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              330.33675000000005,
+              309.949875
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_09999_",
+      "kind": "shared_tree",
+      "sinks": 12,
+      "buffers": 8,
+      "independent_chain_buffers": 51,
+      "driver_pin": "_20876_/X",
+      "driver_um": [
+        447.336,
+        300.693
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_109/DIODE",
+          217.12,
+          338.64
+        ],
+        [
+          "ANTENNA_110/DIODE",
+          218.04,
+          338.64
+        ],
+        [
+          "ANTENNA_111/DIODE",
+          218.96,
+          338.64
+        ],
+        [
+          "ANTENNA_112/DIODE",
+          219.88,
+          338.64
+        ],
+        [
+          "_20877_/A1",
+          82.616,
+          371.356
+        ],
+        [
+          "_20892_/B2",
+          9.532,
+          384.695
+        ],
+        [
+          "_20941_/A1",
+          117.576,
+          393.116
+        ],
+        [
+          "_21083_/A",
+          215.132,
+          338.84
+        ],
+        [
+          "_21788_/A1",
+          44.752,
+          265.145
+        ],
+        [
+          "_21936_/A1",
+          12.335,
+          270.44
+        ],
+        [
+          "_22073_/A0",
+          39.387,
+          346.275
+        ],
+        [
+          "_22109_/A0",
+          9.947,
+          329.955
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              46.074,
+              365.485
+            ],
+            "loads": [
+              {
+                "pin": "_20892_/B2"
+              },
+              {
+                "pin": "_22073_/A0"
+              },
+              {
+                "pin": "_20877_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              46.074,
+              324.91999999999996
+            ],
+            "loads": [
+              {
+                "pin": "_21788_/A1"
+              },
+              {
+                "pin": "_21936_/A1"
+              },
+              {
+                "pin": "_22109_/A0"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              141.717,
+              347.50424999999996
+            ],
+            "loads": [
+              {
+                "pin": "_20941_/A1"
+              },
+              {
+                "pin": "_21083_/A"
+              },
+              {
+                "pin": "ANTENNA_109/DIODE"
+              },
+              {
+                "pin": "ANTENNA_110/DIODE"
+              },
+              {
+                "pin": "ANTENNA_111/DIODE"
+              },
+              {
+                "pin": "ANTENNA_112/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              114.706,
+              329.1305
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              181.23200000000003,
+              323.443
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              247.758,
+              317.7555
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              314.284,
+              312.068
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              380.81,
+              306.3805
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_10000_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 8,
+      "independent_chain_buffers": 37,
+      "driver_pin": "_20878_/X",
+      "driver_um": [
+        402.716,
+        284.373
+      ],
+      "sinks_um": [
+        [
+          "_20879_/A1",
+          48.116,
+          365.916
+        ],
+        [
+          "_20893_/B2",
+          47.252,
+          390.135
+        ],
+        [
+          "_20948_/A1",
+          95.496,
+          390.243
+        ],
+        [
+          "_21083_/B",
+          214.355,
+          337.73
+        ],
+        [
+          "_21791_/A0",
+          56.867,
+          279.325
+        ],
+        [
+          "_21941_/A1",
+          18.665,
+          306.332
+        ],
+        [
+          "_22074_/A0",
+          39.387,
+          351.715
+        ],
+        [
+          "_22110_/A0",
+          19.607,
+          333.725
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              32.9585,
+              348.2335
+            ],
+            "loads": [
+              {
+                "pin": "_21941_/A1"
+              },
+              {
+                "pin": "_22110_/A0"
+              },
+              {
+                "pin": "_22074_/A0"
+              },
+              {
+                "pin": "_20893_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              154.9255,
+              363.9865
+            ],
+            "loads": [
+              {
+                "pin": "_20948_/A1"
+              },
+              {
+                "pin": "_21083_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              91.8635,
+              328.70225
+            ],
+            "loads": [
+              {
+                "pin": "_21791_/A0"
+              },
+              {
+                "pin": "_20879_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              74.73425,
+              341.50874999999996
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              116.50999999999999,
+              334.784
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              },
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              188.0615,
+              322.18125
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              259.613,
+              309.57849999999996
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              331.1645,
+              296.97575
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_10001_",
+      "kind": "shared_tree",
+      "sinks": 18,
+      "buffers": 8,
+      "independent_chain_buffers": 50,
+      "driver_pin": "_20880_/X",
+      "driver_um": [
+        368.676,
+        303.146
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_113/DIODE",
+          220.8,
+          338.64
+        ],
+        [
+          "ANTENNA_114/DIODE",
+          208.38,
+          338.64
+        ],
+        [
+          "ANTENNA_115/DIODE",
+          221.72,
+          338.64
+        ],
+        [
+          "ANTENNA_116/DIODE",
+          207.46,
+          338.64
+        ],
+        [
+          "ANTENNA_117/DIODE",
+          222.64,
+          338.64
+        ],
+        [
+          "ANTENNA_118/DIODE",
+          206.54,
+          338.64
+        ],
+        [
+          "ANTENNA_119/DIODE",
+          223.56,
+          338.64
+        ],
+        [
+          "ANTENNA_120/DIODE",
+          205.62,
+          338.64
+        ],
+        [
+          "ANTENNA_121/DIODE",
+          224.48,
+          338.64
+        ],
+        [
+          "ANTENNA_122/DIODE",
+          204.7,
+          338.64
+        ],
+        [
+          "_20881_/A1",
+          60.996,
+          376.796
+        ],
+        [
+          "_20894_/B2",
+          50.932,
+          393.225
+        ],
+        [
+          "_20955_/A1",
+          108.836,
+          393.116
+        ],
+        [
+          "_21083_/C",
+          214.405,
+          338.695
+        ],
+        [
+          "_21797_/A_N",
+          69.167,
+          284.44
+        ],
+        [
+          "_21947_/A1",
+          18.315,
+          292.2
+        ],
+        [
+          "_22075_/A0",
+          60.547,
+          335.395
+        ],
+        [
+          "_22111_/A0",
+          20.527,
+          350.045
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              39.431,
+              342.7125
+            ],
+            "loads": [
+              {
+                "pin": "_21947_/A1"
+              },
+              {
+                "pin": "_22075_/A0"
+              },
+              {
+                "pin": "_22111_/A0"
+              },
+              {
+                "pin": "_20894_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              65.0815,
+              330.618
+            ],
+            "loads": [
+              {
+                "pin": "_21797_/A_N"
+              },
+              {
+                "pin": "_20881_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              222.64,
+              338.64
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_113/DIODE"
+              },
+              {
+                "pin": "ANTENNA_115/DIODE"
+              },
+              {
+                "pin": "ANTENNA_117/DIODE"
+              },
+              {
+                "pin": "ANTENNA_119/DIODE"
+              },
+              {
+                "pin": "ANTENNA_121/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              168.45374999999999,
+              338.75
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_118/DIODE"
+              },
+              {
+                "pin": "ANTENNA_116/DIODE"
+              },
+              {
+                "pin": "ANTENNA_114/DIODE"
+              },
+              {
+                "pin": "_21083_/C"
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              121.3975,
+              338.8325
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_20955_/A1"
+              },
+              {
+                "pin": "ANTENNA_122/DIODE"
+              },
+              {
+                "pin": "ANTENNA_120/DIODE"
+              },
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              183.21712499999998,
+              329.910875
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              245.03674999999998,
+              320.98924999999997
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              306.85637499999996,
+              312.067625
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_10002_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 7,
+      "independent_chain_buffers": 38,
+      "driver_pin": "_20882_/X",
+      "driver_um": [
+        436.296,
+        308.586
+      ],
+      "sinks_um": [
+        [
+          "_20883_/A1",
+          18.676,
+          371.356
+        ],
+        [
+          "_20895_/B2",
+          17.812,
+          384.695
+        ],
+        [
+          "_20962_/A1",
+          83.536,
+          387.676
+        ],
+        [
+          "_21083_/D",
+          213.702,
+          338.96
+        ],
+        [
+          "_21801_/A0",
+          65.147,
+          297.315
+        ],
+        [
+          "_21951_/A1",
+          17.745,
+          300.892
+        ],
+        [
+          "_22076_/A0",
+          59.627,
+          344.605
+        ],
+        [
+          "_22112_/A0",
+          84.927,
+          333.725
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              38.686,
+              342.7935
+            ],
+            "loads": [
+              {
+                "pin": "_21951_/A1"
+              },
+              {
+                "pin": "_22076_/A0"
+              },
+              {
+                "pin": "_20883_/A1"
+              },
+              {
+                "pin": "_20895_/B2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              74.3415,
+              342.4955
+            ],
+            "loads": [
+              {
+                "pin": "_21801_/A0"
+              },
+              {
+                "pin": "_20962_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              139.4245,
+              342.4955
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_22112_/A0"
+              },
+              {
+                "pin": "_21083_/D"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              115.7235,
+              342.4955
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              195.866625,
+              334.018125
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              276.00975,
+              325.54075
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              356.152875,
+              317.063375
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 6
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11234_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 6,
+      "independent_chain_buffers": 25,
+      "driver_pin": "_22831_/X",
+      "driver_um": [
+        519.096,
+        317.013
+      ],
+      "sinks_um": [
+        [
+          "_14474_/A0",
+          382.547,
+          388.125
+        ],
+        [
+          "_21477_/D_N",
+          264.755,
+          341.255
+        ],
+        [
+          "_22148_/A1",
+          391.736,
+          376.796
+        ],
+        [
+          "_22157_/A1",
+          365.976,
+          376.796
+        ],
+        [
+          "_22166_/A1",
+          385.756,
+          395.683
+        ],
+        [
+          "_22175_/A0",
+          451.547,
+          399.005
+        ],
+        [
+          "_22184_/A0",
+          386.687,
+          411.555
+        ],
+        [
+          "_22838_/A_N",
+          255.007,
+          411.88
+        ],
+        [
+          "_24227_/A0",
+          392.667,
+          431.645
+        ],
+        [
+          "place6187/A",
+          269.362,
+          420.43
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              259.881,
+              376.5675
+            ],
+            "loads": [
+              {
+                "pin": "_21477_/D_N"
+              },
+              {
+                "pin": "_22838_/A_N"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              318.77700000000004,
+              380.8425
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "pin": "place6187/A"
+              },
+              {
+                "pin": "_22157_/A1"
+              },
+              {
+                "pin": "_14474_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              418.6515,
+              404.2205
+            ],
+            "loads": [
+              {
+                "pin": "_22166_/A1"
+              },
+              {
+                "pin": "_22184_/A0"
+              },
+              {
+                "pin": "_22148_/A1"
+              },
+              {
+                "pin": "_24227_/A0"
+              },
+              {
+                "pin": "_22175_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              353.27700000000004,
+              386.45
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              408.55000000000007,
+              363.3043333333333
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              463.82300000000004,
+              340.15866666666665
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 5
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11242_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 11,
+      "independent_chain_buffers": 16,
+      "driver_pin": "_22839_/X",
+      "driver_um": [
+        430.776,
+        297.706
+      ],
+      "sinks_um": [
+        [
+          "_20928_/A0",
+          82.627,
+          389.795
+        ],
+        [
+          "_22150_/A1",
+          378.856,
+          373.923
+        ],
+        [
+          "_22159_/A1",
+          425.316,
+          406.563
+        ],
+        [
+          "_22168_/A1",
+          428.536,
+          382.236
+        ],
+        [
+          "_22177_/A0",
+          425.787,
+          416.995
+        ],
+        [
+          "_22186_/A0",
+          430.387,
+          411.555
+        ],
+        [
+          "_22841_/A",
+          216.81,
+          341.045
+        ],
+        [
+          "_24231_/A0",
+          405.087,
+          420.765
+        ],
+        [
+          "place6183/A",
+          261.542,
+          352.05
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              116.17275000000001,
+              377.6075
+            ],
+            "loads": [
+              {
+                "pin": "_20928_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              183.26425,
+              353.2325
+            ],
+            "loads": [
+              {
+                "pin": "_22841_/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              149.7185,
+              365.42
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              320.19899999999996,
+              362.9865
+            ],
+            "loads": [
+              {
+                "pin": "place6183/A"
+              },
+              {
+                "pin": "_22150_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              275.47024999999996,
+              364.20325
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              230.7415,
+              365.42
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              363.9936666666666,
+              394.63533333333334
+            ],
+            "loads": [
+              {
+                "pin": "_24231_/A0"
+              },
+              {
+                "pin": "_22159_/A1"
+              },
+              {
+                "pin": "_22177_/A0"
+              },
+              {
+                "pin": "_22168_/A1"
+              },
+              {
+                "pin": "_22186_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              310.25033333333334,
+              387.7701666666666
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 8,
+            "point_um": [
+              256.507,
+              380.905
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              },
+              {
+                "buffer": 7
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 9,
+            "point_um": [
+              314.5966666666667,
+              353.17199999999997
+            ],
+            "loads": [
+              {
+                "buffer": 8
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 10,
+            "point_um": [
+              372.6863333333333,
+              325.439
+            ],
+            "loads": [
+              {
+                "buffer": 9
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 10
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11243_",
+      "kind": "shared_tree",
+      "sinks": 12,
+      "buffers": 7,
+      "independent_chain_buffers": 26,
+      "driver_pin": "_22840_/X",
+      "driver_um": [
+        422.036,
+        308.586
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_142/DIODE",
+          92.46,
+          395.76
+        ],
+        [
+          "ANTENNA_143/DIODE",
+          215.28,
+          341.36
+        ],
+        [
+          "ANTENNA_144/DIODE",
+          230.0,
+          401.2
+        ],
+        [
+          "_20935_/A0",
+          95.967,
+          395.235
+        ],
+        [
+          "_22151_/A1",
+          400.016,
+          368.483
+        ],
+        [
+          "_22160_/A1",
+          387.136,
+          365.916
+        ],
+        [
+          "_22169_/A1",
+          387.136,
+          376.796
+        ],
+        [
+          "_22178_/A0",
+          425.787,
+          422.435
+        ],
+        [
+          "_22187_/A0",
+          386.687,
+          409.885
+        ],
+        [
+          "_22841_/B",
+          215.987,
+          341.045
+        ],
+        [
+          "_24233_/A0",
+          391.747,
+          426.205
+        ],
+        [
+          "place6182/A",
+          230.722,
+          401.01
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              153.87,
+              368.56
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_142/DIODE"
+              },
+              {
+                "pin": "_20935_/A0"
+              },
+              {
+                "pin": "ANTENNA_143/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              406.23699999999997,
+              396.0605
+            ],
+            "loads": [
+              {
+                "pin": "_22160_/A1"
+              },
+              {
+                "pin": "_22151_/A1"
+              },
+              {
+                "pin": "_22169_/A1"
+              },
+              {
+                "pin": "_22187_/A0"
+              },
+              {
+                "pin": "_22178_/A0"
+              },
+              {
+                "pin": "_24233_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              210.35725,
+              377.37375
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "pin": "_22841_/B"
+              },
+              {
+                "pin": "ANTENNA_144/DIODE"
+              },
+              {
+                "pin": "place6182/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              332.68025,
+              389.84275
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              259.1235,
+              383.625
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              313.42766666666665,
+              358.612
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              367.7318333333333,
+              333.599
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 6
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11245_",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 9,
+      "independent_chain_buffers": 18,
+      "driver_pin": "_22842_/X",
+      "driver_um": [
+        482.756,
+        317.013
+      ],
+      "sinks_um": [
+        [
+          "_20956_/A0",
+          110.687,
+          395.235
+        ],
+        [
+          "_22154_/A1",
+          404.616,
+          395.683
+        ],
+        [
+          "_22163_/A1",
+          412.896,
+          403.996
+        ],
+        [
+          "_22172_/A1",
+          412.896,
+          393.116
+        ],
+        [
+          "_22181_/A0",
+          436.827,
+          400.675
+        ],
+        [
+          "_22190_/A0",
+          412.907,
+          409.885
+        ],
+        [
+          "_22846_/A",
+          308.972,
+          352.04
+        ],
+        [
+          "_24239_/A0",
+          399.567,
+          404.445
+        ],
+        [
+          "place6181/A",
+          258.782,
+          404.11
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              184.7345,
+              399.6725
+            ],
+            "loads": [
+              {
+                "pin": "_20956_/A0"
+              },
+              {
+                "pin": "place6181/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              354.2695,
+              378.2425
+            ],
+            "loads": [
+              {
+                "pin": "_22846_/A"
+              },
+              {
+                "pin": "_24239_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              219.93075,
+              388.9575
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              420.7215,
+              401.5005
+            ],
+            "loads": [
+              {
+                "pin": "_22154_/A1"
+              },
+              {
+                "pin": "_22163_/A1"
+              },
+              {
+                "pin": "_22172_/A1"
+              },
+              {
+                "pin": "_22190_/A0"
+              },
+              {
+                "pin": "_22181_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              347.23924999999997,
+              391.2315
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              273.757,
+              380.9625
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 1
+              },
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              326.00675,
+              364.975125
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              378.25649999999996,
+              348.98775
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 8,
+            "point_um": [
+              430.50624999999997,
+              333.00037499999996
+            ],
+            "loads": [
+              {
+                "buffer": 7
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 8
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11248_",
+      "kind": "shared_tree",
+      "sinks": 11,
+      "buffers": 8,
+      "independent_chain_buffers": 25,
+      "driver_pin": "_22845_/X",
+      "driver_um": [
+        459.296,
+        295.253
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_145/DIODE",
+          306.82,
+          352.24
+        ],
+        [
+          "ANTENNA_315/DIODE",
+          119.14,
+          409.36
+        ],
+        [
+          "_20942_/A0",
+          116.667,
+          409.885
+        ],
+        [
+          "_22152_/A1",
+          408.756,
+          387.676
+        ],
+        [
+          "_22161_/A1",
+          400.016,
+          384.803
+        ],
+        [
+          "_22170_/A1",
+          423.016,
+          382.236
+        ],
+        [
+          "_22179_/A0",
+          446.947,
+          409.885
+        ],
+        [
+          "_22188_/A0",
+          417.507,
+          415.325
+        ],
+        [
+          "_22846_/D",
+          307.542,
+          351.92
+        ],
+        [
+          "_24235_/A0",
+          397.727,
+          420.765
+        ],
+        [
+          "place6176/A",
+          258.322,
+          346.61
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              165.004,
+              393.935
+            ],
+            "loads": [
+              {
+                "pin": "_20942_/A0"
+              },
+              {
+                "pin": "ANTENNA_315/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              247.51825,
+              363.83625
+            ],
+            "loads": [
+              {
+                "pin": "place6176/A"
+              },
+              {
+                "pin": "ANTENNA_145/DIODE"
+              },
+              {
+                "pin": "_22846_/D"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              212.10449999999997,
+              378.2475
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              422.337,
+              401.5005
+            ],
+            "loads": [
+              {
+                "pin": "_24235_/A0"
+              },
+              {
+                "pin": "_22161_/A1"
+              },
+              {
+                "pin": "_22152_/A1"
+              },
+              {
+                "pin": "_22188_/A0"
+              },
+              {
+                "pin": "_22170_/A1"
+              },
+              {
+                "pin": "_22179_/A0"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              352.072,
+              392.594
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              281.807,
+              383.6875
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 4
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              340.97,
+              354.20933333333335
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              400.133,
+              324.73116666666664
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 7
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11536_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 4,
+      "independent_chain_buffers": 13,
+      "driver_pin": "_23154_/Y",
+      "driver_um": [
+        306.478,
+        192.365
+      ],
+      "sinks_um": [
+        [
+          "_15164_/A",
+          168.236,
+          126.467
+        ],
+        [
+          "_15170_/A",
+          180.597,
+          126.835
+        ],
+        [
+          "_15194_/A",
+          185.607,
+          129.255
+        ],
+        [
+          "_15195_/A1",
+          183.43,
+          129.072
+        ],
+        [
+          "_15219_/A",
+          171.397,
+          128.845
+        ],
+        [
+          "_15250_/A1",
+          172.826,
+          127.026
+        ],
+        [
+          "_19858_/A",
+          199.63,
+          150.775
+        ],
+        [
+          "_24437_/A1",
+          301.995,
+          181.017
+        ],
+        [
+          "_24459_/B1",
+          306.537,
+          202.69
+        ],
+        [
+          "_24479_/A2",
+          249.232,
+          202.825
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              277.8845,
+              191.921
+            ],
+            "loads": [
+              {
+                "pin": "_24479_/A2"
+              },
+              {
+                "pin": "_24437_/A1"
+              },
+              {
+                "pin": "_24459_/B1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_4"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              206.60975,
+              146.20774999999998
+            ],
+            "loads": [
+              {
+                "pin": "_15164_/A"
+              },
+              {
+                "pin": "_15219_/A"
+              },
+              {
+                "pin": "_15250_/A1"
+              },
+              {
+                "pin": "_15170_/A"
+              },
+              {
+                "pin": "_15195_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              237.38649999999998,
+              164.646
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_15194_/A"
+              },
+              {
+                "pin": "_19858_/A"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              271.93225,
+              178.50549999999998
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 3
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_11942_",
+      "kind": "shared_tree",
+      "sinks": 5,
+      "buffers": 1,
+      "independent_chain_buffers": 2,
+      "driver_pin": "_23560_/Y",
+      "driver_um": [
+        464.87,
+        44.51
+      ],
+      "sinks_um": [
+        [
+          "_23580_/A1",
+          449.625,
+          50.49
+        ],
+        [
+          "_23596_/A1",
+          438.58,
+          45.08
+        ],
+        [
+          "_23611_/B",
+          442.083,
+          42.12
+        ],
+        [
+          "_23719_/A",
+          405.27,
+          66.8
+        ],
+        [
+          "_23720_/A2",
+          400.841,
+          110.405
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              425.233,
+              80.4475
+            ],
+            "loads": [
+              {
+                "pin": "_23580_/A1"
+              },
+              {
+                "pin": "_23719_/A"
+              },
+              {
+                "pin": "_23720_/A2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "pin": "_23611_/B"
+          },
+          {
+            "pin": "_23596_/A1"
+          },
+          {
+            "buffer": 0
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12269_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 4,
+      "independent_chain_buffers": 19,
+      "driver_pin": "_23906_/X",
+      "driver_um": [
+        321.756,
+        164.693
+      ],
+      "sinks_um": [
+        [
+          "_14838_/A1",
+          340.257,
+          295.32
+        ],
+        [
+          "_14848_/C",
+          426.265,
+          329.882
+        ],
+        [
+          "_14909_/S1",
+          366.79,
+          333.542
+        ],
+        [
+          "_14912_/B1_N",
+          399.002,
+          335.895
+        ],
+        [
+          "_14943_/B1_N",
+          333.222,
+          330.455
+        ],
+        [
+          "_23907_/B",
+          377.645,
+          268.105
+        ],
+        [
+          "_23909_/B",
+          386.19,
+          275.92
+        ],
+        [
+          "_23912_/B",
+          421.345,
+          208.265
+        ],
+        [
+          "place5990/A",
+          381.142,
+          270.45
+        ],
+        [
+          "place5991/A",
+          420.702,
+          262.67
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              399.495,
+              242.0925
+            ],
+            "loads": [
+              {
+                "pin": "_23912_/B"
+              },
+              {
+                "pin": "place5991/A"
+              },
+              {
+                "pin": "_23907_/B"
+              },
+              {
+                "pin": "place5990/A"
+              },
+              {
+                "pin": "_23909_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              379.7435,
+              315.60749999999996
+            ],
+            "loads": [
+              {
+                "pin": "_14943_/B1_N"
+              },
+              {
+                "pin": "_14838_/A1"
+              },
+              {
+                "pin": "_14909_/S1"
+              },
+              {
+                "pin": "_14912_/B1_N"
+              },
+              {
+                "pin": "_14848_/C"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              379.7435,
+              272.08
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              350.74974999999995,
+              218.3865
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 3
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12338_",
+      "kind": "shared_tree",
+      "sinks": 4,
+      "buffers": 3,
+      "independent_chain_buffers": 9,
+      "driver_pin": "_23975_/Y",
+      "driver_um": [
+        269.268,
+        124.231
+      ],
+      "sinks_um": [
+        [
+          "_14930_/A2",
+          326.24,
+          308.535
+        ],
+        [
+          "_23976_/A",
+          295.13,
+          259.6
+        ],
+        [
+          "_24053_/A2",
+          342.535,
+          224.6
+        ],
+        [
+          "_24069_/A2",
+          355.327,
+          226.905
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              325.2285,
+              266.5675
+            ],
+            "loads": [
+              {
+                "pin": "_24053_/A2"
+              },
+              {
+                "pin": "_24069_/A2"
+              },
+              {
+                "pin": "_23976_/A"
+              },
+              {
+                "pin": "_14930_/A2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              306.575,
+              219.12199999999999
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              287.9215,
+              171.67649999999998
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 2
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12632_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 1,
+      "independent_chain_buffers": 8,
+      "driver_pin": "_24318_/Y",
+      "driver_um": [
+        546.572,
+        105.097
+      ],
+      "sinks_um": [
+        [
+          "_17872_/B",
+          635.97,
+          110.32
+        ],
+        [
+          "_17877_/B",
+          630.91,
+          96.4
+        ],
+        [
+          "_17922_/B",
+          606.53,
+          148.4
+        ],
+        [
+          "_19299_/B",
+          632.29,
+          101.84
+        ],
+        [
+          "_19362_/B",
+          605.61,
+          80.08
+        ],
+        [
+          "_19397_/A",
+          609.03,
+          69.175
+        ],
+        [
+          "place5775/A",
+          601.022,
+          74.61
+        ],
+        [
+          "place5788/A",
+          634.602,
+          101.81
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              618.4960000000001,
+              108.7875
+            ],
+            "loads": [
+              {
+                "pin": "_19397_/A"
+              },
+              {
+                "pin": "place5775/A"
+              },
+              {
+                "pin": "_19362_/B"
+              },
+              {
+                "pin": "_17877_/B"
+              },
+              {
+                "pin": "place5788/A"
+              },
+              {
+                "pin": "_19299_/B"
+              },
+              {
+                "pin": "_17872_/B"
+              },
+              {
+                "pin": "_17922_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 0
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12779_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 1,
+      "independent_chain_buffers": 7,
+      "driver_pin": "_24499_/Y",
+      "driver_um": [
+        219.471,
+        148.577
+      ],
+      "sinks_um": [
+        [
+          "_20060_/A",
+          189.99,
+          145.36
+        ],
+        [
+          "_24500_/C",
+          237.16,
+          148.44
+        ],
+        [
+          "_24558_/B",
+          232.295,
+          152.77
+        ],
+        [
+          "_24629_/A2",
+          191.732,
+          137.545
+        ],
+        [
+          "_24695_/A2",
+          139.292,
+          153.865
+        ],
+        [
+          "_24858_/A2",
+          117.85,
+          104.712
+        ],
+        [
+          "_24880_/A2",
+          102.492,
+          104.905
+        ],
+        [
+          "_25529_/B1",
+          236.571,
+          202.975
+        ],
+        [
+          "place5747/A",
+          96.402,
+          104.91
+        ],
+        [
+          "place5749/A",
+          164.482,
+          194.29
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              130.442,
+              149.501
+            ],
+            "loads": [
+              {
+                "pin": "_24858_/A2"
+              },
+              {
+                "pin": "_24880_/A2"
+              },
+              {
+                "pin": "place5747/A"
+              },
+              {
+                "pin": "_24695_/A2"
+              },
+              {
+                "pin": "place5749/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 0
+          },
+          {
+            "pin": "_24629_/A2"
+          },
+          {
+            "pin": "_20060_/A"
+          },
+          {
+            "pin": "_24500_/C"
+          },
+          {
+            "pin": "_24558_/B"
+          },
+          {
+            "pin": "_25529_/B1"
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12796_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 2,
+      "independent_chain_buffers": 3,
+      "driver_pin": "_24516_/Y",
+      "driver_um": [
+        220.391,
+        150.622
+      ],
+      "sinks_um": [
+        [
+          "_19784_/A",
+          187.69,
+          145.36
+        ],
+        [
+          "_24521_/A",
+          229.852,
+          153.88
+        ],
+        [
+          "_24556_/B",
+          236.467,
+          157.31
+        ],
+        [
+          "_24598_/A2",
+          190.812,
+          243.255
+        ],
+        [
+          "_24626_/B1",
+          183.686,
+          150.627
+        ],
+        [
+          "_24666_/A2",
+          205.992,
+          202.825
+        ],
+        [
+          "_24685_/A2",
+          207.812,
+          216.055
+        ],
+        [
+          "_24702_/A2",
+          142.032,
+          150.775
+        ],
+        [
+          "_25527_/A2",
+          215.652,
+          235.465
+        ],
+        [
+          "place5743/A",
+          135.042,
+          219.15
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              221.2295,
+              194.6725
+            ],
+            "loads": [
+              {
+                "pin": "_24521_/A"
+              },
+              {
+                "pin": "_24556_/B"
+              },
+              {
+                "pin": "_24666_/A2"
+              },
+              {
+                "pin": "_24685_/A2"
+              },
+              {
+                "pin": "_25527_/A2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              185.7545,
+              194.3075
+            ],
+            "loads": [
+              {
+                "pin": "_19784_/A"
+              },
+              {
+                "pin": "_24626_/B1"
+              },
+              {
+                "pin": "_24702_/A2"
+              },
+              {
+                "pin": "place5743/A"
+              },
+              {
+                "pin": "_24598_/A2"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 1
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12804_",
+      "kind": "shared_tree",
+      "sinks": 8,
+      "buffers": 2,
+      "independent_chain_buffers": 7,
+      "driver_pin": "_24524_/Y",
+      "driver_um": [
+        195.091,
+        164.897
+      ],
+      "sinks_um": [
+        [
+          "_24539_/A",
+          211.337,
+          159.305
+        ],
+        [
+          "_24636_/B1",
+          193.331,
+          172.385
+        ],
+        [
+          "_24711_/A2",
+          134.672,
+          107.255
+        ],
+        [
+          "_24725_/B1",
+          116.986,
+          132.252
+        ],
+        [
+          "_24814_/B1",
+          70.986,
+          219.292
+        ],
+        [
+          "_24852_/B1",
+          110.531,
+          123.425
+        ],
+        [
+          "place5679/A",
+          72.482,
+          134.45
+        ],
+        [
+          "place5680/A",
+          116.642,
+          191.95
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              93.814,
+              171.3585
+            ],
+            "loads": [
+              {
+                "pin": "_24852_/B1"
+              },
+              {
+                "pin": "place5679/A"
+              },
+              {
+                "pin": "place5680/A"
+              },
+              {
+                "pin": "_24814_/B1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              141.1615,
+              163.2735
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "pin": "_24725_/B1"
+              },
+              {
+                "pin": "_24711_/A2"
+              },
+              {
+                "pin": "_24636_/B1"
+              },
+              {
+                "pin": "_24539_/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 1
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "_12808_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 4,
+      "independent_chain_buffers": 9,
+      "driver_pin": "_24528_/Y",
+      "driver_um": [
+        207.971,
+        154.017
+      ],
+      "sinks_um": [
+        [
+          "_19857_/A2",
+          147.76,
+          159.305
+        ],
+        [
+          "_24539_/B",
+          211.627,
+          158.21
+        ],
+        [
+          "_24559_/B",
+          207.915,
+          162.75
+        ],
+        [
+          "_24627_/A2",
+          185.752,
+          159.305
+        ],
+        [
+          "_24879_/A2",
+          114.432,
+          161.655
+        ],
+        [
+          "_24914_/A2",
+          33.472,
+          126.665
+        ],
+        [
+          "_24950_/B1",
+          64.071,
+          134.305
+        ],
+        [
+          "_24977_/A2",
+          87.752,
+          126.665
+        ],
+        [
+          "place5735/A",
+          70.182,
+          167.09
+        ],
+        [
+          "place5736/A",
+          52.242,
+          167.09
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              60.611999999999995,
+              146.8775
+            ],
+            "loads": [
+              {
+                "pin": "_24914_/A2"
+              },
+              {
+                "pin": "place5736/A"
+              },
+              {
+                "pin": "_24950_/B1"
+              },
+              {
+                "pin": "place5735/A"
+              },
+              {
+                "pin": "_24977_/A2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              163.0295,
+              160.48000000000002
+            ],
+            "loads": [
+              {
+                "pin": "_24879_/A2"
+              },
+              {
+                "pin": "_19857_/A2"
+              },
+              {
+                "pin": "_24627_/A2"
+              },
+              {
+                "pin": "_24559_/B"
+              },
+              {
+                "pin": "_24539_/B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              122.54950000000001,
+              146.8775
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              165.26025,
+              150.44725
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 3
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "clknet_0_clk",
+      "kind": "clock_split",
+      "sinks": 8,
+      "buffers": 2,
+      "independent_chain_buffers": null
+    },
+    {
+      "net": "net2248",
+      "kind": "shared_tree",
+      "sinks": 6,
+      "buffers": 11,
+      "independent_chain_buffers": 8,
+      "driver_pin": "fanout2248/X",
+      "driver_um": [
+        144.104,
+        502.011
+      ],
+      "sinks_um": [
+        [
+          "_23800_/B",
+          240.792,
+          369.495
+        ],
+        [
+          "_23895_/A2",
+          311.14,
+          191.951
+        ],
+        [
+          "_24290_/B1",
+          49.515,
+          491.16
+        ],
+        [
+          "_30304_/SET_B",
+          114.08,
+          504.05
+        ],
+        [
+          "_30315_/SET_B",
+          140.3,
+          504.05
+        ],
+        [
+          "place6896/A",
+          170.922,
+          477.17
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              205.857,
+              423.3325
+            ],
+            "loads": [
+              {
+                "pin": "_23800_/B"
+              },
+              {
+                "pin": "place6896/A"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              287.7703333333333,
+              239.4875
+            ],
+            "loads": [
+              {
+                "pin": "_23895_/A2"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              264.40066666666667,
+              287.024
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              223.44400000000002,
+              378.9465
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              241.031,
+              334.5605
+            ],
+            "loads": [
+              {
+                "buffer": 2
+              },
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 5,
+            "point_um": [
+              94.9075,
+              497.605
+            ],
+            "loads": [
+              {
+                "pin": "_24290_/B1"
+              },
+              {
+                "pin": "_30304_/SET_B"
+              },
+              {
+                "pin": "_30315_/SET_B"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 6,
+            "point_um": [
+              123.38083333333333,
+              447.7368333333333
+            ],
+            "loads": [
+              {
+                "buffer": 5
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 7,
+            "point_um": [
+              151.85416666666666,
+              397.8686666666667
+            ],
+            "loads": [
+              {
+                "buffer": 6
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 8,
+            "point_um": [
+              180.3275,
+              348.0005
+            ],
+            "loads": [
+              {
+                "buffer": 4
+              },
+              {
+                "buffer": 7
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 9,
+            "point_um": [
+              168.253,
+              399.33733333333333
+            ],
+            "loads": [
+              {
+                "buffer": 8
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 10,
+            "point_um": [
+              156.1785,
+              450.6741666666667
+            ],
+            "loads": [
+              {
+                "buffer": 9
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 10
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    }
+  ],
+  "status": "ready",
+  "odb_sha256": "343ba8b9bb9586a1872fb1cd92dc3362092cc4c1d9315a62c9f044a3a482cdaf"
+}

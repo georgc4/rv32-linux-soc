@@ -398,6 +398,42 @@ that reporting call. The million-cycle smoke still passed; the corrected long
 matrix is https://github.com/georgc4/rv32-linux-soc/actions/runs/36811470885 .
 This was a host-tool compatibility failure, not Linux or chip timing evidence.
 
+## 2026-09-30 — Shared buffer trees and distributed repair neighborhood
+
+The four repeated GDS launches through **36811470893** failed before applying
+an ECO: the independent per-sink chain planner proposed **874 buffers** for
+**37 target nets**, exceeding the unchanged 250-buffer bound. Initial detailed
+routing was clean; these failed plans give no evidence about repaired LVS or STA.
+The user authorized local experiments on a copy of the CI database before dispatch.
+
+CI branch commit **0fc5c9b** shares spatial buffer trunks, bounds fanout to eight
+and planned Manhattan segments to 90 micrometres, and prunes redundant junctions.
+The exact failed-CI checkpoint now needs **207 buffers and 36 driver resizes**.
+An 80-micrometre version needed 264 buffers and was rejected; the checked-in
+geometry fixture makes this comparison reproducible. These geometric bounds are
+not extracted timing guarantees and legalization can lengthen segments.
+
+Local legalization passed. The pre-route audit checked **55,220 original input
+pins** and **8,950 exact protected routes**. Keeping the 20/5 micrometre
+cell/route halos selects **12,505 editable nets / 21,248 original routed nets**,
+a conservative 58.85% ratio including 207 newly added nets. Cell halos alone
+select 9,490 nets; even shrinking to 1/0.5 micrometres still selects 7,080 nets.
+Rather than remove nearby routing freedom, the trial explicitly raises the
+editable-net budget from 25% to **65%**. This is a distributed repair; rerouted
+neighbors may acquire new slew/capacitance violations. All final DRC, LVS,
+connectivity, antenna, timing and electrical gates remain required.
+
+The local global route completed with **42 units of coarse overflow**. Detailed
+routing was still in progress at this checkpoint. Local Liberty revision
+0fe599b2 differs from CI's 8afc8346, so local results are screening evidence only.
+All **15 helper tests** pass and all **95 flow steps** register in the pinned
+LibreLane 3.0.14 container. Physical provenance hashes were refreshed.
+
+Evidence snapshot: [shared-tree checkpoint](evidence/20261001T060502Z/).
+The new physical CI build was dispatched by pushing 0fc5c9b to the draft PR #1
+branch. Main is unchanged. The existing two-profile Linux matrix **36811470885**
+continues without a restart; no full Linux acceptance was established here.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

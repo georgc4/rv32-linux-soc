@@ -1,0 +1,78 @@
+{
+  "source_ci_run": 36811470893,
+  "source_ci_commit": "26f81b8a899d02b3e3ce376d66c31b1893234b25",
+  "source_odb_sha256": "343ba8b9bb9586a1872fb1cd92dc3362092cc4c1d9315a62c9f044a3a482cdaf",
+  "status": "local_detailed_routing_in_progress",
+  "independent_chain_buffers": 874,
+  "shared_tree_buffers": 207,
+  "driver_resizes": 36,
+  "target_nets": 37,
+  "buffer_limit": 250,
+  "geometry_bounds": {
+    "max_segment_um_before_legalization": 90,
+    "max_fanout": 8,
+    "leaf_span_um": 80
+  },
+  "local_pdk_revision": "0fe599b2afb6708d281543108caf8310912f54af",
+  "ci_pdk_revision": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+  "qualification": false,
+  "global_routing_overflow": 42,
+  "neighborhood": {
+    "changed_instances": 243,
+    "editable_nets": 12505,
+    "routed_nets": 21248,
+    "cell_halo_um": 20.0,
+    "route_halo_um": 5.0,
+    "dbu_per_um": 1000,
+    "editable_fraction": 0.5885259789156626,
+    "max_editable_fraction": 0.65,
+    "within_budget": true
+  },
+  "pre_route_audit": {
+    "status": "pass",
+    "protected_nets": 8950,
+    "editable_nets": 12505,
+    "checked_original_input_pins": 55220,
+    "odb_sha256": "5473ec1b03539be20ccc7ecdb7aa5b946f80777f1ed5f7b6282557061b9ec072",
+    "scope": "Logical driver and protected-route audit; DRC/LVS remain required"
+  },
+  "halo_screen": [
+    {
+      "cell_halo_um": 10,
+      "route_halo_um": 2,
+      "editable_nets": 9803,
+      "routed_nets": 21248,
+      "fraction": 0.46136106927710846
+    },
+    {
+      "cell_halo_um": 5,
+      "route_halo_um": 1,
+      "editable_nets": 8381,
+      "routed_nets": 21248,
+      "fraction": 0.3944371234939759
+    },
+    {
+      "cell_halo_um": 2,
+      "route_halo_um": 1,
+      "editable_nets": 7836,
+      "routed_nets": 21248,
+      "fraction": 0.36878765060240964
+    },
+    {
+      "cell_halo_um": 1,
+      "route_halo_um": 0.5,
+      "editable_nets": 7080,
+      "routed_nets": 21248,
+      "fraction": 0.3332078313253012
+    }
+  ],
+  "local_artifact_sha256": {
+    "eco.tcl": "361358319d0afb74fb13dd093f0803c961007eaa9d729d91e0708dbfb061bcf7",
+    "eco.json": "22d9a5e99adef575b4b26ecd02348ae510ea299908659f5521b96e7083e6b830",
+    "apply.tcl": "02b9756f6dd7971b86b42ec2b233a127063a9921a18b4674e8ce20d2b4c872aa",
+    "route.tcl": "2d49baa7b4e33f09c2099e9f4f50383467f0eb45bd227775678629e14f5f2494",
+    "applied.odb": "80a9830155ea4c1d532e18aad24c45812ec979f19f741a105a288dd10b1dd030",
+    "prepared/prepared.odb": "5473ec1b03539be20ccc7ecdb7aa5b946f80777f1ed5f7b6282557061b9ec072",
+    "prepared/preservation.json": "338195bc85762006fa7e05b3ffa465a3eca2eb6e1d1f1ba976f6a635b978e387"
+  }
+}

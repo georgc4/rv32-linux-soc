@@ -1,0 +1,30 @@
+[
+  {
+    "cell_halo_um": 10,
+    "route_halo_um": 2,
+    "editable_nets": 9803,
+    "routed_nets": 21248,
+    "fraction": 0.46136106927710846
+  },
+  {
+    "cell_halo_um": 5,
+    "route_halo_um": 1,
+    "editable_nets": 8381,
+    "routed_nets": 21248,
+    "fraction": 0.3944371234939759
+  },
+  {
+    "cell_halo_um": 2,
+    "route_halo_um": 1,
+    "editable_nets": 7836,
+    "routed_nets": 21248,
+    "fraction": 0.36878765060240964
+  },
+  {
+    "cell_halo_um": 1,
+    "route_halo_um": 0.5,
+    "editable_nets": 7080,
+    "routed_nets": 21248,
+    "fraction": 0.3332078313253012
+  }
+]
