@@ -108,9 +108,38 @@ write_views
 @Step.factory.register()
 class RepairDetailedRouting(DetailedRouting):
     id='RV32.RepairDetailedRouting';name='Detailed-route ECO and repair antennas'
+    def get_script_path(self):
+        manifest=sibling(self,'rv32-prepareeconeighborhood')/'preservation.json'
+        names=json.loads(manifest.read_text())['protected_nets']
+        if any(any(c in n for c in '{}\n\r') or n.endswith('\\') for n in names):
+            raise ValueError('Unsupported protected net identifier')
+        nets=' '.join('{'+n+'}' for n in names)
+        original=super().get_script_path()
+        text=f'source {{{ROOT / "antenna_guard.tcl"}}}\n'
+        text+=f'rv32_antenna_guard::install [list {nets}]\n'
+        text+=f'source {{{original}}}\n'
+        path=FilePath(self.step_dir)/'guarded-drt.tcl'
+        path.write_text(text)
+        return str(path)
+
     def run(self,state_in,**kwargs):
         m=json.loads((sibling(self,'rv32-prepareeconeighborhood')/'preservation.json').read_text())
         if not m['editable_nets']:return {},{}
+        # Exercise deletion recovery and fail-closed behavior on a disposable
+        # copy of this run's actual ODB before executing the real repair.
+        if len(m['protected_nets']) >= 2:
+            out=FilePath(self.step_dir)/'guard-tests';out.mkdir(exist_ok=True)
+            names=m['protected_nets'][:2]
+            if any(any(c in n for c in '{}\n\r') or n.endswith('\\') for n in names):
+                raise ValueError('Unsupported protected net identifier')
+            nets=' '.join('{'+n+'}' for n in names)
+            text=f'read_db {{{state_in[DF.ODB]}}}\n'
+            text+=f'set ::env(STEP_DIR) {{{out}}}\n'
+            text+=f'source {{{ROOT / "antenna_guard.tcl"}}}\n'
+            text+=f'rv32_antenna_guard::install [list {nets}]\n'
+            text+='if {[catch {source {'+str(ROOT/'test_antenna_guard.tcl')+'}} message]} {puts stderr $message; exit 1}\n'
+            script=out/'test.tcl';script.write_text(text)
+            self.run_subprocess([OpenROADStep.get_openroad_path(),'-exit',str(script)])
         return super().run(state_in,**kwargs)
 
 

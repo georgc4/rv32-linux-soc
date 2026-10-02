@@ -7,14 +7,16 @@
     "physical/partition.tcl": "e08b0b97d99157542fbf126737002f49afdab4753c0efbc5b6c0c8f27de45286",
     "physical/audit_eco.py": "dd2ea181d29f7296e8179235130a1862d80767de196520544c10fe1feef1f76d",
     "physical/eco_helpers.py": "0f1fe56d91d3483d62babbe892c4ea6d2af7c4fd80ecf392ab6763a4785345c7",
-    "physical/librelane_eco_steps.py": "7e710dfa5c5297d73be0673fa487b911475ee93b8e87472a2a9d835b997d5c99",
+    "physical/librelane_eco_steps.py": "776aa61676bbfcba52c3d2d4f98688ddfbdb85aad39a83643ea91a2971be5a22",
     "physical/plan_eco.py": "88f17df892e0185fb37df6991d53ec07d0e87102f107ff392a754970ad36fef7",
     "physical/prepare_eco_routes.py": "775a219037ec489c412e9ecffb8185524ff693015558c89a90e5565cc39a6353",
     "physical/seed_soft_partitions.py": "510f75f0c30282368f96b661d4cde00ae6aadae9b94e480d7f79997bf251f520",
     "physical/test_eco_helpers.py": "4a8dc4bc38297e402386a46ce55e71b37458f624996fb2982aaa7e4dba5fc249",
     "physical/eco_tree.py": "b300f808a1e5ec33acc9d679cf3ec5f06f99b3ff094fb4d8e6c2a85d52907023",
     "physical/test_eco_tree.py": "b57fd7be27ad472c5bfbd7070dd0a6839af480cefb61c01f80183b485ae623d5",
-    "physical/fixtures/ci-36811470893-eco-geometry.json": "aa9b70d19771eec83931575ffb46d51e60f2c70eb453b9d1f30df3dd2753f87a"
+    "physical/fixtures/ci-36811470893-eco-geometry.json": "aa9b70d19771eec83931575ffb46d51e60f2c70eb453b9d1f30df3dd2753f87a",
+    "physical/antenna_guard.tcl": "5df740758fba58a5d612c11d1dbe433a2445ed03c4ca2add224d0530125ed481",
+    "physical/test_antenna_guard.tcl": "d66023e6b6992f2f14db33a2ba7d8ed16760aad49b3ef8484cbd95244c8bbcb9"
   },
   "config": {
     "PL_TARGET_DENSITY_PCT": 60.0,

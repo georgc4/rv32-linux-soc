@@ -90,3 +90,43 @@ The local screen uses the exact CI database and pinned LibreLane 3.0.14/OpenROAD
 binary. Its linking Liberty comes from locally installed PDK 0fe599b2, whereas CI
 uses 8afc8346; therefore local screening does not constitute timing qualification.
 CI repeats the complete flow, including antenna repair and nine-corner extraction.
+
+## Preserve wires during antenna repair (2026-10-01)
+
+Run 36822832367 passed initial ECO routing, then lost 228 protected wire paths
+across the antenna repair/reroute passes. Its zero router DRC and antenna counts
+did not establish connectivity; the preservation audit correctly rejected it.
+The separate local route without antenna repair retained every protected path.
+
+`antenna_guard.tcl` wraps the pinned flow's antenna repair and detailed-route
+commands. Before antenna repair it copies protected wire encodings into detached
+OpenDB wires in the same block and records exact pin membership, cell master,
+location/orientation, and top-port geometry. After repair, it first requires all
+protected pin signatures to remain unchanged. It then reattaches missing saved
+wires, retaining their FIXED encoding, before detailed routing sees the design.
+An existing but altered protected path fails; it is not silently overwritten.
+A new diode or moved pin on a protected net also fails and requires an explicit
+change to the routing neighborhood. Unused backups are destroyed before saving.
+
+This addresses the pinned GRT `updateDirtyNets` path that destroys dirty-net wires
+before checking whether pin positions changed. The failure reproduces in the
+routing/antenna sequence: a standalone repair process did not delete protected
+wires, while the full sequence deleted 218 on its first repair pass. The guard
+restored all 218 and verified all 8,950 protected paths before routing resumed.
+
+Every detailed-route pass also checks protected pin signatures and exact encoded
+paths. Per-antenna-pass counts, restored net names and an ODB checkpoint are saved
+in the step artifacts. The final independent logical/DEF geometry audit, antenna,
+DRC, disconnected-pin, extracted timing and LVS gates all remain required.
+Before real routing, CI runs six fault-injection checks in a disposable OpenROAD
+process using two protected nets from that run's own ODB: no-op/result forwarding,
+deleted-wire recovery, altered-path rejection, pin-change rejection, propagation
+of repair errors, and rejection of wire loss during detailed routing. No design
+from these tests enters the flow. The ordinary 15 Python helper tests remain.
+
+Local regression result: after that guarded repair pass inserted 227 diodes,
+subsequent detailed routing reached zero router DRC. The independent post-route
+audit passed all 8,950 protected routes and 55,220 original input-pin drivers.
+This is a one-pass regression of the wire-loss defect; remaining antenna passes,
+full LVS and nine-corner extracted timing are still CI qualification work. The
+local linking Liberty is from PDK 0fe599b2, while CI uses 8afc8346.
