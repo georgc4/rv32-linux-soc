@@ -85,7 +85,9 @@ class PrepareECONeighborhood(Step):
                    '--max-editable-fraction','0.65',*halos)
         run_python(self,'audit_eco.py','--odb',out/'prepared.odb','--manifest',out/'preservation.json','--output',out/'pre-route-audit.json')
         m=json.loads((out/'preservation.json').read_text())
-        return {DF.ODB:Path(str(out/'prepared.odb'))},{'rv32__eco__editable_nets':len(m['editable_nets']),'rv32__eco__protected_nets':len(m['protected_nets'])}
+        return {DF.ODB:Path(str(out/'prepared.odb'))},{'rv32__eco__editable_nets':len(m['editable_nets']),'rv32__eco__protected_nets':len(m['protected_nets']),
+                'rv32__eco__ripped_nets':len(m['reroute_nets']),
+                'rv32__eco__retained_editable_nets':len(m['retained_editable_nets'])}
 
 
 @Step.factory.register()

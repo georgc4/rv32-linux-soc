@@ -56,7 +56,9 @@ def main():
         if net.getSigType() in ['POWER','GROUND']:continue
         wire=net.getWire()
         if net.getName() in editable:
-            if wire:odb.dbWire.destroy(wire)
+            # Editable neighbors remain routed. Only changed topology/pin geometry
+            # needs a fresh route; DRT can repair neighboring wires if necessary.
+            if wire and net.getName() in affected:odb.dbWire.destroy(wire)
             net.setWireType('ROUTED')
         elif wire:
             net.setWireType('FIXED');protected.append(net.getName())
@@ -67,7 +69,9 @@ def main():
     odb.dbBlock.destroy(b);odb.read_def(db.getTech(),str(out/'fixed.def'))
     odb.write_db(db,str(out/'prepared.odb'))
     manifest=dict(original_odb=a.original,eco_odb=a.eco,original_routed_nets=len(routes),changed_instances=changed,
-                  affected_nets=sorted(affected),editable_nets=sorted(editable),protected_nets=protected,
+                  affected_nets=sorted(affected),reroute_nets=sorted(affected),
+                  retained_editable_nets=sorted(editable-set(affected)),
+                  editable_nets=sorted(editable),protected_nets=protected,
                   max_editable_fraction=a.max_editable_fraction,
                   cell_halo_um=a.cell_halo_um,route_halo_um=a.route_halo_um,original_sha256=hashlib.sha256(Path(a.original).read_bytes()).hexdigest(),
                   protected_geometry_sha256={n:hashlib.sha256(routes[n][0].encode()).hexdigest() for n in protected})

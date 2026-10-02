@@ -180,3 +180,29 @@ These are local regression results using the failed CI geometry and pinned
 LibreLane/OpenROAD binary. Linking Liberty remains local PDK 0fe599b2 rather than
 CI PDK 8afc8346. Full physical DRC, LVS, and extracted nine-corner timing are still
 pending in the next CI run. No local result constitutes a qualified GDS.
+
+## Retain editable neighbor routes (2026-10-02)
+
+Run 37028071522 passed final Magic/KLayout DRC, LVS (unique match), antenna,
+setup and hold. It failed the unchanged slew/capacitance checks. After round
+two, the nine-corner union was 315 failing pins on 45 nets; none of those nets
+were targets of either ECO round. Max-RC slow-corner counts were 311 slew pins
+and 44 capacitance pins. The buffers repaired their targets, while broad route
+replacement introduced a different set of electrical failures. The 45 residual
+nets grew from 18.21 mm to 54.70 mm of summed DEF centerline segments; one
+net grew from 128.76 um to 1,657.38 um (12.87x).
+
+Preparation previously destroyed every editable wire, even when its topology
+and pin geometry had not changed. It now destroys only affected wires and keeps
+other editable routes as the router's starting point. Global routing still builds guides for the full editable neighborhood;
+neighboring wires remain ROUTED and may be adjusted by DRT where necessary. Protected wires remain FIXED and exactly audited. The routing
+neighborhood, 65% ceiling, two ECO rounds, contact-repair mechanism and all final
+signoff gates are unchanged. The manifest and metrics distinguish ripped nets
+from retained editable neighbors.
+
+On the exact first-round CI checkpoint, this preserves 12,179 editable neighbor
+routes and 8,950 protected routes while ripping only 326 changed nets. All 12,179
+retained routes compare exactly with the original DEF both after preparation and
+after global routing. Final DRT may legitimately adjust them to resolve local
+conflicts; retention is an initial-condition guarantee, not a claim of immutable
+neighbor geometry or timing closure.
