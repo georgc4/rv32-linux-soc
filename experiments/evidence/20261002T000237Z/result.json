@@ -1,0 +1,19 @@
+{
+  "ci_run": 36943817911,
+  "ci_url": "https://github.com/georgc4/rv32-linux-soc/actions/runs/36943817911",
+  "commit": "7fd688d910a19cacc927da51240ba367e49ff68d",
+  "source_failed_ci_run": 36822832367,
+  "native_fault_injection_tests": 6,
+  "python_tests": 15,
+  "protected_paths": 8950,
+  "restored_after_first_antenna_pass": 218,
+  "diodes_inserted_first_pass": 227,
+  "local_router_drc": 0,
+  "local_post_route_audit": "pass",
+  "local_remaining_antenna_nets": 6,
+  "local_remaining_antenna_pins": 10,
+  "full_signoff_pass": false,
+  "local_linking_pdk": "0fe599b2",
+  "ci_pdk": "8afc8346",
+  "local_routed_odb_sha256": "6fa07c1c7649d6a005d7d474a0cebfdb205096e5bc783e36b00e6a06e9bac9eb"
+}

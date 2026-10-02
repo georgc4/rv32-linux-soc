@@ -462,6 +462,37 @@ operation causing the loss remains to be instrumented. Main is unchanged.
 
 Evidence: [checkpoint comparison](evidence/20261001T180539Z/).
 
+## 2026-10-01 — Guard antenna repair and launch the next CI run
+
+The user authorized the fix and next run. Commit **7fd688d** on the CI branch
+adds a same-block OpenDB wire backup around antenna repair. It records protected
+pin membership, cell masters, positions/orientations and top-port geometry;
+restores a deleted path only when those signatures remain unchanged; rejects
+existing altered paths or changed pins; and verifies every detailed-route pass.
+The pinned GRT `updateDirtyNets` code destroys dirty wires before testing whether
+pin positions changed. A standalone repair process did not reproduce the loss,
+but the routing/repair sequence did, underscoring why the complete sequence matters.
+
+The local reproduction inserted **227 diodes** and deleted **218 protected
+paths** during the first antenna repair pass. The guard restored all 218 before
+routing resumed, and checked all **8,950 protected paths**. Subsequent detailed
+routing finished with **zero router DRC**. The independent post-route audit
+passed all **55,220 original input pins** and **8,950 protected routes**.
+After this one-pass local regression, **6 antenna nets / 10 pins remain**;
+this is not a fully signed-off result. CI runs the complete three-pass loop,
+then disconnected-pin checks, extraction, all-corner STA, DRC and LVS.
+
+Six native OpenDB fault-injection checks verify no-op/result forwarding,
+deleted-wire restoration, altered-geometry rejection, protected pin-change
+rejection, repair-error propagation, and detection of wire loss during routing.
+They also run in CI on a disposable copy of each build's own database. All 15
+Python helper tests pass, all 95 flow steps register, and source hashes were
+refreshed. Local linking still uses PDK 0fe599b2; CI uses 8afc8346.
+
+Next run: [36943817911](https://github.com/georgc4/rv32-linux-soc/actions/runs/36943817911).
+Draft PR #1 is updated; main is unchanged. No signoff gate was disabled.
+Evidence: [guarded-repair regression](evidence/20261002T000237Z/).
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
