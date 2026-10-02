@@ -1,0 +1,22 @@
+{
+  "failed_run": 36943817911,
+  "next_run": 37028071522,
+  "ci_commit": "00ef8127237c7207f78bd92eceeddb8fad19ef14",
+  "local_nested_step_metrics": {
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "route__antenna_violation__count": 0,
+    "route__drc_errors": 0
+  },
+  "python_tests": 21,
+  "native_guard_tests": 6,
+  "round2": {
+    "target_nets": 29,
+    "buffers": 161,
+    "resizes": 29,
+    "editable_nets": 12016,
+    "protected_nets": 9600,
+    "editable_fraction": 0.5600559310184107
+  },
+  "qualification": "Local screening only; full CI DRC/LVS/nine-corner timing pending; local Liberty PDK differs from CI"
+}

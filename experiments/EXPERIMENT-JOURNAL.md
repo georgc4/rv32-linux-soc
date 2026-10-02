@@ -493,6 +493,46 @@ Next run: [36943817911](https://github.com/georgc4/rv32-linux-soc/actions/runs/3
 Draft PR #1 is updated; main is unchanged. No signoff gate was disabled.
 Evidence: [guarded-repair regression](evidence/20261002T000237Z/).
 
+## Physical shorts and a second extracted-timing ECO (2026-10-02)
+
+The user asked to check the failure, fix it, and redispatch. Run **36943817911**
+reached final signoff: the previous antenna guard preserved all 8,950 protected
+routes, but Magic reported 12 DRC, KLayout four DRC, and LVS 13 errors. Four
+logically separate nets were physically merged near (490.59, 74.29) um. One
+contact existed before antenna repair; a fresh router process alone retained it.
+Zero router DRC and logical connectivity therefore did not establish physical
+connectivity. No final signoff gate was bypassed.
+
+Commit **00ef812** adds independent same-layer centerline contact detection,
+explicit promotion/rerouting of the contacting protected nets, and separate
+processes for routing and antenna repair. At most three contact retries are
+allowed per pass under the existing 65% editable-net limit. Local four-net
+repair eliminated all detected contacts while preserving 8,949 other routes
+and all 55,220 original input-pin drivers. The actual nested LibreLane step
+completed with zero router DRC and zero antenna violations. The standalone
+antenna child was exercised on an antenna-clean DB; a full nonzero-antenna loop
+remains CI validation. Full physical DRC/LVS are still required.
+
+The first ECO cleared its 37 targets, but extracted reports exposed 208 failing
+pins on 29 different neighboring nets. A bounded second round consumes these
+new reports and repeats routing, audits, antenna checks and nine-corner
+extraction. The local plan uses 161 buffers and 29 resizes. Resized drivers must
+be unlocked again before legalization, and boundary decaps must survive filler
+removal; both issues were fixed. Placement legality and the pre-route audit
+pass (55,677 pins, 9,600 protected routes). The initial 20/5 um margins exceeded
+the 65% budget at 76.6%; 5/1 um margins select 12,016 editable nets, or 56.0%.
+Tighter margins may constrain routing and are an experiment, not closure proof.
+
+All 21 Python helper tests and six native guard fault checks pass. The manifest
+verifies both ECO rounds among 108 flow stages. Local Liberty is PDK 0fe599b2,
+whereas CI uses 8afc8346. No local electrical or physical result is presented as
+fab qualification. Main remains unchanged and draft PR #1 is updated.
+
+New CI run: [37028071522](https://github.com/georgc4/rv32-linux-soc/actions/runs/37028071522).
+GitHub created two identical push runs; duplicate 37028072405 was cancelled.
+Evidence: [compact regression snapshot](evidence/20261002T153757Z/). Full ignored local
+artifacts remain under the CI worktree's build/signoff-fix and ci-36943817911.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
