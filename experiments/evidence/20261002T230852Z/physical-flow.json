@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "flow": "RV32Partitioned",
+  "librelane_version": "3.0.14",
+  "files": {
+    "librelane_plugin_rv32.py": "53b1f25214f888c6228f1912fd25bd82e5b70ec690ef53ed6c422138abee6a2b",
+    "physical/partition.tcl": "e08b0b97d99157542fbf126737002f49afdab4753c0efbc5b6c0c8f27de45286",
+    "physical/audit_eco.py": "b2ac8502d55f1cd28c6e639a153342e3de6b06cbcf789292d97d2f5e706de63e",
+    "physical/eco_helpers.py": "4eb3d40c78a9eef1026851b426696eb3e414dc71629c46c13beddd2918f784ff",
+    "physical/librelane_eco_steps.py": "4ab893c2480327091275b4d5e9f46563f69fde3afa82b590cc30f19e41b89d01",
+    "physical/plan_eco.py": "88f17df892e0185fb37df6991d53ec07d0e87102f107ff392a754970ad36fef7",
+    "physical/prepare_eco_routes.py": "1a956295e883f4873f6a122bde4595f9b4deff14e3990edd78dc071f588add6a",
+    "physical/seed_soft_partitions.py": "510f75f0c30282368f96b661d4cde00ae6aadae9b94e480d7f79997bf251f520",
+    "physical/test_eco_helpers.py": "64fea04fb730eaea97695b81973650e4d8c9bb2ebe3d6526bd0629e87db0c169",
+    "physical/eco_tree.py": "b300f808a1e5ec33acc9d679cf3ec5f06f99b3ff094fb4d8e6c2a85d52907023",
+    "physical/test_eco_tree.py": "b57fd7be27ad472c5bfbd7070dd0a6839af480cefb61c01f80183b485ae623d5",
+    "physical/fixtures/ci-36811470893-eco-geometry.json": "aa9b70d19771eec83931575ffb46d51e60f2c70eb453b9d1f30df3dd2753f87a",
+    "physical/antenna_guard.tcl": "5df740758fba58a5d612c11d1dbe433a2445ed03c4ca2add224d0530125ed481",
+    "physical/test_antenna_guard.tcl": "d66023e6b6992f2f14db33a2ba7d8ed16760aad49b3ef8484cbd95244c8bbcb9",
+    "physical/expand_route_contacts.py": "b555b1f63df4fc8ef419cb24f7911e71995b3889fee66a6c41693be7f27f5c7a",
+    "physical/repair_antennas.tcl": "ce173a814d64391f12238440f6306e5242c8799ede60cd0955c270cb435392a9"
+  },
+  "config": {
+    "PL_TARGET_DENSITY_PCT": 60.0,
+    "CLOCK_PERIOD": 50.0,
+    "PL_RESIZER_HOLD_SLACK_MARGIN": 0.05,
+    "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0,
+    "RUN_LINTER": 1,
+    "LINTER_INCLUDE_PDK_MODELS": 1,
+    "CLOCK_PORT": "clk",
+    "RUN_KLAYOUT_XOR": 0,
+    "RUN_KLAYOUT_DRC": true,
+    "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": 0,
+    "TOP_MARGIN_MULT": 1,
+    "BOTTOM_MARGIN_MULT": 1,
+    "LEFT_MARGIN_MULT": 6,
+    "RIGHT_MARGIN_MULT": 6,
+    "FP_SIZING": "absolute",
+    "GRT_ALLOW_CONGESTION": false,
+    "RUN_CTS": 1,
+    "MAGIC_DEF_LABELS": 0,
+    "MAGIC_WRITE_LEF_PINONLY": 1,
+    "SYNTH_STRATEGY": "AREA 2",
+    "SYNTH_ABC_AREA_USE_NF": false,
+    "GRT_ANTENNA_REPAIR_JUMPER_ONLY": false,
+    "GRT_ANTENNA_REPAIR_ITERS": 3,
+    "PL_TIMING_DRIVEN": true,
+    "RUN_POST_GRT_RESIZER_TIMING": false,
+    "DRT_THREADS": 4,
+    "STA_THREADS": 2,
+    "PNR_CORNERS": [
+      "nom_tt_025C_1v80",
+      "max_ss_100C_1v60",
+      "min_ff_n40C_1v95"
+    ],
+    "RSZ_CORNERS": [
+      "nom_tt_025C_1v80",
+      "max_ss_100C_1v60",
+      "min_ff_n40C_1v95"
+    ],
+    "SETUP_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "HOLD_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "MAX_SLEW_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "MAX_CAP_VIOLATION_CORNERS": [
+      "*"
+    ],
+    "PL_SKIP_INITIAL_PLACEMENT": true,
+    "MAX_TRANSITION_CONSTRAINT": 1.5,
+    "PL_ROUTABILITY_DRIVEN": true,
+    "MAX_CAPACITANCE_CONSTRAINT": 0.2,
+    "DRT_ANTENNA_REPAIR_ITERS": 3
+  },
+  "required_steps": [
+    "rv32-partitiondesign",
+    "rv32-seedplacement",
+    "rv32-planelectricaleco",
+    "rv32-applyelectricaleco",
+    "rv32-prepareeconeighborhood",
+    "rv32-routeeconeighborhood",
+    "rv32-repairdetailedrouting",
+    "rv32-auditecoroutes",
+    "rv32-repaircheckantennas",
+    "rv32-repairdrc",
+    "rv32-repairdisconnectedpins",
+    "rv32-repaircheckdisconnectedpins",
+    "rv32-repairfillinsertion",
+    "rv32-repairrcx",
+    "rv32-repairsta",
+    "rv32-round2planelectricaleco",
+    "rv32-round2applyelectricaleco",
+    "rv32-round2prepareeconeighborhood",
+    "rv32-round2routeeconeighborhood",
+    "rv32-round2repairdetailedrouting",
+    "rv32-round2auditecoroutes",
+    "rv32-round2repaircheckantennas",
+    "rv32-round2repairdrc",
+    "rv32-round2repairdisconnectedpins",
+    "rv32-round2repaircheckdisconnectedpins",
+    "rv32-round2repairfillinsertion",
+    "rv32-round2repairrcx",
+    "rv32-round2repairsta"
+  ],
+  "corners": [
+    "nom_tt_025C_1v80",
+    "nom_ss_100C_1v60",
+    "nom_ff_n40C_1v95",
+    "min_tt_025C_1v80",
+    "min_ss_100C_1v60",
+    "min_ff_n40C_1v95",
+    "max_tt_025C_1v80",
+    "max_ss_100C_1v60",
+    "max_ff_n40C_1v95"
+  ],
+  "zero_metrics": [
+    "route__drc_errors",
+    "magic__drc_error__count",
+    "klayout__drc_error__count",
+    "design__lvs_error__count",
+    "route__antenna_violation__count",
+    "design__critical_disconnected_pin__count"
+  ]
+}

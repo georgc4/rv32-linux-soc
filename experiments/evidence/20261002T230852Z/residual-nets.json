@@ -1,0 +1,317 @@
+[
+  {
+    "net": "_10822_",
+    "driver": "_22412_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 6,
+    "span_um": 360.749
+  },
+  {
+    "net": "_13005_",
+    "driver": "_24734_/X",
+    "master": "sky130_fd_sc_hd__a22o_2",
+    "sinks": 11,
+    "span_um": 182.702
+  },
+  {
+    "net": "_03956_",
+    "driver": "_25583_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 4,
+    "span_um": 148.393
+  },
+  {
+    "net": "_04139_",
+    "driver": "_25770_/Y",
+    "master": "sky130_fd_sc_hd__nand2_2",
+    "sinks": 4,
+    "span_um": 223.95
+  },
+  {
+    "net": "soc.adapter.i_req_addr\\[14\\]",
+    "driver": "_28458_/Q",
+    "master": "sky130_fd_sc_hd__dfrtp_2",
+    "sinks": 13,
+    "span_um": 339.254
+  },
+  {
+    "net": "net6208",
+    "driver": "place6208/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 15,
+    "span_um": 562.431
+  },
+  {
+    "net": "net6210",
+    "driver": "place6210/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 11,
+    "span_um": 474.304
+  },
+  {
+    "net": "net6573",
+    "driver": "place6573/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 12,
+    "span_um": 341.482
+  },
+  {
+    "net": "_04927_",
+    "driver": "_26580_/X",
+    "master": "sky130_fd_sc_hd__or2_2",
+    "sinks": 4,
+    "span_um": 201.33
+  },
+  {
+    "net": "net6218",
+    "driver": "place6218/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 14,
+    "span_um": 537.974
+  },
+  {
+    "net": "net6517",
+    "driver": "place6517/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 15,
+    "span_um": 389.689
+  },
+  {
+    "net": "_04563_",
+    "driver": "_26205_/X",
+    "master": "sky130_fd_sc_hd__or3_2",
+    "sinks": 5,
+    "span_um": 191.494
+  },
+  {
+    "net": "_04895_",
+    "driver": "_26547_/X",
+    "master": "sky130_fd_sc_hd__or2_2",
+    "sinks": 4,
+    "span_um": 218.268
+  },
+  {
+    "net": "_05036_",
+    "driver": "_26692_/Y",
+    "master": "sky130_fd_sc_hd__nand2_2",
+    "sinks": 4,
+    "span_um": 246.667
+  },
+  {
+    "net": "_11748_",
+    "driver": "_23366_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 10,
+    "span_um": 180.046
+  },
+  {
+    "net": "_04526_",
+    "driver": "_26167_/X",
+    "master": "sky130_fd_sc_hd__or4b_2",
+    "sinks": 2,
+    "span_um": 120.356
+  },
+  {
+    "net": "net5421",
+    "driver": "place5421/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 11,
+    "span_um": 269.654
+  },
+  {
+    "net": "net6468",
+    "driver": "place6468/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 13,
+    "span_um": 231.811
+  },
+  {
+    "net": "_04787_",
+    "driver": "_26436_/Y",
+    "master": "sky130_fd_sc_hd__nand2_2",
+    "sinks": 4,
+    "span_um": 229.008
+  },
+  {
+    "net": "net6473",
+    "driver": "place6473/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 14,
+    "span_um": 350.099
+  },
+  {
+    "net": "_04814_",
+    "driver": "_26463_/X",
+    "master": "sky130_fd_sc_hd__a21o_2",
+    "sinks": 2,
+    "span_um": 284.809
+  },
+  {
+    "net": "net6501",
+    "driver": "place6501/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 11,
+    "span_um": 402.839
+  },
+  {
+    "net": "net6571",
+    "driver": "place6571/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 12,
+    "span_um": 298.255
+  },
+  {
+    "net": "soc.adapter.i_req_addr\\[30\\]",
+    "driver": "_28474_/Q",
+    "master": "sky130_fd_sc_hd__dfrtp_2",
+    "sinks": 13,
+    "span_um": 310.221
+  },
+  {
+    "net": "_04822_",
+    "driver": "_26472_/X",
+    "master": "sky130_fd_sc_hd__or2_2",
+    "sinks": 3,
+    "span_um": 187.604
+  },
+  {
+    "net": "_12038_",
+    "driver": "_23656_/Y",
+    "master": "sky130_fd_sc_hd__a22oi_2",
+    "sinks": 4,
+    "span_um": 136.069
+  },
+  {
+    "net": "_10840_",
+    "driver": "_22430_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 5,
+    "span_um": 362.86
+  },
+  {
+    "net": "_10830_",
+    "driver": "_22420_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 3,
+    "span_um": 312.105
+  },
+  {
+    "net": "_10767_",
+    "driver": "_22312_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 2,
+    "span_um": 183.694
+  },
+  {
+    "net": "net6463",
+    "driver": "place6463/X",
+    "master": "sky130_fd_sc_hd__buf_2",
+    "sinks": 8,
+    "span_um": 278.759
+  },
+  {
+    "net": "_10826_",
+    "driver": "_22416_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 2,
+    "span_um": 247.972
+  },
+  {
+    "net": "_10829_",
+    "driver": "_22419_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 2,
+    "span_um": 342.292
+  },
+  {
+    "net": "_10837_",
+    "driver": "_22427_/Y",
+    "master": "sky130_fd_sc_hd__inv_2",
+    "sinks": 2,
+    "span_um": 193.232
+  },
+  {
+    "net": "_11072_",
+    "driver": "_22668_/Y",
+    "master": "sky130_fd_sc_hd__nor3_2",
+    "sinks": 8,
+    "span_um": 122.272
+  },
+  {
+    "net": "soc.cpu.a\\[29\\]",
+    "driver": "_28537_/Q",
+    "master": "sky130_fd_sc_hd__dfrtp_2",
+    "sinks": 8,
+    "span_um": 267.073
+  },
+  {
+    "net": "_11987_",
+    "driver": "_23605_/X",
+    "master": "sky130_fd_sc_hd__xor2_2",
+    "sinks": 3,
+    "span_um": 144.443
+  },
+  {
+    "net": "_12023_",
+    "driver": "_23641_/Y",
+    "master": "sky130_fd_sc_hd__xnor2_2",
+    "sinks": 3,
+    "span_um": 193.433
+  },
+  {
+    "net": "_12833_",
+    "driver": "_24553_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 9,
+    "span_um": 204.5
+  },
+  {
+    "net": "_04016_",
+    "driver": "_25644_/X",
+    "master": "sky130_fd_sc_hd__o311a_2",
+    "sinks": 1,
+    "span_um": 134.65
+  },
+  {
+    "net": "_04017_",
+    "driver": "_25645_/X",
+    "master": "sky130_fd_sc_hd__a211o_2",
+    "sinks": 1,
+    "span_um": 218.264
+  },
+  {
+    "net": "_04193_",
+    "driver": "_25825_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 2,
+    "span_um": 155.808
+  },
+  {
+    "net": "_04397_",
+    "driver": "_26035_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 2,
+    "span_um": 247.265
+  },
+  {
+    "net": "_04586_",
+    "driver": "_26229_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 2,
+    "span_um": 212.1
+  },
+  {
+    "net": "_04688_",
+    "driver": "_26334_/Y",
+    "master": "sky130_fd_sc_hd__nor2_2",
+    "sinks": 2,
+    "span_um": 254.8
+  },
+  {
+    "net": "soc.cpu.funct3\\[2\\]",
+    "driver": "_28490_/Q",
+    "master": "sky130_fd_sc_hd__dfrtp_2",
+    "sinks": 10,
+    "span_um": 263.164
+  }
+]

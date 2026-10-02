@@ -1,0 +1,18 @@
+{
+  "failed_run": 37028071522,
+  "next_run": 37076106240,
+  "ci_commit": "613812e2980acd2fac8965b1d174a6c7aaf65d8f",
+  "physical_signoff": {
+    "route__drc_errors": 0,
+    "magic__drc_error__count": 0,
+    "klayout__drc_error__count": 0,
+    "design__lvs_error__count": 0,
+    "route__antenna_violation__count": 0
+  },
+  "worst_setup_ns": 5.888530718595204,
+  "worst_hold_ns": 0.053777650521543936,
+  "residual_nets": 45,
+  "union_failing_pins": 315,
+  "overlap_with_prior_targets": 0,
+  "status": "Local retention experiment; complete CI qualification pending"
+}

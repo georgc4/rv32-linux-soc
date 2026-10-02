@@ -533,6 +533,43 @@ GitHub created two identical push runs; duplicate 37028072405 was cancelled.
 Evidence: [compact regression snapshot](evidence/20261002T153757Z/). Full ignored local
 artifacts remain under the CI worktree's build/signoff-fix and ci-36943817911.
 
+## Physical signoff clean; stop rerouting untouched wires (2026-10-02)
+
+The user reported the new CI failure and requested a fix and redispatch.
+Run **37028071522** passed final Magic DRC, KLayout DRC, LVS (unique circuit
+match), antenna, setup and hold. Worst setup slack was **+5.888531 ns** and
+worst hold **+0.053778 ns**. The remaining failure was slew/capacitance:
+**315 unique failing pins on 45 nets**, with max-RC slow-corner counts of
+311 slew pins and 44 cap pins. None of these nets were targets of either ECO
+round. The first-round electrical targets had therefore been cleared, while
+neighbor rerouting created new failures.
+
+Comparing DEF centerline segments showed these 45 nets grew from **18.21 mm to
+54.70 mm** of total wire; `_04526_` grew from 128.76 um to 1,657.38 um (12.87x).
+The preparation script had been destroying every editable wire, not just wires
+whose topology or pin geometry changed. Commit **613812e** retains unchanged
+editable wires and destroys only affected ones. Neighbors remain ROUTED so DRT
+can repair conflicts; protected routes remain FIXED and audited. Global guides
+are still generated for the entire editable neighborhood. The 65% neighborhood
+ceiling, two report-driven ECO rounds and final signoff thresholds are unchanged.
+
+The exact CI checkpoint now rips **326 changed nets** while retaining **12,179
+editable neighbor routes** and **8,950 protected routes**. All 12,179 retained
+routes compare exactly after preparation and full-neighborhood global routing.
+The pre-route audit passes all **55,220 original input-pin drivers** with zero
+detected route contacts. All 21 Python helper tests pass, and manifest source
+hashes/configuration validate. A control that generated guides only for the 326
+changed nets retained wires but left persistent local DRC; it was stopped and
+full-neighborhood guides restored. Local DRT, post-route audit and extracted
+STA are still in progress at this evidence snapshot. These local checks use
+the previously documented different linking PDK and are not fab qualification.
+
+Next full CI: [37076106240](https://github.com/georgc4/rv32-linux-soc/actions/runs/37076106240).
+It is building commit 613812e and has passed helper tests. Main is unchanged;
+draft PR #1 is updated. Evidence: [snapshot](evidence/20261002T230852Z/).
+Local experiment logs are in the CI worktree's build/electrical-fix directory;
+the post-route audit and extraction are queued behind that native routing process.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
