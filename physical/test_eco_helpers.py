@@ -39,4 +39,32 @@ END NETS
     def test_unknown_geometry_fails(self):
         with self.assertRaises(ValueError):def_routes('\nNETS 1 ;\n- bad + ROUTED met1 nonsense ;\nEND NETS')
 
-if __name__=='__main__':unittest.main()
+class RouteContactTests(unittest.TestCase):
+    def contacts(self,first,second):
+        from eco_helpers import route_crossings
+        return route_crossings(def_routes('\nNETS 2 ;\n- a + FIXED '+first+' ;\n- b + ROUTED '+second+' ;\nEND NETS'))
+
+    def test_failed_ci_crossing(self):
+        result=self.contacts('met2 ( 490590 72930 ) ( * 74630 )',
+                             'met2 ( 490130 74290 ) ( 491050 * )')
+        self.assertEqual(result,[dict(nets=['a','b'],layer='met2',box_dbu=[490590,74290,490590,74290])])
+
+    def test_different_layers_allowed(self):
+        self.assertEqual(self.contacts('met1 ( 0 50 ) ( 100 * )','met2 ( 50 0 ) ( * 100 )'),[])
+
+    def test_endpoint_touch_is_short(self):
+        self.assertEqual(len(self.contacts('met1 ( 0 0 ) ( 100 * )','met1 ( 100 0 ) ( * 100 )')),1)
+
+    def test_collinear_overlap(self):
+        self.assertTrue(self.contacts('met1 ( 0 0 ) ( 100 * )','met1 ( 50 0 ) ( 150 * )'))
+
+    def test_separate_wires_allowed(self):
+        self.assertEqual(self.contacts('met1 ( 0 0 ) ( 100 * )','met1 ( 0 10 ) ( 100 * )'),[])
+
+    def test_same_net_branches_allowed(self):
+        from eco_helpers import route_crossings
+        routes=def_routes('\nNETS 1 ;\n- a + ROUTED met2 ( 0 50 ) ( 100 * ) NEW met2 ( 50 0 ) ( * 100 ) ;\nEND NETS')
+        self.assertEqual(route_crossings(routes),[])
+
+if __name__ == '__main__':
+    unittest.main()

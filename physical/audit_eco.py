@@ -6,11 +6,11 @@ from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import odb
-from eco_helpers import def_routes
+from eco_helpers import def_routes, route_crossings
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--odb',required=True);p.add_argument('--manifest',required=True);p.add_argument('--output',required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--odb',required=True);p.add_argument('--manifest',required=True);p.add_argument('--output',required=True);p.add_argument('--report-route-contacts',action='store_true');a=p.parse_args()
     m=json.loads(Path(a.manifest).read_text());out=Path(a.output)
     olddb=odb.dbDatabase.create();odb.read_db(olddb,m['original_odb']);old=olddb.getChip().getBlock()
     db=odb.dbDatabase.create();odb.read_db(db,a.odb);b=db.getChip().getBlock()
@@ -49,7 +49,12 @@ def main():
         if n not in routes or hashlib.sha256(routes[n][0].encode()).hexdigest()!=m['protected_geometry_sha256'][n]:raise ValueError('Protected route changed: '+n)
         d=odb.dbWireDecoder();d.begin(b.findNet(n).getWire());d.next()
         if str(d.getWireType())!='FIXED':raise ValueError('Protected route lost FIXED encoding: '+n)
-    record=dict(status='pass',protected_nets=len(m['protected_nets']),editable_nets=len(m['editable_nets']),checked_original_input_pins=checked,
+    contacts=route_crossings(routes)
+    if contacts:
+        out.write_text(json.dumps(dict(status='fail',reason='Inter-net same-layer route contacts',contacts=contacts),indent=2)+'\n')
+        if a.report_route_contacts:return
+        raise ValueError(f'Physical route contacts found: {len(contacts)} (report capped at 100); see {out}')
+    record=dict(status='pass',protected_nets=len(m['protected_nets']),editable_nets=len(m['editable_nets']),checked_original_input_pins=checked,route_centerline_contacts=0,
                 odb_sha256=hashlib.sha256(Path(a.odb).read_bytes()).hexdigest(),scope='Logical driver and protected-route audit; DRC/LVS remain required')
     out.write_text(json.dumps(record,indent=2)+'\n');path.unlink();print(json.dumps(record))
 

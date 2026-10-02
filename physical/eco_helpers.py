@@ -81,3 +81,35 @@ def neighborhood(routes, affected, cell_boxes, cell_halo, route_halo):
             if found:
                 editable.add(name); break
     return editable
+
+
+def route_crossings(routes, limit=100):
+    """Find definite same-layer inter-net centerline contacts, in DEF DBU.
+
+    Independent of the router's cached geometry; a subset of physical shorts,
+    not a replacement for width/spacing, via, cell geometry, DRC or LVS checks.
+    """
+    bins={};segments=[];hits=[];seen_hits=set();pitch=10000
+    for net,(text,_) in routes.items():
+        for path in re.split(r'\bNEW\b|\+ WIRE ',text)[1:]:
+            layer=path.split()[0];previous=None
+            for match in re.finditer(r'\(\s*(-?\d+|\*)\s+(-?\d+|\*)(?:\s+-?\d+)?\s*\)',path):
+                if previous is None and '*' in match.groups():raise ValueError('Relative path origin')
+                point=tuple(previous[i] if v=='*' else int(v) for i,v in enumerate(match.groups()))
+                origin=previous or point;previous=point
+                if origin[0]!=point[0] and origin[1]!=point[1]:raise ValueError('Non-Manhattan route')
+                box=(min(origin[0],point[0]),min(origin[1],point[1]),max(origin[0],point[0]),max(origin[1],point[1]))
+                keys=[(layer,x,y) for x in range(box[0]//pitch,box[2]//pitch+1)
+                      for y in range(box[1]//pitch,box[3]//pitch+1)]
+                candidates=set(index for key in keys for index in bins.get(key,()))
+                for index in candidates:
+                    other,other_box=segments[index]
+                    if other==net or not overlaps(box,other_box):continue
+                    intersection=(max(box[0],other_box[0]),max(box[1],other_box[1]),min(box[2],other_box[2]),min(box[3],other_box[3]))
+                    pair=tuple(sorted((net,other)));key=(pair,layer,intersection)
+                    if key in seen_hits:continue
+                    seen_hits.add(key);hits.append(dict(nets=list(pair),layer=layer,box_dbu=list(intersection)))
+                    if len(hits)>=limit:return hits
+                index=len(segments);segments.append((net,box))
+                for key in keys:bins.setdefault(key,[]).append(index)
+    return hits

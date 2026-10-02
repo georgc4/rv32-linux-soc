@@ -11,7 +11,7 @@ from librelane.flows.classic import Classic
 
 ROOT = FilePath(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / 'physical'))
-from librelane_eco_steps import ECO_STEPS
+from librelane_eco_steps import ECO_STEPS, ECO_STEPS_ROUND2
 
 @Step.factory.register()
 class PartitionDesign(OpenROADStep):
@@ -57,5 +57,6 @@ class RV32Partitioned(SequentialFlow):
         Steps.append(step)
         if step.id == "OpenROAD.STAPostPNR":
             Steps.extend(ECO_STEPS)
+            Steps.extend(ECO_STEPS_ROUND2)
     config_vars = Classic.config_vars
     gating_config_vars = Classic.gating_config_vars

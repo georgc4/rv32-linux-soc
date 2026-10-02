@@ -130,3 +130,53 @@ audit passed all 8,950 protected routes and 55,220 original input-pin drivers.
 This is a one-pass regression of the wire-loss defect; remaining antenna passes,
 full LVS and nine-corner extracted timing are still CI qualification work. The
 local linking Liberty is from PDK 0fe599b2, while CI uses 8afc8346.
+
+## Repair physical contacts and neighboring electrical violations (2026-10-02)
+
+Run 36943817911 reached final signoff. The antenna wire guard preserved all
+8,950 protected paths, but independent tools found 12 Magic DRC, four KLayout
+DRC, and 13 LVS errors. Four logically separate nets were physically merged
+near (490.59, 74.29) micrometres: protected `_11571_` and editable `net6472`,
+`net6553`, and `soc.cpu.b[27]`. One contact preceded antenna repair. A local
+fresh-process reroute alone retained that contact; process isolation is not a
+complete repair.
+
+Each detailed-route and antenna-repair pass now runs in a separate OpenROAD
+process. After routing, an independent DEF centerline check detects same-layer
+inter-net intersections and touches. This is a subset of short detection, not
+width/spacing/via/cell-geometry signoff. Proven contacts explicitly promote the
+involved protected nets into the editable set, rip up only contacting nets,
+and regenerate their global routes before retrying detailed routing. At most
+three contact retries are allowed per pass, under the unchanged 65% editable
+budget. The original manifest and each promotion are retained; the final audit
+uses the active manifest. Unrelated routes and logical drivers remain audited.
+
+On the failed checkpoint, promoting one protected net and rerouting four nets
+removed all detected contacts. The audit preserved 8,949 protected paths and
+55,220 original input-pin drivers. A subsequent smoke run through the actual
+nested LibreLane step completed with zero router DRC and zero antenna violations,
+and passed its independent audit. The standalone antenna-repair child also
+completed successfully on the repaired, antenna-clean database; this does not
+exercise a complete nonzero-antenna repair loop. The six native guard fault tests
+and all 21 Python helper tests pass.
+
+The first ECO cleared its original 37 target nets, but extracted reports identified
+208 failing pins on 29 different rerouted neighboring nets. A bounded second ECO
+round now reads the first round's nine-corner extracted reports and repeats all
+13 repair/check/extraction stages. The exact failed checkpoint requests 161
+buffers and 29 equivalent-family resizes, within the unchanged 250-buffer limit.
+Drivers selected for another resize are explicitly unlocked before legalization;
+other instances remain locked. Only FILLER_* instances are removed so boundary
+decaps survive the repeated operation.
+
+Round two uses 5/1 micrometre cell/route margins: local legalization and pre-route
+auditing pass with 12,016 editable nets (56.0%), 9,600 protected routes, and 55,677
+original input-pin checks. The 20/5 margins selected 76.6% and were rejected by
+the existing 65% limit. Tighter margins may constrain routing; final signoff is
+required, and no gate is relaxed. The flow now has 108 top-level steps, with both
+ECO rounds required by the hashed submission manifest.
+
+These are local regression results using the failed CI geometry and pinned
+LibreLane/OpenROAD binary. Linking Liberty remains local PDK 0fe599b2 rather than
+CI PDK 8afc8346. Full physical DRC, LVS, and extracted nine-corner timing are still
+pending in the next CI run. No local result constitutes a qualified GDS.

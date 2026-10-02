@@ -3,7 +3,7 @@ import json
 import shutil
 from pathlib import Path as FilePath
 from librelane.common import Path
-from librelane.state import DesignFormat as DF
+from librelane.state import DesignFormat as DF, State
 from librelane.steps import Step
 from librelane.steps.openroad import (OpenROADStep, RepairDesignPostGRT, DetailedRouting,
                                      CheckAntennas, FillInsertion, RCX, STAPostPNR)
@@ -13,6 +13,9 @@ ROOT=FilePath(__file__).resolve().parent
 
 
 def sibling(step, suffix):
+    if getattr(step, 'eco_round', 1) == 2:
+        if suffix == 'openroad-stapostpnr': suffix = 'rv32-repairsta'
+        elif suffix.startswith('rv32-'): suffix = 'rv32-round2' + suffix[5:]
     matches=list(FilePath(step.step_dir).parent.glob('*-'+suffix))
     if len(matches)!=1:raise RuntimeError('Missing/ambiguous prerequisite: '+suffix)
     return matches[0]
@@ -48,12 +51,19 @@ class ApplyElectricalECO(RepairDesignPostGRT):
         eco=sibling(self,'rv32-planelectricaleco')/'eco.tcl'
         text='''source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
 read_current_odb
-remove_fillers
+# Keep boundary decaps; remove only the flow's reinsertable filler instances.
+foreach inst [[ord::get_db_block] getInsts] {
+    if {[string match FILLER_* [$inst getName]]} {odb::dbInst_destroy $inst}
+}
 source $::env(SCRIPTS_DIR)/openroad/common/set_rc.tcl
 estimate_parasitics -placement
 '''+f'source {{{eco}}}\n'+'''
 foreach inst [[ord::get_db_block] getInsts] {
-    if {[$inst getName] ni $eco_movable} {$inst setPlacementStatus LOCKED}
+    if {[$inst getName] in $eco_movable} {
+        $inst setPlacementStatus PLACED
+    } else {
+        $inst setPlacementStatus LOCKED
+    }
 }
 detailed_placement
 check_placement -verbose
@@ -70,8 +80,9 @@ class PrepareECONeighborhood(Step):
         out=FilePath(self.step_dir);original=sibling(self,'rv32-planelectricaleco')/'original.odb'
         # The 37-net CI fixture needs 58.85% with 20/5 um halos. Keep those
         # halos and bound this distributed-repair trial explicitly at 65%.
+        halos=['--cell-halo-um','5','--route-halo-um','1'] if getattr(self,'eco_round',1)==2 else []
         run_python(self,'prepare_eco_routes.py','--original',original,'--eco',state_in[DF.ODB],'--output-dir',out,
-                   '--max-editable-fraction','0.65')
+                   '--max-editable-fraction','0.65',*halos)
         run_python(self,'audit_eco.py','--odb',out/'prepared.odb','--manifest',out/'preservation.json','--output',out/'pre-route-audit.json')
         m=json.loads((out/'preservation.json').read_text())
         return {DF.ODB:Path(str(out/'prepared.odb'))},{'rv32__eco__editable_nets':len(m['editable_nets']),'rv32__eco__protected_nets':len(m['protected_nets'])}
@@ -81,8 +92,9 @@ class PrepareECONeighborhood(Step):
 class RouteECONeighborhood(RepairDesignPostGRT):
     id='RV32.RouteECONeighborhood';name='Global-route the expanded ECO neighborhood'
     def get_script_path(self):
-        m=json.loads((sibling(self,'rv32-prepareeconeighborhood')/'preservation.json').read_text())
-        names=m['editable_nets']
+        manifest=self.manifest if hasattr(self,'manifest') else sibling(self,'rv32-prepareeconeighborhood')/'preservation.json'
+        m=json.loads(FilePath(manifest).read_text())
+        names=self.nets_to_route if hasattr(self,'nets_to_route') else m['editable_nets']
         if any(any(c in n for c in '{}\n\r') or n.endswith('\\') for n in names):raise ValueError('Unsupported net identifier')
         nets=' '.join('{'+n+'}' for n in names)
         text='''source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
@@ -105,25 +117,39 @@ write_views
         p=FilePath(self.step_dir)/'route-neighborhood.tcl';p.write_text(text);return str(p)
 
 
+def guarded_script(step, original):
+    names=json.loads(FilePath(step.manifest).read_text())['protected_nets']
+    if any(any(c in n for c in '{}\n\r') or n.endswith('\\') for n in names):
+        raise ValueError('Unsupported protected net identifier')
+    nets=' '.join('{'+n+'}' for n in names)
+    text=f'source {{{ROOT / "antenna_guard.tcl"}}}\n'
+    text+=f'rv32_antenna_guard::install [list {nets}]\n'
+    text+=f'source {{{original}}}\n'
+    path=FilePath(step.step_dir)/'guarded.tcl';path.write_text(text)
+    return str(path)
+
+
+class _FreshRoutePass(DetailedRouting):
+    id='RV32.FreshRoutePass'
+    def get_script_path(self):
+        return guarded_script(self,super().get_script_path())
+
+
+class _FreshAntennaPass(DetailedRouting):
+    id='RV32.FreshAntennaPass'
+    def get_script_path(self):
+        return guarded_script(self,ROOT/'repair_antennas.tcl')
+
+
 @Step.factory.register()
 class RepairDetailedRouting(DetailedRouting):
-    id='RV32.RepairDetailedRouting';name='Detailed-route ECO and repair antennas'
-    def get_script_path(self):
-        manifest=sibling(self,'rv32-prepareeconeighborhood')/'preservation.json'
-        names=json.loads(manifest.read_text())['protected_nets']
-        if any(any(c in n for c in '{}\n\r') or n.endswith('\\') for n in names):
-            raise ValueError('Unsupported protected net identifier')
-        nets=' '.join('{'+n+'}' for n in names)
-        original=super().get_script_path()
-        text=f'source {{{ROOT / "antenna_guard.tcl"}}}\n'
-        text+=f'rv32_antenna_guard::install [list {nets}]\n'
-        text+=f'source {{{original}}}\n'
-        path=FilePath(self.step_dir)/'guarded-drt.tcl'
-        path.write_text(text)
-        return str(path)
-
+    id='RV32.RepairDetailedRouting';name='Route and repair antennas in fresh processes'
+    config_vars=list({v.name:v for cls in (DetailedRouting,RepairDesignPostGRT,CheckAntennas) for v in cls.config_vars}.values())
     def run(self,state_in,**kwargs):
-        m=json.loads((sibling(self,'rv32-prepareeconeighborhood')/'preservation.json').read_text())
+        manifest=sibling(self,'rv32-prepareeconeighborhood')/'preservation.json'
+        m=json.loads(manifest.read_text())
+        active=FilePath(self.step_dir)/'preservation-active.json'
+        shutil.copyfile(manifest,active);manifest=active
         if not m['editable_nets']:return {},{}
         # Exercise deletion recovery and fail-closed behavior on a disposable
         # copy of this run's actual ODB before executing the real repair.
@@ -140,7 +166,44 @@ class RepairDetailedRouting(DetailedRouting):
             text+='if {[catch {source {'+str(ROOT/'test_antenna_guard.tcl')+'}} message]} {puts stderr $message; exit 1}\n'
             script=out/'test.tcl';script.write_text(text)
             self.run_subprocess([OpenROADStep.get_openroad_path(),'-exit',str(script)])
-        return super().run(state_in,**kwargs)
+
+        state=state_in
+        limit=self.config['DRT_ANTENNA_REPAIR_ITERS']
+        for index in range(limit+1):
+            for attempt in range(4):
+                route=_FreshRoutePass(self.config,state,DRT_ANTENNA_REPAIR_ITERS=0)
+                route.manifest=manifest
+                state=route.start(toolbox=self.toolbox,step_dir=str(FilePath(self.step_dir)/f'route-{index}-{attempt}'),_no_rule=True)
+                audit=FilePath(self.step_dir)/f'audit-{index}-{attempt}.json'
+                run_python(self,'audit_eco.py','--odb',state[DF.ODB],'--manifest',manifest,
+                           '--output',audit,'--report-route-contacts')
+                report=json.loads(audit.read_text())
+                if report['status']=='pass':break
+                if not report.get('contacts') or attempt==3:
+                    raise RuntimeError('Unresolved physical route contacts; see '+str(audit))
+                out=FilePath(self.step_dir)/f'contact-repair-{index}-{attempt}'
+                run_python(self,'expand_route_contacts.py','--odb',state[DF.ODB],
+                           '--manifest',manifest,'--contacts',audit,'--output-dir',out)
+                shutil.copyfile(out/'preservation.json',manifest)
+                state=State(state,overrides={DF.ODB:Path(str(out/'prepared.odb'))},metrics=state.metrics)
+                grt=RouteECONeighborhood(self.config,state)
+                grt.manifest=manifest
+                grt.nets_to_route=json.loads((out/'reroute-nets.json').read_text())
+                state=grt.start(toolbox=self.toolbox,step_dir=str(out/'global-route'),_no_rule=True)
+            check=CheckAntennas(self.config,state)
+            state=check.start(toolbox=self.toolbox,step_dir=str(FilePath(self.step_dir)/f'antenna-check-{index}'),_no_rule=True)
+            count=state.metrics.get('route__antenna_violation__count')
+            if count is None:raise RuntimeError('Missing fresh antenna-check result')
+            if count==0 or index==limit:break
+            if self.config['DIODE_CELL'] is None:raise RuntimeError('Antenna repair needs a diode cell')
+            repair=_FreshAntennaPass(self.config,state)
+            repair.manifest=manifest
+            state=repair.start(toolbox=self.toolbox,step_dir=str(FilePath(self.step_dir)/f'antenna-repair-{index+1}'),_no_rule=True)
+        views={key:state[key] for key in state
+               if state_in.get(key)!=state.get(key) and DF.factory.get(key) in self.outputs}
+        metrics={key:state.metrics[key] for key in state.metrics
+                 if state_in.metrics.get(key)!=state.metrics.get(key)}
+        return views,metrics
 
 
 @Step.factory.register()
@@ -149,7 +212,7 @@ class AuditECORoutes(Step):
     inputs=[DF.ODB];outputs=[]
     def run(self,state_in,**kwargs):
         out=FilePath(self.step_dir)/'audit.json'
-        run_python(self,'audit_eco.py','--odb',state_in[DF.ODB],'--manifest',sibling(self,'rv32-prepareeconeighborhood')/'preservation.json','--output',out)
+        run_python(self,'audit_eco.py','--odb',state_in[DF.ODB],'--manifest',sibling(self,'rv32-repairdetailedrouting')/'preservation-active.json','--output',out)
         return {},{'rv32__eco__preservation_pass':1}
 
 
@@ -167,3 +230,13 @@ ECO_STEPS=[PlanElectricalECO,ApplyElectricalECO,PrepareECONeighborhood,RouteECON
            derived('RV32.RepairFillInsertion',FillInsertion),
            derived('RV32.RepairRCX',RCX),
            derived('RV32.RepairSTA',STAPostPNR)]
+
+
+# A bounded second round handles violations created on neighboring rerouted nets.
+# It consumes this run's first-round extracted reports, never checkpoint names.
+ECO_STEPS_ROUND2=[]
+for base in ECO_STEPS:
+    identifier='RV32.Round2'+base.id.split('.')[-1]
+    cls=type(identifier.split('.')[-1],(base,),
+             {'id':identifier,'eco_round':2,'__module__':__name__})
+    ECO_STEPS_ROUND2.append(Step.factory.register()(cls))

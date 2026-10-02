@@ -66,7 +66,7 @@ def main():
     for point in list(b.getAccessPoints()):odb.dbAccessPoint.destroy(point)
     odb.dbBlock.destroy(b);odb.read_def(db.getTech(),str(out/'fixed.def'))
     odb.write_db(db,str(out/'prepared.odb'))
-    manifest=dict(original_odb=a.original,eco_odb=a.eco,changed_instances=changed,
+    manifest=dict(original_odb=a.original,eco_odb=a.eco,original_routed_nets=len(routes),changed_instances=changed,
                   affected_nets=sorted(affected),editable_nets=sorted(editable),protected_nets=protected,
                   max_editable_fraction=a.max_editable_fraction,
                   cell_halo_um=a.cell_halo_um,route_halo_um=a.route_halo_um,original_sha256=hashlib.sha256(Path(a.original).read_bytes()).hexdigest(),
