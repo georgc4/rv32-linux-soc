@@ -113,3 +113,21 @@ def route_crossings(routes, limit=100):
                 index=len(segments);segments.append((net,box))
                 for key in keys:bins.setdefault(key,[]).append(index)
     return hits
+
+
+def contact_repair_nets(contacts, editable, protected):
+    """Select contacting nets for rip-up, including already-editable routes.
+
+    Membership expansion is optional: removing existing conflicting wires is
+    useful work even when every contacting net is already editable.
+    """
+    nets=set()
+    for contact in contacts:
+        pair=contact['nets']
+        if len(pair)!=2 or len(set(pair))!=2:
+            raise ValueError('Expected two distinct contacting nets')
+        nets.update(pair)
+    if not nets:raise ValueError('No route contacts to repair')
+    unknown=nets-(set(editable)|set(protected))
+    if unknown:raise ValueError('Contact nets outside the routing manifest: '+', '.join(sorted(unknown)))
+    return nets,nets.intersection(protected)

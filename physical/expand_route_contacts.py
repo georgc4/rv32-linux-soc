@@ -1,16 +1,16 @@
-"""Explicitly promote protected routes involved in proven inter-net contacts."""
+"""Rip up contacting routes and explicitly promote protected ones when needed."""
 import argparse,json
 from pathlib import Path
 import odb
+from eco_helpers import contact_repair_nets
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--odb',required=True);p.add_argument('--manifest',required=True)
     p.add_argument('--contacts',required=True);p.add_argument('--output-dir',required=True);a=p.parse_args()
     m=json.loads(Path(a.manifest).read_text());report=json.loads(Path(a.contacts).read_text())
-    contacts=report['contacts'];nets=set(n for c in contacts for n in c['nets'])
-    added=nets.intersection(m['protected_nets'])
-    if not added:raise ValueError('Contacts involve no protected nets; refusing an unproductive retry')
+    contacts=report['contacts']
+    nets,added=contact_repair_nets(contacts,m['editable_nets'],m['protected_nets'])
     db=odb.dbDatabase.create();odb.read_db(db,a.odb);b=db.getChip().getBlock()
     if 'original_routed_nets' not in m:
         olddb=odb.dbDatabase.create();odb.read_db(olddb,m['original_odb'])

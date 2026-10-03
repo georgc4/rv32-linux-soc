@@ -206,3 +206,28 @@ retained routes compare exactly with the original DEF both after preparation and
 after global routing. Final DRT may legitimately adjust them to resolve local
 conflicts; retention is an initial-condition guarantee, not a claim of immutable
 neighbor geometry or timing closure.
+
+## Retry contacts within the editable set (2026-10-02)
+
+Run 37076106240 stopped during the first ECO routing stage. The router ended
+with 68 DRC violations, and the independent contact audit requested repair.
+`expand_route_contacts.py` then rejected the request because none of the
+contacting nets was protected. That guard confused membership expansion with
+useful repair: existing editable wires still need explicit rip-up when they
+physically contact one another.
+
+The repair now accepts contacts wholly within the editable set. It removes
+only the contacting wires and invokes the existing global/detail reroute path.
+Protected members, when present, are still explicitly promoted. Empty reports,
+self-contacts and nets outside the manifest are rejected. The existing three
+contact retries per route pass, 65% editable-net budget, logical/geometry audit,
+and final signoff gates are unchanged.
+
+The local reproduction contains 43 contact records across 66 editable nets.
+The revised command accepts it with zero protected-net promotions. Native
+OpenDB/DEF regression checks verify that exactly those 66 routes are removed
+and every other route remains unchanged; protected/editable membership is
+unchanged. All 24 Python tests pass, including editable-only and mixed contact
+selection and rejection of invalid repair requests. Routing the selected nets
+and full signoff remain pending; this verifies the retry-path bug fix rather
+than establishing that all 68 DRC violations are resolved.

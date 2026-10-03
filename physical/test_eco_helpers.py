@@ -66,5 +66,20 @@ class RouteContactTests(unittest.TestCase):
         routes=def_routes('\nNETS 1 ;\n- a + ROUTED met2 ( 0 50 ) ( 100 * ) NEW met2 ( 50 0 ) ( * 100 ) ;\nEND NETS')
         self.assertEqual(route_crossings(routes),[])
 
+class ContactRepairTests(unittest.TestCase):
+    def select(self, pairs, editable=('a','b'), protected=('c',)):
+        from eco_helpers import contact_repair_nets
+        return contact_repair_nets([dict(nets=p) for p in pairs],editable,protected)
+
+    def test_already_editable_contacts_still_need_ripup(self):
+        self.assertEqual(self.select([['a','b']]),({'a','b'},set()))
+
+    def test_mixed_contacts_promote_only_protected_members(self):
+        self.assertEqual(self.select([['a','b'],['b','c']]),({'a','b','c'},{'c'}))
+
+    def test_empty_unknown_and_self_contacts_fail(self):
+        for pairs in [[],[['a','missing']],[['a','a']]]:
+            with self.subTest(pairs=pairs),self.assertRaises(ValueError):self.select(pairs)
+
 if __name__ == '__main__':
     unittest.main()
