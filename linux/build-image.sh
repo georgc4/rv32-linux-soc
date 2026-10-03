@@ -9,6 +9,8 @@ CONTAINER="${LINUX_BUILD_IMAGE:-localhost/rv32-linux-build:ubuntu24}"
 ZIG="$ROOT/build/tools/zig-aarch64-macos-0.15.2/zig"
 BUSYBOX="$ROOT/build/src/busybox-1.37.0"
 KERNEL=build/src/linux-6.12.111
+KERNEL_CONFIG="${KERNEL_CONFIG:-linux/kernel-6.12.111.config}"
+[[ -f "$KERNEL_CONFIG" ]] || { echo "missing kernel config: $KERNEL_CONFIG" >&2; exit 1; }
 
 for tool in curl make podman python3 riscv64-unknown-elf-strip shasum; do
     command -v "$tool" >/dev/null || { echo "missing host tool: $tool" >&2; exit 1; }
@@ -53,6 +55,9 @@ make -C "$BUSYBOX" O="$ROOT/build/busybox" -j"$JOBS" \
 "$ZIG" cc -target riscv32-linux-musl \
     -mcpu=generic_rv32+m+a+zicsr+zifencei -static -Oz -s \
     -o build/digit_demo.rv32 software/digit/digit_demo.c
+"$ZIG" cc -target riscv32-linux-musl \
+    -mcpu=generic_rv32+m+a+zicsr+zifencei -static -Oz -s \
+    -o build/acceptance_smoke.rv32 software/acceptance_smoke.c
 
 cat >build/rootfs.list <<'LIST'
 dir /dev 755 0 0
@@ -63,6 +68,7 @@ file /bin/busybox /work/build/busybox/busybox 755 0 0
 slink /bin/sh busybox 777 0 0
 slink /bin/ash busybox 777 0 0
 file /bin/digit_demo /work/build/digit_demo.rv32 755 0 0
+file /bin/acceptance_smoke /work/build/acceptance_smoke.rv32 755 0 0
 dir /proc 755 0 0
 dir /sys 755 0 0
 dir /tmp 1777 0 0
@@ -72,8 +78,8 @@ LIST
 if ! podman image exists "$CONTAINER"; then
     podman build -f linux/Containerfile -t "$CONTAINER" linux
 fi
-if [[ ! -f build/kernel/.config ]] || ! cmp -s linux/kernel-6.12.111.config build/kernel/.config; then
-    cp linux/kernel-6.12.111.config build/kernel/.config
+if [[ ! -f build/kernel/.config ]] || ! cmp -s "$KERNEL_CONFIG" build/kernel/.config; then
+    cp "$KERNEL_CONFIG" build/kernel/.config
 fi
 podman run --rm -v "$ROOT":/work:rw -w /work "$CONTAINER" bash -lc \
     'set -e; export KBUILD_BUILD_TIMESTAMP="2026-09-21 13:10:00 UTC" KBUILD_BUILD_USER=rv32 KBUILD_BUILD_HOST=local KBUILD_BUILD_VERSION=1 SOURCE_DATE_EPOCH=1789996200; make -C build/src/linux-6.12.111 O=/work/build/kernel ARCH=riscv LLVM=1 olddefconfig >/work/build/kernel/config.log; make -C build/src/linux-6.12.111 O=/work/build/kernel ARCH=riscv LLVM=1 -j'"$JOBS"' Image >/work/build/kernel/build.log 2>&1; /work/build/kernel/scripts/dtc/dtc -I dts -O dtb -o /work/build/linux/rv32-linux-soc.dtb /work/linux/rv32-linux-soc.dts'
@@ -81,4 +87,5 @@ cp build/kernel/arch/riscv/boot/Image build/linux/Image
 cp build/kernel/usr/initramfs_data.cpio build/linux/initramfs.cpio
 cp build/busybox/busybox build/linux/busybox
 cp build/digit_demo.rv32 build/linux/digit_demo
+cp build/acceptance_smoke.rv32 build/linux/acceptance_smoke
 python3 linux/check-image.py build/linux

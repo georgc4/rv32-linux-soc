@@ -7,15 +7,27 @@ The logical Tiny Tapeout pins are documented in [the pin budget](pin-budget.md).
 
 The external NOR holds a bootloader, Linux 6.12 kernel, device tree, and a
 BusyBox ash initramfs. The external PSRAM provides 32 MiB of memory. The
-repository's full serial RTL simulation reached `/init` and printed
-`RV32 Linux userspace ready` on the baseline design. A stronger BusyBox ash
-and user-program gate is being evaluated on experiment branches.
+repository's full serial RTL simulation boots Linux, reaches the BusyBox
+ash prompt, sends `/bin/acceptance_smoke` through UART RX, and observes
+`ASH_PROGRAM_OK` on UART TX for the source snapshot below.
 
-**Draft status:** The submitted RTL snapshot has not passed the TTSKY26d
-physical flow. The earlier 8×2 local trial did not generate a signoff GDS.
-This repository revision
-must not be selected as a fabrication revision until GDS, precheck, timing,
-and gate-level checks pass. The external board and pinout also need validation.
+**Timing-fix candidate:** This snapshot stages instruction legality during the
+existing READ_RS2 cycle, removing that decode cone from EXEC writeback.
+Its canonical RTL matches tested revision
+`f91a5e108ca57f257d740447d6e14c926b77360b`. That revision passed full serial
+Linux/BusyBox acceptance in 13,877,255,869 cycles, identical to its parent.
+
+Physical validation is pending at the unchanged 50 ns clock target. CI uses
+timing-driven placement and TT/SS/FF optimization corners, and checks
+setup, hold, slew, and capacitance across all signoff corners. Two
+local comparisons cover multicorner timing-driven placement and the
+previously routable baseline physical settings. This candidate must not be
+called timing-qualified until extracted setup and hold pass at every
+required corner and physical DRC/LVS/antenna checks pass.
+
+The [parent baseline evidence](../tt/qualification/7ebde5c) is retained for
+comparison only. Its GDS and physical pass do not qualify this changed RTL.
+External I/O timing remains provisional.
 
 The 20 MHz `clk` input and `rst_n` are the standard Tiny Tapeout interface.
 UART RX is `ui_in[3]`; UART TX is `uo_out[4]`, the demoboard's documented

@@ -1,0 +1,56 @@
+name: linux-datasheet-acceptance
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/linux-datasheet.yml'
+      - 'scripts/linux_datasheet_ci.py'
+      - 'scripts/test_memory_model.py'
+      - 'sim/models/serial_memory_datasheet_model.v'
+      - 'sim/tests/serial_memory_model_tb.v'
+      - 'sim/tests/linux_serial_boot*'
+      - 'sim/fixtures/linux-acceptance/**'
+      - 'src/*.v'
+      - 'firmware/boot_rom.hex'
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux / ${{ matrix.profile }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: slow-output-a5-ram
+            output: '6.0'
+            ram: '0xa5'
+          - profile: fast-output-5a-ram
+            output: '2.0'
+            ram: '0x5a'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install simulator toolchain
+        run: sudo apt-get update && sudo apt-get install -y verilator iverilog build-essential
+      - name: Validate chip model semantics in both simulators
+        run: |
+          ulimit -c 0
+          python3 scripts/test_memory_model.py
+          python3 scripts/test_memory_model.py --simulator verilator
+      - name: Boot Linux and execute acceptance program through UART
+        run: |
+          ulimit -c 0
+          python3 scripts/linux_datasheet_ci.py --output-delay '${{ matrix.output }}' --ram-init '${{ matrix.ram }}' --jobs 2 --wall-seconds 19800
+      - name: Preserve exact inputs, progress and outcome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-datasheet-${{ matrix.profile }}-${{ github.sha }}
+          path: |
+            build/linux-datasheet/*.json
+            build/linux-datasheet/*.log
+            build/memory-model-verilator-compile.log
+          if-no-files-found: warn
