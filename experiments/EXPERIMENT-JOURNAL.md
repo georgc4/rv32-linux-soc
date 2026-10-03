@@ -570,6 +570,34 @@ draft PR #1 is updated. Evidence: [snapshot](evidence/20261002T230852Z/).
 Local experiment logs are in the CI worktree's build/electrical-fix directory;
 the post-route audit and extraction are queued behind that native routing process.
 
+## Allow contact repair within the editable set (2026-10-02)
+
+The user requested a fix and rerun after status showed **37076106240** had
+failed. It stopped in the first ECO detailed-route stage, with **68 router DRC**.
+The contact-repair script rejected its input because no contacting net was
+protected. This was a control-flow bug: a route can already be editable and
+still need explicit rip-up to remove a physical contact. Final extracted timing,
+LVS and downstream qualification were not reached.
+
+Commit **91d240b** allows editable-only contact repairs while preserving the
+existing mixed/protected-net behavior. It rejects empty, self-contact and
+outside-manifest requests. The existing maximum of three contact retries per
+route pass, 65% editable-net budget, protected geometry audit and all final
+signoff gates remain unchanged. The retry command records an empty promotion
+list when no protected routes need to be unlocked.
+
+All **24 Python tests** pass. The local reproduction contains 43 contact records
+across 66 editable nets. The revised native command removes exactly those
+**66 routes** and preserves the other **21,389 routes**, including all **8,950
+protected routes**. Protected/editable membership is unchanged. This verifies
+the failed retry path, not resolution of all 68 DRC. Local rerouting is running
+with its independent audit queued afterward; full CI signoff is pending.
+
+New run: [37096880158](https://github.com/georgc4/rv32-linux-soc/actions/runs/37096880158).
+Main remains unchanged and draft PR #1 is updated. Evidence:
+[retry-path regression](evidence/20261003T043350Z/). Local reroute outputs are under the
+CI worktree's build/editable-contact-fix directory.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
