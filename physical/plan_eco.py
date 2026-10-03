@@ -20,7 +20,7 @@ def quote(value):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--odb',required=True);p.add_argument('--pins',required=True);p.add_argument('--output',required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--odb',required=True);p.add_argument('--pins',required=True);p.add_argument('--output',required=True);p.add_argument('--buffer-only',action='store_true');a=p.parse_args()
     db=odb.dbDatabase.create();odb.read_db(db,a.odb);b=db.getChip().getBlock();u=b.getDbUnitsPerMicron()
     pins=json.loads(Path(a.pins).read_text());nets={}
     for name in pins:
@@ -66,7 +66,7 @@ def main():
             continue
         match=re.fullmatch(r'(sky130_fd_sc_hd__.+)_(\d+)',master)
         if not match: raise ValueError('Unsupported driver family: '+master)
-        strength=int(match[2]);replacement=next((f'{match[1]}_{size}' for size in [strength*2,strength+1] if db.findMaster(f'{match[1]}_{size}')),None)
+        strength=int(match[2]);replacement=None if a.buffer_only else next((f'{match[1]}_{size}' for size in [strength*2,strength+1] if db.findMaster(f'{match[1]}_{size}')),None)
         if replacement:
             oldpins=sorted((t.getName(),t.getIoType(),t.getSigType()) for t in inst.getMaster().getMTerms())
             newpins=sorted((t.getName(),t.getIoType(),t.getSigType()) for t in db.findMaster(replacement).getMTerms())
@@ -89,7 +89,7 @@ def main():
                               sinks_um=locations,tree=tree))
         if not replacement and not inserted: raise ValueError('No supported repair for '+name)
     out=Path(a.output)
-    record=dict(target_pins=pins,target_nets=sorted(nets),edits=edits,
+    record=dict(target_pins=pins,target_nets=sorted(nets),edits=edits,buffer_only=a.buffer_only,
                 buffer_count=serial,buffer_limit=250,net_plans=net_plans,
                 status='ready' if serial<=250 else 'buffer_limit_exceeded',
                 odb_sha256=hashlib.sha256(Path(a.odb).read_bytes()).hexdigest())

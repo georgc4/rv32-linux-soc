@@ -81,5 +81,46 @@ class ContactRepairTests(unittest.TestCase):
         for pairs in [[],[['a','missing']],[['a','a']]]:
             with self.subTest(pairs=pairs),self.assertRaises(ValueError):self.select(pairs)
 
+class RoutingDRCTests(unittest.TestCase):
+    def test_actual_failed_ci_report_includes_single_net_and_obstacle_markers(self):
+        from pathlib import Path
+        from eco_helpers import routing_drc_markers
+        markers=routing_drc_markers((Path(__file__).parent/'fixtures/ci-37096880158-routing.drc').read_text())
+        self.assertEqual(len(markers),20)
+        self.assertTrue(any(len(m['nets'])==1 and not m['instances'] for m in markers))
+        self.assertEqual(sum(bool(m['instances']) for m in markers),2)
+        self.assertTrue(any('VPWR' in m['nets'] for m in markers))
+        self.assertEqual(markers[0]['box_um'],[126.875,167.225,126.925,167.335])
+
+    def test_spacing_without_crossing_selects_route(self):
+        from eco_helpers import routing_drc_markers,contact_repair_nets
+        markers=routing_drc_markers('violation type: Metal Spacing\n srcs: net:a\n bbox = (1, 2) - (3, 4) on Layer met1\n')
+        self.assertEqual(contact_repair_nets([],{'a'},{'b'},markers),({'a'},set()))
+
+    def test_spacing_prefers_editable_route_over_protected_obstacle(self):
+        from eco_helpers import contact_repair_nets
+        self.assertEqual(contact_repair_nets([],{'a'},{'b','c'},[dict(nets=['a','b'])]),({'a'},set()))
+        self.assertEqual(contact_repair_nets([],{'a'},{'b','c'},[dict(nets=['b','c'])]),({'b','c'},{'b','c'}))
+        self.assertEqual(contact_repair_nets([],{'a'},{'b'},[dict(nets=['a','b'])],prefer_editable=False),({'a','b'},{'b'}))
+        with self.assertRaises(ValueError):contact_repair_nets([],{'a'},{'b'},[dict(nets=['a','unknown'])])
+
+    def test_clean_and_unrecognized_reports(self):
+        from eco_helpers import routing_drc_markers
+        self.assertEqual(routing_drc_markers(' \n'),[])
+        for text in ['no recognizable report','violation type: spacing\nsrcs: unknown:a\nbbox = (1, 2) - (3, 4) on Layer met1',
+                     'violation type: spacing\nsrcs: net:a\nbbox = (nan, 2) - (3, 4) on Layer met1']:
+            with self.subTest(text=text),self.assertRaises(ValueError):routing_drc_markers(text)
+
+class ECORoundTests(unittest.TestCase):
+    def test_each_round_reads_preceding_sta_and_own_neighborhood(self):
+        from eco_helpers import eco_sibling_suffix
+        for number,sta in [(1,'openroad-stapostpnr'),(2,'rv32-repairsta'),(3,'rv32-round2repairsta')]:
+            with self.subTest(round=number):
+                self.assertEqual(eco_sibling_suffix('openroad-stapostpnr',number),sta)
+                prefix='rv32-' if number==1 else f'rv32-round{number}'
+                self.assertEqual(eco_sibling_suffix('rv32-prepareeconeighborhood',number),prefix+'prepareeconeighborhood')
+                self.assertEqual(eco_sibling_suffix('rv32-repairdetailedrouting',number),prefix+'repairdetailedrouting')
+        with self.assertRaises(ValueError):eco_sibling_suffix('openroad-stapostpnr',0)
+
 if __name__ == '__main__':
     unittest.main()

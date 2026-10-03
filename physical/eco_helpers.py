@@ -115,8 +115,8 @@ def route_crossings(routes, limit=100):
     return hits
 
 
-def contact_repair_nets(contacts, editable, protected):
-    """Select contacting nets for rip-up, including already-editable routes.
+def contact_repair_nets(contacts, editable, protected, routing_drc=(), prefer_editable=True):
+    """Select contact/DRC nets for rip-up, including already-editable routes.
 
     Membership expansion is optional: removing existing conflicting wires is
     useful work even when every contacting net is already editable.
@@ -127,7 +127,55 @@ def contact_repair_nets(contacts, editable, protected):
         if len(pair)!=2 or len(set(pair))!=2:
             raise ValueError('Expected two distinct contacting nets')
         nets.update(pair)
-    if not nets:raise ValueError('No route contacts to repair')
+    for marker in routing_drc:
+        if not marker['nets']:raise ValueError('DRC marker has no net sources')
+        sources=set(marker['nets'])
+        unknown=sources-(set(editable)|set(protected))
+        if unknown:raise ValueError('DRC nets outside the routing manifest: '+', '.join(sorted(unknown)))
+        # First route editable wires around protected obstacles. Promote only
+        # markers with no editable signal route to repair.
+        nets.update((sources.intersection(editable) or sources) if prefer_editable else sources)
+    if not nets:raise ValueError('No route violations to repair')
     unknown=nets-(set(editable)|set(protected))
     if unknown:raise ValueError('Contact nets outside the routing manifest: '+', '.join(sorted(unknown)))
     return nets,nets.intersection(protected)
+
+
+def routing_drc_markers(text):
+    """Parse pinned TritonRoute DRC records, including single-net violations.
+
+    Reject unrecognized source/geometry records rather than silently dropping
+    physical errors. Coordinates are micrometres as printed by the router.
+    """
+    import math
+    result=[]
+    if not text.strip():return result
+    for record in text.strip().split('violation type:')[1:]:
+        lines=[line.strip() for line in record.strip().splitlines()]
+        if len(lines)!=3 or not lines[1].startswith('srcs:'):
+            raise ValueError('Malformed routing DRC record: '+record)
+        sources=lines[1][5:].split()
+        if not sources or any(not n.startswith(('net:','inst:')) or not n.split(':',1)[1] for n in sources):
+            raise ValueError('Unsupported routing DRC sources: '+lines[1])
+        match=re.fullmatch(r'bbox = \(\s*([^,]+),\s*([^)]+)\) - \(\s*([^,]+),\s*([^)]+)\) on Layer (\S+)',lines[2])
+        if not match:raise ValueError('Malformed routing DRC box: '+lines[2])
+        box=list(map(float,match.groups()[:4]))
+        if not all(math.isfinite(v) for v in box) or box[0]>box[2] or box[1]>box[3]:
+            raise ValueError('Invalid routing DRC box')
+        result.append(dict(type=lines[0],nets=sorted({n[4:] for n in sources if n.startswith('net:')}),
+                           instances=sorted({n[5:] for n in sources if n.startswith('inst:')}),
+                           layer=match[5],box_um=box))
+    if not result or not text.lstrip().startswith('violation type:'):
+        raise ValueError('Unrecognized routing DRC report')
+    return result
+
+
+def eco_sibling_suffix(suffix, round_number):
+    """Resolve each ECO round against its own stages and preceding fresh STA."""
+    if round_number < 1:raise ValueError('Invalid ECO round')
+    if round_number == 1:return suffix
+    if suffix == 'openroad-stapostpnr':
+        previous='rv32-' if round_number == 2 else f'rv32-round{round_number-1}'
+        return previous+'repairsta'
+    if suffix.startswith('rv32-'):return f'rv32-round{round_number}'+suffix[5:]
+    return suffix

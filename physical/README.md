@@ -231,3 +231,69 @@ unchanged. All 24 Python tests pass, including editable-only and mixed contact
 selection and rejection of invalid repair requests. Routing the selected nets
 and full signoff remain pending; this verifies the retry-path bug fix rather
 than establishing that all 68 DRC violations are resolved.
+
+
+## Repair router DRC markers before extraction (2026-10-03)
+
+Run 37096880158 passed extracted nine-corner setup, hold, slew and capacitance,
+antenna and LVS, but failed physical signoff: 14 router DRC after round one,
+20 after round two, 79 Magic DRC and 11 KLayout DRC. The old centerline-contact
+audit missed spacing to nearby wires, power shapes and cell obstructions.
+Deferred router errors let the run spend over five hours reaching final failure.
+Some first-round violations also became invisible to later router checks when
+both signal routes were protected in the second round; final Magic still found
+them. Each round must therefore finish clean before the next round is prepared.
+
+The repair loop now parses the pinned router's DRC report, checks its record
+count against the fresh router metric, and treats every marker as a repair
+request, even when the centerline audit passes. Single-net violations are valid.
+The first attempt reroutes editable signal wires around protected obstacles;
+subsequent attempts may explicitly promote the other implicated signal wires.
+Power/ground shapes and cell obstructions remain fixed. Unknown nets, instances,
+source formats, invalid boxes and source-less repairs fail closed.
+
+Each ECO detailed-route pass is bounded at 24 optimization iterations. There
+are still at most three repair retries per antenna round; identical violations
+after an expanded retry stop immediately. Unresolved router DRC now stops inside
+the repair stage before extraction. The 65% editable-net budget, protected-route
+and logical-connectivity audits, and all downstream signoff gates remain active.
+No design or library electrical limit is relaxed.
+
+Local reproduction uses the exact CI PDK 8afc8346a57fe1ab7934ba5a6056ea8b43078e71,
+LibreLane 3.0.14 and OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0. Combining
+both failed-round reports exposes 34 markers. A 22-net reroute clears router,
+Magic and KLayout DRC, antenna, and LVS (unique match); all nine corners pass
+setup/hold/slew. One max-RC slow-corner capacitance failure remains:
+_23793_/Y measures 0.086360 pF against 0.086070 pF. Its own route geometry is
+unchanged. An 18-net selection also clears router/Magic/KLayout DRC, antenna, LVS and
+the independent audit, but retains that capacitance failure. These are diagnostic checkpoint repairs,
+not qualified GDS. The production sequence is being tested with marker repair
+before the second electrical ECO, so the latter consumes fresh extracted loads.
+
+The final failed-CI DRC report is retained as a parser regression fixture.
+All 29 Python helper tests pass, including actual single-net/cell/power records,
+editable-first selection, explicit promotion and rejection of unknown sources.
+
+
+The production-order replay clears both routing stages but exposes another
+second-round regression: 11 slew pins and one capacitance failure on _12849_.
+Its driver measures 1.931793 ns against a 1.496266 ns pin limit and 0.112786 pF
+against 0.086070 pF. Setup/hold remain positive. A bounded third ECO round now
+consumes round two's fresh reports using the same planner and 5/1 um routing
+margins. Its initial resize-plus-buffer trial selected only that net, resized
+its nor2_2 driver to nor2_4 and inserted two buffers. No checkpoint-specific names are added to
+the flow. Required-stage provenance includes all third-round stages, and a
+regression test verifies each round reads its own neighborhood and the previous
+round's extracted STA. This resize-plus-buffer trial repairs _12849_ but creates six slew-pin failures
+and one capacitance failure on the resized driver's input net _11694_. The final
+cleanup therefore uses buffer-only planning: original driver cells retain their
+master and placement, avoiding input-capacitance growth and input-pin rerouting.
+The same checkpoint then requests only the two buffers. The resize trial
+lengthened input net _11694_ from 115.96 um to 1,006.62 um; buffer-only repair
+preserves that route and the other input route exactly. It replaces three routes,
+keeps 21,025 routes protected, and clears router DRC and antenna. All nine corners
+then pass setup, hold, slew and capacitance: worst setup +8.941967 ns, worst hold
++0.054556 ns. Magic DRC, KLayout DRC and LVS also pass with zero errors and a unique circuit
+match. All 42 per-corner/physical metric gates in the submission contract pass
+on this checkpoint replay. Clean RTL-to-GDS CI, Tiny Tapeout precheck and gate
+simulation remain separate required qualifications.

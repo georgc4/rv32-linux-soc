@@ -1,0 +1,60 @@
+violation type: Metal Spacing
+	srcs: net:_13253_ net:_13254_
+	bbox = (126.8750, 167.2250) - (126.9250, 167.3350) on Layer met1
+violation type: Metal Spacing
+	srcs: net:_05164_ net:ci_eco_0195_net9170
+	bbox = (246.7200, 216.4800) - (246.8600, 216.6800) on Layer met1
+violation type: Metal Spacing
+	srcs: net:_05164_ net:ci_eco_0195_net9170
+	bbox = (246.7200, 216.4800) - (248.7750, 216.6800) on Layer met1
+violation type: Metal Spacing
+	srcs: net:_05164_ net:ci_eco_0195_net9170
+	bbox = (248.4850, 216.5250) - (248.7750, 216.6800) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170
+	bbox = (242.3500, 215.9550) - (242.5900, 216.1850) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:clknet_3_1_0_clk
+	bbox = (246.7200, 215.8000) - (246.8600, 216.0000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:clknet_3_1_0_clk
+	bbox = (246.7200, 215.8450) - (246.8600, 216.0000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:clknet_3_1_0_clk
+	bbox = (246.6450, 215.8000) - (246.8600, 216.0000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:clknet_3_1_0_clk
+	bbox = (246.6450, 215.8450) - (246.8600, 216.0000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:soc.cpu.priv_unit.medeleg\[13\]
+	bbox = (248.3300, 216.2000) - (248.4850, 216.2950) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:soc.cpu.priv_unit.medeleg\[13\]
+	bbox = (248.4850, 216.1400) - (248.7750, 216.2950) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:soc.cpu.priv_unit.medeleg\[13\]
+	bbox = (248.0100, 216.2000) - (248.3300, 216.3400) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:soc.cpu.priv_unit.medeleg\[13\]
+	bbox = (248.0100, 216.1400) - (248.7750, 216.3400) on Layer met1
+violation type: Metal Spacing
+	srcs: net:_05399_ net:ci_eco_0195_net9170
+	bbox = (382.3300, 261.7600) - (382.6500, 261.9000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:VPWR net:ci_eco_0195_net9170
+	bbox = (382.3300, 261.3600) - (382.6500, 261.5000) on Layer met1
+violation type: Metal Spacing
+	srcs: net:ci_eco_0195_net9170 net:net5990
+	bbox = (382.1000, 261.4700) - (382.3600, 261.7900) on Layer met2
+violation type: Metal Spacing
+	srcs: net:_07685_ net:net5363
+	bbox = (462.3850, 202.5850) - (462.6750, 202.6800) on Layer met1
+violation type: Metal Spacing
+	srcs: net:_11222_ net:ci_eco_0195_net9170
+	bbox = (222.5400, 405.9700) - (222.8000, 406.2900) on Layer met2
+violation type: Metal Spacing
+	srcs: net:net5890 inst:_28485_
+	bbox = (424.1900, 180.4850) - (424.3950, 180.5800) on Layer met1
+violation type: Metal Spacing
+	srcs: net:net5890 inst:_28485_
+	bbox = (424.1900, 180.8400) - (424.3950, 180.9350) on Layer met1

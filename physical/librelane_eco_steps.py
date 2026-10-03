@@ -7,15 +7,13 @@ from librelane.state import DesignFormat as DF, State
 from librelane.steps import Step
 from librelane.steps.openroad import (OpenROADStep, RepairDesignPostGRT, DetailedRouting,
                                      CheckAntennas, FillInsertion, RCX, STAPostPNR)
-from eco_helpers import failing_pins
+from eco_helpers import failing_pins, routing_drc_markers, eco_sibling_suffix
 
 ROOT=FilePath(__file__).resolve().parent
 
 
 def sibling(step, suffix):
-    if getattr(step, 'eco_round', 1) == 2:
-        if suffix == 'openroad-stapostpnr': suffix = 'rv32-repairsta'
-        elif suffix.startswith('rv32-'): suffix = 'rv32-round2' + suffix[5:]
+    suffix=eco_sibling_suffix(suffix,getattr(step,'eco_round',1))
     matches=list(FilePath(step.step_dir).parent.glob('*-'+suffix))
     if len(matches)!=1:raise RuntimeError('Missing/ambiguous prerequisite: '+suffix)
     return matches[0]
@@ -40,7 +38,8 @@ class PlanElectricalECO(Step):
         out=FilePath(self.step_dir);original=out/'original.odb'
         shutil.copyfile(state_in[DF.ODB],original)
         pinfile=out/'failing-pins.json';pinfile.write_text(json.dumps(sorted(pins),indent=2)+'\n')
-        run_python(self,'plan_eco.py','--odb',original,'--pins',pinfile,'--output',out/'eco.tcl')
+        run_python(self,'plan_eco.py','--odb',original,'--pins',pinfile,'--output',out/'eco.tcl',
+                   *(['--buffer-only'] if getattr(self,'eco_round',1)>=3 else []))
         return {DF.ODB:Path(str(original))},{'rv32__eco__target_pins':len(pins)}
 
 
@@ -80,7 +79,7 @@ class PrepareECONeighborhood(Step):
         out=FilePath(self.step_dir);original=sibling(self,'rv32-planelectricaleco')/'original.odb'
         # The 37-net CI fixture needs 58.85% with 20/5 um halos. Keep those
         # halos and bound this distributed-repair trial explicitly at 65%.
-        halos=['--cell-halo-um','5','--route-halo-um','1'] if getattr(self,'eco_round',1)==2 else []
+        halos=['--cell-halo-um','5','--route-halo-um','1'] if getattr(self,'eco_round',1)>=2 else []
         run_python(self,'prepare_eco_routes.py','--original',original,'--eco',state_in[DF.ODB],'--output-dir',out,
                    '--max-editable-fraction','0.65',*halos)
         run_python(self,'audit_eco.py','--odb',out/'prepared.odb','--manifest',out/'preservation.json','--output',out/'pre-route-audit.json')
@@ -172,20 +171,33 @@ class RepairDetailedRouting(DetailedRouting):
         state=state_in
         limit=self.config['DRT_ANTENNA_REPAIR_ITERS']
         for index in range(limit+1):
+            previous_violations=None
             for attempt in range(4):
-                route=_FreshRoutePass(self.config,state,DRT_ANTENNA_REPAIR_ITERS=0)
+                route=_FreshRoutePass(self.config,state,DRT_ANTENNA_REPAIR_ITERS=0,DRT_OPT_ITERS=24)
                 route.manifest=manifest
                 state=route.start(toolbox=self.toolbox,step_dir=str(FilePath(self.step_dir)/f'route-{index}-{attempt}'),_no_rule=True)
                 audit=FilePath(self.step_dir)/f'audit-{index}-{attempt}.json'
                 run_python(self,'audit_eco.py','--odb',state[DF.ODB],'--manifest',manifest,
                            '--output',audit,'--report-route-contacts')
                 report=json.loads(audit.read_text())
+                drc_path=FilePath(route.step_dir)/(self.config['DESIGN_NAME']+'.drc')
+                markers=routing_drc_markers(drc_path.read_text())
+                if len(markers)!=state.metrics.get('route__drc_errors'):
+                    raise RuntimeError('Routing DRC report/metric mismatch; see '+str(drc_path))
+                report['routing_drc']=markers
+                if markers:report.update(status='fail',reason='Routing DRC violations')
+                audit.write_text(json.dumps(report,indent=2)+'\n')
                 if report['status']=='pass':break
-                if not report.get('contacts') or attempt==3:
-                    raise RuntimeError('Unresolved physical route contacts; see '+str(audit))
+                signature=tuple(sorted(json.dumps(v,sort_keys=True) for v in report.get('contacts',[])+markers))
+                if signature==previous_violations and attempt>=2:
+                    raise RuntimeError('Routing repair stalled with unchanged violations; see '+str(audit))
+                previous_violations=signature
+                if (not report.get('contacts') and not markers) or attempt==3:
+                    raise RuntimeError('Unresolved physical routing violations; see '+str(audit))
                 out=FilePath(self.step_dir)/f'contact-repair-{index}-{attempt}'
                 run_python(self,'expand_route_contacts.py','--odb',state[DF.ODB],
-                           '--manifest',manifest,'--contacts',audit,'--output-dir',out)
+                           '--manifest',manifest,'--contacts',audit,'--output-dir',out,
+                           *(['--include-protected-obstacles'] if attempt>=1 else []))
                 shutil.copyfile(out/'preservation.json',manifest)
                 state=State(state,overrides={DF.ODB:Path(str(out/'prepared.odb'))},metrics=state.metrics)
                 grt=RouteECONeighborhood(self.config,state)
@@ -234,11 +246,17 @@ ECO_STEPS=[PlanElectricalECO,ApplyElectricalECO,PrepareECONeighborhood,RouteECON
            derived('RV32.RepairSTA',STAPostPNR)]
 
 
-# A bounded second round handles violations created on neighboring rerouted nets.
-# It consumes this run's first-round extracted reports, never checkpoint names.
-ECO_STEPS_ROUND2=[]
-for base in ECO_STEPS:
-    identifier='RV32.Round2'+base.id.split('.')[-1]
-    cls=type(identifier.split('.')[-1],(base,),
-             {'id':identifier,'eco_round':2,'__module__':__name__})
-    ECO_STEPS_ROUND2.append(Step.factory.register()(cls))
+# Bounded follow-up rounds consume fresh extracted reports from the previous
+# round. Round three uses buffer-only planning to preserve driver input geometry
+# while repairing electrical regressions from marker-driven reroutes.
+def make_eco_round(number):
+    steps=[]
+    for base in ECO_STEPS:
+        identifier=f'RV32.Round{number}'+base.id.split('.')[-1]
+        cls=type(identifier.split('.')[-1],(base,),
+                 {'id':identifier,'eco_round':number,'__module__':__name__})
+        steps.append(Step.factory.register()(cls))
+    return steps
+
+ECO_STEPS_ROUND2=make_eco_round(2)
+ECO_STEPS_ROUND3=make_eco_round(3)
