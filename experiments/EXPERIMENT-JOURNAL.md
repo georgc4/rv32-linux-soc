@@ -598,6 +598,83 @@ Main remains unchanged and draft PR #1 is updated. Evidence:
 [retry-path regression](evidence/20261003T043350Z/). Local reroute outputs are under the
 CI worktree's build/editable-contact-fix directory.
 
+## Repair DRC markers before the next ECO round (2026-10-03)
+
+The user asked to continue the fix after the five-hour GDS failure. Run
+[37096880158](https://github.com/georgc4/rv32-linux-soc/actions/runs/37096880158)
+at 91d240b passed nine-corner setup, hold, slew and capacitance, plus antenna
+and LVS. It failed physical signoff: 14 router DRC after round one, 20 after
+round two, 79 Magic DRC and 11 KLayout DRC. The centerline-contact detector
+missed spacing to adjacent wires, cell obstructions and power shapes. Some
+first-round errors were subsequently hidden from the router when both wires
+became FIXED in round two. The final physical decks still caught them.
+
+The new loop consumes the actual TritonRoute DRC report and cross-checks its
+record count against the fresh metric. Single-net violations are actionable.
+It first reroutes implicated editable signal wires, then may explicitly promote
+protected signal obstacles on later retries. Power and cell shapes remain
+fixed. Malformed/unknown sources, stalled expanded retries and unresolved DRC
+stop before extraction. ECO DRT passes are bounded at 24 iterations and three
+repair retries; the 65% editable budget and all signoff constraints remain.
+
+Local experiments now use the exact CI PDK 8afc8346, LibreLane 3.0.14 and
+OpenROAD dcf36133. Combining the failed round-one and round-two reports gave
+34 DRC markers. The broad 22-net repair and narrower 18-net repair both pass
+router/Magic/KLayout DRC, antenna and LVS with unique circuit matches. Both
+pass nine-corner setup/hold/slew, but introduce one small max-RC slow-corner
+capacitance failure: _23793_/Y is 0.086360 pF against 0.086070 pF. Its own
+route geometry is unchanged; surrounding routing affects extraction. These
+control experiments are not qualified layouts.
+
+The production-order checkpoint replay repairs round-one DRC before extracting
+loads for the second ECO. Round one clears router DRC and antenna while
+preserving 8,950 routes and checking 55,220 original input pins. Fresh electrical
+reports select 11 pins on two nets for round two, with eight added buffers and
+16 initial route replacements. After the ordinary round-two route pass, the
+marker/contact repair selects 13 additional editable routes, promotes no
+protected nets, and reaches zero router DRC and antenna violations. The
+independent audit preserves 19,958 protected routes and checks 55,436 original
+input pins. Final extracted timing and physical-deck results follow below.
+
+All 29 Python helper tests pass, including a real failed-CI DRC fixture and
+editable-first/expanded selection. Native protected-wire guard regressions
+also pass. The support-tools fork needs no new change: the project-owned
+source and fixture hashes in physical-flow.json carry this fix into CI.
+
+The two-round replay also passes Magic/KLayout DRC and LVS, but its final STA
+has 11 slew pins and one cap failure on _12849_. A first third-round cleanup
+trial resized the nor2_2 driver to nor2_4 and added two buffers. It repaired the
+target but created six slew pins and one cap failure on its input net _11694_.
+That input route grew from 115.96 um to 1,006.62 um after resize-driven rip-up.
+
+The selected third round therefore uses buffer-only planning. It reads the same
+fresh reports, adds two buffers, and preserves the original driver master and
+placement. It replaces three routes and retains 21,025 protected routes. Both
+input route hashes remain identical to the pre-cleanup geometry. Router DRC and
+antenna are zero. All nine timing corners pass setup, hold, slew and capacitance,
+with worst setup +8.941967 ns and hold +0.054556 ns. The third round is explicitly
+bounded; there is no unlimited convergence loop and no weakened signoff limit.
+The flow now has 121 unique stages and 41 required provenance stages.
+
+The buffer-only route audit also verifies 55,444 original input-pin drivers.
+The earlier resize-plus-buffer control completes physical DRC/LVS cleanly but
+remains electrically failing; its artifacts are retained as a rejected control.
+
+Final buffer-only result: Magic DRC zero, KLayout DRC zero, LVS zero with a
+unique circuit match. All 42 corner/physical metric gates used by the submission
+contract pass on this checkpoint replay. This is the first locally tested
+candidate in this sequence that is both physically and electrically clean.
+Clean RTL-to-GDS CI, Tiny Tapeout precheck and gate simulation remain required;
+this result does not by itself qualify a submission or settle external I/O timing.
+
+Candidate commit: **d93c8fd**. Full clean CI:
+[37149985351](https://github.com/georgc4/rv32-linux-soc/actions/runs/37149985351).
+Main remains unchanged; draft PR #1 includes this implementation and evidence.
+The [compact snapshot](evidence/20261003T200100Z/) records the controls, final
+metric checks, exact-PDK runners, source hashes and route comparisons. Full
+ODB/GDS/SPEF and logs remain in the CI worktree's ignored build/drc-marker-fix
+folder; a hash is not a backup of those large files.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

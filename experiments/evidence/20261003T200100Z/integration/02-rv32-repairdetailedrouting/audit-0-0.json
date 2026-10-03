@@ -1,0 +1,216 @@
+{
+  "status": "fail",
+  "protected_nets": 8950,
+  "editable_nets": 12505,
+  "checked_original_input_pins": 55220,
+  "route_centerline_contacts": 0,
+  "odb_sha256": "5e9a1eb5ca7010fbd2f7ce940e7ead5b25e2c1bb652364a1a649a57036448ff5",
+  "scope": "Logical driver and protected-route audit; DRC/LVS remain required",
+  "routing_drc": [
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "soc.cpu.priv_unit.time_value\\[62\\]",
+        "soc.timer.mtimecmp\\[62\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        23.545,
+        325.0,
+        23.835,
+        325.095
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net6888"
+      ],
+      "instances": [],
+      "layer": "met2",
+      "box_um": [
+        191.98,
+        317.47,
+        192.18,
+        317.57
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net6640"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        243.96,
+        177.81,
+        244.16,
+        177.92
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_10235_",
+        "_11223_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        327.075,
+        367.84,
+        327.13,
+        367.935
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_07685_",
+        "net5363"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        462.385,
+        202.585,
+        462.675,
+        202.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_13253_",
+        "_13254_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        126.875,
+        167.225,
+        126.925,
+        167.335
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_10873_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        140.92,
+        319.16,
+        141.13,
+        319.285
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.88,
+        251.655,
+        425.125,
+        251.885
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.88,
+        251.7,
+        425.125,
+        251.84
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.955,
+        251.655,
+        425.125,
+        251.885
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.955,
+        251.7,
+        425.125,
+        251.84
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        426.12,
+        251.9,
+        426.35,
+        252.04
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        426.12,
+        251.84,
+        426.35,
+        252.04
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_11119_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        172.57,
+        355.015,
+        172.585,
+        355.2
+      ]
+    }
+  ],
+  "reason": "Routing DRC violations"
+}

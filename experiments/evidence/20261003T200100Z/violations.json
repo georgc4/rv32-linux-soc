@@ -1,0 +1,510 @@
+{
+  "contacts": [],
+  "routing_drc": [
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_13253_",
+        "_13254_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        126.875,
+        167.225,
+        126.925,
+        167.335
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net6640"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        243.96,
+        177.81,
+        244.16,
+        177.92
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_10235_",
+        "_11223_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        327.075,
+        367.84,
+        327.13,
+        367.935
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.88,
+        251.655,
+        425.125,
+        251.885
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.88,
+        251.7,
+        425.125,
+        251.84
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.955,
+        251.655,
+        425.125,
+        251.885
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05279_",
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        424.955,
+        251.7,
+        425.125,
+        251.84
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        426.12,
+        251.9,
+        426.35,
+        252.04
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        426.12,
+        251.84,
+        426.35,
+        252.04
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_11119_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        172.57,
+        355.015,
+        172.585,
+        355.2
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "soc.cpu.priv_unit.time_value\\[62\\]",
+        "soc.timer.mtimecmp\\[62\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        23.545,
+        325.0,
+        23.835,
+        325.095
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_07685_",
+        "net5363"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        462.385,
+        202.585,
+        462.675,
+        202.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_10873_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        140.92,
+        319.16,
+        141.13,
+        319.285
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net6888"
+      ],
+      "instances": [],
+      "layer": "met2",
+      "box_um": [
+        191.98,
+        317.47,
+        192.18,
+        317.57
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_13253_",
+        "_13254_"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        126.875,
+        167.225,
+        126.925,
+        167.335
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05164_",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.72,
+        216.48,
+        246.86,
+        216.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05164_",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.72,
+        216.48,
+        248.775,
+        216.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05164_",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        248.485,
+        216.525,
+        248.775,
+        216.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        242.35,
+        215.955,
+        242.59,
+        216.185
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "clknet_3_1_0_clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.72,
+        215.8,
+        246.86,
+        216.0
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "clknet_3_1_0_clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.72,
+        215.845,
+        246.86,
+        216.0
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "clknet_3_1_0_clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.645,
+        215.8,
+        246.86,
+        216.0
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "clknet_3_1_0_clk"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        246.645,
+        215.845,
+        246.86,
+        216.0
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "soc.cpu.priv_unit.medeleg\\[13\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        248.33,
+        216.2,
+        248.485,
+        216.295
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "soc.cpu.priv_unit.medeleg\\[13\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        248.485,
+        216.14,
+        248.775,
+        216.295
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "soc.cpu.priv_unit.medeleg\\[13\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        248.01,
+        216.2,
+        248.33,
+        216.34
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "soc.cpu.priv_unit.medeleg\\[13\\]"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        248.01,
+        216.14,
+        248.775,
+        216.34
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_05399_",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        382.33,
+        261.76,
+        382.65,
+        261.9
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "VPWR",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        382.33,
+        261.36,
+        382.65,
+        261.5
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "ci_eco_0195_net9170",
+        "net5990"
+      ],
+      "instances": [],
+      "layer": "met2",
+      "box_um": [
+        382.1,
+        261.47,
+        382.36,
+        261.79
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_07685_",
+        "net5363"
+      ],
+      "instances": [],
+      "layer": "met1",
+      "box_um": [
+        462.385,
+        202.585,
+        462.675,
+        202.68
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "_11222_",
+        "ci_eco_0195_net9170"
+      ],
+      "instances": [],
+      "layer": "met2",
+      "box_um": [
+        222.54,
+        405.97,
+        222.8,
+        406.29
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net5890"
+      ],
+      "instances": [
+        "_28485_"
+      ],
+      "layer": "met1",
+      "box_um": [
+        424.19,
+        180.485,
+        424.395,
+        180.58
+      ]
+    },
+    {
+      "type": "Metal Spacing",
+      "nets": [
+        "net5890"
+      ],
+      "instances": [
+        "_28485_"
+      ],
+      "layer": "met1",
+      "box_um": [
+        424.19,
+        180.84,
+        424.395,
+        180.935
+      ]
+    }
+  ]
+}

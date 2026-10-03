@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "protected_nets": 20908,
+  "editable_nets": 557,
+  "checked_original_input_pins": 55444,
+  "route_centerline_contacts": 0,
+  "odb_sha256": "f8f8e8d5f27c2a47ec29f092cc3bfd29c400d037d8c658caa3f0fdd8e4bf2f31",
+  "scope": "Logical driver and protected-route audit; DRC/LVS remain required"
+}

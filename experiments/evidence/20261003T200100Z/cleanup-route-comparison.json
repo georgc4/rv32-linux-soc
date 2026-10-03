@@ -1,0 +1,44 @@
+{
+  "before_cleanup": {
+    "_11694_": {
+      "sha256": "9ab04908b6407ee9b598c108185da0be55d220fa0511c822b4871a4e101a08e9",
+      "length_um": 115.96
+    },
+    "_11757_": {
+      "sha256": "3dbf46fc66fd0c1f288e0ca16405cff994fd514b392b2a929b846879e8c8180e",
+      "length_um": 32.64
+    },
+    "_12849_": {
+      "sha256": "86d2eaf48dc4d9c04a1b70209ce1f785e665eaf9c87a36ee544a3b81f560876c",
+      "length_um": 323.12
+    }
+  },
+  "resize_cleanup": {
+    "_11694_": {
+      "sha256": "05614468dbe1f054135e2cec3270e7efac707314f43a390390210f683da70abf",
+      "length_um": 1006.62
+    },
+    "_11757_": {
+      "sha256": "2867598ad1366540b73266c24531af778a6c683af090c9003209e92483270168",
+      "length_um": 31.62
+    },
+    "_12849_": {
+      "sha256": "384e4fd72cd7396236ee212372f1e554caf811b0647e7b26f0c3519eff8035a1",
+      "length_um": 280.9
+    }
+  },
+  "buffer_only_cleanup": {
+    "_11694_": {
+      "sha256": "9ab04908b6407ee9b598c108185da0be55d220fa0511c822b4871a4e101a08e9",
+      "length_um": 115.96
+    },
+    "_11757_": {
+      "sha256": "3dbf46fc66fd0c1f288e0ca16405cff994fd514b392b2a929b846879e8c8180e",
+      "length_um": 32.64
+    },
+    "_12849_": {
+      "sha256": "c4d5a1c91f72bdee73f38dd23c73608374dd64e50c57c93bc9c11d55ad77f26a",
+      "length_um": 275.05
+    }
+  }
+}

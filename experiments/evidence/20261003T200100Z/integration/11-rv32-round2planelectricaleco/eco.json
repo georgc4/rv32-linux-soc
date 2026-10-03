@@ -1,0 +1,417 @@
+{
+  "target_pins": [
+    "ANTENNA_372/DIODE",
+    "_15172_/A",
+    "_15173_/A",
+    "_15880_/A0",
+    "_17711_/A1",
+    "_19918_/A1",
+    "_23377_/A",
+    "_23465_/A0",
+    "_24604_/X",
+    "_25213_/A1",
+    "_28485_/Q"
+  ],
+  "target_nets": [
+    "_12883_",
+    "soc.cpu.imm_b\\[2\\]"
+  ],
+  "edits": [
+    {
+      "kind": "resize",
+      "instance": "_24604_",
+      "old": "sky130_fd_sc_hd__mux2_1",
+      "new": "sky130_fd_sc_hd__mux2_2"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0001",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        248.308,
+        208.19799999999998
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0002",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        225.216,
+        194.6105
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0003",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        252.096,
+        140.07825
+      ]
+    },
+    {
+      "kind": "resize",
+      "instance": "_28485_",
+      "old": "sky130_fd_sc_hd__dfrtp_2",
+      "new": "sky130_fd_sc_hd__dfrtp_4"
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0004",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        275.018,
+        99.4725
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0005",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        355.874,
+        141.5015
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0006",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        371.2895,
+        141.5015
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0007",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        330.5915,
+        130.614
+      ]
+    },
+    {
+      "kind": "buffer",
+      "requested_name": "ci_eco_0008",
+      "cell": "sky130_fd_sc_hd__buf_8",
+      "location_um": [
+        379.31925,
+        155.8375
+      ]
+    }
+  ],
+  "buffer_count": 8,
+  "buffer_limit": 250,
+  "net_plans": [
+    {
+      "net": "_12883_",
+      "kind": "shared_tree",
+      "sinks": 10,
+      "buffers": 3,
+      "independent_chain_buffers": 17,
+      "driver_pin": "_24604_/X",
+      "driver_um": [
+        278.976,
+        85.546
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_335/DIODE",
+          212.52,
+          240.72
+        ],
+        [
+          "_14421_/A1",
+          284.096,
+          191.836
+        ],
+        [
+          "_14507_/A1",
+          166.336,
+          172.643
+        ],
+        [
+          "_14541_/A0",
+          175.547,
+          170.525
+        ],
+        [
+          "_14588_/A1",
+          279.956,
+          213.596
+        ],
+        [
+          "_14603_/A1",
+          215.096,
+          240.796
+        ],
+        [
+          "_19789_/A1",
+          185.656,
+          240.796
+        ],
+        [
+          "_19882_/A2",
+          200.472,
+          148.425
+        ],
+        [
+          "_20065_/A1",
+          177.376,
+          183.523
+        ],
+        [
+          "_24605_/B",
+          253.005,
+          175.6
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              248.308,
+              208.19799999999998
+            ],
+            "loads": [
+              {
+                "pin": "ANTENNA_335/DIODE"
+              },
+              {
+                "pin": "_14603_/A1"
+              },
+              {
+                "pin": "_24605_/B"
+              },
+              {
+                "pin": "_14588_/A1"
+              },
+              {
+                "pin": "_14421_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              225.216,
+              194.6105
+            ],
+            "loads": [
+              {
+                "pin": "_19882_/A2"
+              },
+              {
+                "pin": "_14541_/A0"
+              },
+              {
+                "pin": "_14507_/A1"
+              },
+              {
+                "pin": "_20065_/A1"
+              },
+              {
+                "pin": "_19789_/A1"
+              },
+              {
+                "buffer": 0
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              252.096,
+              140.07825
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 2
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    },
+    {
+      "net": "soc.cpu.imm_b\\[2\\]",
+      "kind": "shared_tree",
+      "sinks": 9,
+      "buffers": 5,
+      "independent_chain_buffers": 13,
+      "driver_pin": "_28485_/Q",
+      "driver_um": [
+        428.047,
+        181.061
+      ],
+      "sinks_um": [
+        [
+          "ANTENNA_372/DIODE",
+          314.64,
+          99.28
+        ],
+        [
+          "_15172_/A",
+          235.396,
+          80.252
+        ],
+        [
+          "_15173_/A",
+          235.51,
+          77.705
+        ],
+        [
+          "_15880_/A0",
+          424.407,
+          177.635
+        ],
+        [
+          "_17711_/A1",
+          394.956,
+          183.523
+        ],
+        [
+          "_19918_/A1",
+          245.095,
+          121.24
+        ],
+        [
+          "_23377_/A",
+          316.792,
+          99.48
+        ],
+        [
+          "_23465_/A0",
+          425.787,
+          117.795
+        ],
+        [
+          "_25213_/A1",
+          406.1,
+          181.06
+        ]
+      ],
+      "tree": {
+        "buffers": [
+          {
+            "id": 0,
+            "point_um": [
+              275.018,
+              99.4725
+            ],
+            "loads": [
+              {
+                "pin": "_15172_/A"
+              },
+              {
+                "pin": "_15173_/A"
+              },
+              {
+                "pin": "_19918_/A1"
+              },
+              {
+                "pin": "ANTENNA_372/DIODE"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 1,
+            "point_um": [
+              355.874,
+              141.5015
+            ],
+            "loads": [
+              {
+                "pin": "_23377_/A"
+              },
+              {
+                "pin": "_17711_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 2,
+            "point_um": [
+              371.2895,
+              141.5015
+            ],
+            "loads": [
+              {
+                "buffer": 1
+              },
+              {
+                "pin": "_23465_/A0"
+              },
+              {
+                "pin": "_15880_/A0"
+              },
+              {
+                "pin": "_25213_/A1"
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 3,
+            "point_um": [
+              330.5915,
+              130.614
+            ],
+            "loads": [
+              {
+                "buffer": 0
+              },
+              {
+                "buffer": 2
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          },
+          {
+            "id": 4,
+            "point_um": [
+              379.31925,
+              155.8375
+            ],
+            "loads": [
+              {
+                "buffer": 3
+              }
+            ],
+            "cell": "sky130_fd_sc_hd__buf_8"
+          }
+        ],
+        "root_loads": [
+          {
+            "buffer": 4
+          }
+        ],
+        "bounds": {
+          "max_sinks": 8,
+          "leaf_span_um": 80.0,
+          "max_segment_um": 90.0
+        }
+      }
+    }
+  ],
+  "status": "ready",
+  "odb_sha256": "771f326130235f6dc4b071cc9e99a1943f0b18140e73e2c5bbc3cbe0ae78c54d"
+}

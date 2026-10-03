@@ -1,0 +1,718 @@
+
+===========================================================================
+report_checks -unconstrained
+===========================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+Startpoint: rst_n (input port clocked by clk)
+Endpoint: _28976_ (recovery check against rising-edge clock clk)
+Path Group: asynchronous
+Path Type: max
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                                  0.000000    0.000000   clock clk (rise edge)
+                                  0.000000    0.000000   clock network delay (propagated)
+                                 10.000000   10.000000 ^ input external delay
+     1    0.003539    0.022935    0.013557   10.013557 ^ rst_n (in)
+                                                         rst_n (net)
+                      0.022943    0.000000   10.013557 ^ fanout2248/A (sky130_fd_sc_hd__clkdlybuf4s25_2)
+     1    0.017350    0.097160    0.306660   10.320217 ^ fanout2248/X (sky130_fd_sc_hd__clkdlybuf4s25_2)
+                                                         net2248 (net)
+                      0.097173    0.001226   10.321443 ^ ci_eco_02079182/A (sky130_fd_sc_hd__buf_8)
+     1    0.019018    0.043680    0.120022   10.441464 ^ ci_eco_02079182/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0207_net9182 (net)
+                      0.043752    0.001580   10.443045 ^ ci_eco_02069181/A (sky130_fd_sc_hd__buf_8)
+     1    0.017833    0.041553    0.101170   10.544214 ^ ci_eco_02069181/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0206_net9181 (net)
+                      0.041571    0.000782   10.544996 ^ ci_eco_02059180/A (sky130_fd_sc_hd__buf_8)
+     2    0.049433    0.087887    0.137893   10.682890 ^ ci_eco_02059180/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0205_net9180 (net)
+                      0.087991    0.002069   10.684959 ^ ci_eco_02019176/A (sky130_fd_sc_hd__buf_8)
+     2    0.039093    0.072935    0.141861   10.826819 ^ ci_eco_02019176/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0201_net9176 (net)
+                      0.072964    0.001450   10.828269 ^ ci_eco_02009175/A (sky130_fd_sc_hd__buf_8)
+     1    0.018861    0.043120    0.112865   10.941134 ^ ci_eco_02009175/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0200_net9175 (net)
+                      0.043200    0.001654   10.942788 ^ ci_eco_01979172/A (sky130_fd_sc_hd__buf_8)
+     2    0.033196    0.063984    0.119389   11.062178 ^ ci_eco_01979172/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0197_net9172 (net)
+                      0.064072    0.001588   11.063766 ^ place6896/A (sky130_fd_sc_hd__buf_2)
+    10    0.072155    0.348799    0.344274   11.408039 ^ place6896/X (sky130_fd_sc_hd__buf_2)
+                                                         net6896 (net)
+                      0.348807    0.001513   11.409553 ^ place6827/A (sky130_fd_sc_hd__buf_2)
+     7    0.055415    0.270665    0.365998   11.775551 ^ place6827/X (sky130_fd_sc_hd__buf_2)
+                                                         net6827 (net)
+                      0.270791    0.002689   11.778240 ^ place6780/A (sky130_fd_sc_hd__buf_2)
+    10    0.053072    0.259582    0.343137   12.121377 ^ place6780/X (sky130_fd_sc_hd__buf_2)
+                                                         net6780 (net)
+                      0.259668    0.000819   12.122196 ^ place6779/A (sky130_fd_sc_hd__buf_2)
+     9    0.057894    0.282300    0.356270   12.478466 ^ place6779/X (sky130_fd_sc_hd__buf_2)
+                                                         net6779 (net)
+                      0.282486    0.006287   12.484753 ^ place6778/A (sky130_fd_sc_hd__buf_2)
+    10    0.070548    0.343082    0.402258   12.887010 ^ place6778/X (sky130_fd_sc_hd__buf_2)
+                                                         net6778 (net)
+                      0.343635    0.011948   12.898958 ^ place6777/A (sky130_fd_sc_hd__buf_2)
+     8    0.049363    0.241204    0.343559   13.242517 ^ place6777/X (sky130_fd_sc_hd__buf_2)
+                                                         net6777 (net)
+                      0.241399    0.004635   13.247152 ^ place6773/A (sky130_fd_sc_hd__buf_2)
+     9    0.040382    0.199281    0.292069   13.539222 ^ place6773/X (sky130_fd_sc_hd__buf_2)
+                                                         net6773 (net)
+                      0.199281    0.000642   13.539864 ^ place6772/A (sky130_fd_sc_hd__buf_2)
+     8    0.036488    0.180767    0.267526   13.807389 ^ place6772/X (sky130_fd_sc_hd__buf_2)
+                                                         net6772 (net)
+                      0.180768    0.000949   13.808339 ^ place6771/A (sky130_fd_sc_hd__buf_2)
+    10    0.072040    0.349003    0.379648   14.187987 ^ place6771/X (sky130_fd_sc_hd__buf_2)
+                                                         net6771 (net)
+                      0.349360    0.009706   14.197693 ^ place6762/A (sky130_fd_sc_hd__buf_2)
+     8    0.036982    0.183594    0.303150   14.500844 ^ place6762/X (sky130_fd_sc_hd__buf_2)
+                                                         net6762 (net)
+                      0.183618    0.002253   14.503097 ^ place6761/A (sky130_fd_sc_hd__buf_2)
+     6    0.030529    0.153412    0.242014   14.745111 ^ place6761/X (sky130_fd_sc_hd__buf_2)
+                                                         net6761 (net)
+                      0.153423    0.001485   14.746595 ^ place6758/A (sky130_fd_sc_hd__buf_2)
+    10    0.042650    0.209699    0.274916   15.021512 ^ place6758/X (sky130_fd_sc_hd__buf_2)
+                                                         net6758 (net)
+                      0.209699    0.000814   15.022326 ^ place6749/A (sky130_fd_sc_hd__buf_2)
+    10    0.049420    0.241908    0.313850   15.336175 ^ place6749/X (sky130_fd_sc_hd__buf_2)
+                                                         net6749 (net)
+                      0.242008    0.002277   15.338452 ^ place6748/A (sky130_fd_sc_hd__buf_2)
+     8    0.037132    0.183843    0.281535   15.619987 ^ place6748/X (sky130_fd_sc_hd__buf_2)
+                                                         net6748 (net)
+                      0.183851    0.001465   15.621453 ^ place6747/A (sky130_fd_sc_hd__buf_2)
+     7    0.040254    0.198494    0.275387   15.896840 ^ place6747/X (sky130_fd_sc_hd__buf_2)
+                                                         net6747 (net)
+                      0.198509    0.001926   15.898766 ^ _28976_/RESET_B (sky130_fd_sc_hd__dfrtp_2)
+                                             15.898766   data arrival time
+
+                                 50.000000   50.000000   clock clk (rise edge)
+                                  0.000000   50.000000   clock source latency
+     2    0.100713    0.454067    0.302681   50.302677 ^ clk (in)
+                                                         clk (net)
+                      0.454326    0.000000   50.302677 ^ clkbuf_0_clk/A (sky130_fd_sc_hd__clkbuf_16)
+     2    0.045617    0.071836    0.241045   50.543724 ^ clkbuf_0_clk/X (sky130_fd_sc_hd__clkbuf_16)
+                                                         clknet_0_clk (net)
+                      0.071920    0.001958   50.545681 ^ ci_eco_01969171/A (sky130_fd_sc_hd__clkbuf_16)
+     4    0.081243    0.098542    0.170498   50.716179 ^ ci_eco_01969171/X (sky130_fd_sc_hd__clkbuf_16)
+                                                         ci_eco_0196_net9171 (net)
+                      0.099092    0.005596   50.721775 ^ clkbuf_3_4_0_clk/A (sky130_fd_sc_hd__clkbuf_8)
+     8    0.150122    0.260323    0.285723   51.007500 ^ clkbuf_3_4_0_clk/X (sky130_fd_sc_hd__clkbuf_8)
+                                                         clknet_3_4_0_clk (net)
+                      0.260945    0.009901   51.017399 ^ clkbuf_6_32__f_clk/A (sky130_fd_sc_hd__clkbuf_16)
+     6    0.057388    0.077910    0.213404   51.230804 ^ clkbuf_6_32__f_clk/X (sky130_fd_sc_hd__clkbuf_16)
+                                                         clknet_6_32__leaf_clk (net)
+                      0.078095    0.003080   51.233883 ^ clkbuf_leaf_297_clk/A (sky130_fd_sc_hd__clkbuf_8)
+     5    0.027313    0.062111    0.145647   51.379532 ^ clkbuf_leaf_297_clk/X (sky130_fd_sc_hd__clkbuf_8)
+                                                         clknet_leaf_297_clk (net)
+                      0.062112    0.000387   51.379917 ^ _28976_/CLK (sky130_fd_sc_hd__dfrtp_2)
+                                 -0.250000   51.129917   clock uncertainty
+                                  0.000000   51.129917   clock reconvergence pessimism
+                                  0.178763   51.308681   library recovery time
+                                             51.308681   data required time
+---------------------------------------------------------------------------------------------
+                                             51.308681   data required time
+                                            -15.898766   data arrival time
+---------------------------------------------------------------------------------------------
+                                             35.409912   slack (MET)
+
+
+Startpoint: rst_n (input port clocked by clk)
+Endpoint: uio_oe[5] (output port clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                                  0.000000    0.000000   clock clk (rise edge)
+                                  0.000000    0.000000   clock network delay (propagated)
+                                 10.000000   10.000000 v input external delay
+     1    0.003303    0.009801    0.005553   10.005553 v rst_n (in)
+                                                         rst_n (net)
+                      0.009801    0.000000   10.005553 v fanout2248/A (sky130_fd_sc_hd__clkdlybuf4s25_2)
+     1    0.016689    0.079490    0.310417   10.315970 v fanout2248/X (sky130_fd_sc_hd__clkdlybuf4s25_2)
+                                                         net2248 (net)
+                      0.079505    0.001164   10.317135 v ci_eco_02079182/A (sky130_fd_sc_hd__buf_8)
+     1    0.018357    0.029740    0.144288   10.461423 v ci_eco_02079182/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0207_net9182 (net)
+                      0.029784    0.001511   10.462934 v ci_eco_02069181/A (sky130_fd_sc_hd__buf_8)
+     1    0.017172    0.029036    0.120580   10.583514 v ci_eco_02069181/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0206_net9181 (net)
+                      0.029047    0.000739   10.584253 v ci_eco_02059180/A (sky130_fd_sc_hd__buf_8)
+     2    0.048111    0.050236    0.142788   10.727041 v ci_eco_02059180/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0205_net9180 (net)
+                      0.050312    0.001817   10.728858 v ci_eco_02049179/A (sky130_fd_sc_hd__buf_8)
+     1    0.020586    0.030914    0.132628   10.861486 v ci_eco_02049179/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0204_net9179 (net)
+                      0.030987    0.000926   10.862412 v ci_eco_02039178/A (sky130_fd_sc_hd__buf_8)
+     1    0.019382    0.030278    0.122579   10.984992 v ci_eco_02039178/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0203_net9178 (net)
+                      0.030348    0.001300   10.986292 v ci_eco_02029177/A (sky130_fd_sc_hd__buf_8)
+     3    0.026760    0.034782    0.128098   11.114390 v ci_eco_02029177/X (sky130_fd_sc_hd__buf_8)
+                                                         ci_eco_0202_net9177 (net)
+                      0.034784    0.000377   11.114767 v _24290_/B1 (sky130_fd_sc_hd__o31a_2)
+     3    0.008538    0.064941    0.125131   11.239899 v _24290_/X (sky130_fd_sc_hd__o31a_2)
+                                                         _12607_ (net)
+                      0.064941    0.000200   11.240098 v _24294_/C (sky130_fd_sc_hd__and4_2)
+     2    0.009030    0.054594    0.259138   11.499236 v _24294_/X (sky130_fd_sc_hd__and4_2)
+                                                         net3620 (net)
+                      0.054596    0.000433   11.499669 v place3620/A (sky130_fd_sc_hd__buf_2)
+     1    0.034656    0.090341    0.194147   11.693816 v place3620/X (sky130_fd_sc_hd__buf_2)
+                                                         uio_oe[5] (net)
+                      0.090347    0.000811   11.694627 v uio_oe[5] (out)
+                                             11.694627   data arrival time
+
+                                 50.000000   50.000000   clock clk (rise edge)
+                                  0.000000   50.000000   clock network delay (propagated)
+                                 -0.250000   49.749996   clock uncertainty
+                                  0.000000   49.749996   clock reconvergence pessimism
+                                -10.000000   39.749996   output external delay
+                                             39.749996   data required time
+---------------------------------------------------------------------------------------------
+                                             39.749996   data required time
+                                            -11.694627   data arrival time
+---------------------------------------------------------------------------------------------
+                                             28.055368   slack (MET)
+
+
+
+
+===========================================================================
+report_checks --slack_max -0.01
+============================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+No paths found.
+
+
+===========================================================================
+ report_check_types -max_slew -max_cap -max_fanout -violators
+============================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+max fanout
+
+Pin                                   Limit Fanout  Slack
+---------------------------------------------------------
+_25437_/X                                10     16     -6 (VIOLATED)
+_26137_/X                                10     16     -6 (VIOLATED)
+_26680_/X                                10     16     -6 (VIOLATED)
+_24763_/X                                10     14     -4 (VIOLATED)
+clkbuf_leaf_308_clk/X                    10     14     -4 (VIOLATED)
+clkbuf_leaf_309_clk/X                    10     14     -4 (VIOLATED)
+place6213/X                              10     14     -4 (VIOLATED)
+place6576/X                              10     14     -4 (VIOLATED)
+_24687_/X                                10     13     -3 (VIOLATED)
+clkbuf_leaf_101_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_104_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_10_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_115_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_129_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_133_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_140_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_154_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_169_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_172_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_173_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_17_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_198_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_199_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_19_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_208_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_209_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_210_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_211_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_215_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_216_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_218_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_222_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_223_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_226_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_22_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_230_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_233_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_23_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_241_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_243_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_246_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_248_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_251_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_26_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_303_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_310_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_327_clk/X                    10     13     -3 (VIOLATED)
+clkbuf_leaf_43_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_44_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_45_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_52_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_66_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_67_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_68_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_71_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_89_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_90_clk/X                     10     13     -3 (VIOLATED)
+clkbuf_leaf_91_clk/X                     10     13     -3 (VIOLATED)
+place6421/X                              10     13     -3 (VIOLATED)
+place6426/X                              10     13     -3 (VIOLATED)
+place6529/X                              10     13     -3 (VIOLATED)
+place6536/X                              10     13     -3 (VIOLATED)
+_24778_/X                                10     12     -2 (VIOLATED)
+_24847_/X                                10     12     -2 (VIOLATED)
+_25843_/X                                10     12     -2 (VIOLATED)
+_26714_/X                                10     12     -2 (VIOLATED)
+_28158_/Q                                10     12     -2 (VIOLATED)
+_28160_/Q                                10     12     -2 (VIOLATED)
+_28161_/Q                                10     12     -2 (VIOLATED)
+_28170_/Q                                10     12     -2 (VIOLATED)
+_28458_/Q                                10     12     -2 (VIOLATED)
+_28473_/Q                                10     12     -2 (VIOLATED)
+clkbuf_leaf_0_clk/X                      10     12     -2 (VIOLATED)
+clkbuf_leaf_100_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_102_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_105_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_106_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_107_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_108_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_109_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_110_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_111_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_112_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_114_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_116_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_117_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_119_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_120_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_121_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_124_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_125_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_127_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_12_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_130_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_131_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_134_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_136_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_138_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_142_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_143_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_147_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_148_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_157_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_159_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_160_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_163_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_164_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_165_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_166_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_167_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_170_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_171_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_175_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_176_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_177_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_178_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_179_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_180_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_181_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_186_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_187_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_188_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_189_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_191_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_192_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_195_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_196_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_197_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_200_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_201_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_202_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_203_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_204_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_20_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_212_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_213_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_214_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_217_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_21_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_220_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_221_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_225_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_227_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_229_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_231_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_232_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_237_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_239_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_240_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_244_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_245_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_250_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_253_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_258_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_259_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_25_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_260_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_261_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_262_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_263_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_264_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_265_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_266_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_268_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_270_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_271_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_272_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_273_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_278_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_279_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_27_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_280_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_284_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_287_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_28_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_291_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_292_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_293_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_294_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_295_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_299_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_29_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_2_clk/X                      10     12     -2 (VIOLATED)
+clkbuf_leaf_304_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_307_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_311_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_31_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_323_clk/X                    10     12     -2 (VIOLATED)
+clkbuf_leaf_36_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_37_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_38_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_39_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_3_clk/X                      10     12     -2 (VIOLATED)
+clkbuf_leaf_40_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_41_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_48_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_50_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_53_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_54_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_57_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_58_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_60_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_62_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_72_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_73_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_75_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_76_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_7_clk/X                      10     12     -2 (VIOLATED)
+clkbuf_leaf_8_clk/X                      10     12     -2 (VIOLATED)
+clkbuf_leaf_92_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_93_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_95_clk/X                     10     12     -2 (VIOLATED)
+clkbuf_leaf_98_clk/X                     10     12     -2 (VIOLATED)
+place6216/X                              10     12     -2 (VIOLATED)
+place6436/X                              10     12     -2 (VIOLATED)
+place6517/X                              10     12     -2 (VIOLATED)
+place6539/X                              10     12     -2 (VIOLATED)
+_23850_/X                                10     11        (VIOLATED)
+_23852_/X                                10     11        (VIOLATED)
+_24734_/X                                10     11        (VIOLATED)
+_24820_/X                                10     11        (VIOLATED)
+_28166_/Q                                10     11        (VIOLATED)
+_28186_/Q                                10     11        (VIOLATED)
+_28187_/Q                                10     11        (VIOLATED)
+_28190_/Q                                10     11        (VIOLATED)
+_28519_/Q                                10     11        (VIOLATED)
+clkbuf_leaf_11_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_13_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_146_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_149_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_14_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_150_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_151_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_168_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_16_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_235_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_275_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_282_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_289_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_300_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_302_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_305_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_312_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_313_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_319_clk/X                    10     11        (VIOLATED)
+clkbuf_leaf_34_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_51_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_78_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_79_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_81_clk/X                     10     11        (VIOLATED)
+clkbuf_leaf_86_clk/X                     10     11        (VIOLATED)
+place5299/X                              10     11        (VIOLATED)
+place5390/X                              10     11        (VIOLATED)
+place6008/X                              10     11        (VIOLATED)
+place6176/X                              10     11        (VIOLATED)
+place6425/X                              10     11        (VIOLATED)
+place6435/X                              10     11        (VIOLATED)
+place6459/X                              10     11        (VIOLATED)
+place6493/X                              10     11        (VIOLATED)
+place6513/X                              10     11        (VIOLATED)
+place6543/X                              10     11        (VIOLATED)
+place6563/X                              10     11        (VIOLATED)
+place6573/X                              10     11        (VIOLATED)
+place6582/X                              10     11        (VIOLATED)
+place6586/X                              10     11        (VIOLATED)
+
+
+
+===========================================================================
+report_parasitic_annotation -report_unannotated
+============================================================================
+Found 240 unannotated drivers.
+ ena
+ ui_in[0]
+ ui_in[1]
+ ui_in[2]
+ ui_in[4]
+ ui_in[5]
+ ui_in[6]
+ ui_in[7]
+ uio_in[6]
+ uio_in[7]
+ clkload0/X
+ clkload1/X
+ clkload10/X
+ clkload100/X
+ clkload101/X
+ clkload102/Y
+ clkload103/X
+ clkload104/Y
+ clkload105/X
+ clkload106/X
+ clkload107/X
+ clkload108/X
+ clkload109/Y
+ clkload11/X
+ clkload110/X
+ clkload111/X
+ clkload112/X
+ clkload113/X
+ clkload114/X
+ clkload115/X
+ clkload116/X
+ clkload117/X
+ clkload118/X
+ clkload119/X
+ clkload12/X
+ clkload120/X
+ clkload121/X
+ clkload122/X
+ clkload123/X
+ clkload124/X
+ clkload125/X
+ clkload126/X
+ clkload127/X
+ clkload128/X
+ clkload129/X
+ clkload13/X
+ clkload130/X
+ clkload131/X
+ clkload132/X
+ clkload133/X
+ clkload134/X
+ clkload135/X
+ clkload136/X
+ clkload137/X
+ clkload138/X
+ clkload139/X
+ clkload14/X
+ clkload140/Y
+ clkload141/Y
+ clkload142/X
+ clkload143/X
+ clkload144/X
+ clkload145/X
+ clkload146/X
+ clkload147/Y
+ clkload148/X
+ clkload149/Y
+ clkload15/X
+ clkload150/X
+ clkload151/Y
+ clkload152/X
+ clkload153/X
+ clkload154/Y
+ clkload155/Y
+ clkload156/X
+ clkload157/X
+ clkload158/X
+ clkload159/X
+ clkload16/X
+ clkload160/X
+ clkload161/X
+ clkload162/X
+ clkload163/Y
+ clkload164/X
+ clkload165/X
+ clkload166/X
+ clkload167/X
+ clkload168/Y
+ clkload169/X
+ clkload17/X
+ clkload170/X
+ clkload171/X
+ clkload172/X
+ clkload173/X
+ clkload174/X
+ clkload175/X
+ clkload176/X
+ clkload177/X
+ clkload178/X
+ clkload179/X
+ clkload18/X
+ clkload180/X
+ clkload181/X
+ clkload182/X
+ clkload183/X
+ clkload184/X
+ clkload185/X
+ clkload186/X
+ clkload187/X
+ clkload188/X
+ clkload189/X
+ clkload19/X
+ clkload190/X
+ clkload191/X
+ clkload192/X
+ clkload193/X
+ clkload194/X
+ clkload195/X
+ clkload196/X
+ clkload197/X
+ clkload198/X
+ clkload199/X
+ clkload2/X
+ clkload20/X
+ clkload200/X
+ clkload201/X
+ clkload202/X
+ clkload203/X
+ clkload204/X
+ clkload205/Y
+ clkload206/X
+ clkload207/X
+ clkload208/X
+ clkload209/X
+ clkload21/X
+ clkload210/X
+ clkload211/X
+ clkload212/X
+ clkload213/X
+ clkload214/X
+ clkload215/X
+ clkload216/Y
+ clkload217/X
+ clkload218/X
+ clkload219/X
+ clkload22/X
+ clkload220/X
+ clkload221/X
+ clkload222/Y
+ clkload223/X
+ clkload23/X
+ clkload24/X
+ clkload25/X
+ clkload26/X
+ clkload27/X
+ clkload28/X
+ clkload29/X
+ clkload3/X
+ clkload30/X
+ clkload31/X
+ clkload32/X
+ clkload33/X
+ clkload34/X
+ clkload35/X
+ clkload36/X
+ clkload37/X
+ clkload38/X
+ clkload39/X
+ clkload4/X
+ clkload40/X
+ clkload41/X
+ clkload42/X
+ clkload43/X
+ clkload44/X
+ clkload45/X
+ clkload46/X
+ clkload47/X
+ clkload48/X
+ clkload49/X
+ clkload5/X
+ clkload50/X
+ clkload51/X
+ clkload52/X
+ clkload53/X
+ clkload54/X
+ clkload55/X
+ clkload56/Y
+ clkload57/Y
+ clkload58/X
+ clkload59/Y
+ clkload6/X
+ clkload60/X
+ clkload61/X
+ clkload62/Y
+ clkload63/X
+ clkload64/X
+ clkload65/X
+ clkload66/X
+ clkload67/Y
+ clkload68/X
+ clkload69/Y
+ clkload7/X
+ clkload70/X
+ clkload71/X
+ clkload72/X
+ clkload73/X
+ clkload74/X
+ clkload75/X
+ clkload76/X
+ clkload77/Y
+ clkload78/X
+ clkload79/Y
+ clkload8/X
+ clkload80/X
+ clkload81/X
+ clkload82/X
+ clkload83/X
+ clkload84/X
+ clkload85/X
+ clkload86/X
+ clkload87/X
+ clkload88/X
+ clkload89/X
+ clkload9/X
+ clkload90/X
+ clkload91/X
+ clkload92/Y
+ clkload93/Y
+ clkload94/Y
+ clkload95/X
+ clkload96/X
+ clkload97/X
+ clkload98/X
+ clkload99/Y
+ tt_um_rv32_linux_soc/HI
+ tt_um_rv32_linux_soc_6906/HI
+ tt_um_rv32_linux_soc_6907/HI
+ tt_um_rv32_linux_soc_6908/HI
+ tt_um_rv32_linux_soc_6909/LO
+ tt_um_rv32_linux_soc_6910/LO
+Found 0 partially unannotated drivers.
+
+===========================================================================
+max slew violation count 0
+max fanout violation count 265
+max cap violation count 0
+============================================================================
+
+===========================================================================
+check_setup -verbose -unconstrained_endpoints -multiple_clock -no_clock -no_input_delay -loops -generated_clocks
+===========================================================================

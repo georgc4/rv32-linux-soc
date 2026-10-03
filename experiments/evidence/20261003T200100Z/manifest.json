@@ -1,0 +1,311 @@
+{
+  "captured_utc": "2026-10-03T20:01:00.160608+00:00",
+  "candidate_head": "d93c8fdad893d6b9bfda65155922077dcf0994cd",
+  "failed_ci_run": 37096880158,
+  "pdk_commit": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+  "librelane_version": "3.0.14",
+  "openroad_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "raw_copies": [
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/signoff.py",
+      "copy": "signoff.py",
+      "sha256": "09bc074e50aadeabb187026663d5c4bcdfd1743be19d29ae31b8a680dcbefc76"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal-signoff.py",
+      "copy": "minimal-signoff.py",
+      "sha256": "e94fe6cbf5c5919dfce85ef9af6de547d52a59afc35218c984c71846fd3e36d8"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration.py",
+      "copy": "integration.py",
+      "sha256": "4054597986d4dd86f4ae823abf6b0d4e5fac88499e4f62abf723f79658918292"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration-resume.py",
+      "copy": "integration-resume.py",
+      "sha256": "12b35ba17591be1059f6e6962949598180cb518620eb7961bdb8d6b53b376763"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/round3.py",
+      "copy": "round3.py",
+      "sha256": "61036c2be39ed41acfd47d94d9c7ff095fbeb593df427673153bd607430e03c4"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup.py",
+      "copy": "buffer-cleanup.py",
+      "sha256": "3b5012830bdc0f0f90141101ebfb6ffde0a7511fca052ed01ec91c6e0d2af96b"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/cleanup-route-comparison.json",
+      "copy": "cleanup-route-comparison.json",
+      "sha256": "c5bd28edefab489626e43be956c1a8af1b67fea8b121d01d5e70809512891f32"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/selected-result.json",
+      "copy": "selected-result.json",
+      "sha256": "c65555923d2c786eb3e60104a7d1b3564518669ed61ea8e2133a35455dca1d15"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/verify-final.py",
+      "copy": "verify-final.py",
+      "sha256": "f1bb0a24315135c5ba4b86e06145697a0b095e4dacab7c7cd561d59557e84298"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/check-flow.py",
+      "copy": "check-flow.py",
+      "sha256": "28be2c1dd1ddf2a811970b9e6f869f2aeb9fb51c06a05a4d3c77413166bbfa14"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/helper-tests.log",
+      "copy": "helper-tests.log",
+      "sha256": "1fd195e6db8fe9fa9324e2130eb0c8bbafab4306d09aca6c70b76174329673eb"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/violations.json",
+      "copy": "violations.json",
+      "sha256": "50f1bcb7b23fef69bea194ec79a3118cce3284c4bbde4543ace9c19adfb0166f"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/repair/audit.json",
+      "copy": "repair/audit.json",
+      "sha256": "363bd3e2ea2b6d7b0ccbb9565e9057e7ebd6b7e848303756818cde9e97ff9a15"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/repair/routed.drc",
+      "copy": "repair/routed.drc",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/repair/reroute-nets.json",
+      "copy": "repair/reroute-nets.json",
+      "sha256": "69610babf57a670f7aae188bd40ab07c50c60a366a4594b283bd77bd21c98fe3"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/repair/route.tcl",
+      "copy": "repair/route.tcl",
+      "sha256": "50261435e607737054606551fee2fa7f0b3ed564ddf193730cd97089da2b5a3a"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal/audit.json",
+      "copy": "minimal/audit.json",
+      "sha256": "e4b3c5235b655bcd781dd20779c718b160009cabbe41165e2c0e2eb44a642d09"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal/routed.drc",
+      "copy": "minimal/routed.drc",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal/reroute-nets.json",
+      "copy": "minimal/reroute-nets.json",
+      "sha256": "c762a4fc3fed11404f26551873851b2ed945d4cf37d71565087b257baeb4e571"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal/route.tcl",
+      "copy": "minimal/route.tcl",
+      "sha256": "61832b9ef17d552dfbac3cfeb912e38c7bafe00e7ecbce67e460c9fb9d6e8f10"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/signoff/03-OpenROAD.STAPostPNR/max_ss_100C_1v60/checks.rpt",
+      "copy": "signoff/03-OpenROAD.STAPostPNR/max_ss_100C_1v60/checks.rpt",
+      "sha256": "b44c86cb120fe0580454da07a6738e1905d431ab32a4336939d4c08d39f76bcf"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/signoff/09-Netgen.LVS/reports/lvs.netgen.rpt",
+      "copy": "signoff/09-Netgen.LVS/reports/lvs.netgen.rpt",
+      "sha256": "4e77aed885bb3bb48209620917a171aacd5370b061cf8e42c6f64f034fa6cd39"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal-signoff/03-OpenROAD.STAPostPNR/max_ss_100C_1v60/checks.rpt",
+      "copy": "minimal-signoff/03-OpenROAD.STAPostPNR/max_ss_100C_1v60/checks.rpt",
+      "sha256": "09bd479f26ad978344adfc7ab557584d4d02b8fdb5f850e509b40d8f165bd3db"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/minimal-signoff/09-Netgen.LVS/reports/lvs.netgen.rpt",
+      "copy": "minimal-signoff/09-Netgen.LVS/reports/lvs.netgen.rpt",
+      "sha256": "4e77aed885bb3bb48209620917a171aacd5370b061cf8e42c6f64f034fa6cd39"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/15-rv32-round2repairdetailedrouting/audit-0-1.json",
+      "copy": "integration/15-rv32-round2repairdetailedrouting/audit-0-1.json",
+      "sha256": "cddb72edcca8d2420e73be4198cf0641369aa5aebadca8080ff8b38ecaa83cf4"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/15-rv32-round2repairdetailedrouting/audit-0-0.json",
+      "copy": "integration/15-rv32-round2repairdetailedrouting/audit-0-0.json",
+      "sha256": "89a47408bab9369427eea9aed0501ada9662b24e6e60f9a6126519ac98fa2480"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/15-rv32-round2repairdetailedrouting/contact-repair-0-0/reroute-nets.json",
+      "copy": "integration/15-rv32-round2repairdetailedrouting/contact-repair-0-0/reroute-nets.json",
+      "sha256": "d01935035a506f93e358c5d36efa96153bb4111a30b5beb092912af0d6ed1f41"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/16-rv32-round2auditecoroutes/audit.json",
+      "copy": "integration/16-rv32-round2auditecoroutes/audit.json",
+      "sha256": "b49b1a71487ed533d9e89d277fb6bcf7dfebb74b35666529232880ad5d353794"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/03-rv32-auditecoroutes/audit.json",
+      "copy": "integration/03-rv32-auditecoroutes/audit.json",
+      "sha256": "ee3917eba26739a268fd2bf6246c6a416ec40849c055ebde8bf402c854435646"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/35-rv32-round3auditecoroutes/audit.json",
+      "copy": "integration/35-rv32-round3auditecoroutes/audit.json",
+      "sha256": "745eae17f58d9257715443a54a1a8b5d115f5c8a8a01427e32a95d1364e8ca5b"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/02-rv32-repairdetailedrouting/audit-0-1.json",
+      "copy": "integration/02-rv32-repairdetailedrouting/audit-0-1.json",
+      "sha256": "e4a50175c5892c1f5a38e721c525c013456a7a6f7318d2e7bde4871b301c6bfc"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/02-rv32-repairdetailedrouting/audit-0-0.json",
+      "copy": "integration/02-rv32-repairdetailedrouting/audit-0-0.json",
+      "sha256": "d6c5a489d202377f4c40769eda0283eac53ac4384a9cf79a47dea6626751f5a1"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/02-rv32-repairdetailedrouting/audit-1-0.json",
+      "copy": "integration/02-rv32-repairdetailedrouting/audit-1-0.json",
+      "sha256": "30acefc327b720c3ced4306414bc06438492d190ad769d7fe86f5976dd0d23ad"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/02-rv32-repairdetailedrouting/contact-repair-0-0/reroute-nets.json",
+      "copy": "integration/02-rv32-repairdetailedrouting/contact-repair-0-0/reroute-nets.json",
+      "sha256": "4dd59cc0ee59975b0067be1c6ffc4db7a4f67a8b6d38c3db696ab9f3a76341fc"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/11-rv32-round2planelectricaleco/failing-pins.json",
+      "copy": "integration/11-rv32-round2planelectricaleco/failing-pins.json",
+      "sha256": "7b717f40e390fa40ecf33e56aa89cf95b389eea456857fae5f37c795744e1f42"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/11-rv32-round2planelectricaleco/eco.tcl",
+      "copy": "integration/11-rv32-round2planelectricaleco/eco.tcl",
+      "sha256": "19326952744bc6660a617f916cb9f969991144143d362144a1d749f8a67b9425"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/11-rv32-round2planelectricaleco/eco.json",
+      "copy": "integration/11-rv32-round2planelectricaleco/eco.json",
+      "sha256": "329b0dff333cd6cbec50261378615c4ab55e244ee2370bf4b329449c4f11c14a"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/34-rv32-round3repairdetailedrouting/audit-0-0.json",
+      "copy": "integration/34-rv32-round3repairdetailedrouting/audit-0-0.json",
+      "sha256": "38fba1886dfce4e64e2e7349f4c37753cce8ef4a4e58af6bada9b785a150fed7"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/30-rv32-round3planelectricaleco/failing-pins.json",
+      "copy": "integration/30-rv32-round3planelectricaleco/failing-pins.json",
+      "sha256": "579258aaeb4c8b679a6a34fe99e4ee3be87c3554ac38652710e6694f2f7cb153"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/30-rv32-round3planelectricaleco/eco.tcl",
+      "copy": "integration/30-rv32-round3planelectricaleco/eco.tcl",
+      "sha256": "ee322af96d017de3a3ce8d8a122e3609cc8ffa3bbb9d9e5802267150de8dd509"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/30-rv32-round3planelectricaleco/eco.json",
+      "copy": "integration/30-rv32-round3planelectricaleco/eco.json",
+      "sha256": "b8c82928a3c6b5f02cda9c2f3fb60a249159e215dcbc77616c922cfce6a84f55"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/final-metrics.json",
+      "copy": "integration/final-metrics.json",
+      "sha256": "7883dc6b3598036608f3ebf7c28ba8b7ea7d09a6366adfdbd167393256f89770"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/integration/round3-final-metrics.json",
+      "copy": "integration/round3-final-metrics.json",
+      "sha256": "3b9c0964b71b22c7ea56f942d2845c9967067393bb56df1bafaa833445b54086"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/min_ss_100C_1v60/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/min_ss_100C_1v60/checks.rpt",
+      "sha256": "359c21f304bb1a5f048b20f9b0cb499bdde20bb128e76edf2288d60a6dab0077"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/max_ff_n40C_1v95/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/max_ff_n40C_1v95/checks.rpt",
+      "sha256": "0c3f48c23b7f7210137f3bac573f85298dc21b4e3e7d1c9faa89359c39d1f4b5"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/min_tt_025C_1v80/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/min_tt_025C_1v80/checks.rpt",
+      "sha256": "6e4075480e0aa1dc1ede9f4f97e53e02b24522a1b979a135b8c55069aa5aece9"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/max_tt_025C_1v80/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/max_tt_025C_1v80/checks.rpt",
+      "sha256": "6b658b2b7ffbd940268d6f4ec7374cd8d39ba2484a68063ea79bd73f32b4820f"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/min_ff_n40C_1v95/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/min_ff_n40C_1v95/checks.rpt",
+      "sha256": "d40dfa72d92bf4bde616e8bf86d38355d471692ec034bbcc57275e2692b44b7b"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/max_ss_100C_1v60/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/max_ss_100C_1v60/checks.rpt",
+      "sha256": "d20820657a48b787a0ce0d1a4a6e64689525bbbd3c1dacdbec7a1bb6d3beb7e2"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/nom_ff_n40C_1v95/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/nom_ff_n40C_1v95/checks.rpt",
+      "sha256": "0dc98570f526e48f3d2a5abd802d75c02d4f15e4f45a907be5eab37caa0f01ee"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/nom_tt_025C_1v80/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/nom_tt_025C_1v80/checks.rpt",
+      "sha256": "9f06f1cd16a7712173d34d3ab38d29ec35d439406cafe9c5c88f366827a8a532"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/42-rv32-round3repairsta/nom_ss_100C_1v60/checks.rpt",
+      "copy": "buffer-cleanup/42-rv32-round3repairsta/nom_ss_100C_1v60/checks.rpt",
+      "sha256": "575e12e6b276ded94ea93b0bacf0cdb5f9d1b957be9ab9b027c1a9bb5f066367"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/35-rv32-round3auditecoroutes/audit.json",
+      "copy": "buffer-cleanup/35-rv32-round3auditecoroutes/audit.json",
+      "sha256": "a846dcb228d25924f31616aa280002cbc5f6fbdc6a6cc7ec0c6986ac50b62380"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/48-netgen-lvs/reports/lvs.netgen.rpt",
+      "copy": "buffer-cleanup/48-netgen-lvs/reports/lvs.netgen.rpt",
+      "sha256": "cbf80d86f68ee6f4a7925baea5b0792646f1254a17383b3385e8e049b2546e14"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/34-rv32-round3repairdetailedrouting/audit-0-0.json",
+      "copy": "buffer-cleanup/34-rv32-round3repairdetailedrouting/audit-0-0.json",
+      "sha256": "2cf8edb03c095e559a99655ac7a5b05de47e19c536c16cb6b79a26d596e1d0db"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/30-rv32-round3planelectricaleco/failing-pins.json",
+      "copy": "buffer-cleanup/30-rv32-round3planelectricaleco/failing-pins.json",
+      "sha256": "579258aaeb4c8b679a6a34fe99e4ee3be87c3554ac38652710e6694f2f7cb153"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/30-rv32-round3planelectricaleco/eco.tcl",
+      "copy": "buffer-cleanup/30-rv32-round3planelectricaleco/eco.tcl",
+      "sha256": "f41a0cd6af9e3f1fd913af7c1e55babbed720a56489a233fdc653084a1690d38"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/30-rv32-round3planelectricaleco/eco.json",
+      "copy": "buffer-cleanup/30-rv32-round3planelectricaleco/eco.json",
+      "sha256": "2fab3c20cced40e61e1b252aab31afe606894074a72b8aa88d6fdd0179db3853"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/build/drc-marker-fix/buffer-cleanup/round3-final-metrics.json",
+      "copy": "buffer-cleanup/final-metrics.json",
+      "sha256": "7c1eea7c9de4acbdd3d34da4dfd989c2e819a606cdc8d76d0a2a3250fd5342f0"
+    },
+    {
+      "source": "build/partitioned-signoff-ci/physical-flow.json",
+      "copy": "physical-flow.json",
+      "sha256": "a576d4f8fede21b3bfe24725d982f85d0cb928ad3625567ea344142f0baa3feb"
+    }
+  ],
+  "scope": "Checkpoint regression; full clean RTL-to-GDS CI and Tiny Tapeout precheck/GL tests are separate. Full ODB/GDS/SPEF/logs remain in ignored build storage. Broad repair inherited route__drc_errors=20 in state; its fresh empty routed.drc establishes zero, not the stale inherited metric."
+}
