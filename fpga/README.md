@@ -1,5 +1,14 @@
 # Tang Nano 20K physical UART path
 
+**Delivered board: PCB 3923.** Use the [hardware agent handoff](../docs/hardware-agent-handoff.md),
+[owner circuit guide](../docs/hardware-circuit-build-guide.md), and
+[3923 constraints](tang_nano_20k_3923.cst). The legacy header table below is
+not the wiring guide for the delivered board: the checked 3923 schematic maps
+J6-10 to FPGA 25 (NOR CS) and J6-11 to FPGA 26 (DQ0).
+
+## Historical 3921 preparation
+
+
 The provisional target is the vendor's **PCB 3921**, using Sipeed's
 [3921 rev 1.30 schematic](https://dl.sipeed.com/fileList/TANG/Nano_20K/2_Schematic/Tang_Nano_20K_3921_Schematics.pdf).
 The board has not arrived; check its printed revision before using these

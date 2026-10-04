@@ -719,6 +719,36 @@ Main's independent rebuild 37164332128 was still running at this snapshot.
 
 Evidence: [Pages repair and green CI](evidence/20261004T002719Z/).
 
+## Hardware arrives: 3923 carrier and iMac handoff (2026-10-03)
+
+The owner now has the memories and FPGA and will assemble bread/perfboard
+circuits. They chose the Ubuntu iMac as the fixed FPGA host and confirmed
+**PCB 3923**. Read-only SSH inventory through the existing `imac` alias
+reached `lx-imac` (Ubuntu 26.04); the remote checkout was still at `e1a5edd`.
+No FPGA USB interface was observed and FPGA tools were not found on that
+noninteractive PATH. No hardware was programmed during this handoff.
+
+Retrieved and inspected Sipeed's actual 3923 schematic (main sheet dated
+2025-08-28, rev 1.3), SHA-256
+`0b8ea0722c7f04a1785071f55e564a14d1a9923d7a33a6162663aba45b3f332f`.
+It maps **J6-10 to FPGA 25**, and **J6-11 to FPGA 26**; the older repository
+header descriptions had these reversed. Added a 3923 CST with those corrected
+header comments; the FPGA package pin assignments are unchanged. The old
+FPGA README now points the owner to the 3923 documents.
+
+Created an [agent handoff](../docs/hardware-agent-handoff.md) and a separate
+[owner assembly guide](../docs/hardware-circuit-build-guide.md), covering the
+five chip adapters, split six-wire data bus, proposed passive bias/decoupling,
+power-budget verification, reset, configuration-time pin states, isolation
+for flash programming, and staged physical validation. These are checked
+schematic mappings and proposed bench procedures, not measured hardware passes.
+
+Pinned hardware validation to main `99cc34f` and verified the ROM and full
+16 MiB Linux image hashes against the qualified checkout. Main GDS run
+37164332128 is now green including the viewer. Main Linux acceptance run
+37164332137 passed both profiles at **13,877,255,869 cycles**. Preserve this
+baseline while a hardware branch develops repeatable FPGA builds and tests.
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

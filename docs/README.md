@@ -6,6 +6,7 @@ This is the current, source-grounded guide to the RV32 Linux SoC. It describes t
 
 | If you want to understand… | Start here | Continue with |
 |---|---|---|
+| Building the real FPGA circuit | [Owner circuit guide](hardware-circuit-build-guide.md) | [Hardware agent handoff](hardware-agent-handoff.md) |
 | The entire computer | [System architecture](system/architecture.md) | [Bus and address map](system/bus-and-address-map.md), [boot chain](boot/boot-chain.md) |
 | An instruction from fetch to retirement | [CPU core](rtl/cpu-core.md) | [MDU and privilege](rtl/mdu-and-privilege.md), [Sv32](rtl/sv32.md) |
 | A specific instruction or byte crossing modules | [Transaction walkthroughs](rtl/transaction-walkthroughs.md) | [Debugging and reproduction](verification/debugging-and-reproduction.md) |
