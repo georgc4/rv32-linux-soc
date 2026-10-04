@@ -675,6 +675,32 @@ metric checks, exact-PDK runners, source hashes and route comparisons. Full
 ODB/GDS/SPEF and logs remain in the CI worktree's ignored build/drc-marker-fix
 folder; a hash is not a backup of those large files.
 
+## CI signoff passes; promote tested source to main (2026-10-03)
+
+The user asked to promote the passing build. Full RTL-to-GDS run
+[37149985351](https://github.com/georgc4/rv32-linux-soc/actions/runs/37149985351)
+at **d93c8fd** passed the GDS job, all Tiny Tapeout prechecks and gate-level
+tests. Fast RTL, memory profiles, serial boot and documentation checks passed.
+The overall workflow is marked failed solely because the web viewer's GitHub
+Pages deployment returned HTTP 404; this is a publishing configuration issue.
+
+The downloaded submission provenance matches the tested project commit and
+source manifest, records all **41 required stages**, and passes all **42
+corner/physical metric gates**. The packaged GDS bytes match SHA-256
+`24e0018a324a9e550602ff6cce016d0158d9ae382d42de92cfc6681617ce1155`. Worst CI setup slack is
+**+8.966222 ns**; worst hold slack is **+0.054570 ns**. These are full CI
+results, distinct from the earlier checkpoint replay. External I/O timing and
+full Linux acceptance retain their previously documented scope limits.
+
+[PR #1](https://github.com/georgc4/rv32-linux-soc/pull/1) was marked ready and
+merged at the user's request as **99cc34f**. A Git tree comparison confirms
+main contains exactly the tested candidate tree. The merge triggered main's
+[rebuild 37164332128](https://github.com/georgc4/rv32-linux-soc/actions/runs/37164332128),
+which was running at this snapshot. No signoff gates or source files were
+changed to perform the promotion; Pages configuration was not changed.
+
+Evidence: [qualification and promotion](evidence/20261004T001542Z/).
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact

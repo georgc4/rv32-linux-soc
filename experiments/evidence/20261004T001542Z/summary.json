@@ -1,0 +1,13 @@
+{
+  "candidate_commit": "d93c8fdad893d6b9bfda65155922077dcf0994cd",
+  "main_merge_commit": "99cc34f07a6a0e0db938a1165639ea3b473e9bb4",
+  "main_tree_matches_candidate": true,
+  "qualified_run": 37149985351,
+  "main_rebuild_run": 37164332128,
+  "physical_metric_gates": 42,
+  "required_stages": 41,
+  "gds_sha256": "24e0018a324a9e550602ff6cce016d0158d9ae382d42de92cfc6681617ce1155",
+  "worst_setup_ns": 8.966221796587375,
+  "worst_hold_ns": 0.054570460805850964,
+  "viewer_failure": "GitHub Pages deployment HTTP 404; GDS, precheck, gate-level and fast checks passed"
+}
