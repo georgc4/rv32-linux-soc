@@ -701,6 +701,24 @@ changed to perform the promotion; Pages configuration was not changed.
 
 Evidence: [qualification and promotion](evidence/20261004T001542Z/).
 
+## Enable Pages; tested workflow is fully green (2026-10-03)
+
+The user requested an all-green result after promotion. The viewer failure was
+repository configuration: Pages was disabled (`has_pages=false`, Pages API
+404). Enabled Pages with GitHub Actions as its deployment source and HTTPS.
+A viewer-only retry revealed duplicate `github-pages` bundles from earlier
+attempts. Removed only those two generated viewer bundles, preserving the GDS
+submission and verification artifacts, then retried the viewer again.
+
+Attempt **3** of [37149985351](https://github.com/georgc4/rv32-linux-soc/actions/runs/37149985351)
+is now **success**, with GDS, precheck, gate-level tests and viewer all green.
+All check rollups on merged PR #1 are green. The
+[public viewer](https://georgc4.github.io/rv32-linux-soc/) returns HTTP 200.
+No RTL, physical-flow implementation, workflow YAML or signoff limits changed.
+Main's independent rebuild 37164332128 was still running at this snapshot.
+
+Evidence: [Pages repair and green CI](evidence/20261004T002719Z/).
+
 ## Where the evidence lives
 
 - Source changes and experiment runners are in Git. RTL trials use exact
