@@ -22,7 +22,7 @@ module soc_top #(
     wire dv, dr, dx, dy, de, dpf, dw;
     wire [31:0] da, dd, dq;
     wire [3:0] ds, bs;
-    wire bv, br, bx, by, be, bw;
+    wire bv, br, bx, by, be, bw, bi;
     wire [31:0] ba, bd, bq, va, vd;
     wire vw;
     wire [3:0] vs;
@@ -66,6 +66,7 @@ module soc_top #(
         .d_resp_valid(dx), .d_resp_ready(dy), .d_resp_data(dq),
         .d_resp_err(de), .d_resp_page_fault(dpf),
         .bus_req_valid(bv), .bus_req_ready(br), .bus_req_addr(ba),
+        .bus_req_instr(bi),
         .bus_req_write(bw), .bus_req_wdata(bd), .bus_req_wstrb(bs),
         .bus_resp_valid(bx), .bus_resp_ready(by), .bus_resp_data(bq), .bus_resp_err(be)
     );
@@ -100,6 +101,7 @@ module soc_top #(
     serial_mem_bridge #(.POWERUP_CYCLES(PSRAM_POWERUP_CYCLES)) memory (
         .clk(clk), .rst_n(rst_n),
         .ram_req_valid(sv[0]), .ram_req_ready(sr[0]), .ram_req_addr(va),
+        .ram_req_instr(bi),
         .ram_req_write(vw), .ram_req_wdata(vd), .ram_req_wstrb(vs),
         .ram_resp_valid(sx[0]), .ram_resp_ready(sy[0]),
         .ram_resp_rdata(rdata), .ram_resp_err(se[0]),

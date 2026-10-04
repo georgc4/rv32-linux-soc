@@ -13,17 +13,23 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Validate ECO selection and neighborhood rules
+        run: python3 -m unittest discover -s physical -p "test_*.py" -v
+
       - name: Build GDS
-        uses: TinyTapeout/tt-gds-action@ttsky26d
+        uses: TinyTapeout/tt-gds-action@395eedb3eeec3c2f4961c3b04ff2cf87f5525636
         with:
           pdk: sky130A
+          tools-repo: georgc4/tt-support-tools
+          tools-ref: 5d6e7f9dc17c4e8c1e6bad75b7c70870addb1b79
+          librelane-version: "3.0.14"
 
   precheck:
     needs: gds
     runs-on: ubuntu-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
-        uses: TinyTapeout/tt-gds-action/precheck@ttsky26d
+        uses: TinyTapeout/tt-gds-action/precheck@395eedb3eeec3c2f4961c3b04ff2cf87f5525636
 
   gl_test:
     needs: gds
@@ -35,7 +41,7 @@ jobs:
           submodules: recursive
 
       - name: GL test
-        uses: TinyTapeout/tt-gds-action/gl_test@ttsky26d
+        uses: TinyTapeout/tt-gds-action/gl_test@395eedb3eeec3c2f4961c3b04ff2cf87f5525636
 
   viewer:
     needs: gds
@@ -44,4 +50,4 @@ jobs:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
     steps:
-      - uses: TinyTapeout/tt-gds-action/viewer@ttsky26d
+      - uses: TinyTapeout/tt-gds-action/viewer@395eedb3eeec3c2f4961c3b04ff2cf87f5525636

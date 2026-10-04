@@ -55,6 +55,12 @@ module rv32_priv_unit (
     wire [31:0] modified_csr = csr_op == 2'd1 ? csr_wdata :
                                csr_op == 2'd2 ? csr_rdata | csr_wdata :
                                csr_rdata & ~csr_wdata;
+    // MIP/SIP read back the OR of software and live interrupt pins. A CSRRS
+    // or CSRRC must update only the software-pending bits; using the merged
+    // read value here would latch a live SEIP pin permanently into software_mip.
+    wire [31:0] modified_software_mip = csr_op == 2'd1 ? csr_wdata :
+                                        csr_op == 2'd2 ? software_mip | csr_wdata :
+                                        software_mip & ~csr_wdata;
     assign privilege = priv;
     assign satp_value = satp;
     assign mstatus_value = mstatus;
@@ -187,7 +193,7 @@ module rv32_priv_unit (
                 12'h104: mie <= (mie & ~mideleg) | (modified_csr & mideleg);
                 12'h106: scounteren <= modified_csr & 32'h0000_0002;
                 12'h144: software_mip <= (software_mip & ~mideleg) |
-                                            (modified_csr & mideleg & 32'h0000_0222);
+                                            (modified_software_mip & mideleg & 32'h0000_0222);
                 12'h105: stvec <= {modified_csr[31:2], 1'b0, modified_csr[0]};
                 12'h140: sscratch <= modified_csr;
                 12'h141: sepc <= {modified_csr[31:2], 2'b0};
@@ -201,7 +207,7 @@ module rv32_priv_unit (
                 12'h303: mideleg <= modified_csr & 32'h0000_0222;
                 12'h304: mie <= modified_csr & writable_mie;
                 12'h306: mcounteren <= modified_csr & 32'h0000_0002;
-                12'h344: software_mip <= modified_csr & 32'h0000_0222;
+                12'h344: software_mip <= modified_software_mip & 32'h0000_0222;
                 12'h305: mtvec <= {modified_csr[31:2], 1'b0, modified_csr[0]};
                 12'h340: mscratch <= modified_csr;
                 12'h341: mepc <= {modified_csr[31:2], 2'b0};

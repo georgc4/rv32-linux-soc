@@ -15,3 +15,16 @@ Progress reports include dephased guest PC/return-address/register snapshots, tr
 The kernel uses a project-specific 16 Hz tick choice added reproducibly by `linux/patch-hz16.py`; the patch also lowers `JIFFIES_SHIFT` at this tick rate so the fallback jiffies clocksource multiplier and its adjustment fit in 32 bits. High-resolution timers are disabled. Earlier full-image runs at standard 100/250 Hz spent most cycles in timer work after clock initialization even after quad transfers were enabled. The device-tree timebase remains the physical 20 MHz clock. This lower tick is a bring-up configuration and needs broader kernel validation.
 
 The prototype kernel disables the optional crypto DRBG and jitter entropy collector. A full-serial-memory run reached the collector's SHA-3 initcall but triggered a soft-lockup warning after more than 22 simulated seconds in that work. The kernel's ordinary random subsystem remains enabled; this configuration does not claim to provide a hardware entropy source.
+
+## Datasheet-model Linux CI
+
+The `linux-datasheet-acceptance` workflow uses the hash-pinned historical flash
+fixture in `sim/fixtures/linux-acceptance/`, strict chip models, and production
+`src/*.v`. It requires BusyBox ash to receive and execute `/bin/acceptance_smoke`
+through UART. This is stronger than the older userspace-marker result above.
+The current image recipe now also installs that program and sets the `ASH> `
+prompt. See [coverage and limits](../docs/verification/datasheet-memory-models.md#full-linux-acceptance).
+
+Run `python3 scripts/linux_datasheet_ci.py` for the strict long test, or
+`--smoke-cycles 1000000` for compile/clock-driver validation only. CI runs the long
+test in two output-delay/initial-RAM profiles and retains provenance and results.

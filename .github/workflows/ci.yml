@@ -33,3 +33,41 @@ jobs:
         run: make test-digit
       - name: Lint bus RTL
         run: make lint
+
+  memory-datasheets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: typical-latency-max-output-delay
+            worst: 0
+            output: 6.0
+          - profile: worst-latency-max-output-delay
+            worst: 1
+            output: 6.0
+          - profile: worst-latency-fast-output
+            worst: 1
+            output: 2.0
+    name: memory / ${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Prove model behavior and negative timing checks
+        run: make test-memory-model
+      - name: Full-capacity bridge transactions at 20 MHz
+        run: make test-memory-datasheet DATASHEET_WORST=${{ matrix.worst }} DATASHEET_OUTPUT=${{ matrix.output }}
+
+  serial-boot-pins:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y iverilog
+      - run: python -m pip install -r test/requirements.txt
+      - name: Boot and reject corrupt image through production wrapper pins
+        run: make -C test

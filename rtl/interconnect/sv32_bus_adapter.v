@@ -1,9 +1,11 @@
 `timescale 1ns/1ps
-// One-request Sv32 translator and physical-bus arbiter with a 16-entry TLB.
+// One-request Sv32 translator and physical-bus arbiter with a direct-mapped TLB.
 // SFENCE.VMA invalidates all entries. PTE A/D bits are set by a bus write.
 // The one-hart SoC has no other bus master; external memory must not mutate
 // page tables concurrently with this read/modify/write sequence.
-module sv32_bus_adapter (
+module sv32_bus_adapter #(
+    parameter integer TLB_ENTRIES = 4
+) (
     input wire clk, rst_n,
     input wire [1:0] privilege,
     input wire [31:0] satp, mstatus,
@@ -30,6 +32,7 @@ module sv32_bus_adapter (
     output wire bus_req_valid,
     input wire bus_req_ready,
     output wire [31:0] bus_req_addr,
+    output wire bus_req_instr,
     output wire bus_req_write,
     output wire [31:0] bus_req_wdata,
     output wire [3:0] bus_req_wstrb,
@@ -49,12 +52,12 @@ module sv32_bus_adapter (
     reg sum_enable, mxr_enable, level1;
     reg [33:0] walk_addr, access_addr;
     reg [31:0] pte_updated;
-    reg [30:0] root_context;
-    reg [15:0] tlb_valid;
-    reg [19:0] tlb_vpn [0:15];
-    reg [30:0] tlb_context [0:15];
-    reg [31:0] tlb_pte [0:15];
-    reg tlb_level1 [0:15];
+    reg [30:0] tlb_context;
+    localparam integer TLB_INDEX_BITS = $clog2(TLB_ENTRIES);
+    reg [TLB_ENTRIES-1:0] tlb_valid;
+    reg [19:TLB_INDEX_BITS] tlb_vpn_tag [0:TLB_ENTRIES-1];
+    reg [31:0] tlb_pte [0:TLB_ENTRIES-1];
+    reg tlb_level1 [0:TLB_ENTRIES-1];
     integer tlb_i;
     reg response_error, response_page_fault;
     wire [1:0] request_priv = d_req_valid && privilege == 2'd3 && mstatus[17] ?
@@ -73,12 +76,13 @@ module sv32_bus_adapter (
                                  {22'b0, virtual_addr[21:12], 2'b0};
     wire choose_data = d_req_valid;
     wire [31:0] request_vaddr = choose_data ? d_req_addr : i_req_addr;
-    wire [3:0] request_index = request_vaddr[15:12];
+    wire [TLB_INDEX_BITS-1:0] request_index = request_vaddr[12 +: TLB_INDEX_BITS];
+    wire [TLB_INDEX_BITS-1:0] refill_index = virtual_addr[12 +: TLB_INDEX_BITS];
     wire [31:0] cached_pte = tlb_pte[request_index];
     wire unused_cached_pte_bits = &{1'b0, cached_pte[9:5], cached_pte[0]};
     wire tlb_hit = tlb_valid[request_index] &&
-                   tlb_vpn[request_index] == request_vaddr[31:12] &&
-                   tlb_context[request_index] == satp[30:0] &&
+                   tlb_vpn_tag[request_index] == request_vaddr[31:12+TLB_INDEX_BITS] &&
+                   tlb_context == satp[30:0] &&
                    (!choose_data || !d_req_write || tlb_pte[request_index][7]);
     wire cached_permission_ok = choose_data ?
         (d_req_write ? cached_pte[2] :
@@ -106,6 +110,8 @@ module sv32_bus_adapter (
                            state == UPDATE_REQ ||
                            (state == ACCESS_REQ && access_addr[33:32] == 0);
     assign bus_req_addr = state == ACCESS_REQ ? access_addr[31:0] : walk_addr[31:0];
+    // Page-table walks and data loads must not populate the instruction line.
+    assign bus_req_instr = state == ACCESS_REQ && !is_data;
     assign bus_req_write = state == UPDATE_REQ || (state == ACCESS_REQ && is_write);
     assign bus_req_wdata = state == UPDATE_REQ ? pte_updated : write_data;
     assign bus_req_wstrb = state == UPDATE_REQ ? 4'b1111 :
@@ -127,11 +133,10 @@ module sv32_bus_adapter (
             walk_addr <= 0;
             access_addr <= 0;
             pte_updated <= 0;
-            root_context <= 0;
+            tlb_context <= 0;
             tlb_valid <= 0;
-            for (tlb_i = 0; tlb_i < 16; tlb_i = tlb_i + 1) begin
-                tlb_vpn[tlb_i] <= 0;
-                tlb_context[tlb_i] <= 0;
+            for (tlb_i = 0; tlb_i < TLB_ENTRIES; tlb_i = tlb_i + 1) begin
+                tlb_vpn_tag[tlb_i] <= 0;
                 tlb_pte[tlb_i] <= 0;
                 tlb_level1[tlb_i] <= 0;
             end
@@ -147,7 +152,10 @@ module sv32_bus_adapter (
                 write_data <= choose_data ? d_req_wdata : 32'b0;
                 write_strb <= choose_data ? d_req_wstrb : 4'b0;
                 effective_priv <= request_priv;
-                root_context <= satp[30:0];
+                if (do_translate && tlb_context != satp[30:0]) begin
+                    tlb_valid <= 0;
+                    tlb_context <= satp[30:0];
+                end
                 sum_enable <= mstatus[18];
                 mxr_enable <= mstatus[19];
                 response_data <= 0;
@@ -202,11 +210,10 @@ module sv32_bus_adapter (
                         pte_updated <= pte | 32'h0000_0040 | (is_write ? 32'h0000_0080 : 32'b0);
                         state <= UPDATE_REQ;
                     end else begin
-                        tlb_valid[virtual_addr[15:12]] <= 1;
-                        tlb_vpn[virtual_addr[15:12]] <= virtual_addr[31:12];
-                        tlb_context[virtual_addr[15:12]] <= root_context;
-                        tlb_pte[virtual_addr[15:12]] <= pte;
-                        tlb_level1[virtual_addr[15:12]] <= level1;
+                        tlb_valid[refill_index] <= 1;
+                        tlb_vpn_tag[refill_index] <= virtual_addr[31:12+TLB_INDEX_BITS];
+                        tlb_pte[refill_index] <= pte;
+                        tlb_level1[refill_index] <= level1;
                         state <= ACCESS_REQ;
                     end
                 end
@@ -217,11 +224,10 @@ module sv32_bus_adapter (
                     response_error <= 1;
                     state <= DONE;
                 end else begin
-                    tlb_valid[virtual_addr[15:12]] <= 1;
-                    tlb_vpn[virtual_addr[15:12]] <= virtual_addr[31:12];
-                    tlb_context[virtual_addr[15:12]] <= root_context;
-                    tlb_pte[virtual_addr[15:12]] <= pte_updated;
-                    tlb_level1[virtual_addr[15:12]] <= level1;
+                    tlb_valid[refill_index] <= 1;
+                    tlb_vpn_tag[refill_index] <= virtual_addr[31:12+TLB_INDEX_BITS];
+                    tlb_pte[refill_index] <= pte_updated;
+                    tlb_level1[refill_index] <= level1;
                     state <= ACCESS_REQ;
                 end
             end

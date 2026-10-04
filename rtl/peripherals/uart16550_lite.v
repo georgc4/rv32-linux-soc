@@ -24,6 +24,7 @@ module uart16550_lite #(
     reg [7:0] dll, dlm;
     reg [7:0] rx_data, rx_shift;
     reg rx_valid, rx_overrun;
+    reg tx_irq_pending;
     reg [1:0] tx_state, rx_state;
     reg [7:0] tx_shift;
     reg [2:0] tx_bit, rx_bit;
@@ -39,7 +40,7 @@ module uart16550_lite #(
     wire write_thr = req_write && req_wstrb[0] && regno == 0 && !dlab;
     assign req_ready = !pending && !(req_valid && write_thr && tx_busy);
     assign resp_valid = pending;
-    assign irq = (ier[0] && rx_valid) || (ier[1] && !tx_busy);
+    assign irq = (ier[0] && rx_valid) || (ier[1] && tx_irq_pending);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -56,6 +57,7 @@ module uart16550_lite #(
             rx_shift <= 0;
             rx_valid <= 0;
             rx_overrun <= 0;
+            tx_irq_pending <= 0;
             tx_state <= 0;
             tx_pin <= 1;
             tx_shift <= 0;
@@ -93,6 +95,7 @@ module uart16550_lite #(
                     2'd3: begin
                         tx_pin <= 1;
                         tx_state <= 0;
+                        if (ier[1]) tx_irq_pending <= 1;
                     end
                     default: tx_state <= 0;
                 endcase
@@ -144,6 +147,7 @@ module uart16550_lite #(
                                     tx_shift <= req_wdata[7:0];
                                     tx_count <= bit_ticks - 1;
                                     tx_state <= 2'd1;
+                                    tx_irq_pending <= 0;
                                 end else if (!req_write) rx_valid <= 0;
                             end
                         end
@@ -151,12 +155,19 @@ module uart16550_lite #(
                             resp_rdata <= dlab ? {24'b0, dlm} : {24'b0, ier};
                             if (req_write && req_wstrb[0]) begin
                                 if (dlab) dlm <= req_wdata[7:0];
-                                else ier <= req_wdata[7:0] & 8'h03;
+                                else begin
+                                    ier <= req_wdata[7:0] & 8'h03;
+                                    if (!req_wdata[1]) tx_irq_pending <= 0;
+                                    else if (!ier[1] && !tx_busy) tx_irq_pending <= 1;
+                                end
                             end
                         end
                         3'd2: begin
                             resp_rdata <= ier[0] && rx_valid ? 32'h04 :
-                                          ier[1] && !tx_busy ? 32'h02 : 32'h01;
+                                          ier[1] && tx_irq_pending ? 32'h02 : 32'h01;
+                            if (!req_write && !(ier[0] && rx_valid) &&
+                                ier[1] && tx_irq_pending)
+                                tx_irq_pending <= 0;
                             if (req_write && req_wstrb[0] && req_wdata[1]) begin
                                 rx_valid <= 0;
                                 rx_overrun <= 0;

@@ -1,9 +1,11 @@
 `timescale 1ns/1ps
 // Full-image experiment: real ROM, bridge, and quad-lane SPI transfers to all chips.
-module linux_serial_boot_tb;
-    reg clk = 0;
-    always #5 clk = ~clk;
+module linux_serial_boot_tb #(
+    parameter realtime MEMORY_OUTPUT_DELAY = 6.0,
+    parameter [7:0] MEMORY_INIT_BYTE = 8'ha5
+)(input wire clk);
     reg rst_n = 0;
+    reg uart_rx = 1;
     wire uart_tx, spi_sck, initialized, halted, fault;
     wire [31:0] fault_pc;
     wire [4:0] cs_n;
@@ -18,6 +20,13 @@ module linux_serial_boot_tb;
     longint unsigned cycles = 0;
     longint unsigned machine_timer_traps = 0;
     longint unsigned supervisor_timer_traps = 0;
+    longint unsigned supervisor_external_traps = 0;
+    longint unsigned uart_irq_edges = 0;
+    longint unsigned plic_claims = 0;
+    longint unsigned plic_claim_nonzero = 0;
+    longint unsigned plic_claim_zero = 0;
+    longint unsigned plic_completes = 0;
+    reg last_uart_irq = 0;
     longint unsigned sbi_ecalls = 0;
     longint unsigned retired_instructions = 0;
     longint unsigned last_retired_report = 0;
@@ -25,7 +34,11 @@ module linux_serial_boot_tb;
     longint unsigned flash_requests = 0;
     longint unsigned page_faults = 0;
     longint unsigned other_sync_traps = 0;
+    longint unsigned smoke_cycles = 0;
     longint unsigned cycle_limit = 64'd20000000000;
+    longint unsigned uart_rx_consumed = 0;
+    reg ash_prompt_seen = 0;
+    reg userspace_seen = 0;
     longint unsigned next_report = 64'd10000000;
     longint unsigned report_step = 64'd10333333;
     longint unsigned watch_after = 0;
@@ -40,7 +53,7 @@ module linux_serial_boot_tb;
     integer flash_byte;
 
     soc_top #(.DIAGNOSTIC_MODE(0)) dut (
-        .clk(clk), .rst_n(rst_n), .uart_rx(1'b1), .uart_tx(uart_tx),
+        .clk(clk), .rst_n(rst_n), .uart_rx(uart_rx), .uart_tx(uart_tx),
         .spi_sck(spi_sck), .spi_cs_n(cs_n),
         .spi_dq_in(dq_in), .spi_dq_out(dq_out), .spi_dq_oe(dq_oe),
         .memory_initialized(initialized), .cpu_halted(halted),
@@ -51,8 +64,17 @@ module linux_serial_boot_tb;
     assign dq_in = (dq_out & dq_oe) | model_bus;
     genvar g;
     generate for (g = 0; g < 5; g = g + 1) begin: chips
-        serial_spi_model #(.MEM_BYTES(g == 4 ? 16777216 : 8388608),
+`ifdef DATASHEET_MODEL
+        serial_memory_datasheet_model #(.T_OUTPUT(MEMORY_OUTPUT_DELAY),
+                           .PSRAM_INIT_BYTE(MEMORY_INIT_BYTE),
+`else
+        serial_spi_model #(
+`endif
+                           .MEM_BYTES(g == 4 ? 16777216 : 8388608),
                            .IS_FLASH(g == 4)) model (
+`ifdef DATASHEET_MODEL
+            .host_oe(g == 4 ? {dq_oe[5:4], dq_oe[1:0]} : dq_oe[3:0]),
+`endif
             .cs_n(cs_n[g]), .sck(spi_sck),
             .io_in(g == 4 ? {dq_out[5:4], dq_out[1:0]} : dq_out[3:0]),
             .io_out(model_out[g]), .io_oe(model_oe[g]),
@@ -60,11 +82,63 @@ module linux_serial_boot_tb;
         );
     end endgenerate
 
+    wire [3:0] ram_drive = model_oe[0] | model_oe[1] | model_oe[2] | model_oe[3];
+    wire [5:0] chip_drive = {model_oe[4][3:2],ram_drive[3:2],ram_drive[1:0]|model_oe[4][1:0]};
+    always @(posedge spi_sck) if (rst_n) begin
+        if ((dq_oe & chip_drive) != 0) $fatal(1, "Linux memory bus contention");
+        if (((~cs_n & 5'h1f) & ((~cs_n & 5'h1f)-5'd1)) != 0)
+            $fatal(1, "multiple Linux memory chips selected");
+    end
+    always @(dq_oe or chip_drive) begin
+        #0.001;
+        if (rst_n && (dq_oe & chip_drive) != 0)
+            $fatal(1, "Linux memory bus turnaround contention");
+    end
+
+    // Send actual UART frames. Wait for the guest to read each byte because
+    // this RTL UART has a one-byte receive register and no RX FIFO.
+    task automatic send_uart_byte(input reg [7:0] value);
+        integer bit_index, bit_ticks;
+        longint unsigned consumed_before;
+        begin
+            bit_ticks = dut.uart.bit_ticks;
+            if (bit_ticks < 16) $fatal(1, "invalid guest UART divisor");
+            consumed_before = uart_rx_consumed;
+            @(negedge clk);
+            uart_rx = 0;
+            repeat (bit_ticks) @(negedge clk);
+            for (bit_index = 0; bit_index < 8; bit_index = bit_index + 1) begin
+                uart_rx = value[bit_index];
+                repeat (bit_ticks) @(negedge clk);
+            end
+            uart_rx = 1;
+            repeat (bit_ticks) @(negedge clk);
+            while (uart_rx_consumed == consumed_before) @(negedge clk);
+        end
+    endtask
+
+    initial begin : shell_command
+        string command;
+        integer byte_index;
+        command = "/bin/acceptance_smoke\n";
+        wait (ash_prompt_seen);
+        $display("SHELL_INPUT cycles=%0d command=%s", cycles, command);
+        $fflush;
+        for (byte_index = 0; byte_index < command.len(); byte_index = byte_index + 1)
+            send_uart_byte(command[byte_index]);
+    end
+
     initial begin
         #1;
         for (flash_byte = 0; flash_byte < 16777216; flash_byte = flash_byte + 1)
             chips[4].model.memory[flash_byte] = 8'hff;
         $readmemh("build/linux/flash.serial.hex", chips[4].model.memory);
+        if ($value$plusargs("smoke_cycles=%d", smoke_cycles)) begin end
+`ifdef DATASHEET_MODEL
+        $display("MEMORY_PROFILE datasheet core_hz=20000000 output_ns=%0.3f psram_init=%h capacities=4x8MiB+16MiB", MEMORY_OUTPUT_DELAY, MEMORY_INIT_BYTE);
+`else
+        $display("MEMORY_PROFILE accelerated core_hz=20000000");
+`endif
         if ($value$plusargs("max_cycles=%d", cycle_limit)) begin end
         if ($value$plusargs("report_first=%d", next_report)) begin end
         if ($value$plusargs("report_step=%d", report_step)) begin end
@@ -79,6 +153,22 @@ module linux_serial_boot_tb;
 
     always @(posedge clk) if (rst_n) begin
         cycles <= cycles + 1;
+        if (dut.uart_irq && !last_uart_irq)
+            uart_irq_edges <= uart_irq_edges + 1;
+        last_uart_irq <= dut.uart_irq;
+        if (dut.sv[6] && dut.sr[6] && dut.va == 32'h00200004) begin
+            if (dut.vw) plic_completes <= plic_completes + 1;
+            else begin
+                plic_claims <= plic_claims + 1;
+                if (dut.plic.claimable) plic_claim_nonzero <= plic_claim_nonzero + 1;
+                else plic_claim_zero <= plic_claim_zero + 1;
+            end
+        end
+        if (dut.sv[2] && dut.sr[2] && !dut.vw && dut.va[4:2] == 0 &&
+            !dut.uart.dlab && dut.uart.rx_valid)
+            uart_rx_consumed <= uart_rx_consumed + 1;
+        if (dut.uart.rx_overrun)
+            $fatal(1, "UART receive overrun during Linux acceptance");
         if (dut.retire_valid) retired_instructions <= retired_instructions + 1;
         if (dut.sv[0] && dut.sr[0]) ram_requests <= ram_requests + 1;
         if (dut.sv[1] && dut.sr[1]) flash_requests <= flash_requests + 1;
@@ -87,6 +177,8 @@ module linux_serial_boot_tb;
                 machine_timer_traps <= machine_timer_traps + 1;
             if (dut.cpu.trap_interrupt && dut.cpu.trap_cause == 5)
                 supervisor_timer_traps <= supervisor_timer_traps + 1;
+            if (dut.cpu.trap_interrupt && dut.cpu.trap_cause == 9)
+                supervisor_external_traps <= supervisor_external_traps + 1;
             if (!dut.cpu.trap_interrupt && dut.cpu.trap_cause == 9)
                 sbi_ecalls <= sbi_ecalls + 1;
             if (!dut.cpu.trap_interrupt &&
@@ -128,19 +220,36 @@ module linux_serial_boot_tb;
                 if (uart_line.len() >= 12 &&
                     uart_line.substr(0, 11) == "Kernel panic")
                     $fatal(1, "Linux kernel panic after %0d cycles", cycles);
-                if (uart_line == "RV32 Linux userspace ready") begin
-                    $display("PASS full Linux boot through serial ROM/NOR/PSRAM in %0d cycles", cycles);
+                if (uart_line == "RV32 Linux userspace ready")
+                    userspace_seen = 1;
+                if (uart_line == "ASH_PROGRAM_OK") begin
+                    if (!userspace_seen || !ash_prompt_seen)
+                        $fatal(1, "program output before ash prompt/userspace marker");
+                    $display("ACCEPTANCE ash_program=pass cycles=%0d retired=%0d ram_req=%0d flash_req=%0d rx_bytes=%0d", cycles,
+                             retired_instructions, ram_requests, flash_requests,
+                             uart_rx_consumed);
+                    $display("PASS BusyBox ash executed /bin/acceptance_smoke through serial ROM/NOR/PSRAM in %0d cycles", cycles);
                     $finish;
                 end
                 uart_line = "";
             end else if (uart_byte != 8'h0d) begin
                 uart_line = {uart_line, uart_byte};
+                if (!ash_prompt_seen && uart_line.len() >= 5 &&
+                    uart_line.substr(uart_line.len() - 5, uart_line.len() - 1) == "ASH> ") begin
+                    ash_prompt_seen = 1;
+                    $display("SHELL_PROMPT cycles=%0d", cycles);
+                    $fflush;
+                end
             end
         end
         if (cycles == next_report) begin
-            $display("PROGRESS cycles=%0d pc=%h priv=%d satp=%h mtimer=%0d stimer=%0d sbi=%0d retired=%0d retired_delta=%0d ram_req=%0d flash_req=%0d page_fault=%0d sync_trap=%0d spi_cmd=%0d,%0d,%0d,%0d,%0d uart_tail=%s", cycles,
+            $display("PROGRESS cycles=%0d pc=%h priv=%d satp=%h mtimer=%0d stimer=%0d sext=%0d uart_irq_edges=%0d plic_claims=%0d plic_claim_nonzero=%0d plic_claim_zero=%0d plic_completes=%0d sw_seip=%b plic_irq=%b plic_service=%b sbi=%0d retired=%0d retired_delta=%0d ram_req=%0d flash_req=%0d page_fault=%0d sync_trap=%0d spi_cmd=%0d,%0d,%0d,%0d,%0d uart_tail=%s", cycles,
                      dut.cpu.pc, dut.current_privilege, dut.current_satp,
-                     machine_timer_traps, supervisor_timer_traps, sbi_ecalls,
+                     machine_timer_traps, supervisor_timer_traps,
+                     supervisor_external_traps, uart_irq_edges,
+                     plic_claims, plic_claim_nonzero, plic_claim_zero,
+                     plic_completes, dut.cpu.priv_unit.software_mip[9],
+                     dut.plic_irq, dut.plic.in_service, sbi_ecalls,
                      retired_instructions, retired_instructions - last_retired_report,
                      ram_requests, flash_requests, page_faults, other_sync_traps,
                      spi_commands[0], spi_commands[1], spi_commands[2],
@@ -157,6 +266,10 @@ module linux_serial_boot_tb;
             next_report = next_report + report_step;
         end
         if (fault || halted) $fatal(1, "CPU fault/halt at cycle %0d pc=%h", cycles, fault_pc);
+        if (smoke_cycles != 0 && cycles >= smoke_cycles) begin
+            $display("SMOKE_ONLY cycles=%0d NOT_LINUX_ACCEPTANCE", cycles);
+            $finish;
+        end
         if (cycles >= cycle_limit)
             $fatal(1, "boot timeout after %0d cycles pc=%h priv=%d satp=%h", cycles,
                    dut.cpu.pc, dut.current_privilege, dut.current_satp);
