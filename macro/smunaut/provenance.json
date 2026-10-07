@@ -1,0 +1,19 @@
+{
+  "upstream_repository": "https://github.com/MichaelBell/ttsky25b-femtorv-soc",
+  "upstream_commit": "50aa37fdb7befa4fe2fac69f71a10d64d102df3c",
+  "author": "Sylvain Munaut; behavioural integration/model from Michael Bell repository",
+  "baseline_commit": "99cc34f07a6a0e0db938a1165639ea3b473e9bb4",
+  "qualification": "experimental; nominal RF timing reused across standard-cell corners, not PVT-qualified",
+  "modifications": [
+    "Liberty supply renamed VPWR to VDPWR to match LEF/GDS; timing values unchanged",
+    "Behavioural model made synthesis-blackbox; no storage synthesized"
+  ],
+  "files": {
+    "macro/smunaut/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "macro/smunaut/rf_top.gds.gz": "525fb010215ba3400689c0c40a4bf97415910f40498f6882d7cd027cad1d01e2",
+    "macro/smunaut/rf_top.lef": "b8d2dfd70500fc79bf921dba9e643da7ecb95ca1d1198f6581ab498571d11dcb",
+    "macro/smunaut/rf_top.lib": "2a2f854bb73a465304414c0c7dfe252e867eaa66d5b4ba57e569e88d9cc3a884",
+    "macro/smunaut/rf_top.upstream.lib": "4c85936bb8a29385b9953ab8797041570082bdd860f0a46a28644be7c8e8ccb8",
+    "macro/smunaut/rf_top.upstream.v": "4383d71915abd1c0e301f6dced3315760a6b99cea32eec6a25112c377f79cc39"
+  }
+}

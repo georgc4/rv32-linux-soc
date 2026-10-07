@@ -10,6 +10,7 @@ project:
     - "rv32_mdu.v"
     - "rv32_priv_unit.v"
     - "rv32i_core.v"
+    - "rf_top.v"
     - "cpu_bus_adapter.v"
     - "physical_bus.v"
     - "sv32_bus_adapter.v"

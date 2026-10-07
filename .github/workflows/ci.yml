@@ -9,6 +9,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y iverilog verilator
       - name: Run contract simulation
         run: make test
+      - name: Validate hard RF interface and asset identity
+        run: |
+          python3 scripts/check_rf_experiment.py
+          make test-rf
       - name: Run diagnostic CPU program
         run: make test-core
       - name: Check iterative M arithmetic

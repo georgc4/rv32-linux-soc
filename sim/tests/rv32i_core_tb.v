@@ -121,6 +121,32 @@ module rv32i_core_tb;
                    stalls, retired, ram_reads, ram_writes);
         $display("PASS rv32i_core: %0d cycles, %0d retired, %0d RAM stalls, UART OK", cycles, retired, stalls);
 
+        // Exercise destination/source collisions with real instructions and
+        // the stalled memory interface, including AMO rd==rs2 and rd==rs1.
+        rst_n = 0;
+        $readmemh("sim/programs/rf_alias.hex", ram.words, 0, 43);
+        repeat (3) @(negedge clk);
+        rst_n = 1;
+        deadline = cycles + 2000;
+        while (!halted && cycles < deadline) @(negedge clk);
+        if (!halted || fault) $fatal(1, "RF alias program failed at PC %h", fault_pc);
+        if (ram.words[1024] !== 32'h0000000c) $fatal(1, "RF alias result 0: %h", ram.words[1024]);
+        if (ram.words[1025] !== 32'h00000013) $fatal(1, "RF alias result 1: %h", ram.words[1025]);
+        if (ram.words[1026] !== 32'h00000026) $fatal(1, "RF alias result 2: %h", ram.words[1026]);
+        if (ram.words[1027] !== 32'h00000000) $fatal(1, "RF alias result 3: %h", ram.words[1027]);
+        if (ram.words[1028] !== 32'h0000000a) $fatal(1, "RF alias result 4: %h", ram.words[1028]);
+        if (ram.words[1029] !== 32'h0000000d) $fatal(1, "RF alias result 5: %h", ram.words[1029]);
+        if (ram.words[1030] !== 32'h0000000d) $fatal(1, "RF alias result 6: %h", ram.words[1030]);
+        if (ram.words[1031] !== 32'h00000011) $fatal(1, "RF alias result 7: %h", ram.words[1031]);
+        if (ram.words[1032] !== 32'h00000011) $fatal(1, "RF alias result 8: %h", ram.words[1032]);
+        if (ram.words[1033] !== 32'h80001040) $fatal(1, "RF alias result 9: %h", ram.words[1033]);
+        if (ram.words[1034] !== 32'h00000000) $fatal(1, "RF alias result 10: %h", ram.words[1034]);
+        if (ram.words[1035] !== 32'h0000007b) $fatal(1, "RF alias result 11: %h", ram.words[1035]);
+        if (ram.words[1036] !== 32'h00000000) $fatal(1, "RF alias result 12: %h", ram.words[1036]);
+        if (ram.words[1037] !== 32'h0000007b) $fatal(1, "RF alias result 13: %h", ram.words[1037]);
+        if (ram.words[1038] !== 32'h00000001) $fatal(1, "RF alias result 14: %h", ram.words[1038]);
+        $display("PASS RF aliases: ALU, x0, AMO rd=rs2/rs1/both, LR/SC");
+
         // An illegal instruction must stop at its own PC, before any data access.
         rst_n = 0;
         ram.words[0] = 32'hffff_ffff;

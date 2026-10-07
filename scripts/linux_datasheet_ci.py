@@ -64,7 +64,10 @@ def main():
         'core_hz': 20_000_000, 'output_delay_ns': args.output_delay,
         'psram_initial_byte': args.ram_init, 'smoke_cycles': args.smoke_cycles,
         'max_cycles': args.max_cycles, 'wall_seconds': args.wall_seconds,
-        'kind': 'rtl_datasheet_serial_linux', 'two_state_simulator': True,
+        'kind': 'rtl_datasheet_serial_linux_smunaut_rf',
+        'rf_model': 'upstream_write_first_clocked_2r1w',
+        'rf_physical_timing_qualified': False,
+        'rf_assets': {str(p): sha(p) for p in sorted((ROOT / 'macro/smunaut').glob('*')) if p.is_file()}, 'two_state_simulator': True,
     }
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     command = [verilator, '--cc', '--exe', '--build', '--timing', '-O3',

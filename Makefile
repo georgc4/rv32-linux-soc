@@ -26,7 +26,7 @@ test:
 
 test-core:
 	mkdir -p build
-	$(IVERILOG) -g2012 -Wall -s rv32i_core_tb -o build/rv32i_core_tb rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/cpu_bus_adapter.v rtl/interconnect/physical_bus.v sim/models/word_ram.v sim/models/mmio_uart_sink.v sim/tests/rv32i_core_tb.v
+	$(IVERILOG) -g2012 -Wall -s rv32i_core_tb -o build/rv32i_core_tb rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/cpu_bus_adapter.v rtl/interconnect/physical_bus.v sim/models/word_ram.v sim/models/mmio_uart_sink.v sim/tests/rv32i_core_tb.v
 	$(VVP) build/rv32i_core_tb
 
 test-mdu:
@@ -36,7 +36,7 @@ test-mdu:
 
 test-priv:
 	mkdir -p build
-	$(IVERILOG) -g2012 -Wall -s priv_trap_tb -o build/priv_trap_tb rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v sim/tests/priv_trap_tb.v
+	$(IVERILOG) -g2012 -Wall -s priv_trap_tb -o build/priv_trap_tb rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v sim/tests/priv_trap_tb.v
 	$(VVP) build/priv_trap_tb
 	$(IVERILOG) -g2012 -Wall -s priv_mip_tb -o build/priv_mip_tb rtl/cpu/rv32_priv_unit.v sim/tests/priv_mip_tb.v
 	$(VVP) build/priv_mip_tb
@@ -48,7 +48,7 @@ test-sv32:
 
 test-supervisor:
 	mkdir -p build
-	$(IVERILOG) -g2012 -Wall -s sv32_supervisor_tb -o build/sv32_supervisor_tb rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/sv32_bus_adapter.v sim/tests/sv32_supervisor_tb.v
+	$(IVERILOG) -g2012 -Wall -s sv32_supervisor_tb -o build/sv32_supervisor_tb rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/sv32_bus_adapter.v sim/tests/sv32_supervisor_tb.v
 	$(VVP) build/sv32_supervisor_tb
 
 test-serial:
@@ -78,7 +78,7 @@ test-timer:
 
 test-soc:
 	mkdir -p build
-	$(IVERILOG) -g2012 -Wall -s soc_boot_tb -o build/soc_boot_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/soc_boot_tb.v
+	$(IVERILOG) -g2012 -Wall -s soc_boot_tb -o build/soc_boot_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/soc_boot_tb.v
 	$(VVP) build/soc_boot_tb
 
 test-soc-bad: test-soc
@@ -91,7 +91,7 @@ test-digit:
 
 lint:
 	$(VERILATOR) --lint-only -Wall --top-module physical_bus rtl/interconnect/physical_bus.v
-	$(VERILATOR) --lint-only -Wall --top-module rv32i_core rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v
+	$(VERILATOR) --lint-only -Wall --top-module rv32i_core rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v
 	$(VERILATOR) --lint-only -Wall --top-module cpu_bus_adapter rtl/interconnect/cpu_bus_adapter.v
 	$(VERILATOR) --lint-only -Wall --top-module sv32_bus_adapter rtl/interconnect/sv32_bus_adapter.v
 	$(VERILATOR) --lint-only -Wall --top-module serial_mem_bridge rtl/memory/serial_mem_bridge.v
@@ -99,7 +99,7 @@ lint:
 	$(VERILATOR) --lint-only -Wall --top-module boot_rom rtl/peripherals/boot_rom.v
 	$(VERILATOR) --lint-only -Wall --top-module uart16550_lite rtl/peripherals/uart16550_lite.v
 	$(VERILATOR) --lint-only -Wall --top-module plic_lite rtl/peripherals/plic_lite.v
-	$(VERILATOR) --lint-only -Wall --top-module tt_um_rv32_linux_soc rtl/soc/tt_um_rv32_linux_soc.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v
+	$(VERILATOR) --lint-only -Wall --top-module tt_um_rv32_linux_soc rtl/soc/tt_um_rv32_linux_soc.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v
 
 regen-smoke:
 	mkdir -p build
@@ -144,7 +144,7 @@ test-linux-handoff: image-linux-flash
 	$(RISCV_OBJCOPY) -O binary build/linux_handoff_stub.elf build/linux_handoff_stub.bin
 	$(PYTHON) scripts/pack_linux_flash.py build/firmware/linux_loader.bin build/linux_handoff_stub.bin build/linux/rv32-linux-soc.dtb build/linux_handoff_stub.flash.bin --trim
 	$(PYTHON) -c 'from pathlib import Path; p=Path("build/linux_handoff_stub.flash.bin"); Path("build/linux_handoff_stub.flash.hex").write_text("".join(f"{b:02x}\n" for b in p.read_bytes().ljust(270336, b"\xff")))'
-	$(IVERILOG) -g2012 -Wall -s linux_handoff_tb -o build/linux_handoff_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/linux_handoff_tb.v
+	$(IVERILOG) -g2012 -Wall -s linux_handoff_tb -o build/linux_handoff_tb rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/models/serial_spi_model.v sim/tests/linux_handoff_tb.v
 	$(VVP) build/linux_handoff_tb
 	$(VVP) build/linux_handoff_tb +bad_dtb
 	$(VVP) build/linux_handoff_tb +bad_kernel
@@ -152,7 +152,7 @@ test-linux-handoff: image-linux-flash
 # Slow full-image run through the production quad-capable SPI bridge and five chips.
 test-linux-serial-boot: image-linux-flash
 	$(PYTHON) scripts/flash_to_bytehex.py build/linux/flash.bin build/linux/flash.serial.hex
-	$(VERILATOR) --cc --exe --build --timing -O3 -j 4 -Wno-fatal -CFLAGS '-O3' --top-module linux_serial_boot_tb --Mdir build/obj_linux_serial sim/tests/linux_serial_boot_tb.v sim/models/serial_spi_model.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/tests/linux_serial_boot_main.cpp
+	$(VERILATOR) --cc --exe --build --timing -O3 -j 4 -Wno-fatal -CFLAGS '-O3' --top-module linux_serial_boot_tb --Mdir build/obj_linux_serial sim/tests/linux_serial_boot_tb.v sim/models/serial_spi_model.v rtl/soc/soc_top.v rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/interconnect/physical_bus.v rtl/interconnect/sv32_bus_adapter.v rtl/peripherals/boot_rom.v rtl/peripherals/clint_timer.v rtl/peripherals/uart16550_lite.v rtl/peripherals/plic_lite.v rtl/memory/serial_mem_bridge.v sim/tests/linux_serial_boot_main.cpp
 	build/obj_linux_serial/Vlinux_serial_boot_tb
 
 synth-bus:
@@ -162,7 +162,7 @@ synth-bus:
 
 synth-core:
 	mkdir -p build
-	$(YOSYS) -Q -T -p 'read_verilog rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/cpu/rv32i_core.v; hierarchy -top rv32i_core; proc; opt; synth -top rv32i_core; stat' > build/synth-core.log
+	$(YOSYS) -Q -T -p 'read_verilog rtl/cpu/rv32_priv_unit.v rtl/cpu/rv32_mdu.v rtl/cpu/rv32i_core.v rtl/cpu/rf_top.v; hierarchy -top rv32i_core; proc; opt; synth -top rv32i_core; stat' > build/synth-core.log
 	tail -30 build/synth-core.log
 
 synth-soc:
@@ -190,3 +190,16 @@ test-memory-datasheet:
 
 test-memory-model:
 	$(PYTHON) scripts/test_memory_model.py
+
+.PHONY: test-rf regen-rf-alias
+test-rf:
+	mkdir -p build
+	$(IVERILOG) -g2012 -Wall -s rf_top_tb -o build/rf_top_tb src/rf_top.v sim/tests/rf_top_tb.v
+	$(VVP) build/rf_top_tb
+
+regen-rf-alias:
+	mkdir -p build
+	$(RISCV_AS) -march=rv32ima -mabi=ilp32 -o build/rf_alias.o sim/programs/rf_alias.S
+	$(RISCV_LD) -m elf32lriscv --no-relax -Ttext=0x80000000 -o build/rf_alias.elf build/rf_alias.o
+	$(RISCV_OBJCOPY) -O binary build/rf_alias.elf build/rf_alias.bin
+	$(PYTHON) scripts/bin_to_memh.py build/rf_alias.bin sim/programs/rf_alias.hex

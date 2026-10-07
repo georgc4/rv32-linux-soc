@@ -19,7 +19,15 @@
     "physical/test_antenna_guard.tcl": "d66023e6b6992f2f14db33a2ba7d8ed16760aad49b3ef8484cbd95244c8bbcb9",
     "physical/expand_route_contacts.py": "595ff5ce9841e821f3c3cd888d0925713dd76fb696649a484f4bb57fd865b5ba",
     "physical/repair_antennas.tcl": "ce173a814d64391f12238440f6306e5242c8799ede60cd0955c270cb435392a9",
-    "physical/fixtures/ci-37096880158-routing.drc": "a8954a00289c8a336225a9c90773e2ae5d119622b70e7abcc53f0429c96c4314"
+    "physical/fixtures/ci-37096880158-routing.drc": "a8954a00289c8a336225a9c90773e2ae5d119622b70e7abcc53f0429c96c4314",
+    "macro/smunaut/rf_top.lef": "b8d2dfd70500fc79bf921dba9e643da7ecb95ca1d1198f6581ab498571d11dcb",
+    "macro/smunaut/rf_top.lib": "2a2f854bb73a465304414c0c7dfe252e867eaa66d5b4ba57e569e88d9cc3a884",
+    "macro/smunaut/provenance.json": "293ed168ff00eed2d20168dba5c74e28d2279e6e3cd081f8e371134bd26a202f",
+    "macro/smunaut/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "macro/smunaut/rf_top.upstream.lib": "4c85936bb8a29385b9953ab8797041570082bdd860f0a46a28644be7c8e8ccb8",
+    "macro/smunaut/rf_top.gds.gz": "525fb010215ba3400689c0c40a4bf97415910f40498f6882d7cd027cad1d01e2",
+    "macro/smunaut/rf_top.upstream.v": "4383d71915abd1c0e301f6dced3315760a6b99cea32eec6a25112c377f79cc39",
+    "src/rf_top.v": "ac2fadb8749ec12a242c2b80303aaca4adc0d6370b31aab61834850440bfe617"
   },
   "config": {
     "PL_TARGET_DENSITY_PCT": 60.0,
@@ -75,7 +83,37 @@
     "MAX_TRANSITION_CONSTRAINT": 1.5,
     "PL_ROUTABILITY_DRIVEN": true,
     "MAX_CAPACITANCE_CONSTRAINT": 0.2,
-    "DRT_ANTENNA_REPAIR_ITERS": 3
+    "DRT_ANTENNA_REPAIR_ITERS": 3,
+    "MACROS": {
+      "rf_top": {
+        "instances": {
+          "soc.cpu.rf": {
+            "location": [
+              120.0,
+              120.0
+            ],
+            "orientation": "E"
+          }
+        },
+        "gds": [
+          "dir::../macro/smunaut/rf_top.gds.gz"
+        ],
+        "lef": [
+          "dir::../macro/smunaut/rf_top.lef"
+        ],
+        "lib": {
+          "*": [
+            "dir::../macro/smunaut/rf_top.lib"
+          ]
+        }
+      }
+    },
+    "PDN_MACRO_CONNECTIONS": [
+      "soc.cpu.rf VPWR VGND VDPWR VGND"
+    ],
+    "FP_PDN_HORIZONTAL_LAYER": "met3",
+    "FP_MACRO_HORIZONTAL_HALO": 5.0,
+    "FP_MACRO_VERTICAL_HALO": 5.0
   },
   "required_steps": [
     "rv32-partitiondesign",

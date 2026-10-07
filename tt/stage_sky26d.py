@@ -39,6 +39,8 @@ parser.add_argument("--grt-hold-margin-ns", type=float, default=0.05)
 args = parser.parse_args()
 
 rtl_root = args.rtl_root.resolve()
+if (rtl_root / "macro/smunaut/provenance.json").exists():
+    raise SystemExit("Use this experiment checkout directly with GDS CI; legacy staging does not carry macro physical views/config")
 stage = args.stage.resolve()
 template = args.template_cache.resolve()
 tools = args.tools_cache.resolve()

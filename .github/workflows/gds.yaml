@@ -13,6 +13,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Verify RF asset provenance and timing scope
+        run: python3 scripts/check_rf_experiment.py
+
       - name: Validate ECO selection and neighborhood rules
         run: python3 -m unittest discover -s physical -p "test_*.py" -v
 
@@ -44,6 +47,7 @@ jobs:
         uses: TinyTapeout/tt-gds-action/gl_test@395eedb3eeec3c2f4961c3b04ff2cf87f5525636
 
   viewer:
+    if: github.ref == 'refs/heads/main'
     needs: gds
     runs-on: ubuntu-24.04
     permissions:

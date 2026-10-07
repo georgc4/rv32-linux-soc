@@ -11,6 +11,7 @@ on:
       - 'sim/tests/linux_serial_boot*'
       - 'sim/fixtures/linux-acceptance/**'
       - 'src/*.v'
+      - 'macro/smunaut/**'
       - 'firmware/boot_rom.hex'
 
 permissions:
@@ -35,6 +36,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install simulator toolchain
         run: sudo apt-get update && sudo apt-get install -y verilator iverilog build-essential
+      - name: Verify RF asset provenance and run alias regressions
+        run: |
+          python3 scripts/check_rf_experiment.py
+          make test-core test-rf
       - name: Validate chip model semantics in both simulators
         run: |
           ulimit -c 0

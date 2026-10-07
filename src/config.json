@@ -60,5 +60,35 @@
   },
   "PL_ROUTABILITY_DRIVEN": true,
   "MAX_CAPACITANCE_CONSTRAINT": 0.2,
-  "DRT_ANTENNA_REPAIR_ITERS": 3
+  "DRT_ANTENNA_REPAIR_ITERS": 3,
+  "MACROS": {
+    "rf_top": {
+      "instances": {
+        "soc.cpu.rf": {
+          "location": [
+            120.0,
+            120.0
+          ],
+          "orientation": "E"
+        }
+      },
+      "gds": [
+        "dir::../macro/smunaut/rf_top.gds.gz"
+      ],
+      "lef": [
+        "dir::../macro/smunaut/rf_top.lef"
+      ],
+      "lib": {
+        "*": [
+          "dir::../macro/smunaut/rf_top.lib"
+        ]
+      }
+    }
+  },
+  "PDN_MACRO_CONNECTIONS": [
+    "soc.cpu.rf VPWR VGND VDPWR VGND"
+  ],
+  "FP_PDN_HORIZONTAL_LAYER": "met3",
+  "FP_MACRO_HORIZONTAL_HALO": 5.0,
+  "FP_MACRO_VERTICAL_HALO": 5.0
 }

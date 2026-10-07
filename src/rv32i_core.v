@@ -45,11 +45,10 @@ module rv32i_core #(
                      MDU_WAIT = 4'd8, READ_RS2 = 4'd9;
     reg [3:0] state;
     reg [31:0] pc, instr;
-    reg [31:0] regs [0:31];
     reg [31:0] operand_a, operand_b;
     reg write_rd, access, store, decode_illegal, stop_normal;
-    // Decode legality while reading rs2. All legality inputs (instruction,
-    // rs1/address, privilege and CSR access permissions) are stable in READ_RS2;
+    // Decode legality from the clocked macro outputs during READ_RS2.
+    // Instruction, rs1/address, privilege and CSR permissions settle in this state;
     // no check depends on the rs2 value captured at its closing edge.
     // This removes combinational legality decode from EXEC writeback gating.
     reg illegal_hold;
@@ -59,9 +58,15 @@ module rv32i_core #(
     wire [4:0] rs2 = instr[24:20];
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
-    wire [4:0] reg_read_index = state == FETCH_RESP ? i_resp_data[19:15] : rs2;
-    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : regs[reg_read_index];
-    wire [31:0] a = operand_a;
+    // Address both macro ports before the instruction response acceptance edge.
+    // READ_RS2 now consumes both clocked outputs and checks legality; it retains
+    // the baseline state count. x0 is masked outside the unreset SRAM macro.
+    wire [4:0] rf_ra_addr = state == FETCH_RESP ? i_resp_data[19:15] : rs1;
+    wire [4:0] rf_rb_addr = state == FETCH_RESP ? i_resp_data[24:20] : rs2;
+    wire [31:0] rf_ra_data, rf_rb_data;
+    wire [31:0] rf_a = rs1 == 0 ? 32'b0 : rf_ra_data;
+    wire [31:0] rf_b = rs2 == 0 ? 32'b0 : rf_rb_data;
+    wire [31:0] a = state == READ_RS2 ? rf_a : operand_a;
     wire [31:0] b = operand_b;
     wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
     wire mdu_done;
@@ -425,8 +430,12 @@ module rv32i_core #(
             reg_write_data = mdu_result;
         end
     end
-    always @(posedge clk) if (reg_write_enable && reg_write_index != 0)
-        regs[reg_write_index] <= reg_write_data;
+    rf_top rf (
+        .clk(clk), .w_data(reg_write_data), .w_addr(reg_write_index),
+        .w_ena(rst_n && reg_write_enable && reg_write_index != 0),
+        .ra_addr(rf_ra_addr), .rb_addr(rf_rb_addr),
+        .ra_data(rf_ra_data), .rb_data(rf_rb_data)
+    );
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -476,13 +485,13 @@ module rv32i_core #(
                         end
                     end else begin
                         instr <= i_resp_data;
-                        operand_a <= reg_read_data;
                         state <= READ_RS2;
                     end
                 end
                 READ_RS2: begin
                     illegal_hold <= decode_illegal;
-                    operand_b <= reg_read_data;
+                    operand_a <= rf_a;
+                    operand_b <= rf_b;
                     state <= EXEC;
                 end
                 EXEC: begin
