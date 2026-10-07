@@ -124,3 +124,55 @@ movable groups. RF provenance checks passed. No RTL, macro assets, timing
 constraints, or signoff gates changed; the original Linux acceptance run remains
 applicable. Full GDS qualification still depends on the rerun, and the RF's
 nominal-only timing-model limitation remains.
+
+## GDS 37569142598: congestion after placement
+
+The partition fix passed CI. The next failure was `OpenROAD.GlobalRouting`
+(`GRT-0116`): **10,310 total overflow**, with 3,366 on met1, 1,238 on met2,
+5,058 on met3, and 648 on met4. Routed wire length was 1,926,480 um. This was
+before detailed routing, LVS, or final timing qualification.
+
+The placement log exposes a premature congestion-repair attempt. The initial
+partition seeds have placement overflow 0.2488 and HPWL 3,578,470 um. The first
+routability iteration runs immediately, requests 155.56% artificial area
+inflation, reaches target density 1.3292 versus the 0.99 maximum, then stops
+routability repair. Later placement converges with final weighted congestion
+1.5824, but no retained routability inflation. Timing-driven repair also commits
+buffer changes at iteration 1, while seed wire lengths are still large.
+
+Local comparisons replay the exact CI seed ODB through global placement,
+post-placement repair, detailed placement, CTS, post-CTS repair and global
+routing. They use LibreLane 3.0.14, OpenROAD dcf36133 and CI's PDK
+8afc8346a57fe1ab7934ba5a6056ea8b43078e71. The first comparison sets
+`PL_ROUTABILITY_OVERFLOW_THRESHOLD=0.15`; the second additionally sets
+`PL_KEEP_RESIZE_BELOW_OVERFLOW=0.2`, making the early timing-repair pass virtual.
+Both retain 60% target density, the same partition seeds, fixed macro position,
+50 ns clock, and rejection of global-route congestion.
+
+The delayed-repair/virtual-resize 60% screen reduced global-route overflow to
+**189** (from 10,310), but still failed the unchanged zero-congestion gate. A
+52% density comparison tests additional spreading. Inspection also found that
+the seed scorer ignored fixed macro signal-pin locations. It assigned RF group
+3 to the upper-right quadrant even though the macro is fixed at (120,120) um.
+The macro-aware comparison adds real `getAvgXY()` positions of fixed macro
+signal pins to each net's HPWL cost, alongside existing top-level pin anchors.
+This is derived from each design's database; no net/cell names are hard-coded.
+For this checkpoint it adds 112 anchors and changes group-to-quadrant assignment
+from `[0,1,2,3]` to `[3,2,1,0]`. The same 13,760 movable cells are seeded, and all
+6,388 fixed cells and the connectivity hash remain unchanged. Partition groups,
+area balancing, and the macro's physical position are unchanged.
+
+Selected fix: **52% target density**, routability overflow trigger **0.15**, and
+retained timing-resize overflow threshold **0.2**. The completed checkpoint
+replay exits successfully with **zero global-route overflow on every layer**;
+wire length is **1,474,274 um**, down 23.47% from the failed CI run. The initial
+partition seeds are unchanged. Macro-pin anchoring remains a separate local
+trial and is **not included** in this fix. See `congestion-screen.json` for input
+identity, tool/PDK versions and comparison results.
+
+The changes are pinned in `src/config.json` and `physical-flow.json`. Existing
+physical tests (36), RF provenance and manifest/config consistency checks pass.
+The replay starts after PDN generation, clears historical metrics, and does not
+qualify PDN, detailed routing, LVS or extracted timing. CI must rebuild the full
+flow and pass all of those gates. The RF's nominal-only timing limitation still
+applies. RTL and the running Linux acceptance inputs are unchanged.

@@ -1,0 +1,44 @@
+{
+  "failed_ci_run": 37569142598,
+  "source_commit": "0f828054eb1330d8ce09bfc8cbcfd9b4fa970a2f",
+  "librelane": "3.0.14",
+  "openroad": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "pdk": "8afc8346a57fe1ab7934ba5a6056ea8b43078e71",
+  "input_odb_sha256": "247126ad27151ec0be618b5164588ef5444a7a36e78ac7886ee0e06d8494ebce",
+  "baseline_global_overflow": 10310,
+  "baseline_wirelength_um": 1926480,
+  "scope": "Checkpoint replay from global placement through global routing; not signoff qualification",
+  "selected": "delayed-resize-52",
+  "screens": [
+    {
+      "name": "delayed",
+      "settings": {
+        "PL_TARGET_DENSITY_PCT": 60,
+        "PL_ROUTABILITY_OVERFLOW_THRESHOLD": 0.15,
+        "PL_KEEP_RESIZE_BELOW_OVERFLOW": null
+      },
+      "global_overflow": null,
+      "wirelength_um": null
+    },
+    {
+      "name": "delayed-resize",
+      "settings": {
+        "PL_TARGET_DENSITY_PCT": 60,
+        "PL_ROUTABILITY_OVERFLOW_THRESHOLD": 0.15,
+        "PL_KEEP_RESIZE_BELOW_OVERFLOW": 0.2
+      },
+      "global_overflow": 189,
+      "wirelength_um": 1557847.0
+    },
+    {
+      "name": "delayed-resize-52",
+      "settings": {
+        "PL_TARGET_DENSITY_PCT": 52.0,
+        "PL_ROUTABILITY_OVERFLOW_THRESHOLD": 0.15,
+        "PL_KEEP_RESIZE_BELOW_OVERFLOW": 0.2
+      },
+      "global_overflow": 0,
+      "wirelength_um": 1474274.0
+    }
+  ]
+}

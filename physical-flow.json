@@ -32,7 +32,7 @@
     "physical/test_partition_helpers.py": "531c335e0580494491aeed3e4f5bd0139cd32e72afc8a5f6712d2f73bc182ad7"
   },
   "config": {
-    "PL_TARGET_DENSITY_PCT": 60.0,
+    "PL_TARGET_DENSITY_PCT": 52.0,
     "CLOCK_PERIOD": 50.0,
     "PL_RESIZER_HOLD_SLACK_MARGIN": 0.05,
     "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0,
@@ -115,7 +115,9 @@
     ],
     "FP_PDN_HORIZONTAL_LAYER": "met3",
     "FP_MACRO_HORIZONTAL_HALO": 5.0,
-    "FP_MACRO_VERTICAL_HALO": 5.0
+    "FP_MACRO_VERTICAL_HALO": 5.0,
+    "PL_ROUTABILITY_OVERFLOW_THRESHOLD": 0.15,
+    "PL_KEEP_RESIZE_BELOW_OVERFLOW": 0.2
   },
   "required_steps": [
     "rv32-partitiondesign",
