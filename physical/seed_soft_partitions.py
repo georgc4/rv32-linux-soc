@@ -8,6 +8,7 @@ import itertools
 import json
 from pathlib import Path
 import odb
+from partition_helpers import validate_partition_areas
 
 p = argparse.ArgumentParser()
 p.add_argument('--odb', required=True)
@@ -44,6 +45,14 @@ x0, y0, width, height = core.xMin(), core.yMin(), core.dx(), core.dy()
 part_areas = [0.0]*4
 for name, i in movable.items():
     part_areas[parts[name]] += i.getMaster().getWidth()*i.getMaster().getHeight()
+# Validate the same instance population/physical areas as TritonPart. A fixed
+# macro contributes to partition balance but must not size a movable seed window.
+partition_areas = [0.0]*4
+for name, i in insts.items():
+    if name in parts:
+        box = i.getBBox()
+        partition_areas[parts[name]] += (box.xMax()-box.xMin())*(box.yMax()-box.yMin())
+largest_partition_share = validate_partition_areas(partition_areas, part_areas)
 def windows(perm):
     by_quad = {quad: part for part, quad in enumerate(perm)}
     left = part_areas[by_quad[0]] + part_areas[by_quad[2]]
@@ -91,10 +100,12 @@ assert connectivity() == before, 'Connectivity changed during placement seeding'
 assert fixed_before == {n: (i.getLocation(), i.getOrient(), i.getPlacementStatus())
                         for n, i in insts.items() if i.isFixed()}, 'Fixed instances changed'
 assert all(not i.isFixed() for i in movable.values())
-assert max(areas)/sum(areas) < 0.30, 'Unbalanced partitions'
 odb.write_db(db, a.output)
 report = dict(kind='initial placement seeds, no persistent constraints', counts=counts,
               area_um2=areas, quadrant_assignment=permutation, movable_instances=len(movable),
+              partition_area_um2=[v/u**2 for v in partition_areas],
+              largest_partition_area_share=largest_partition_share,
+              largest_movable_area_share=max(areas)/sum(areas),
               fixed_instances_unchanged=len(fixed_before), connectivity_sha256=before,
               partition_sha256=hashlib.sha256(Path(a.partition).read_bytes()).hexdigest(),
               cross_partition_nets=sum(len(ids)>1 for ids,pins in edges), costed_interpartition_or_io_nets=len(edges), seed_windows_dbu=regions)

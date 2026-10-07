@@ -88,3 +88,39 @@ staged sources and ran a 100,000-cycle strict-memory smoke; this is explicitly
 Once this first 5x4 comparison is complete, assess placed/routed cell area,
 congestion, macro pin access, timing and actual Linux cycles. A smaller tile trial
 is a separate experiment; do not infer 8x2 feasibility from macro dimensions alone.
+
+## GDS 37568117521: partition-area check repair
+
+The first macro run failed in `RV32.SeedPlacement`, after synthesis, macro
+placement, PDN generation and TritonPart, before global placement/routing. Its
+`Unbalanced partitions` assertion measured only movable standard cells. The
+fixed RF macro belongs to partition 3 and contributes 15,744.368 um2 to
+TritonPart's balance, but the wrapper omitted that area from its validation.
+
+The pinned [OpenROAD TritonPart implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/par/src/TritonPart.cpp)
+uses physical instance bounding-box area, includes fixed macros and physical
+cells with Liberty views, and gives ports zero area. The repaired check uses
+that same solution population. It retains the strict 30% upper bound; seed
+windows still use movable-only area, and the macro stays fixed. Empty movable
+groups fail before window construction. Reports now expose both populations.
+
+| Partition | All partitioned instance area (um2) | Movable area (um2) |
+| --- | ---: | ---: |
+| 0 | 38,561.9840 | 38,043.9872 |
+| 1 | 55,489.4688 | 54,997.7472 |
+| 2 | 48,396.4160 | 47,829.6224 |
+| 3 | 46,811.6640 | 30,849.5872 |
+
+Largest total share: **29.3192%**; largest movable-only share: **32.0274%**.
+This is a population mismatch in our seed guard, not a routed timing/DRC result.
+
+Validation: replayed the exact failed CI ODB and partition file with the pinned
+LibreLane 3.0.14 / OpenROAD dcf36133 tool. Seeding passed for 13,760 movable
+instances, preserving all 6,388 fixed instances and the connectivity SHA-256
+`42186bd6c261cac48c2e003c31ed3b5a302ce4cea116c2f19de5e5b5a58bb27d`.
+All 36 physical Python tests passed, including the failed-run area fixture,
+true imbalance rejection, the original strict bound, invalid weights, and empty
+movable groups. RF provenance checks passed. No RTL, macro assets, timing
+constraints, or signoff gates changed; the original Linux acceptance run remains
+applicable. Full GDS qualification still depends on the rerun, and the RF's
+nominal-only timing-model limitation remains.
