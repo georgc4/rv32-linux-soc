@@ -151,8 +151,11 @@ module rv32i_core #(
     assign d_req_valid = state == DATA_REQ || state == AMO_WRITE_REQ;
     assign d_req_addr = access_addr_hold;
     assign d_req_write = state == AMO_WRITE_REQ || !data_is_load;
-    assign d_req_wdata = state == AMO_WRITE_REQ ? atomic_write_data : store_data_hold;
-    assign d_req_wstrb = state == AMO_WRITE_REQ ? 4'b1111 : store_strb_hold;
+    // Write data and strobes stay valid until the response (the Sv32 adapter
+    // forwards them to the bus after accepting the request).
+    wire amo_write_phase = state == AMO_WRITE_REQ || state == AMO_WRITE_RESP;
+    assign d_req_wdata = amo_write_phase ? atomic_write_data : store_data_hold;
+    assign d_req_wstrb = amo_write_phase ? 4'b1111 : store_strb_hold;
     assign d_resp_ready = state == DATA_RESP || state == AMO_WRITE_RESP;
     assign halted = state == STOP;
 
