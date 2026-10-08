@@ -192,19 +192,19 @@ module linux_serial_boot_tb #(
         end
         if (watch_pc_hi > watch_pc_lo && cycles >= watch_after &&
             dut.cpu.pc >= watch_pc_lo && dut.cpu.pc < watch_pc_hi &&
-            (!last_watch_valid || dut.cpu.regs[1] != last_watch_ra)) begin
-            last_watch_ra = dut.cpu.regs[1];
+            (!last_watch_valid || dut.cpu.regfile.g_word[1].mem != last_watch_ra)) begin
+            last_watch_ra = dut.cpu.regfile.g_word[1].mem;
             last_watch_valid = 1;
             watch_ra_seen = 0;
             for (watch_index = 0; watch_index < watch_lines; watch_index = watch_index + 1)
-                if (watch_seen_ra[watch_index] == dut.cpu.regs[1])
+                if (watch_seen_ra[watch_index] == dut.cpu.regfile.g_word[1].mem)
                     watch_ra_seen = 1;
             if (!watch_ra_seen && watch_lines < 64) begin
-                watch_seen_ra[watch_lines] = dut.cpu.regs[1];
+                watch_seen_ra[watch_lines] = dut.cpu.regfile.g_word[1].mem;
                 $display("WATCH cycles=%0d pc=%h ra=%h sp=%h tp=%h a0=%h a1=%h a2=%h a3=%h sepc=%h scause=%h state=%0d", cycles,
-                         dut.cpu.pc, dut.cpu.regs[1], dut.cpu.regs[2],
-                         dut.cpu.regs[4], dut.cpu.regs[10], dut.cpu.regs[11],
-                         dut.cpu.regs[12], dut.cpu.regs[13],
+                         dut.cpu.pc, dut.cpu.regfile.g_word[1].mem, dut.cpu.regfile.g_word[2].mem,
+                         dut.cpu.regfile.g_word[4].mem, dut.cpu.regfile.g_word[10].mem, dut.cpu.regfile.g_word[11].mem,
+                         dut.cpu.regfile.g_word[12].mem, dut.cpu.regfile.g_word[13].mem,
                          dut.cpu.priv_unit.sepc, dut.cpu.priv_unit.scause,
                          dut.cpu.state);
                 $fflush;
@@ -255,9 +255,9 @@ module linux_serial_boot_tb #(
                      spi_commands[0], spi_commands[1], spi_commands[2],
                      spi_commands[3], spi_commands[4], uart_line);
             $display("GUEST cycles=%0d pc=%h ra=%h sp=%h tp=%h a0=%h a1=%h a2=%h a3=%h t6=%h sepc=%h scause=%h mepc=%h mcause=%h instr=%h state=%0d", cycles,
-                     dut.cpu.pc, dut.cpu.regs[1], dut.cpu.regs[2],
-                     dut.cpu.regs[4], dut.cpu.regs[10], dut.cpu.regs[11],
-                     dut.cpu.regs[12], dut.cpu.regs[13], dut.cpu.regs[31],
+                     dut.cpu.pc, dut.cpu.regfile.g_word[1].mem, dut.cpu.regfile.g_word[2].mem,
+                     dut.cpu.regfile.g_word[4].mem, dut.cpu.regfile.g_word[10].mem, dut.cpu.regfile.g_word[11].mem,
+                     dut.cpu.regfile.g_word[12].mem, dut.cpu.regfile.g_word[13].mem, dut.cpu.regfile.g_word[31].mem,
                      dut.cpu.priv_unit.sepc, dut.cpu.priv_unit.scause,
                      dut.cpu.priv_unit.mepc, dut.cpu.priv_unit.mcause,
                      dut.cpu.instr, dut.cpu.state);
