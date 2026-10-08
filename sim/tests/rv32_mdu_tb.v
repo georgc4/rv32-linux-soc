@@ -12,7 +12,7 @@ module rv32_mdu_tb;
     reg signed [63:0] product_ss, product_su;
     reg [63:0] product_uu;
     reg [31:0] expected, signed_quotient, signed_remainder;
-    integer i, j, op, checks = 0, cycles;
+    integer i, j, op, checks = 0, cycles, seed = 1;
     rv32_mdu dut (
         .clk(clk), .rst_n(rst_n), .start(start),
         .operation(operation), .operand_a(operand_a), .operand_b(operand_b),
@@ -76,7 +76,12 @@ module rv32_mdu_tb;
             for (i = 0; i < 8; i = i + 1)
                 for (j = 0; j < 8; j = j + 1)
                     check(op[2:0], vectors[i], vectors[j]);
-        $display("PASS rv32_mdu: %0d edge/vector arithmetic checks", checks);
+        // Seeded random operands, including random signs and small divisors.
+        for (i = 0; i < 4000; i = i + 1) begin
+            op = $urandom(seed) % 8;
+            check(op[2:0], $urandom, (i % 3 == 0) ? ($urandom % 17) - 8 : $urandom);
+        end
+        $display("PASS rv32_mdu: %0d edge/vector/random arithmetic checks", checks);
         $finish;
     end
 endmodule
