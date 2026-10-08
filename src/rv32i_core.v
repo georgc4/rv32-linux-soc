@@ -45,7 +45,6 @@ module rv32i_core #(
                      MDU_WAIT = 4'd8, READ_RS2 = 4'd9;
     reg [3:0] state;
     reg [31:0] pc, instr;
-    reg [31:0] regs [0:31];
     reg [31:0] operand_a, operand_b;
     reg write_rd, access, store, decode_illegal, stop_normal;
     // Decode legality while reading rs2. All legality inputs (instruction,
@@ -60,7 +59,7 @@ module rv32i_core #(
     wire [2:0] funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
     wire [4:0] reg_read_index = state == FETCH_RESP ? i_resp_data[19:15] : rs2;
-    wire [31:0] reg_read_data = reg_read_index == 0 ? 32'b0 : regs[reg_read_index];
+    wire [31:0] reg_read_data;
     wire [31:0] a = operand_a;
     wire [31:0] b = operand_b;
     wire mdu_instruction = instr[6:0] == 7'b0110011 && funct7 == 7'b0000001;
@@ -425,8 +424,10 @@ module rv32i_core #(
             reg_write_data = mdu_result;
         end
     end
-    always @(posedge clk) if (reg_write_enable && reg_write_index != 0)
-        regs[reg_write_index] <= reg_write_data;
+    rv32_latch_rf regfile (
+        .clk(clk), .we(reg_write_enable), .waddr(reg_write_index),
+        .wdata(reg_write_data), .raddr(reg_read_index), .rdata(reg_read_data)
+    );
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -608,3 +609,47 @@ module rv32i_core #(
     end
 `endif
 endmodule
+
+/* verilator lint_off DECLFILENAME */
+// Latch-based 31x32 register file (x0 reads as zero).
+// A write requested in cycle N is captured into wdata_q at the edge that
+// ends cycle N; that word's clock gate, enabled from the cycle-N request,
+// opens its latches for the high phase of cycle N+1. The core never reads a
+// register in the cycle immediately after writing it (a write is always
+// followed by FETCH_REQ before the next operand read), so the late write is
+// invisible. Each word costs 32 latches plus one integrated clock gate
+// instead of 32 enable flip-flops.
+module rv32_latch_rf (
+    input wire clk,
+    input wire we,
+    input wire [4:0] waddr,
+    input wire [31:0] wdata,
+    input wire [4:0] raddr,
+    output wire [31:0] rdata
+);
+    reg [31:0] wdata_q;
+    always @(posedge clk) wdata_q <= wdata;
+
+    wire [31:1] word_clk;
+    reg [31:0] mem [1:31];
+    genvar i;
+    generate
+        for (i = 1; i < 32; i = i + 1) begin : g_word
+            wire gate = we && waddr == i;
+`ifdef RV32_SKY130_ICG
+            sky130_fd_sc_hd__dlclkp_1 icg (.CLK(clk), .GATE(gate), .GCLK(word_clk[i]));
+`else
+            reg gate_latched;
+            /* verilator lint_off LATCH */
+            always @* if (!clk) gate_latched = gate;
+            /* verilator lint_on LATCH */
+            assign word_clk[i] = clk & gate_latched;
+`endif
+            /* verilator lint_off LATCH */
+            always @* if (word_clk[i]) mem[i] = wdata_q;
+            /* verilator lint_on LATCH */
+        end
+    endgenerate
+    assign rdata = raddr == 5'd0 ? 32'b0 : mem[raddr];
+endmodule
+/* verilator lint_on DECLFILENAME */
