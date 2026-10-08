@@ -46,11 +46,13 @@ module sv32_bus_adapter #(
                      ACCESS_REQ = 5, ACCESS_RESP = 6, DONE = 7;
     reg [3:0] state;
     reg is_data, is_write;
-    reg [31:0] virtual_addr, write_data, response_data;
-    reg [3:0] write_strb;
+    reg [31:0] virtual_addr;
     reg [1:0] effective_priv;
     reg sum_enable, mxr_enable, level1;
-    reg [33:0] walk_addr, access_addr;
+    // One physical address register serves the walk, the PTE update and the
+    // access; phys_high marks a 34-bit address above the 32-bit bus.
+    reg [31:0] phys_addr;
+    reg phys_high;
     reg [31:0] pte_updated;
     reg [30:0] tlb_context;
     localparam integer TLB_INDEX_BITS = $clog2(TLB_ENTRIES);
@@ -60,6 +62,12 @@ module sv32_bus_adapter #(
     reg tlb_level1 [0:TLB_ENTRIES-1];
     integer tlb_i;
     reg response_error, response_page_fault;
+    // Successful accesses answer straight from the bus in ACCESS_RESP; DONE
+    // only reports faults and errors detected before the access.
+    wire access_answer = state == ACCESS_RESP && bus_resp_valid;
+    wire [31:0] answer_data = state == ACCESS_RESP ? bus_resp_data : 32'b0;
+    wire answer_err = state == ACCESS_RESP ? bus_resp_err : response_error;
+    wire answer_page_fault = state == ACCESS_RESP ? 1'b0 : response_page_fault;
     wire [1:0] request_priv = d_req_valid && privilege == 2'd3 && mstatus[17] ?
                               mstatus[12:11] : privilege;
     wire do_translate = satp[31] && request_priv != 2'd3;
@@ -72,6 +80,8 @@ module sv32_bus_adapter #(
                         (is_data ? (!pte[4] || sum_enable) : !pte[4]);
     wire [21:0] page_ppn = level1 ? {pte[31:20], virtual_addr[21:12]} : pte[31:10];
     wire [33:0] leaf_addr = {page_ppn, virtual_addr[11:0]};
+    wire [21:0] updated_ppn = level1 ? {pte_updated[31:20], virtual_addr[21:12]} :
+                                        pte_updated[31:10];
     wire [33:0] next_walk_addr = {pte[31:10], 12'b0} +
                                  {22'b0, virtual_addr[21:12], 2'b0};
     wire choose_data = d_req_valid;
@@ -92,31 +102,33 @@ module sv32_bus_adapter #(
     wire [33:0] cached_addr = tlb_level1[request_index] ?
         {cached_pte[31:20], request_vaddr[21:0]} :
         {cached_pte[31:10], request_vaddr[11:0]};
-    wire unused_fields = &{1'b0, pte[5], virtual_addr[31:22],
+    wire unused_fields = &{1'b0, pte[5], virtual_addr[31:22], updated_ppn[21:20],
                            satp[30:22], mstatus[31:20],
                            mstatus[16:13], mstatus[10:0]};
 
     assign i_req_ready = state == IDLE && rst_n && !choose_data;
     assign d_req_ready = state == IDLE && rst_n;
-    assign i_resp_valid = state == DONE && !is_data;
-    assign d_resp_valid = state == DONE && is_data;
-    assign i_resp_data = response_data;
-    assign d_resp_data = response_data;
-    assign i_resp_err = response_error;
-    assign d_resp_err = response_error;
-    assign i_resp_page_fault = response_page_fault;
-    assign d_resp_page_fault = response_page_fault;
-    assign bus_req_valid = (state == WALK_REQ && walk_addr[33:32] == 0) ||
+    assign i_resp_valid = (state == DONE || access_answer) && !is_data;
+    assign d_resp_valid = (state == DONE || access_answer) && is_data;
+    assign i_resp_data = answer_data;
+    assign d_resp_data = answer_data;
+    assign i_resp_err = answer_err;
+    assign d_resp_err = answer_err;
+    assign i_resp_page_fault = answer_page_fault;
+    assign d_resp_page_fault = answer_page_fault;
+    assign bus_req_valid = (state == WALK_REQ && !phys_high) ||
                            state == UPDATE_REQ ||
-                           (state == ACCESS_REQ && access_addr[33:32] == 0);
-    assign bus_req_addr = state == ACCESS_REQ ? access_addr[31:0] : walk_addr[31:0];
+                           (state == ACCESS_REQ && !phys_high);
+    assign bus_req_addr = phys_addr;
     // Page-table walks and data loads must not populate the instruction line.
     assign bus_req_instr = state == ACCESS_REQ && !is_data;
     assign bus_req_write = state == UPDATE_REQ || (state == ACCESS_REQ && is_write);
-    assign bus_req_wdata = state == UPDATE_REQ ? pte_updated : write_data;
+    // The core holds its write data and strobes until the response.
+    assign bus_req_wdata = state == UPDATE_REQ ? pte_updated : d_req_wdata;
     assign bus_req_wstrb = state == UPDATE_REQ ? 4'b1111 :
-                           state == ACCESS_REQ ? write_strb : 4'b0;
-    assign bus_resp_ready = state == WALK_RESP || state == UPDATE_RESP || state == ACCESS_RESP;
+                           state == ACCESS_REQ && is_write ? d_req_wstrb : 4'b0;
+    assign bus_resp_ready = state == WALK_RESP || state == UPDATE_RESP ||
+                            (state == ACCESS_RESP && (is_data ? d_resp_ready : i_resp_ready));
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -124,14 +136,12 @@ module sv32_bus_adapter #(
             is_data <= 0;
             is_write <= 0;
             virtual_addr <= 0;
-            write_data <= 0;
-            write_strb <= 0;
             effective_priv <= 2'd3;
             sum_enable <= 0;
             mxr_enable <= 0;
             level1 <= 0;
-            walk_addr <= 0;
-            access_addr <= 0;
+            phys_addr <= 0;
+            phys_high <= 0;
             pte_updated <= 0;
             tlb_context <= 0;
             tlb_valid <= 0;
@@ -140,7 +150,6 @@ module sv32_bus_adapter #(
                 tlb_pte[tlb_i] <= 0;
                 tlb_level1[tlb_i] <= 0;
             end
-            response_data <= 0;
             response_error <= 0;
             response_page_fault <= 0;
         end else begin
@@ -149,8 +158,6 @@ module sv32_bus_adapter #(
                 is_data <= choose_data;
                 is_write <= choose_data && d_req_write;
                 virtual_addr <= choose_data ? d_req_addr : i_req_addr;
-                write_data <= choose_data ? d_req_wdata : 32'b0;
-                write_strb <= choose_data ? d_req_wstrb : 4'b0;
                 effective_priv <= request_priv;
                 if (do_translate && tlb_context != satp[30:0]) begin
                     tlb_valid <= 0;
@@ -158,7 +165,6 @@ module sv32_bus_adapter #(
                 end
                 sum_enable <= mstatus[18];
                 mxr_enable <= mstatus[19];
-                response_data <= 0;
                 response_error <= 0;
                 response_page_fault <= 0;
                 if (do_translate) begin
@@ -168,21 +174,22 @@ module sv32_bus_adapter #(
                             response_page_fault <= 1;
                             state <= DONE;
                         end else begin
-                            access_addr <= cached_addr;
+                            {phys_high, phys_addr} <= {|cached_addr[33:32], cached_addr[31:0]};
                             state <= ACCESS_REQ;
                         end
                     end else begin
                         level1 <= 1;
-                        walk_addr <= {satp[21:0], 12'b0} +
-                                     {22'b0, request_vaddr[31:22], 2'b0};
+                        {phys_high, phys_addr} <= {|satp[21:20], satp[19:0], 12'b0} +
+                                                  {21'b0, request_vaddr[31:22], 2'b0};
                         state <= WALK_REQ;
                     end
                 end else begin
-                    access_addr <= {2'b0, choose_data ? d_req_addr : i_req_addr};
+                    phys_high <= 1'b0;
+                    phys_addr <= choose_data ? d_req_addr : i_req_addr;
                     state <= ACCESS_REQ;
                 end
             end
-            WALK_REQ: if (walk_addr[33:32] != 0) begin
+            WALK_REQ: if (phys_high) begin
                 response_error <= 1;
                 state <= DONE;
             end else if (bus_req_ready) state <= WALK_RESP;
@@ -198,18 +205,20 @@ module sv32_bus_adapter #(
                     response_page_fault <= 1;
                     state <= DONE;
                 end else if (!pte_leaf) begin
-                    walk_addr <= next_walk_addr;
+                    {phys_high, phys_addr} <= {|next_walk_addr[33:32], next_walk_addr[31:0]};
                     level1 <= 0;
                     state <= WALK_REQ;
                 end else if (leaf_addr[33:32] != 0) begin
                     response_error <= 1;
                     state <= DONE;
                 end else begin
-                    access_addr <= leaf_addr;
+                    // phys_addr keeps the PTE address for an A/D update; the
+                    // leaf address is loaded once the update completes.
                     if (!pte[6] || (is_write && !pte[7])) begin
                         pte_updated <= pte | 32'h0000_0040 | (is_write ? 32'h0000_0080 : 32'b0);
                         state <= UPDATE_REQ;
                     end else begin
+                        phys_addr <= leaf_addr[31:0];
                         tlb_valid[refill_index] <= 1;
                         tlb_vpn_tag[refill_index] <= virtual_addr[31:12+TLB_INDEX_BITS];
                         tlb_pte[refill_index] <= pte;
@@ -224,6 +233,7 @@ module sv32_bus_adapter #(
                     response_error <= 1;
                     state <= DONE;
                 end else begin
+                    phys_addr <= {updated_ppn[19:0], virtual_addr[11:0]};
                     tlb_valid[refill_index] <= 1;
                     tlb_vpn_tag[refill_index] <= virtual_addr[31:12+TLB_INDEX_BITS];
                     tlb_pte[refill_index] <= pte_updated;
@@ -231,15 +241,11 @@ module sv32_bus_adapter #(
                     state <= ACCESS_REQ;
                 end
             end
-            ACCESS_REQ: if (access_addr[33:32] != 0) begin
+            ACCESS_REQ: if (phys_high) begin
                 response_error <= 1;
                 state <= DONE;
             end else if (bus_req_ready) state <= ACCESS_RESP;
-            ACCESS_RESP: if (bus_resp_valid) begin
-                response_data <= bus_resp_data;
-                response_error <= bus_resp_err;
-                state <= DONE;
-            end
+            ACCESS_RESP: if (bus_resp_valid && bus_resp_ready) state <= IDLE;
             DONE: if ((!is_data && i_resp_ready) || (is_data && d_resp_ready))
                 state <= IDLE;
             default: state <= IDLE;
