@@ -631,7 +631,9 @@ module rv32_latch_rf (
     always @(posedge clk) wdata_q <= wdata;
 
     wire [31:1] word_clk;
-    reg [31:0] mem [1:31];
+    // Word i occupies words[32*i +: 32]; word 0 is constant zero (x0).
+    wire [32*32-1:0] words;
+    assign words[31:0] = 32'b0;
     genvar i;
     generate
         for (i = 1; i < 32; i = i + 1) begin : g_word
@@ -645,11 +647,13 @@ module rv32_latch_rf (
             /* verilator lint_on LATCH */
             assign word_clk[i] = clk & gate_latched;
 `endif
+            reg [31:0] mem;
             /* verilator lint_off LATCH */
-            always @* if (word_clk[i]) mem[i] = wdata_q;
+            always @* if (word_clk[i]) mem = wdata_q;
             /* verilator lint_on LATCH */
+            assign words[32*i +: 32] = mem;
         end
     endgenerate
-    assign rdata = raddr == 5'd0 ? 32'b0 : mem[raddr];
+    assign rdata = words[32*raddr +: 32];
 endmodule
 /* verilator lint_on DECLFILENAME */
