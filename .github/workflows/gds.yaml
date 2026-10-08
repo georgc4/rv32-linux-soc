@@ -24,6 +24,10 @@ jobs:
           tools-ref: 5d6e7f9dc17c4e8c1e6bad75b7c70870addb1b79
           librelane-version: "3.0.14"
 
+      - name: Summarize physical run as annotations
+        if: always()
+        run: python3 scripts/ci_annotate_gds.py
+
   precheck:
     needs: gds
     runs-on: ubuntu-24.04
