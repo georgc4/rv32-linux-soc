@@ -62,14 +62,10 @@ module clint_timer (
                         resp_rdata <= mtimecmp[63:32];
                         if (req_write) mtimecmp[63:32] <= merge_bytes(mtimecmp[63:32], req_wdata, req_wstrb);
                     end
-                    32'h0000_bff8: begin
-                        resp_rdata <= mtime[31:0];
-                        if (req_write) mtime[31:0] <= merge_bytes(mtime[31:0], req_wdata, req_wstrb);
-                    end
-                    32'h0000_bffc: begin
-                        resp_rdata <= mtime[63:32];
-                        if (req_write) mtime[63:32] <= merge_bytes(mtime[63:32], req_wdata, req_wstrb);
-                    end
+                    // mtime is read-only here: the boot firmware (the SBI)
+                    // and Linux only read it. Writes are ignored.
+                    32'h0000_bff8: resp_rdata <= mtime[31:0];
+                    32'h0000_bffc: resp_rdata <= mtime[63:32];
                     default: resp_err <= 1;
                 endcase
             end else if (resp_valid && resp_ready) pending <= 0;

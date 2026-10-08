@@ -33,8 +33,12 @@ module rv32_priv_unit (
     reg [1:0] priv;
     reg [31:0] mstatus, mie, medeleg, mideleg, software_mip;
     reg [31:0] mcounteren, scounteren;
-    reg [31:0] mtvec, mscratch, mepc, mcause, mtval;
-    reg [31:0] stvec, sscratch, sepc, scause, stval, satp;
+    reg [31:0] mtvec, mscratch, mepc, mtval;
+    reg [31:0] stvec, sscratch, sepc, stval, satp;
+    // mcause/scause are WLRL: only the interrupt bit and a 5-bit code are kept.
+    reg [5:0] mcause_bits, scause_bits;
+    wire [31:0] mcause = {mcause_bits[5], 26'b0, mcause_bits[4:0]};
+    wire [31:0] scause = {scause_bits[5], 26'b0, scause_bits[4:0]};
     wire [31:0] mip = software_mip |
                       (irq_external === 1'b1 ? 32'h0000_0800 : 32'b0) |
                       (irq_supervisor_external === 1'b1 ? 32'h0000_0200 : 32'b0) |
@@ -150,18 +154,18 @@ module rv32_priv_unit (
             mtvec <= 0;
             mscratch <= 0;
             mepc <= 0;
-            mcause <= 0;
+            mcause_bits <= 0;
             mtval <= 0;
             stvec <= 0;
             sscratch <= 0;
             sepc <= 0;
-            scause <= 0;
+            scause_bits <= 0;
             stval <= 0;
             satp <= 0;
         end else if (trap_commit) begin
             if (delegate_trap) begin
                 sepc <= {trap_pc[31:2], 2'b0};
-                scause <= {trap_interrupt, 26'b0, trap_cause};
+                scause_bits <= {trap_interrupt, trap_cause};
                 stval <= trap_value;
                 mstatus[5] <= mstatus[1];
                 mstatus[1] <= 0;
@@ -169,7 +173,7 @@ module rv32_priv_unit (
                 priv <= S;
             end else begin
                 mepc <= {trap_pc[31:2], 2'b0};
-                mcause <= {trap_interrupt, 26'b0, trap_cause};
+                mcause_bits <= {trap_interrupt, trap_cause};
                 mtval <= trap_value;
                 mstatus[7] <= mstatus[3];
                 mstatus[3] <= 0;
@@ -197,7 +201,7 @@ module rv32_priv_unit (
                 12'h105: stvec <= {modified_csr[31:2], 1'b0, modified_csr[0]};
                 12'h140: sscratch <= modified_csr;
                 12'h141: sepc <= {modified_csr[31:2], 2'b0};
-                12'h142: scause <= modified_csr;
+                12'h142: scause_bits <= {modified_csr[31], modified_csr[4:0]};
                 12'h143: stval <= modified_csr;
                 12'h180: satp <= modified_csr & 32'h803f_ffff;
                 12'h300: mstatus <= (mstatus & ~writable_mstatus) |
@@ -211,7 +215,7 @@ module rv32_priv_unit (
                 12'h305: mtvec <= {modified_csr[31:2], 1'b0, modified_csr[0]};
                 12'h340: mscratch <= modified_csr;
                 12'h341: mepc <= {modified_csr[31:2], 2'b0};
-                12'h342: mcause <= modified_csr;
+                12'h342: mcause_bits <= {modified_csr[31], modified_csr[4:0]};
                 12'h343: mtval <= modified_csr;
                 default: begin end
             endcase
