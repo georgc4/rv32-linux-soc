@@ -126,33 +126,41 @@ module rv32i_core #(
 
     reg [31:0] next_pc, result, access_addr, store_data;
     reg [3:0] store_strb;
-    reg [2:0] load_kind;
     reg [1:0] atomic_kind; // 0=ordinary, 1=LR, 2=SC, 3=AMO
-    reg [1:0] atomic_kind_hold;
-    reg [4:0] atomic_function_hold;
-    reg [31:0] atomic_operand_hold, atomic_old, atomic_write_data;
+    reg [31:0] atomic_old;
     reg reservation_valid;
     reg [31:0] reservation_addr;
     reg branch_taken;
-    reg [1:0] data_lane_hold;
-    wire [7:0] selected_byte = d_resp_data[8*data_lane_hold +: 8];
-    wire [15:0] selected_half = data_lane_hold[1] ? d_resp_data[31:16] : d_resp_data[15:0];
-    reg [31:0] data_next_pc;
-    reg [4:0] data_rd_hold;
-    reg [2:0] data_load_kind;
-    reg data_is_load;
-    reg [31:0] access_addr_hold, store_data_hold;
-    reg [3:0] store_strb_hold;
+    // instr, operand_a/b and pc are held from EXEC until the next fetch, so
+    // memory, atomic and MDU states reuse the live decode instead of copies.
+    wire [7:0] selected_byte = d_resp_data[8*access_addr[1:0] +: 8];
+    wire [15:0] selected_half = access_addr[1] ? d_resp_data[31:16] : d_resp_data[15:0];
+    wire data_is_load = !store || atomic_kind == 2'd3;
+    reg [31:0] atomic_write_data;
+    always @* begin
+        case (instr[31:27])
+            5'b00000: atomic_write_data = atomic_old + b;
+            5'b00001: atomic_write_data = b;
+            5'b00100: atomic_write_data = atomic_old ^ b;
+            5'b01000: atomic_write_data = atomic_old | b;
+            5'b01100: atomic_write_data = atomic_old & b;
+            5'b10000: atomic_write_data = $signed(atomic_old) < $signed(b) ? atomic_old : b;
+            5'b10100: atomic_write_data = $signed(atomic_old) > $signed(b) ? atomic_old : b;
+            5'b11000: atomic_write_data = atomic_old < b ? atomic_old : b;
+            5'b11100: atomic_write_data = atomic_old > b ? atomic_old : b;
+            default: atomic_write_data = atomic_old;
+        endcase
+    end
 
     assign i_req_valid = state == FETCH_REQ && rst_n &&
                          (DIAGNOSTIC_MODE || !irq_pending);
     assign i_req_addr = pc;
     assign i_resp_ready = state == FETCH_RESP;
     assign d_req_valid = state == DATA_REQ || state == AMO_WRITE_REQ;
-    assign d_req_addr = access_addr_hold;
+    assign d_req_addr = access_addr;
     assign d_req_write = state == AMO_WRITE_REQ || !data_is_load;
-    assign d_req_wdata = state == AMO_WRITE_REQ ? atomic_write_data : store_data_hold;
-    assign d_req_wstrb = state == AMO_WRITE_REQ ? 4'b1111 : store_strb_hold;
+    assign d_req_wdata = state == AMO_WRITE_REQ ? atomic_write_data : store_data;
+    assign d_req_wstrb = state == AMO_WRITE_REQ ? 4'b1111 : store_strb;
     assign d_resp_ready = state == DATA_RESP || state == AMO_WRITE_RESP;
     assign halted = state == STOP;
 
@@ -167,7 +175,6 @@ module rv32i_core #(
         access_addr = 0;
         store_data = 0;
         store_strb = 0;
-        load_kind = funct3;
         atomic_kind = 0;
         branch_taken = 0;
         case (instr[6:0])
@@ -372,9 +379,9 @@ module rv32i_core #(
                          d_resp_valid && d_resp_ready && d_resp_err) begin
                 trap_commit = 1;
                 trap_cause = d_resp_page_fault === 1'b1 ?
-                             (data_is_load && atomic_kind_hold != 3 ? 5'd13 : 5'd15) :
-                             (data_is_load && atomic_kind_hold != 3 ? 5'd5 : 5'd7);
-                trap_value = access_addr_hold;
+                             (data_is_load && atomic_kind != 3 ? 5'd13 : 5'd15) :
+                             (data_is_load && atomic_kind != 3 ? 5'd5 : 5'd7);
+                trap_value = access_addr;
             end
         end
     end
@@ -398,14 +405,14 @@ module rv32i_core #(
                 reg_write_data = result;
             end
         end else if (state == DATA_RESP && d_resp_valid && d_resp_ready &&
-                     !d_resp_err && atomic_kind_hold != 3) begin
-            reg_write_index = data_rd_hold;
-            if (atomic_kind_hold == 2) begin
+                     !d_resp_err && atomic_kind != 3) begin
+            reg_write_index = rd;
+            if (atomic_kind == 2) begin
                 reg_write_enable = 1;
                 reg_write_data = 0;
             end else if (data_is_load) begin
                 reg_write_enable = 1;
-                case (data_load_kind)
+                case (funct3)
                     3'b000: reg_write_data = {{24{selected_byte[7]}}, selected_byte};
                     3'b001: reg_write_data = {{16{selected_half[15]}}, selected_half};
                     3'b010: reg_write_data = d_resp_data;
@@ -417,11 +424,11 @@ module rv32i_core #(
         end else if (state == AMO_WRITE_RESP && d_resp_valid &&
                      d_resp_ready && !d_resp_err) begin
             reg_write_enable = 1;
-            reg_write_index = data_rd_hold;
+            reg_write_index = rd;
             reg_write_data = atomic_old;
         end else if (state == MDU_WAIT && mdu_done) begin
             reg_write_enable = 1;
-            reg_write_index = data_rd_hold;
+            reg_write_index = rd;
             reg_write_data = mdu_result;
         end
     end
@@ -440,19 +447,7 @@ module rv32i_core #(
             fault_pc <= 0;
             retire_valid <= 0;
             retire_pc <= 0;
-            access_addr_hold <= 0;
-            store_data_hold <= 0;
-            store_strb_hold <= 0;
-            data_lane_hold <= 0;
-            data_next_pc <= 0;
-            data_rd_hold <= 0;
-            data_load_kind <= 0;
-            data_is_load <= 0;
-            atomic_kind_hold <= 0;
-            atomic_function_hold <= 0;
-            atomic_operand_hold <= 0;
             atomic_old <= 0;
-            atomic_write_data <= 0;
             reservation_valid <= 0;
             reservation_addr <= 0;
             // RISC-V does not define general-register contents after reset.
@@ -510,21 +505,8 @@ module rv32i_core #(
                         pc <= next_pc;
                         state <= FETCH_REQ;
                     end else if (mdu_instruction) begin
-                        data_rd_hold <= rd;
-                        data_next_pc <= next_pc;
                         state <= MDU_WAIT;
                     end else if (access) begin
-                        access_addr_hold <= access_addr;
-                        store_data_hold <= store_data;
-                        store_strb_hold <= store_strb;
-                        data_lane_hold <= access_addr[1:0];
-                        data_next_pc <= next_pc;
-                        data_rd_hold <= rd;
-                        data_load_kind <= load_kind;
-                        data_is_load <= !store || atomic_kind == 3;
-                        atomic_kind_hold <= atomic_kind;
-                        atomic_function_hold <= instr[31:27];
-                        atomic_operand_hold <= b;
                         if (store) reservation_valid <= 0;
                         state <= DATA_REQ;
                     end else begin
@@ -546,29 +528,17 @@ module rv32i_core #(
                             state <= FETCH_REQ;
                         end
                     end else begin
-                        if (atomic_kind_hold == 1) begin
+                        if (atomic_kind == 1) begin
                             reservation_valid <= 1;
-                            reservation_addr <= access_addr_hold;
+                            reservation_addr <= access_addr;
                         end
-                        if (atomic_kind_hold == 3) begin
+                        if (atomic_kind == 3) begin
                             atomic_old <= d_resp_data;
-                            case (atomic_function_hold)
-                                5'b00000: atomic_write_data <= d_resp_data + atomic_operand_hold;
-                                5'b00001: atomic_write_data <= atomic_operand_hold;
-                                5'b00100: atomic_write_data <= d_resp_data ^ atomic_operand_hold;
-                                5'b01000: atomic_write_data <= d_resp_data | atomic_operand_hold;
-                                5'b01100: atomic_write_data <= d_resp_data & atomic_operand_hold;
-                                5'b10000: atomic_write_data <= $signed(d_resp_data) < $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b10100: atomic_write_data <= $signed(d_resp_data) > $signed(atomic_operand_hold) ? d_resp_data : atomic_operand_hold;
-                                5'b11000: atomic_write_data <= d_resp_data < atomic_operand_hold ? d_resp_data : atomic_operand_hold;
-                                5'b11100: atomic_write_data <= d_resp_data > atomic_operand_hold ? d_resp_data : atomic_operand_hold;
-                                default: atomic_write_data <= d_resp_data;
-                            endcase
                             state <= AMO_WRITE_REQ;
                         end else begin
                         retire_valid <= 1;
                         retire_pc <= pc;
-                        pc <= data_next_pc;
+                        pc <= next_pc;
                         state <= FETCH_REQ;
                         end
                     end
@@ -587,14 +557,14 @@ module rv32i_core #(
                     end else begin
                         retire_valid <= 1;
                         retire_pc <= pc;
-                        pc <= data_next_pc;
+                        pc <= next_pc;
                         state <= FETCH_REQ;
                     end
                 end
                 MDU_WAIT: if (mdu_done) begin
                     retire_valid <= 1;
                     retire_pc <= pc;
-                    pc <= data_next_pc;
+                    pc <= next_pc;
                     state <= FETCH_REQ;
                 end
                 default: begin end
