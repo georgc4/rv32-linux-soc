@@ -28,7 +28,7 @@ parser.add_argument("--stage", type=Path, default=BUILD / "sky130" / "ttsky26d-s
 parser.add_argument("--template-cache", type=Path, default=BUILD / "ttsky-template")
 parser.add_argument("--tools-cache", type=Path, default=BUILD / "tt-support-tools")
 parser.add_argument("--clock-period-ns", type=float, default=50.0)
-parser.add_argument("--tile-shape", choices=["8x2", "5x4"], default="5x4")
+parser.add_argument("--tile-shape", choices=["8x2", "4x4", "5x4"], default="5x4")
 parser.add_argument("--density-pct", type=float, default=60.0)
 parser.add_argument("--synth-strategy", choices=[f"{kind} {level}" for kind in ("AREA", "DELAY")
                                                   for level in range(4)] + ["DELAY 4"],

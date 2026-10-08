@@ -4,7 +4,7 @@ project:
   description: "RV32 Linux SoC with external quad PSRAM and NOR"
   language: "Verilog"
   clock_hz: 20000000
-  tiles: "5x4"
+  tiles: "4x4"
   top_module: "tt_um_rv32_linux_soc"
   source_files:
     - "rv32_mdu.v"
